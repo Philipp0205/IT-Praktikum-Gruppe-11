@@ -4,9 +4,10 @@
 package de.hdm.group11.jabics.shared.bo;
 
 /**
- * @author Jan
+ * @author Anders
  *
  */
 public class ContactList extends BusinessObject {
 
+	//Code to be added
 }

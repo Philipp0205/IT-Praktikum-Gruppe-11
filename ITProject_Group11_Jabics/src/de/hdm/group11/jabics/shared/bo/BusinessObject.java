@@ -1,5 +1,15 @@
 package de.hdm.group11.jabics.shared.bo;
 
-public class BusinessObject {
+/**
+ * @author Anders
+ *
+ */
 
+public abstract class BusinessObject {
+
+	private String nickname;
+	private String email;
+	
+	
+	
 }
