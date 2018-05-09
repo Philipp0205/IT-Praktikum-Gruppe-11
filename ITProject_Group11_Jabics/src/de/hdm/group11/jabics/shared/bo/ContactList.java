@@ -21,15 +21,13 @@ public class ContactList extends BusinessObject {
 				/** 
 				 * TODO 
 				 */
-				return listName; 
-				
+				return listName; 				
 			}
 
 			public void addContact(Contact c) { 
 				/**
 				 *  TODO implementieren 
-				 */
-				
+				 */				
 				contacts.add(c);
 			}
 			

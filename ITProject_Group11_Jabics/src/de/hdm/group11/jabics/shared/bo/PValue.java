@@ -28,6 +28,9 @@ public class PValue {
 		case 2: 
 			return stringValue; 
 		case 3: 
+			/*
+			 * TODO Neueren Shit finden Date ist alt.
+			 */
 			StringBuffer sBuffer = new StringBuffer("date");
 			sBuffer.append(dateValue.getMonth());
 			sBuffer.append(dateValue.getDay());
