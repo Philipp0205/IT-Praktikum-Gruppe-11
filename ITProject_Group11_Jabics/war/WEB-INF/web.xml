@@ -5,16 +5,17 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>de.hdm.group11.jabics.server.GreetingServiceImpl</servlet-class>
+  <!-- Servlets automatic generated code from the greetingServlet example -->
+  
+  <!--  <servlet>
+     <servlet-name>greetServlet</servlet-name>
+    <servlet-class>de.hdm.group11.jabics.server.GreetingServiceImpl</servlet-class> 
   </servlet>
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/itproject_group11_jabics/greet</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   
   <!-- Default page to serve -->
   <welcome-file-list>
