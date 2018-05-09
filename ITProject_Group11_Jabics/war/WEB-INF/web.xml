@@ -5,7 +5,7 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
+  <!-- Servlets temporarily not configurable, as code is missing
   <servlet>
     <servlet-name>greetServlet</servlet-name>
     <servlet-class>de.hdm.group11.jabics.server.GreetingServiceImpl</servlet-class>
@@ -15,6 +15,8 @@
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/itproject_group11_jabics/greet</url-pattern>
   </servlet-mapping>
+  
+  -->
   
   <!-- Default page to serve -->
   <welcome-file-list>
