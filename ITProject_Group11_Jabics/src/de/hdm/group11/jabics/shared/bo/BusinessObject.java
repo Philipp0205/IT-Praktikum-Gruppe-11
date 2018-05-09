@@ -30,8 +30,10 @@ public abstract class BusinessObject {
 	public boolean equals(Object obj) {
 		if (obj instanceof BusinessObject) {
 			BusinessObject bo = (BusinessObject) obj;
-			if (bo.getId() == this.id) return true;
-		} else return false;
+			if (bo.getId() == this.id) 
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -46,10 +48,10 @@ public abstract class BusinessObject {
 		setDateUpdated(new Date());
 	}
 	public User getOwner() {
-		return Owner;
+		return this.owner;
 	}
 	public void setOwner(User owner) {
-		Owner = owner;
+		this.owner = owner;
 	}
 	public Date getDateCreated() {
 		return dateCreated;

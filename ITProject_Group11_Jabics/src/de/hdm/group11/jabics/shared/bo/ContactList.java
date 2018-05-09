@@ -32,6 +32,10 @@ public class ContactList extends BusinessObject {
 			 * This method adds one Contact to the ContactList
 			 */
 			public void addContact(Contact c) { 
+
+				/**
+				 *  TODO implementieren 
+				 */						
 				contacts.add(c);
 			}
 			
