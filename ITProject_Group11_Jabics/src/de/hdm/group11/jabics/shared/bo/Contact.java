@@ -19,22 +19,24 @@ public class Contact extends BusinessObject {
 	private String name; 
 	private BoStatus shareStatus;
 	
-	public String toString() {
+	@Override
+	public String toString() {		
 		return name; 
-		/**
-		 *  TODO
-		 */
 	}
 	
-	public void addPValue(PValue p ) { 
-		/**
-		 * TODO
-		 */
+	/**
+	 *  Adds value to the values Array 
+	 */
+	public void addPValue(PValue p) { 
+		
+		this.values.add(p);	
 	}
+	/**
+	 *  Removes value from the value Array
+	 */
 	public void removePValue(PValue p) { 
-		/**
-		 * TODO
-		 */
+		
+		this.values.remove(p);
 	}
 	
 	/**
