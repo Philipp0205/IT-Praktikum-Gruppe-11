@@ -4,9 +4,11 @@
 package de.hdm.group11.jabics.shared.bo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author Anders
+ * @author Kurrle 
  *
  */
 
@@ -18,22 +20,24 @@ public class Contact extends BusinessObject {
 	private String name; 
 	private BoStatus shareStatus;
 	
-	public String toString() {
+	@Override
+	public String toString() {		
 		return name; 
-		/**
-		 *  TODO
-		 */
 	}
 	
-	public void addPValue(PValue p ) { 
-		/**
-		 * TODO
-		 */
+	/**
+	 *  Adds value to the values Array 
+	 */
+	public void addPValue(PValue p) { 
+		
+		this.values.add(p);	
 	}
+	/**
+	 *  Removes value from the value Array
+	 */
 	public void removePValue(PValue p) { 
-		/**
-		 * TODO
-		 */
+		
+		this.values.remove(p);
 	}
 	
 	/**
@@ -45,12 +49,14 @@ public class Contact extends BusinessObject {
 	}
 	public void setValues(ArrayList<PValue> values) {
 		this.values = values;
+		setDateUpdated(new Date());
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+		setDateUpdated(new Date());
 	}
 	public BoStatus getShareStatus() {
 		return shareStatus;
