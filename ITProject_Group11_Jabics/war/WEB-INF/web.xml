@@ -5,7 +5,7 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets automatic generated code from the greetingServlet example -->
+  <!-- Servlets: automatic generated code from the greetingServlet example -->
   
   <!--  <servlet>
      <servlet-name>greetServlet</servlet-name>
