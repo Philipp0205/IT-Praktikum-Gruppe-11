@@ -10,21 +10,14 @@ public class PValue extends BusinessObject {
  * @author Philipp 
  *
  */
-
 	private int intValue; 
 	private String stringValue; 
 	private Date dateValue; 
 	private float floatValue; 
 	private Property property;
-	
 	private int pointer = 0; 
 	
-	/** 
-<<<<<<< HEAD
-	 * Getter and Setters. Setting DateUpdated to current time whenever substantial information in the Object is changed. 
-=======
-	 *  Return a String representation of the Property Value. 
-	 */
+	
 	public String toString() {
 		switch (pointer) { 
 		case 1 : 
@@ -43,12 +36,11 @@ public class PValue extends BusinessObject {
 		default: 
 			return null;
 		}
-		
-
 	}
+	
 	/** 
-	 * Getter uns Setter of the Attributes. 
->>>>>>> refs/remotes/origin/KurrleBranch
+	 * Getter and Setters. Setting DateUpdated to current time whenever substantial information in the Object is changed. 
+	 *  Return a String representation of the Property Value. 
 	 */
 	public int getIntValue() {
 		return intValue;
