@@ -7,7 +7,7 @@ import java.util.Date;
  * @author Anders
  */
 
-public class Property {
+public class Property extends BusinessObject {
 	
 	private String label;
 	private Type type;

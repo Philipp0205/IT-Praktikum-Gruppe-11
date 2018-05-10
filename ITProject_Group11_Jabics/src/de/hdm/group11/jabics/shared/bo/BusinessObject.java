@@ -6,7 +6,8 @@ import java.util.Date;
 /**
  * This is the Base Class for all Business Objects in Jabics.
  * @author Anders
- *
+ * 
+ * TODO add date Updated to every set method! 
  */
 
 public abstract class BusinessObject {

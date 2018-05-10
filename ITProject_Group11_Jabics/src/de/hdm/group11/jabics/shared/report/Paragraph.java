@@ -1,5 +1,11 @@
 package de.hdm.group11.jabics.shared.report;
 
+/**
+ * TODO
+ * @author P
+ *
+ */
+
 public class Paragraph {
 	
 	private String[] filtercriteria = new String[4];
