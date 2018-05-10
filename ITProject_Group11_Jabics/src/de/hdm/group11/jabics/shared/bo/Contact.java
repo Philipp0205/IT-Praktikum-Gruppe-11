@@ -4,6 +4,7 @@
 package de.hdm.group11.jabics.shared.bo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author Anders
@@ -48,12 +49,14 @@ public class Contact extends BusinessObject {
 	}
 	public void setValues(ArrayList<PValue> values) {
 		this.values = values;
+		setDateUpdated(new Date());
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+		setDateUpdated(new Date());
 	}
 	public BoStatus getShareStatus() {
 		return shareStatus;
