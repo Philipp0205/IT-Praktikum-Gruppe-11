@@ -7,8 +7,7 @@ import java.util.Date;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
- * Report is the basic class of all reports. Reports have methods and attributes which are inherited from all other reports. 
- * 
+ * Report is the basic class of all reports. Reports have methods and attributes which are inherited from all other reports.
  * @author Kurrle
  * @author Anders
  *
@@ -16,22 +15,16 @@ import de.hdm.group11.jabics.shared.bo.User;
 
 public abstract class Report implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	static final long serialVersionUID = 1L;
 	
-	private Paragraph headline; 
-	private Paragraph footline; 
-	private Date creationDate; 
-	private User creator;
+	Paragraph headline; 
+	Paragraph footline; 
+	Date creationDate;
+	User creator;
 	
-	
-	/*
-	 * TODO 
-	 */
-	// public ArrayList getContacts() { }
-	
-		
-
-	
+	public String toString() {
+		return this.headline + ": " + this. footline + ". Created on " + this.creationDate.toString() + " by " + this.creator.toString();
+	}
 	
 	/*
 	 * Getters and Setters
@@ -64,9 +57,5 @@ public abstract class Report implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
-	
-	
 
 }

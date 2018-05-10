@@ -86,5 +86,11 @@ public class PValue extends BusinessObject {
 		this.property = property;
 		setDateUpdated(new Date());
 	}
+	public int getPointer() {
+		return pointer;
+	}
+	public void setPointer(int pointer) {
+		this.pointer = pointer;
+	}
 
 }

@@ -12,7 +12,6 @@ import java.util.Date;
  * 
  * @author Anders
  * @author Kurrle 
- *
  */
 
 public class Contact extends BusinessObject {
@@ -25,7 +24,7 @@ public class Contact extends BusinessObject {
 	
 	@Override
 	public String toString() {		
-		return name; 
+		return this.name;
 	}
 	
 	/**
