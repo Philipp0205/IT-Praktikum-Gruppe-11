@@ -5,7 +5,6 @@ import java.util.Date;
 /** 
  * Realises a Poperty Value of a Contact. For example: Name, mobilenumber, adress etc.
  * @author Philipp 
- *
  */
 
 public class PValue {
