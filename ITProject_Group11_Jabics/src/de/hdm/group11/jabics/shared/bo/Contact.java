@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * Realizes the Object Oriented Version of Contact Lists in Jabics. A Contact Object can store multiple PValue Objects.
+ * PValues can be added and removed. Contacts have a status wich are realized with an enum. 
+ * 
  * @author Anders
  * @author Kurrle 
  *
