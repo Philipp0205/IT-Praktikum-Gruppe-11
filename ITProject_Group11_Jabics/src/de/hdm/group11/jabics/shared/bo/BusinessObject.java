@@ -1,9 +1,7 @@
 package de.hdm.group11.jabics.shared.bo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-import com.ibm.icu.util.Calendar;
 
 
 /**
@@ -25,10 +23,7 @@ public abstract class BusinessObject {
 	//Date dateUpdated;
 	
 	LocalDateTime dateCreated;
-	LocalDateTime dateUpdated;
-	
-	Calendar now = Calendar.getInstance();
-	
+	LocalDateTime dateUpdated;	
 	private long serialVersionUID = 1L;
 	
 	/**
@@ -76,6 +71,7 @@ public abstract class BusinessObject {
 //	public void setDateCreated(LocalDateTime dateCreated) {
 //		this.dateCreated = LocalDateTime.now();
 //	}
+	
 	public LocalDateTime getDateUpdated() {
 		return dateUpdated;
 	}

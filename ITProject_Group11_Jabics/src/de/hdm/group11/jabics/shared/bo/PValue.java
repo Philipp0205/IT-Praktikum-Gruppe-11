@@ -11,9 +11,9 @@ public class PValue extends BusinessObject {
  * Realises a Poperty Value of a Contact. For example: Name, mobilenumber, adress etc.
  * @author Philipp 
  */
+	
 	private int intValue; 
 	private String stringValue; 
-	//private Date dateValue; 
 	private LocalDate dateValue;
 	private float floatValue; 
 	private Property property;
@@ -64,7 +64,6 @@ public class PValue extends BusinessObject {
 		this.dateValue = LocalDate.of(year, month, dayOfMonth);
 		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
-
 	}
 	// overload method if date is given in the datatype "month". 
 	public void setDateValue(int year, Month month, int dayOfMonth) {

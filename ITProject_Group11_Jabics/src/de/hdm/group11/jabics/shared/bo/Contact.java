@@ -5,7 +5,6 @@ package de.hdm.group11.jabics.shared.bo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Realizes the Object Oriented Version of Contact Lists in Jabics. A Contact Object can store multiple PValue Objects.
@@ -17,8 +16,28 @@ import java.util.Date;
 
 public class Contact extends BusinessObject {
 	
-	public Contact() { 
+	public Contact(ArrayList<PValue> a, String name) { 
 		this.dateCreated = LocalDateTime.now();
+	}
+	
+	public Contact(ArrayList<PValue> a) { 
+		
+		StringBuffer sBuffer = new StringBuffer("bName");
+			for (PValue p : a) {
+				if (p.getProperty().getLabel() == "name") {
+					sBuffer.append(p.getStringValue());					
+				} else {
+					System.out.println("No name in Array.");
+				}
+			for (PValue p2: a) {
+				if (p2.getProperty().getLabel() == "lastname") {
+					sBuffer.append(p.getStringValue());				
+			} else {
+				System.out.println("No lastname in Array");
+			}
+			
+		}
+	}
 	}
 
 	//Code will be added soon
