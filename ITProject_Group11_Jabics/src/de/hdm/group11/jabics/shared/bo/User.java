@@ -1,8 +1,8 @@
 package de.hdm.group11.jabics.shared.bo;
 
-/** Representation of a User in the Software. 
+/** Representation of a User in the Software. Many Attributes are directly taken from google Account API.
  * 
- *  @author Kurrle 
+ *  @author Kurrle and Anders
  */
 
 public class User {
@@ -11,6 +11,12 @@ public class User {
 	private String username;
 	private String email;  
 	
+	
+	
+
+	public String toString() {
+		return this.username;
+	}
 	
 	/*
 	 *  Getters and setters
@@ -27,5 +33,12 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	} 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 }
