@@ -71,14 +71,24 @@ public class UserMapper {
 			  // Erzeugen eines ungefüllten SQL-Statements
 			   Statement stmt = con.createStatement();
 			   
-			   // Füllen des Statements
+			   // Löschen des Users
 			   stmt.executeUpdate("DELETE FROM users WHERE id=" + u.getId()); 
+			   
+			// Erzeugen eines zweiten ungefüllten SQL-Statements
+			   Statement stmt2 = con.createStatement();
+			   
+			   // Löschen aller Teilhaberschaften an Kontakten.
+			   stmt2.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE u-id=" + u.getId()); 
+			   
+			// Löschen aller Teilhaberschaften an KontaktListen.
+			   stmt2.executeUpdate("DELETE FROM CL-Teilhaberschaft WHERE u-id=" + u.getId()); 
+			   
+			// Löschen aller Teilhaberschaften an <code>PValue</code> Objekten.
+			   stmt2.executeUpdate("DELETE FROM PValue-Teilhaberschaft WHERE u-id=" + u.getId()); 
 
-		  	  
 		    }
 		    catch (SQLException e) {
 		    	System.err.print(e);
-		      
 		    }
 		  
 		  }
@@ -119,9 +129,6 @@ public class UserMapper {
 		    }
 		 
 		  }
-		
-		
-	
 		
 		
 }
