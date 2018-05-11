@@ -23,7 +23,7 @@ public abstract class BusinessObject {
 	//Date dateUpdated;
 	
 	LocalDateTime dateCreated;
-	LocalDateTime dateUpdated;	
+	LocalDateTime dateUpdated;
 	private long serialVersionUID = 1L;
 	
 	/**
@@ -68,9 +68,6 @@ public abstract class BusinessObject {
 	public LocalDateTime getDateCreated() {
 		return dateCreated;
 	}
-//	public void setDateCreated(LocalDateTime dateCreated) {
-//		this.dateCreated = LocalDateTime.now();
-//	}
 	
 	public LocalDateTime getDateUpdated() {
 		return dateUpdated;

@@ -3,10 +3,7 @@ package de.hdm.group11.jabics.shared.report;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
 public class PropertyView {
-	/*
-	 * 
-	 * TODO 
-	 */
+
 	
 	private String pname; 
 	private String pvalue;
