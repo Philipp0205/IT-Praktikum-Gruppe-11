@@ -4,14 +4,18 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.google.gwt.thirdparty.javascript.jscomp.regex.CaseCanonicalize;
+
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -39,20 +43,83 @@ public class PValueMapper {
 	    Connection con = DBConnection.connection();
 	    
 	  try {
+		  
+		  Statement stmt0 = con.createStatement();
+			
+			 // Herausfinden der bisher höchsten PValue-ID.
+			
+		ResultSet rs = stmt0.executeQuery("SELECT MAX(pv-id) AS maxid " + "FROM PValues ");
+
+			if (rs.next()) {
+				
+				// Setzen der <code>PValue</code>-ID
+				 
+				pv.setId(rs.getInt("maxid") + 1); 	  
+		  
 	   // Erzeugen eines ungefüllten SQL-Statements
 	   Statement stmt = con.createStatement();
+	
+	   //Integer- Werte können auf !null überprüft werden. Dies wird gleich benötigt.
+	   Integer itg = pv.getIntValue();
 	   
-	    
-	   // Füllen des Statements
-	   stmt.executeUpdate("INSERT INTO PValues (C-id, pv-id, Value) VALUES " 
+	 /**
+	  * Diese If-Kaskade sucht den richtigen Datentyp des <code>PValue</code> Objekts
+	  * und trägt den Wert in die Datenbank ein
+	  */
 	   
-			   + "(" + c.getId() + "," + pv.getId() + "," + pv +  ")"  ); 
+	    if(pv.getDateValue()!=null) {
+	    	
+	     Date value = (Date) pv.getDateValue();
+	     
+	     /**
+	      *  Befüllenüllen des Statements.
+	      * (Die Tabelle hat folgende Spalten:
+	      *    c-id | pv-id | string | date | int | float)
+	      */
+		 stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id,string, date, int, float) VALUES " 
+		   
+				   + "(" + c.getId() + "," + pv.getId() + "," + "null," + value + "," + "null," +  "null" +  ")"  ); 
+	     
+		//Hier wird auf den Integer-Wert zurückgegriffen.	
+	    	}if(itg !=null) {
+	    	
+	    	Integer value = itg;
+	    	
+	    	// Füllen des Statements
+	 	   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+		   
+				   + "(" + c.getId() + "," + pv.getId() +"," + "null," + "null," +  value +  "null" +  ")"  ); 
+	    	
+	    		}if(pv.getStringValue()!=null) {
+	    	
+	    		String value = pv.getStringValue();
+	    		
+	    		// Füllen des Statements
+	    		   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+		   
+				   + "(" + c.getId() + "," + pv.getId() +"," +  value + "null," +  "null" + "null" +  ")"  );   
+	    		
+	    			}if(pv.getProperty()!=null) {
+ 
+	    	
+	    				}else {
+	    	
+	    				Float value = pv.getFloatValue();
+	    				
+	    				// Füllen des Statements
+	    				   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+	    				   
+	    						   + "(" + c.getId() + "," + pv.getId() + "null," +  "null" + "null" + "," + value +  ")"  ); 		
+	    			}
+			}
 	   
 	   /**
-	    * Mit der @insertCollaboration Methode (in dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
+	    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
 	    * 
 	    */
-
+			insertCollaboration(pv.getOwner(), pv, true);
+			
+	   //Rückgabe des PValue
 	   return pv;
 	    }
 	    catch (SQLException e) {
@@ -66,11 +133,12 @@ public class PValueMapper {
 	 * Diese Methode aktualisiert ein <code>PValue</code> Objekt in der Datenbank.
 	 * 
 	 * @param pv das <code>PValue</code> Objekt, dass aktualisiert werden soll.
-	 * @param c der Kontakt zu dem das <code>PValue</code> Objekt gehört
+	 * @param c der Kontakt zu dem das <code>PValue</code> Objekt gehört.
+	 * @param u der User, welcher die Eigenschaftsausprägung aktualisiert.
 	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
 	 */
 	
-	public PValue updatePValue(PValue pv, Contact c){
+	public PValue updatePValue(PValue pv, Contact c, User u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -78,18 +146,67 @@ public class PValueMapper {
 	   
 		  // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
-		   
-		   // Füllen des Statements
-		   stmt.executeUpdate("DELETE FROM PValues WHERE id=" + pv.getId()); 
-		   
-		  // Erzeugen eines zweiten ungefüllten SQL-Statements
-	   Statement stmt2 = con.createStatement();
-	   
-	   // Füllen des Statements
-	   stmt2.executeUpdate("INSERT INTO PValues (C-id, pv-id, Value) VALUES " 
-	   
-			   + "(" + c.getId() + "," + pv.getId() + "," + pv +  ")"  );
 
+		   //Integer- Werte können auf !null überprüft werden. Dies wird gleich benötigt.
+		   Integer itg = pv.getIntValue();
+		   
+		 /**
+		  * Diese If-Kaskade sucht den richtigen Datentyp des <code>PValue</code> Objekts
+		  * und trägt den Wert in die Datenbank ein
+		  */
+		   
+		    if(pv.getDateValue()!=null) {
+		    	
+		     Date value = (Date) pv.getDateValue();
+		     
+		     /**
+		      *  Befüllenüllen des Statements.
+		      * (Die Tabelle hat folgende Spalten:
+		      *    c-id | pv-id | string | date | int | float)
+		      */
+			 stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+			   
+					   + "(" + c.getId() + "," + pv.getId() + "," + "null," + value + "," + "null," +  "null" +  ")"  ); 
+		     
+			//Hier wird auf den Integer-Wert zurückgegriffen.	
+		    	}if(itg !=null) {
+		    	
+		    	Integer value = itg;
+		    	
+		    	// Füllen des Statements
+		 	   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+			   
+					   + "(" + c.getId() + "," + pv.getId() + "," + "null," + "null," +  value +  "null" +  ")"  ); 
+		    	
+		    		}if(pv.getStringValue()!=null) {
+		    	
+		    		String value = pv.getStringValue();
+		    		
+		    		// Füllen des Statements
+		    		   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+			   
+					   + "(" + c.getId() + "," + pv.getId() +"," +  value + "null," +  "null" + "null" +  ")"  );   
+		    		
+		    			}if(pv.getProperty()!=null) {
+	 
+		    	
+		    				}else {
+		    	
+		    				Float value = pv.getFloatValue();
+		    				
+		    				// Füllen des Statements
+		    				   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+		    				   
+		    						   + "(" + c.getId() + "," + pv.getId()  + "null," +  "null" + "null" + "," + value +  ")"  ); 		
+		    			}
+				
+		   
+		   /**
+		    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
+		    * 
+		    */
+				insertCollaboration(u, pv, true);
+	
 	  	  return pv;
 	    }
 	    catch (SQLException e) {
@@ -98,6 +215,7 @@ public class PValueMapper {
 	    }
 
 	  }
+
 	
 	
 	/**
@@ -122,14 +240,11 @@ public class PValueMapper {
 		   /** 
 		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelöst.
 		    */
-
-	  	  
+		   deleteCollaboration(pv, pv.getOwner());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      
 	    }
-
 	  }
 
 	/**
@@ -152,13 +267,16 @@ public class PValueMapper {
 	    
 	    
 	   // Füllen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT U-ID FROM PV-Teilhaberschaft " + "WHERE PV-Id=" + pv.getId() + " ORDER BY -");
+	   ResultSet rs = stmt.executeQuery("SELECT U-ID,Username FROM PV-Teilhaberschaft " + "WHERE PV-Id=" 
+	   
+			   	 + pv.getId() + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
 		//Befüllen des User-Objekts
 	        User u = new User();
-	        u.setId(rs.getInt("id"));
+	        u.setId(rs.getInt("U-ID"));
+	        u.setUsername(rs.getString("Username"));
 	      //  c.setOwnerID(rs.getInt("owner"));
 	        al.add(u);
 	        

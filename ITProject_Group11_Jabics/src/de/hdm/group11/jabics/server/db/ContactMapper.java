@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
+import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -21,7 +22,7 @@ import de.hdm.group11.jabics.shared.bo.User;
  * @author Stahl
  *
  */
-public class ContactMapper {
+public class ContactMapper extends PValueMapper{
 
 	
 	/** 
@@ -35,32 +36,60 @@ public class ContactMapper {
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
-	   Statement stmt = con.createStatement();
+	   
+		  Statement stmt = con.createStatement();
+			
+			 // Herausfinden der bisher höchsten Kontakt-ID.
+			
+		ResultSet rs = stmt.executeQuery("SELECT MAX(c-id) AS maxid " + "FROM contacts ");
+
+			if (rs.next()) {
+				
+				// Setzen der Kontakt-ID
+				 
+				c.setId(rs.getInt("maxid") + 1); 
+		  
+		  // Erzeugen eines ungefüllten SQL-Statements
+	   Statement stmt2 = con.createStatement();
 	   
 	    
 	   // Füllen des Statements
-	   stmt.executeUpdate("INSERT INTO contacts (id, Firstname, Lastname, Email, Teln) VALUES " 
+	   stmt2.executeUpdate("INSERT INTO contacts (c-id) VALUES " 
 	   
-			   + "(" + c.getId() + "," + c.getLastname + "," + c.getEmail + "," + c.getTeln + ")"  );
-
-	   return c;
-	    }
+			   + "(" + c.getId() + ")"  );
+	   
+	   /**
+	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und über die 
+	    * @insertPValue Methode in der Datenbank gespeichert.
+	    */
+	   
+	   ArrayList<PValue> cv = c.getValues();
+	   
+	   for (int i =0; i<cv.size(); i++) {
+	  
+		   /**
+		    * Einfügen der Eigenschaftsausprägungen in die Datenbank über die @insertPValue - Methode
+		    */
+		   insertPValue(cv.get(i), c);
+	   		}
+			}
+	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	      return null;
 	    }
-	  
+	  return c;
 	  }
 	
 	/**
 	 * Diese Methode aktualisiert ein <code>Contact</code> Objekt in der Datenbank.
 	 * 
 	 * @param c das <code>Contact</code> Objekt, dass aktualisiert werden soll.
+	 * @param u der <code>User</code>, der die Änderung durchführt
 	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
 	 */
 	
-	public Contact updateContact(Contact c){
+	public Contact updateContact(Contact c, User u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -76,17 +105,27 @@ public class ContactMapper {
 	   Statement stmt2 = con.createStatement();
 	   
 	   // Füllen des Statements
-	   stmt2.executeUpdate("INSERT INTO contacts (id, Firstname, Lastname, Email, Teln) VALUES " 
+	   stmt2.executeUpdate("INSERT INTO contacts (id) VALUES " 
 	   
-			   + "(" + c.getId() + "," + c.getLastname + "," + c.getEmail + "," + c.getTeln + ")"  );
-
-	  	  return c;
+			   + "(" + c.getId() + ")"  );
+	   /**
+	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und über die 
+	    * @insertPValue Methode in der Datenbank gespeichert.
+	    */
+	   ArrayList<PValue> cv = c.getValues();
+	   
+	   for (int i =0; i<cv.size(); i++) {
+	  
+		   //Der als Parameter mitgegebene User wird als Owner der einzelnen neuen Eigenschaftsausprägungen festgelegt.
+		   updatePValue(cv.get(i), c, u);
+	   }
+	  	  
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	      return null;
 	    }
-
+	  return c;
 	}
 		/**
 		 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
@@ -94,9 +133,7 @@ public class ContactMapper {
 		 * @param c das <code>Contact</code> Objekt, dass gelöscht werden soll.
 		 * 
 		 */
-	  
-	  
-	
+
 	public void deleteContact(Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();

@@ -24,7 +24,6 @@ import de.hdm.group11.jabics.shared.bo.User;
  */
 public class ContactListMapper {
 	
-	
 		/** 
 		 * Diese Methode trägt einen <code>ContactList</code> Objekt in die Datenbank ein.
 		 *
@@ -36,27 +35,54 @@ public class ContactListMapper {
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
+	    //Extrahieren aller Kontakte aus der Kontaktliste in eine Arraylist.
 	    ArrayList<Contact> al = cl.getContacts();
-	    int size = al.size();
-	    
-	    
+	   
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
-	   Statement stmt = con.createStatement();
-	  
-	   // Füllen des Statements
-	   stmt.executeUpdate("INSERT INTO contactlists (id, ?) VALUES " );
+	   	   
+		  Statement stmt = con.createStatement();
+		
+			 // Herausfinden der bisher höchsten Kontaktlisten-ID.
+			
+		ResultSet rs = stmt.executeQuery("SELECT MAX(cl-id) AS maxid " + "FROM contactlists ");
 
-	  
+			if (rs.next()) {
+				
+				// Setzen der Kontaktlisten-ID
+				 
+				cl.setId(rs.getInt("maxid") + 1); 
 	   
+	   // Erzeugen eines ungefüllten SQL-Statements
+	   Statement stmt2 = con.createStatement();
 	   
-	   return cl;
-	    }
+	   // Befüllen der Kontaktlistentabelle.
+	   stmt2.executeUpdate("INSERT INTO contactlists (cl-id, CL-name, Cr-Date) VALUES " + cl.getId() 
+	   
+	   	+ cl.getListName()  + cl.getDateCreated() );
+	   
+	// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
+	   
+	   for(int i = 0; i<al.size();i++) {
+		   
+		// Erzeugen eines zweiten ungefüllten SQL-Statements
+		   Statement stmt3 = con.createStatement();
+		   
+		
+		   stmt3.executeUpdate("INSERT INTO contacts-contactlists (cl-id, c-id) VALUES " + al.get(i).getId() +  cl.getId() );
+	   		}
+	   /**
+	    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>ContactList</code> 
+	    * Objekts festgelegt.
+	    * 
+	    */
+		} insertCollaboration(cl.getOwner(), cl, true);
+	  }
+	   
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	      return null;
 	    }
-	  
+	    return cl;
 	  }
 	
 	/**
@@ -72,33 +98,47 @@ public class ContactListMapper {
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
+	  //Extrahieren aller Kontakte aus der Kontaktliste in eine Arraylist.
+	    ArrayList<Contact> al = cl.getContacts();
+	    
 	  try {
 	   
 		// Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
-		   stmt.executeUpdate("DELETE FROM contactlists WHERE L-id=" + cl.getId()); 
+		   // Löschen der veralteten Version der Kontaktliste
+		   stmt.executeUpdate("DELETE FROM contactlists WHERE CL-id=" + cl.getId()); 
 
 		   // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt2 = con.createStatement();
 		   
-		   // Füllen des Statements
-		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE L-id=" + cl.getId()); 
+		   // Löschen der veralteten Verknüpfungen zu Kontakten
+		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE CL-id=" + cl.getId()); 
 		  
 //--------------------------------------------------------------------------------------------	
 	  
-		  // Erzeugen eines dritten ungefüllten SQL-Statements
-	   Statement stmt3 = con.createStatement();
-	   
-	   // Füllen des Statements
-	   stmt3.executeUpdate("INSERT INTO contactlists (?) VALUES " );
-
-	   // Erzeugen eines vierten ungefüllten SQL-Statements
-	   Statement stmt4 = con.createStatement();
-	   
-	   // Füllen des Statements
-	   stmt4.executeUpdate("INSERT INTO contacts-contactlists (?) VALUES " );
+		   // Erzeugen eines ungefüllten SQL-Statements
+		   Statement stmt3 = con.createStatement();
+		   
+		   // Befüllen der Kontaktlistentabelle.
+		   stmt3.executeUpdate("INSERT INTO contactlists (cl-id, CL-name, Cr-Date) VALUES " + cl.getId() 
+		   
+		   	+ cl.getListName()  + cl.getDateCreated() );
+		   
+		   for(int i = 0; i<al.size();i++) {
+			   
+			// Erzeugen eines zweiten ungefüllten SQL-Statements
+			   Statement stmt4 = con.createStatement();
+			   
+			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
+			   stmt4.executeUpdate("INSERT INTO contacts-contactlists (cl-id, c-id) VALUES " + al.get(i).getId() +  cl.getId() );
+			   
+			   /**
+			    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>ContactList</code> 
+			    * Objekts festgelegt.
+			    * 
+			    */
+				} insertCollaboration(cl.getOwner(), cl, true);
 	   
 	  	  return cl;
 	    }
@@ -125,15 +165,19 @@ public class ContactListMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // Füllen des Statements
-		   stmt.executeUpdate("DELETE FROM contactlists WHERE L-id=" + cl.getId()); 
+		   stmt.executeUpdate("DELETE FROM contactlists WHERE CL-id=" + cl.getId()); 
 
 		   // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt2 = con.createStatement();
 		   
 		   // Füllen des Statements
-		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE L-id=" + cl.getId()); 
+		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE CL-id=" + cl.getId()); 
 		   
-	    }
+		   /** 
+		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelöst.
+		    */
+		   deleteCollaboration(cl, cl.getOwner());
+	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	      
@@ -159,7 +203,6 @@ public class ContactListMapper {
 	   
 	 //Erzeugen einer ArrayList
 	    ArrayList<User> al = new ArrayList();
-	    
 	    
 	   // Füllen des Statements
 	   ResultSet rs = stmt.executeQuery("SELECT U-ID FROM KL-Teilhaberschaft " + "WHERE CL-Id=" + cl.getId() + " ORDER BY -");
