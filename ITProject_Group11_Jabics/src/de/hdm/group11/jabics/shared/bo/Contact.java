@@ -16,15 +16,13 @@ import java.util.Date;
  */
 
 public class Contact extends BusinessObject {
-	
 	public Contact() { 
 		this.dateCreated = LocalDateTime.now();
 	}
-
-	//Code will be added soon
 	
+	//Code will be added soon
 	ArrayList<PValue> values = new ArrayList<PValue>();
-	private String name; 
+	private String name;
 	private BoStatus shareStatus;
 	
 	@Override
@@ -36,14 +34,12 @@ public class Contact extends BusinessObject {
 	 *  Adds value to the values Array 
 	 */
 	public void addPValue(PValue p) { 
-		
 		this.values.add(p);	
 	}
 	/**
 	 *  Removes value from the value Array
 	 */
-	public void removePValue(PValue p) { 
-		
+	public void removePValue(PValue p) {
 		this.values.remove(p);
 	}
 	

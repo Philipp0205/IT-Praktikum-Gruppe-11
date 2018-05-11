@@ -73,9 +73,6 @@ public abstract class BusinessObject {
 	public LocalDateTime getDateCreated() {
 		return dateCreated;
 	}
-//	public void setDateCreated(LocalDateTime dateCreated) {
-//		this.dateCreated = LocalDateTime.now();
-//	}
 	public LocalDateTime getDateUpdated() {
 		return dateUpdated;
 	}

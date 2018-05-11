@@ -21,6 +21,15 @@ public class ContactList extends BusinessObject {
 			ArrayList<Contact> contacts = new ArrayList<Contact>();  
 			
 			/**
+			 * Constructor
+			 */
+			public ContactList (ArrayList<Contact> al, String ln) {
+				this.contacts = al;
+				this.listName = ln;
+			}
+			
+			
+			/**
 			 * toString returns the list name
 			 */
 			@Override 
@@ -62,7 +71,7 @@ public class ContactList extends BusinessObject {
 			}
 			public void setContacts(ArrayList<Contact> contacts) {
 				this.contacts = contacts;
-				this.dateUpdated = LocalDateTime.now();
+				this.setDateUpdated(LocalDateTime.now());
 			}
 			public String getListName() {
 				return listName;

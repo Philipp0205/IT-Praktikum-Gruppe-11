@@ -7,18 +7,40 @@ import java.time.Month;
 
 public class PValue extends BusinessObject {
 
-/** 
+/**
  * Realises a Poperty Value of a Contact. For example: Name, mobilenumber, adress etc.
  * @author Philipp 
  */
 	private int intValue; 
 	private String stringValue; 
-	//private Date dateValue; 
 	private LocalDate dateValue;
 	private float floatValue; 
 	private Property property;
 	private int pointer = 0; 
 	
+	/**
+	 * Constructor for every possible Data Type
+	 */
+	public PValue(Property p, int i) {
+		this.property = p;
+		this.intValue = i;
+		this.pointer = 1;
+	}
+	public PValue(Property p, String s) {
+		this.property = p;
+		this.stringValue = s;
+		this.pointer = 2;
+	}
+	public PValue(Property p, LocalDate date) {
+		this.property = p;
+		this.dateValue = date;
+		this.pointer = 3;
+	}
+	public PValue(Property p, float f) {
+		this.property = p;
+		this.floatValue = f;
+		this.pointer = 4;
+	}
 	
 	public String toString() {
 		switch (pointer) { 
@@ -37,7 +59,7 @@ public class PValue extends BusinessObject {
 	
 	/** 
 	 * Getter and Setters. Setting DateUpdated to current time whenever substantial information in the Object is changed. 
-	 *  Return a String representation of the Property Value. 
+	 * Return a String representation of the Property Value. 
 	 */
 	public int getIntValue() {
 		return intValue;

@@ -33,7 +33,4 @@ public class Property extends BusinessObject {
 	public void setStandard(boolean isStandard) {
 		this.isStandard = isStandard;
 	}
-	
-	
-
 }
