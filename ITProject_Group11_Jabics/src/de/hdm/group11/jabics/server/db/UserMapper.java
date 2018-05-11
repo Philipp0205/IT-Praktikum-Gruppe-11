@@ -173,5 +173,41 @@ public class UserMapper {
 		 
 		  }
 		
+		/**
+		 * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank.
+		 * 
+		 * @param mail  die mail nach der gesucht werden soll.
+		 * @return das gesuchte  <code>User</code> Objekt.
+		 */
+		
+		public User findUserByMail(String mail)  {
+		    // Erzeugen der Datenbankverbindung
+		    Connection con = DBConnection.connection();
+
+		    try {
+		    	// Erzeugen eines ungef�llten SQL-Statements
+		    	Statement stmt = con.createStatement();
+		   
+		    	//Erzeugen eines User-Objektes
+		    	User u = new User();
+
+		    	// F�llen des Statements
+		    	ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE Mail = " + mail + " ORDER BY -");
+		   
+		    	if (rs.next()) {
+		    		//Bef�llen des Kontakt-Objekts
+		    		u.setId(rs.getInt("id"));
+		    		//  c.setOwnerID(rs.getInt("owner"));
+		        
+		    	}
+		    	return u;
+		    }
+		    catch (SQLException e) {
+		    	System.err.print(e);
+		    	return null;
+		    }
+		 
+		  }
+		
 		
 }

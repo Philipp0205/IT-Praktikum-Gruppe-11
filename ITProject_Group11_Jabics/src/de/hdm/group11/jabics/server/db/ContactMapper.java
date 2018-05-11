@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.ContactList;
 
 /**
  * 
@@ -283,7 +284,7 @@ public class ContactMapper extends PValueMapper{
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Nachamen
 	 * zur�ck
 	 * @param ln der Nachname nach dem gesucht werden soll.
-	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Vornamen.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Nachname.
 	 */
 	
 	public ArrayList<Contact> findContactByLastName(String ln){
@@ -317,7 +318,276 @@ public class ContactMapper extends PValueMapper{
 	    }
 
 	  }
-		
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten Straße
+	 * zur�ck
+	 * @param street Die Straße nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit dieser Straße.
+	 */
+	
+	public ArrayList<Contact> findContactByStreet(String street){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE Street =" + street + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Bef�llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten Telefonnummer
+	 * zur�ck
+	 * @param fon Die Telefonnummer nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit dieser Telefonnummer.
+	 */
+	
+	public ArrayList<Contact> findContactByFonNumber(String fon){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE FonNumber =" + fon + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Bef�llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten eMail-Adresse
+	 * zur�ck
+	 * @param mail Die eMail-Adresse nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit dieser eMail-Adresse.
+	 */
+	
+	public ArrayList<Contact> findContactByEMail(String mail){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE EMail =" + mail + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Bef�llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten Postleitzahl
+	 * zur�ck
+	 * @param zip Die Postleitzahl nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten dieser Postleitzahl.
+	 */
+	
+	public ArrayList<Contact> findContactByZip(String zip){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE Zip =" + zip + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Bef�llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Ort
+	 * zur�ck
+	 * @param place Der Ort nach dem gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Ort.
+	 */
+	
+	public ArrayList<Contact> findContactByPlace(String place){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE EMail =" + place + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Bef�llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Geburtsdatum
+	 * zur�ck
+	 * @param birthday Das Geburtsdatum nach dem gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Geburtsdatum.
+	 */
+	
+	public ArrayList<Contact> findContactByBirthday(String birthday){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE EMail =" + birthday + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Bef�llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt ein <code>ContactList</code> Objekt zur�ck, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
+	 */
+	
+	public ContactList findContactListById(int id)  {
+	    // Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen eines Kontakt-Objektes
+	    	ContactList cl = new ContactList();
+
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT id FROM contactlists " + "WHERE id = " + id + " ORDER BY -");
+	   
+	    	if (rs.next()) {
+	       
+	    		//Bef�llen des Kontakt-Objekts
+	    		cl.setId(rs.getInt("id"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	        
+	    	}
+	    return cl;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	 
+	  }
 	
 	/**
 	 * Diese Methode gibt ein <code>Contact</code> Objekt zur�ck, dass eine bestimmte ID hat.
