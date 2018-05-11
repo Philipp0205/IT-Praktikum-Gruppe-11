@@ -3,6 +3,7 @@
  */
 package de.hdm.group11.jabics.shared.bo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,6 +16,10 @@ import java.util.Date;
  */
 
 public class Contact extends BusinessObject {
+	
+	public Contact() { 
+		this.dateCreated = LocalDateTime.now();
+	}
 
 	//Code will be added soon
 	
@@ -51,14 +56,14 @@ public class Contact extends BusinessObject {
 	}
 	public void setValues(ArrayList<PValue> values) {
 		this.values = values;
-		setDateUpdated(new Date());
+		this.dateUpdated = LocalDateTime.now();
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-		setDateUpdated(new Date());
+		this.dateUpdated = LocalDateTime.now();
 	}
 	public BoStatus getShareStatus() {
 		return shareStatus;

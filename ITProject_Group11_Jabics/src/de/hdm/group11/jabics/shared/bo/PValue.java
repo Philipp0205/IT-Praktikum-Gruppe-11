@@ -1,6 +1,8 @@
 package de.hdm.group11.jabics.shared.bo;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 
 public class PValue extends BusinessObject {
@@ -11,7 +13,8 @@ public class PValue extends BusinessObject {
  */
 	private int intValue; 
 	private String stringValue; 
-	private Date dateValue; 
+	//private Date dateValue; 
+	private LocalDate dateValue;
 	private float floatValue; 
 	private Property property;
 	private int pointer = 0; 
@@ -24,15 +27,7 @@ public class PValue extends BusinessObject {
 		case 2: 
 			return stringValue; 
 		case 3: 
-			/*
-			 * TODO Neueren Shit finden Date ist alt.
-			 */
-			StringBuffer sBuffer = new StringBuffer("date");
-			sBuffer.append(dateValue.getMonth());
-			sBuffer.append(dateValue.getDay());
-			sBuffer.append(dateValue.getHours());
-			sBuffer.append(dateValue.getMinutes());
-			return sBuffer.toString(); 
+			return dateValue.toString();
 		case 4:
 			return Float.toString(floatValue);
 		default: 
@@ -49,7 +44,7 @@ public class PValue extends BusinessObject {
 	}
 	public void setIntValue(int intValue) {
 		this.intValue = intValue;
-		setDateUpdated(new Date());
+		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 1; 
 
 	}
@@ -58,16 +53,23 @@ public class PValue extends BusinessObject {
 	}
 	public void setStringValue(String stringValue) {
 		this.stringValue = stringValue;
-		setDateUpdated(new Date());
+		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 2; 
 
 	}
-	public Date getDateValue() {
+	public LocalDate getDateValue() {
 		return dateValue;
 	}
-	public void setDateValue(Date dateValue) {
-		this.dateValue = dateValue;
-		setDateUpdated(new Date());
+	public void setDateValue(int year, int month, int dayOfMonth) {
+		this.dateValue = LocalDate.of(year, month, dayOfMonth);
+		this.dateUpdated = LocalDateTime.now();
+		this.pointer = 3; 
+
+	}
+	// overload method if date is given in the datatype "month". 
+	public void setDateValue(int year, Month month, int dayOfMonth) {
+		this.dateValue = LocalDate.of(year, month, dayOfMonth);
+		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
 
 	}
@@ -76,7 +78,7 @@ public class PValue extends BusinessObject {
 	}
 	public void setFloatValue(float floatValue) {
 		this.floatValue = floatValue;
-		setDateUpdated(new Date());
+		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 4; 
 	}
 	public Property getProperty() {
@@ -84,7 +86,7 @@ public class PValue extends BusinessObject {
 	}
 	public void setProperty(Property property) {
 		this.property = property;
-		setDateUpdated(new Date());
+		this.dateUpdated = LocalDateTime.now();
 	}
 	public int getPointer() {
 		return pointer;

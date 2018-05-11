@@ -1,6 +1,9 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import com.ibm.icu.util.Calendar;
 
 
 /**
@@ -11,15 +14,25 @@ import java.util.Date;
  */
 
 public abstract class BusinessObject {
+	
+	public BusinessObject() { 
+		
+	}
 
 	int id;
 	User owner;
-	Date dateCreated;
-	Date dateUpdated;
+	//Date dateCreated;
+	//Date dateUpdated;
+	
+	LocalDateTime dateCreated;
+	LocalDateTime dateUpdated;
+	
+	Calendar now = Calendar.getInstance();
+	
 	private long serialVersionUID = 1L;
 	
 	/**
-	 * hashCode returns the id that is also used in the Database
+	 * hashCode returns the id that is also used in the Database 
 	 */
 	public int hashCode() {
 		return this.id;
@@ -46,7 +59,10 @@ public abstract class BusinessObject {
 	}
 	public void setId(int id) {
 		this.id = id;
-		setDateUpdated(new Date());
+		/*
+		 * TODO dateCreated ist im Konstruktor der Klasse sinnvoller?
+		 */
+		//this.dateCreated = LocalDateTime.now();
 	}
 	public User getOwner() {
 		return this.owner;
@@ -54,17 +70,16 @@ public abstract class BusinessObject {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	public Date getDateCreated() {
+	public LocalDateTime getDateCreated() {
 		return dateCreated;
 	}
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-		setDateUpdated(new Date());
-	}
-	public Date getDateUpdated() {
+//	public void setDateCreated(LocalDateTime dateCreated) {
+//		this.dateCreated = LocalDateTime.now();
+//	}
+	public LocalDateTime getDateUpdated() {
 		return dateUpdated;
 	}
-	public void setDateUpdated(Date dateUpdated) {
+	public void setDateUpdated(LocalDateTime dateUpdated) {
 		this.dateUpdated = dateUpdated;
 	}
 	public long getSerialVersionUID() {

@@ -41,7 +41,7 @@ public class CompositeReport extends Report implements Serializable {
 		 * TODO: change Date to Calendar or whatever is not deprecated
 		 * this.creationDate = ;
 		 */
-		this.headline.setContent( "Report for unknownUser, containing " + reports.size() + " subreports");
+		this.headline.setContent("Report for unknownUser, containing " + reports.size() + " subreports");
 		this.footline.setContent("End of Report");
 	}
 	

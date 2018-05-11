@@ -1,7 +1,7 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * This Class realises the Object Oriented Version of Contact Lists in Jabics. It can store an undefined amount of Contact Objects.
@@ -10,6 +10,10 @@ import java.util.Date;
  *
  */
 public class ContactList extends BusinessObject {
+	
+	public ContactList() {
+		this.dateCreated = LocalDateTime.now();
+	}
 
 			private String listName; 
 			private BoStatus shareStatus; 
@@ -58,21 +62,21 @@ public class ContactList extends BusinessObject {
 			}
 			public void setContacts(ArrayList<Contact> contacts) {
 				this.contacts = contacts;
-				setDateUpdated(new Date());
+				this.dateUpdated = LocalDateTime.now();
 			}
 			public String getListName() {
 				return listName;
 			}
 			public void setListName(String listName) {
 				this.listName = listName;
-				setDateUpdated(new Date());
+				this.dateUpdated = LocalDateTime.now();
 			}
 			public BoStatus getShareStatus() {
 				return shareStatus;
 			}
 			public void setShareStatus(BoStatus shareStatus) {
 				this.shareStatus = shareStatus;
-				setDateUpdated(new Date());
+				this.dateUpdated = LocalDateTime.now();
 			}
 			
 			

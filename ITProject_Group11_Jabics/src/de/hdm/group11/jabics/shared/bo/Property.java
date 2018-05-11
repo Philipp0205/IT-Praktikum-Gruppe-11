@@ -1,6 +1,5 @@
 package de.hdm.group11.jabics.shared.bo;
 
-import java.util.Date;
 
 /**
  * 
