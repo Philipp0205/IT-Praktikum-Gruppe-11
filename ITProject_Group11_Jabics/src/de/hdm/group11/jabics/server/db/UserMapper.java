@@ -18,18 +18,61 @@ import de.hdm.group11.jabics.shared.bo.User;
  * @author Stahl
  * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>User</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der User in der Datenbank zur Verfügung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der User in der Datenbank zur Verfï¿½gung. 
  * 
  *
  */
 public class UserMapper {
 	
-
+	/**
+	 * Die Klasse UserMapper wird nur einmal instantiiert. Man spricht
+     * hierbei von einem sogenannten <b>Singleton</b>.
+     * <p>
+     * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fÃ¼r
+     * sÃ¤mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+     * einzige Instanz dieser Klasse.
+     * 
+     * @see userMapper()
+	 */  	
+	
+	private static UserMapper userMapper = null;
+	
+	/**
+	 * GeschÃ¼tzter Konstruktor - verhindert die MÃ¶glichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen. 
+	 */
+	
+	protected UserMapper() {
+		
+	}
+	
+	/**
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>UserMapper.userMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafÃ¼r sorgt, dass nur eine einzige
+	 * Instanz von <code>UserMapper</code> existiert.
+	 * <p>
+	 * 
+	 * <b>Fazit:</b> UserMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
+	 * 
+	 * @return Das <code>UserMapper</code>-Objekt.
+	 * @see userMapper
+	 */  
+	
+	public static UserMapper userMapper() {
+		if (userMapper == null) {
+			userMapper = new UserMapper();
+		}
+		
+		return userMapper;
+	}
+	
 	 /** 
-	 * Diese Methode trägt ein <code>User</code> Objekt in die Datenbank ein.
+	 * Diese Methode trï¿½gt ein <code>User</code> Objekt in die Datenbank ein.
 
 	 * @param u das <code>User</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @return Das als Parameter übergebene- <code>User</code> Objekt.
+	 * @return Das als Parameter ï¿½bergebene- <code>User</code> Objekt.
 	 */
 
 
@@ -38,11 +81,11 @@ public class UserMapper {
 		    Connection con = DBConnection.connection();
 		    
 		  try {
-		   // Erzeugen eines ungefüllten SQL-Statements
+		   // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
 		    
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("INSERT INTO User (id) VALUES " 
 		   
 				   + "(" + u.getId() +  ")"  );
@@ -57,9 +100,9 @@ public class UserMapper {
 		  }
 		
 		/**
-		 * Diese Methode löscht ein <code>User</code> Objekt aus der Datenbank.
+		 * Diese Methode lï¿½scht ein <code>User</code> Objekt aus der Datenbank.
 		 * 
-		 * @param u das <code>User</code> Objekt, dass gelöscht werden soll.
+		 * @param u das <code>User</code> Objekt, dass gelï¿½scht werden soll.
 		 */
 		
 		public void deleteUser(User u){
@@ -68,22 +111,22 @@ public class UserMapper {
 		    
 		  try {
 		   
-			  // Erzeugen eines ungefüllten SQL-Statements
+			  // Erzeugen eines ungefï¿½llten SQL-Statements
 			   Statement stmt = con.createStatement();
 			   
-			   // Löschen des Users
+			   // Lï¿½schen des Users
 			   stmt.executeUpdate("DELETE FROM users WHERE id=" + u.getId()); 
 			   
-			// Erzeugen eines zweiten ungefüllten SQL-Statements
+			// Erzeugen eines zweiten ungefï¿½llten SQL-Statements
 			   Statement stmt2 = con.createStatement();
 			   
-			   // Löschen aller Teilhaberschaften an Kontakten.
+			   // Lï¿½schen aller Teilhaberschaften an Kontakten.
 			   stmt2.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE u-id=" + u.getId()); 
 			   
-			// Löschen aller Teilhaberschaften an KontaktListen.
+			// Lï¿½schen aller Teilhaberschaften an KontaktListen.
 			   stmt2.executeUpdate("DELETE FROM CL-Teilhaberschaft WHERE u-id=" + u.getId()); 
 			   
-			// Löschen aller Teilhaberschaften an <code>PValue</code> Objekten.
+			// Lï¿½schen aller Teilhaberschaften an <code>PValue</code> Objekten.
 			   stmt2.executeUpdate("DELETE FROM PValue-Teilhaberschaft WHERE u-id=" + u.getId()); 
 
 		    }
@@ -105,18 +148,18 @@ public class UserMapper {
 		    Connection con = DBConnection.connection();
 
 		  try {
-		   // Erzeugen eines ungefüllten SQL-Statements
+		   // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
 		 //Erzeugen eines User-Objektes
 		   User u = new User();
 
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE id=" + id + " ORDER BY -");
 		   
 		  if (rs.next()) {
 		       
-			//Befüllen des Kontakt-Objekts
+			//Befï¿½llen des Kontakt-Objekts
 		        u.setId(rs.getInt("id"));
 		      //  c.setOwnerID(rs.getInt("owner"));
 		        
