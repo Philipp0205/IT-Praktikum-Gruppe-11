@@ -24,18 +24,61 @@ import de.hdm.group11.jabics.shared.bo.User;
  * 
  * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>PValue</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der Eigenschaftsausprägungen in der Datenbank zur Verfügung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der Eigenschaftsausprï¿½gungen in der Datenbank zur Verfï¿½gung. 
  *
  */
 public class PValueMapper {
 
+	/**
+	 * Die Klasse PValueMapper wird nur einmal instantiiert. Man spricht
+     * hierbei von einem sogenannten <b>Singleton</b>.
+     * <p>
+     * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fÃ¼r
+     * sÃ¤mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+     * einzige Instanz dieser Klasse.
+     * 
+     * @see pValueMapper()
+	 */  	
+	
+	private static PValueMapper pValueMapper = null;
+	
+	/**
+	 * GeschÃ¼tzter Konstruktor - verhindert die MÃ¶glichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen. 
+	 */
+	
+	protected PValueMapper() {
+		
+	}
+	
+	/**
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>PValueMapper.pValueMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafÃ¼r sorgt, dass nur eine einzige
+	 * Instanz von <code>PValueMapper</code> existiert.
+	 * <p>
+	 * 
+	 * <b>Fazit:</b> PValueMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
+	 * 
+	 * @return Das <code>PValueMapper</code>-Objekt.
+	 * @see pValueMapper
+	 */  
+	
+	public static PValueMapper pValueMapper() {
+		if (pValueMapper == null) {
+			pValueMapper = new PValueMapper();
+		}
+		
+		return pValueMapper;
+	}
 	
 	/** 
-	 * Diese Methode trägt eine Eigenschaftsausprägung in die Datenbank ein.
+	 * Diese Methode trï¿½gt eine Eigenschaftsausprï¿½gung in die Datenbank ein.
 	 * 
 	 * @param pv das <code>PValue</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @param c der Kontakt zu dem das <code>PValue</code> Objekt gehört.
-	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
+	 * @param c der Kontakt zu dem das <code>PValue</code> Objekt gehï¿½rt.
+	 * @return Das als Parameter ï¿½bergebene- <code>PValue</code> Objekt.
 	 */
 	
 	public PValue insertPValue(PValue pv, Contact c){
@@ -46,7 +89,7 @@ public class PValueMapper {
 		  
 		  Statement stmt0 = con.createStatement();
 			
-			 // Herausfinden der bisher höchsten PValue-ID.
+			 // Herausfinden der bisher hï¿½chsten PValue-ID.
 			
 		ResultSet rs = stmt0.executeQuery("SELECT MAX(pv-id) AS maxid " + "FROM PValues ");
 
@@ -56,15 +99,15 @@ public class PValueMapper {
 				 
 				pv.setId(rs.getInt("maxid") + 1); 	  
 		  
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	
-	   //Integer- Werte können auf !null überprüft werden. Dies wird gleich benötigt.
+	   //Integer- Werte kï¿½nnen auf !null ï¿½berprï¿½ft werden. Dies wird gleich benï¿½tigt.
 	   Integer itg = pv.getIntValue();
 	   
 	 /**
 	  * Diese If-Kaskade sucht den richtigen Datentyp des <code>PValue</code> Objekts
-	  * und trägt den Wert in die Datenbank ein
+	  * und trï¿½gt den Wert in die Datenbank ein
 	  */
 	   
 	    if(pv.getDateValue()!=null) {
@@ -72,7 +115,7 @@ public class PValueMapper {
 	     Date value = (Date) pv.getDateValue();
 	     
 	     /**
-	      *  Befüllenüllen des Statements.
+	      *  Befï¿½llenï¿½llen des Statements.
 	      * (Die Tabelle hat folgende Spalten:
 	      *    c-id | pv-id | string | date | int | float)
 	      */
@@ -80,12 +123,12 @@ public class PValueMapper {
 		   
 				   + "(" + c.getId() + "," + pv.getId() + "," + "null," + value + "," + "null," +  "null" +  ")"  ); 
 	     
-		//Hier wird auf den Integer-Wert zurückgegriffen.	
+		//Hier wird auf den Integer-Wert zurï¿½ckgegriffen.	
 	    	}if(itg !=null) {
 	    	
 	    	Integer value = itg;
 	    	
-	    	// Füllen des Statements
+	    	// Fï¿½llen des Statements
 	 	   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
 		   
 				   + "(" + c.getId() + "," + pv.getId() +"," + "null," + "null," +  value +  "null" +  ")"  ); 
@@ -94,7 +137,7 @@ public class PValueMapper {
 	    	
 	    		String value = pv.getStringValue();
 	    		
-	    		// Füllen des Statements
+	    		// Fï¿½llen des Statements
 	    		   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
 		   
 				   + "(" + c.getId() + "," + pv.getId() +"," +  value + "null," +  "null" + "null" +  ")"  );   
@@ -106,7 +149,7 @@ public class PValueMapper {
 	    	
 	    				Float value = pv.getFloatValue();
 	    				
-	    				// Füllen des Statements
+	    				// Fï¿½llen des Statements
 	    				   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
 	    				   
 	    						   + "(" + c.getId() + "," + pv.getId() + "null," +  "null" + "null" + "," + value +  ")"  ); 		
@@ -119,7 +162,7 @@ public class PValueMapper {
 	    */
 			insertCollaboration(pv.getOwner(), pv, true);
 			
-	   //Rückgabe des PValue
+	   //Rï¿½ckgabe des PValue
 	   return pv;
 	    }
 	    catch (SQLException e) {
@@ -133,9 +176,9 @@ public class PValueMapper {
 	 * Diese Methode aktualisiert ein <code>PValue</code> Objekt in der Datenbank.
 	 * 
 	 * @param pv das <code>PValue</code> Objekt, dass aktualisiert werden soll.
-	 * @param c der Kontakt zu dem das <code>PValue</code> Objekt gehört.
-	 * @param u der User, welcher die Eigenschaftsausprägung aktualisiert.
-	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
+	 * @param c der Kontakt zu dem das <code>PValue</code> Objekt gehï¿½rt.
+	 * @param u der User, welcher die Eigenschaftsausprï¿½gung aktualisiert.
+	 * @return Das als Parameter ï¿½bergebene- <code>PValue</code> Objekt.
 	 */
 	
 	public PValue updatePValue(PValue pv, Contact c, User u){
@@ -144,15 +187,15 @@ public class PValueMapper {
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 
-		   //Integer- Werte können auf !null überprüft werden. Dies wird gleich benötigt.
+		   //Integer- Werte kï¿½nnen auf !null ï¿½berprï¿½ft werden. Dies wird gleich benï¿½tigt.
 		   Integer itg = pv.getIntValue();
 		   
 		 /**
 		  * Diese If-Kaskade sucht den richtigen Datentyp des <code>PValue</code> Objekts
-		  * und trägt den Wert in die Datenbank ein
+		  * und trï¿½gt den Wert in die Datenbank ein
 		  */
 		   
 		    if(pv.getDateValue()!=null) {
@@ -160,7 +203,7 @@ public class PValueMapper {
 		     Date value = (Date) pv.getDateValue();
 		     
 		     /**
-		      *  Befüllenüllen des Statements.
+		      *  Befï¿½llenï¿½llen des Statements.
 		      * (Die Tabelle hat folgende Spalten:
 		      *    c-id | pv-id | string | date | int | float)
 		      */
@@ -168,12 +211,12 @@ public class PValueMapper {
 			   
 					   + "(" + c.getId() + "," + pv.getId() + "," + "null," + value + "," + "null," +  "null" +  ")"  ); 
 		     
-			//Hier wird auf den Integer-Wert zurückgegriffen.	
+			//Hier wird auf den Integer-Wert zurï¿½ckgegriffen.	
 		    	}if(itg !=null) {
 		    	
 		    	Integer value = itg;
 		    	
-		    	// Füllen des Statements
+		    	// Fï¿½llen des Statements
 		 	   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
 			   
 					   + "(" + c.getId() + "," + pv.getId() + "," + "null," + "null," +  value +  "null" +  ")"  ); 
@@ -182,7 +225,7 @@ public class PValueMapper {
 		    	
 		    		String value = pv.getStringValue();
 		    		
-		    		// Füllen des Statements
+		    		// Fï¿½llen des Statements
 		    		   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
 			   
 					   + "(" + c.getId() + "," + pv.getId() +"," +  value + "null," +  "null" + "null" +  ")"  );   
@@ -194,7 +237,7 @@ public class PValueMapper {
 		    	
 		    				Float value = pv.getFloatValue();
 		    				
-		    				// Füllen des Statements
+		    				// Fï¿½llen des Statements
 		    				   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
 		    				   
 		    						   + "(" + c.getId() + "," + pv.getId()  + "null," +  "null" + "null" + "," + value +  ")"  ); 		
@@ -219,9 +262,9 @@ public class PValueMapper {
 	
 	
 	/**
-	 * Diese Methode löscht ein <code>PValue</code> Objekt aus der Datenbank.
+	 * Diese Methode lï¿½scht ein <code>PValue</code> Objekt aus der Datenbank.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dass gelöscht werden soll.
+	 * @param pv das <code>PValue</code> Objekt, dass gelï¿½scht werden soll.
 	 * 
 	 */
 	
@@ -231,14 +274,14 @@ public class PValueMapper {
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("DELETE FROM PValues WHERE PV-id=" + pv.getId()); 
 		   
 		   /** 
-		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelöst.
+		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelï¿½st.
 		    */
 		   deleteCollaboration(pv, pv.getOwner());
 	    }
@@ -259,21 +302,21 @@ public class PValueMapper {
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	 //Erzeugen einer ArrayList
 	    ArrayList<User> al = new ArrayList();
 	    
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   ResultSet rs = stmt.executeQuery("SELECT U-ID,Username FROM PV-Teilhaberschaft " + "WHERE PV-Id=" 
 	   
 			   	 + pv.getId() + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
-		//Befüllen des User-Objekts
+		//Befï¿½llen des User-Objekts
 	        User u = new User();
 	        u.setId(rs.getInt("U-ID"));
 	        u.setUsername(rs.getString("Username"));
@@ -291,13 +334,13 @@ public class PValueMapper {
 	  }
 	
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>PValue</code> Objekt
+	 * Diese Methode trï¿½gt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>PValue</code> Objekt
 	 * in die Datenbank ein.
 	 * 
-	 * @param u der User der an einer Eigenschaftsausprägung Teilhaberschaftsrechte erlangen soll.
-	 * @param pv die Eigenschaftsausprägung an der ein User Teilhaberschaft haben soll.
+	 * @param u der User der an einer Eigenschaftsausprï¿½gung Teilhaberschaftsrechte erlangen soll.
+	 * @param pv die Eigenschaftsausprï¿½gung an der ein User Teilhaberschaft haben soll.
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
-	 * @return das Übergebene <code>PValue</code> Objekt.
+	 * @return das ï¿½bergebene <code>PValue</code> Objekt.
 	 */
 	
 	public PValue insertCollaboration(User u, PValue pv, boolean IsOwner){
@@ -305,11 +348,11 @@ public class PValueMapper {
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   stmt.executeUpdate("INSERT INTO PV-Teilhaberschaft (PV-id, U-id, IsOwner) VALUES " 
 	   
 			   + "(" + pv.getId() + "," + u.getId() + "," + IsOwner + ")"  );
@@ -324,9 +367,9 @@ public class PValueMapper {
 	  }
 	
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code> Objekt und einem <code>PValue</code> Objekt.
+	 * Diese Methode lï¿½scht eine Teilhaberschaft zwischen einem <code>User</code> Objekt und einem <code>PValue</code> Objekt.
 	 * 
-	 * @param pv das ausgewählte <code>PValue</code> Objekt.
+	 * @param pv das ausgewï¿½hlte <code>PValue</code> Objekt.
 	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>PValue</code> Objekt verlieren soll.
 	 */
 	
@@ -336,10 +379,10 @@ public class PValueMapper {
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("DELETE FROM PV-Teilhaberschaft WHERE U-id=" + u.getId() + "AND PV-Id=" + pv.getId() ); 
 
 	  	  

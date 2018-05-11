@@ -19,16 +19,60 @@ import de.hdm.group11.jabics.shared.bo.User;
  * 
  * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>ContactList</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontaktlisten in der Datenbank zur Verfügung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontaktlisten in der Datenbank zur Verfï¿½gung. 
  *
  */
 public class ContactListMapper {
+		
+	/**
+	 * Die Klasse ContactListMapper wird nur einmal instantiiert. Man spricht
+     * hierbei von einem sogenannten <b>Singleton</b>.
+     * <p>
+     * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fÃ¼r
+     * sÃ¤mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+     * einzige Instanz dieser Klasse.
+     * 
+     * @see contactListMapper()
+	 */  	
 	
+	private static ContactListMapper contactListMapper = null;
+	
+	/**
+	 * GeschÃ¼tzter Konstruktor - verhindert die MÃ¶glichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen. 
+	 */
+	
+	protected ContactListMapper() {
+		
+	}
+	
+	/**
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>ContactListMapper.contactListMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafÃ¼r sorgt, dass nur eine einzige
+	 * Instanz von <code>ContactListMapper</code> existiert.
+	 * <p>
+	 * 
+	 * <b>Fazit:</b> ContactListMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
+	 * 
+	 * @return Das <code>ContactListMapper</code>-Objekt.
+	 * @see contactListMapper
+	 */  
+	
+	public static ContactListMapper contactListMapper() {
+		if (contactListMapper == null) {
+			contactListMapper = new ContactListMapper();
+		}
+		
+		return contactListMapper;
+	}
+		
 		/** 
-		 * Diese Methode trägt einen <code>ContactList</code> Objekt in die Datenbank ein.
+		 * Diese Methode trï¿½gt einen <code>ContactList</code> Objekt in die Datenbank ein.
 		 *
 		 * @param cl das <code>ContactList</code> Objekt, dass in die Datenbank eingetragen werden soll.
-		 * @return Das als Parameter übergebene- <code>ContactList</code> Objekt.
+		 * @return Das als Parameter ï¿½bergebene- <code>ContactList</code> Objekt.
 		 */
 	
 	public ContactList insertContactList(ContactList cl){
@@ -42,7 +86,7 @@ public class ContactListMapper {
 	   	   
 		  Statement stmt = con.createStatement();
 		
-			 // Herausfinden der bisher höchsten Kontaktlisten-ID.
+			 // Herausfinden der bisher hï¿½chsten Kontaktlisten-ID.
 			
 		ResultSet rs = stmt.executeQuery("SELECT MAX(cl-id) AS maxid " + "FROM contactlists ");
 
@@ -52,19 +96,19 @@ public class ContactListMapper {
 				 
 				cl.setId(rs.getInt("maxid") + 1); 
 	   
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt2 = con.createStatement();
 	   
-	   // Befüllen der Kontaktlistentabelle.
+	   // Befï¿½llen der Kontaktlistentabelle.
 	   stmt2.executeUpdate("INSERT INTO contactlists (cl-id, CL-name, Cr-Date) VALUES " + cl.getId() 
 	   
 	   	+ cl.getListName()  + cl.getDateCreated() );
 	   
-	// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
+	// Verknï¿½pfungen zwischen Kontaktliste und Kontakten erzeugen.
 	   
 	   for(int i = 0; i<al.size();i++) {
 		   
-		// Erzeugen eines zweiten ungefüllten SQL-Statements
+		// Erzeugen eines zweiten ungefï¿½llten SQL-Statements
 		   Statement stmt3 = con.createStatement();
 		   
 		
@@ -87,11 +131,11 @@ public class ContactListMapper {
 	
 	/**
 	 * Diese Methode aktualisiert ein <code>ContactList</code> Objekt in der Datenbank.
-	 * Dazu müssen in der Datenbank zwei Tabellen editiert werden. Die Kontaktlisten-Tabelle
+	 * Dazu mï¿½ssen in der Datenbank zwei Tabellen editiert werden. Die Kontaktlisten-Tabelle
 	 * und die Kontakt-Kontaktliste-Tabelle.
 	 * 
 	 * @param cl das <code>ContactList</code> Objekt, dass aktualisiert werden soll.
-	 * @return Das als Parameter übergebene- <code>ContactList</code> Objekt.
+	 * @return Das als Parameter ï¿½bergebene- <code>ContactList</code> Objekt.
 	 */
 	
 	public ContactList updateContactList(ContactList cl){
@@ -103,34 +147,34 @@ public class ContactListMapper {
 	    
 	  try {
 	   
-		// Erzeugen eines ungefüllten SQL-Statements
+		// Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Löschen der veralteten Version der Kontaktliste
+		   // Lï¿½schen der veralteten Version der Kontaktliste
 		   stmt.executeUpdate("DELETE FROM contactlists WHERE CL-id=" + cl.getId()); 
 
-		   // Erzeugen eines ungefüllten SQL-Statements
+		   // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt2 = con.createStatement();
 		   
-		   // Löschen der veralteten Verknüpfungen zu Kontakten
+		   // Lï¿½schen der veralteten Verknï¿½pfungen zu Kontakten
 		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE CL-id=" + cl.getId()); 
 		  
 //--------------------------------------------------------------------------------------------	
 	  
-		   // Erzeugen eines ungefüllten SQL-Statements
+		   // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt3 = con.createStatement();
 		   
-		   // Befüllen der Kontaktlistentabelle.
+		   // Befï¿½llen der Kontaktlistentabelle.
 		   stmt3.executeUpdate("INSERT INTO contactlists (cl-id, CL-name, Cr-Date) VALUES " + cl.getId() 
 		   
 		   	+ cl.getListName()  + cl.getDateCreated() );
 		   
 		   for(int i = 0; i<al.size();i++) {
 			   
-			// Erzeugen eines zweiten ungefüllten SQL-Statements
+			// Erzeugen eines zweiten ungefï¿½llten SQL-Statements
 			   Statement stmt4 = con.createStatement();
 			   
-			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
+			// Verknï¿½pfungen zwischen Kontaktliste und Kontakten erzeugen.
 			   stmt4.executeUpdate("INSERT INTO contacts-contactlists (cl-id, c-id) VALUES " + al.get(i).getId() +  cl.getId() );
 			   
 			   /**
@@ -150,9 +194,9 @@ public class ContactListMapper {
 	  }
 	
 	/**
-	 * Diese Methode löscht ein <code>ContactList</code> Objekt aus der Datenbank.
+	 * Diese Methode lï¿½scht ein <code>ContactList</code> Objekt aus der Datenbank.
 	 * 
-	 * @param cl das <code>ContactList</code> Objekt, dass gelöscht werden soll.
+	 * @param cl das <code>ContactList</code> Objekt, dass gelï¿½scht werden soll.
 	 */
 	
 	public void deleteContactList(ContactList cl){
@@ -161,20 +205,20 @@ public class ContactListMapper {
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("DELETE FROM contactlists WHERE CL-id=" + cl.getId()); 
 
-		   // Erzeugen eines ungefüllten SQL-Statements
+		   // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt2 = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE CL-id=" + cl.getId()); 
 		   
 		   /** 
-		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelöst.
+		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelï¿½st.
 		    */
 		   deleteCollaboration(cl, cl.getOwner());
 	  }
@@ -198,18 +242,18 @@ public class ContactListMapper {
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	 //Erzeugen einer ArrayList
 	    ArrayList<User> al = new ArrayList();
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   ResultSet rs = stmt.executeQuery("SELECT U-ID FROM KL-Teilhaberschaft " + "WHERE CL-Id=" + cl.getId() + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
-		//Befüllen des User-Objekts
+		//Befï¿½llen des User-Objekts
 	        User u = new User();
 	        u.setId(rs.getInt("id"));
 	      //  c.setOwnerID(rs.getInt("owner"));
@@ -226,13 +270,13 @@ public class ContactListMapper {
 	  }
 	
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>ContactList</code> Objekt
+	 * Diese Methode trï¿½gt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>ContactList</code> Objekt
 	 * in die Datenbank ein.
 	 * 
 	 * @param u der User der an einer Kontaktliste Teilhaberschaftsrechte erlangen soll.
 	 * @param cl die Kontaktliste an welcher ein User eine Teilhaberschaft bekommen soll.
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
-	 * @return das Übergebene <code>ContactList</code> Objekt
+	 * @return das ï¿½bergebene <code>ContactList</code> Objekt
 	 */
 	
 	public ContactList insertCollaboration(User u, ContactList cl, boolean IsOwner){
@@ -240,11 +284,11 @@ public class ContactListMapper {
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   stmt.executeUpdate("INSERT INTO KL-Teilhaberschaft (KL-id, U-id, IsOwner) VALUES " 
 	   
 			   + "(" + cl.getId() + "," + u.getId() + "," + IsOwner + ")"  );
@@ -259,10 +303,10 @@ public class ContactListMapper {
 	  }
 	
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code> Objekt und 
+	 * Diese Methode lï¿½scht eine Teilhaberschaft zwischen einem <code>User</code> Objekt und 
 	 * einem <code>ContactList</code> Objekt.
 	 * 
-	 * @param cl die ausgewählte Kontaktliste.
+	 * @param cl die ausgewï¿½hlte Kontaktliste.
 	 * @param u der Nutzer der die Teilhaberschaft zu der Kontaktlite verlieren soll.
 	 */
 	
@@ -272,10 +316,10 @@ public class ContactListMapper {
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("DELETE FROM KL-Teilhaberschaft WHERE U-id=" + u.getId() + "AND CL-Id=" + cl.getId() ); 
 
 	  	  
