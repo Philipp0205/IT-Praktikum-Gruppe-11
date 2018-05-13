@@ -13,7 +13,6 @@ import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 /**
  * @author Jan
  *
