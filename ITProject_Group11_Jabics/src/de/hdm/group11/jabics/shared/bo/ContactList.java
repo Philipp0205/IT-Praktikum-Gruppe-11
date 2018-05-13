@@ -11,19 +11,25 @@ import java.util.ArrayList;
  */
 public class ContactList extends BusinessObject {
 	
-	public ContactList() {
-		this.dateCreated = LocalDateTime.now();
-	}
-
-			private String listName; 
-			private BoStatus shareStatus; 
-			
-			ArrayList<Contact> contacts = new ArrayList<Contact>();  
+		private String listName; 
+	    private BoStatus shareStatus; 
+	    
+	    ArrayList<Contact> contacts = new ArrayList<Contact>();  
+	    
+	    /**
+	     * Constructor
+	     */
+	    public ContactList() {
+	      this.dateCreated = LocalDateTime.now();
+	    }
+	    public ContactList(ArrayList<Contact> al) {
+	      this.contacts = al;
+	    }
 			
 			/**
 			 * Constructor
 			 */
-			public ContactList (ArrayList<Contact> al, String ln) {
+			public ContactList(ArrayList<Contact> al, String ln) {
 				this.contacts = al;
 				this.listName = ln;
 			}

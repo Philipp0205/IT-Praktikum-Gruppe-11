@@ -1,6 +1,8 @@
 /**
- * 
+ * @author Ander
+ * @author Kurrle
  */
+
 package de.hdm.group11.jabics.server;
 
 import java.util.ArrayList;
@@ -13,21 +15,18 @@ import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-/**
- * @author Jan
- *
- */
+
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
 	
 	/**
 	 * TODO: implement all methods
 	 */
 	
-	ContactMapper cMapper = new ContactMapper();
-	ContactListMapper clMapper = new ContactListMapper();
-	PValueMapper pvMapper = new PValueMapper();
-	PropertyMapper pMapper = new PropertyMapper();
-	UserMapper uMapper = new UserMapper();
+	ContactMapper cMapper = ContactMapper.contactMapper();
+	ContactListMapper clMapper = ContactListMapper.contactListMapper();
+	PValueMapper pvMapper = PValueMapper.pValueMapper();
+	PropertyMapper pMapper = PropertyMapper.propertyMapper();
+	UserMapper uMapper = UserMapper.userMapper();
 	
 	
 	public EditorServiceImpl() {
@@ -56,7 +55,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		//to be determined: does insert pv also connect pv with contact? if yes, next method is unnecessary
 		pvMapper.insertPValue(pv, c);
 		// potentially add user object into method parameters
-		cMapper.updateContact(c, u)
+		cMapper.updateContact(c, u);
 		return newPValue; 
 		
 	}
