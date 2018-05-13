@@ -27,7 +27,7 @@ public class Contact extends BusinessObject {
 				if (p.getProperty().getLabel() == "name") {
 					sBuffer.append(p.getStringValue());					
 				} else {
-					System.out.println("No name in Array.");
+					System.out.println("Constructor in Contact: No name in Array.");
 				}
 			for (PValue p2: a) {
 				if (p2.getProperty().getLabel() == "lastname") {
