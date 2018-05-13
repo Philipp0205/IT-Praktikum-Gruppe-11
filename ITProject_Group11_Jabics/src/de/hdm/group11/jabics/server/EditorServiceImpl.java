@@ -9,18 +9,20 @@ import de.hdm.group11.jabics.server.db.ContactListMapper;
 import de.hdm.group11.jabics.server.db.ContactMapper;
 import de.hdm.group11.jabics.server.db.PValueMapper;
 import de.hdm.group11.jabics.server.db.PropertyMapper;
+import de.hdm.group11.jabics.shared.EditorService;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.User;
 import de.hdm.group11.jabics.shared.bo.Type;
+import de.hdm.group11.jabics.server.db.*;
 
 /**
  * @author Jan
  *
  */
-public class EditorServiceImpl extends EditorService {
+public class EditorServiceImpl implements EditorService {
 	
 	/**
 	 * TODO: implement all methods
@@ -89,22 +91,80 @@ public class EditorServiceImpl extends EditorService {
 		return newProperty;
 	}
 	
-	// TODO
+	// TODO DOKU: Rename zu getListsOfUser() sinnvoll.
 	public ArrayList<ContactList> getListsOf(User u) {
+		ContactListMapper clMapper = new ContactListMapper();
+		//clMapper.findAllContactList(u);
+		
 		return null;
 		
 	}
 	
-	// TODO
 	public ArrayList<Contact> getContactsOf(User u) { 
-		return null; 
+		
+		ContactMapper cMapper = new ContactMapper();
+		
+		return cMapper.findAllContact(u);
+		
+	}
+	
+	public User getUserById(int id) {
+		
+		UserMapper uMapper = new UserMapper();
+		
+		return uMapper.findUserById(id);
+	}
+	
+	public ContactList addContactToList(Contact c, ContactList cl) {
+		cl.addContact(c);
+		
+		return cl;
+	}
+	
+	// TODO DOKU: PValue statt PropertyValue
+	public Contact addValueToContact(PValue pv, Contact c) {
+		c.addPValue(pv);
+		
+		return c;
 	}
 	
 	// TODO
-	public User getUSerById(int id) {
+	public ArrayList<Contact> searchInLists(String s) {
+		
+		// ContactListMapper cMapper = new ContactListMapper();
 		return null;
+		
 	}
 	
+	//TODO
+	public ArrayList<Contact> searchForContactByExpression(String s) {
+		
+		
+		return null;
+		
+	}
+
+	public ContactList removeContactFromList(Contact c, ContactList cl) {
+		cl.removeContact(c);
+		
+		return cl;
+	}
+	
+	public void deleteContact(Contact c) {
+		ContactMapper cMapper = new ContactMapper();
+		cMapper.deleteContact(c);
+		
+	}
+	
+	public void deleteContactList(ContactList cl) {
+		ContactListMapper clMapper = new ContactListMapper();
+		clMapper.deleteContactList(cl);
+	}
+	
+	public void deleteProperty(Property p) {
+		//PropertyMapper pMapper = PropertyMapper();
+		//pMapper.delete(p);
+	}
 	
 	
 	
