@@ -84,7 +84,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	public Property createProperty(String label, Type type) {
-		Property newProperty = new Property();
+		Property newProperty = new Property(label, type);
 		newProperty.setLabel(label);
 		
 		return newProperty;
