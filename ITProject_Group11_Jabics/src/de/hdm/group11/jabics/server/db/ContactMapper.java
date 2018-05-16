@@ -255,11 +255,11 @@ public class ContactMapper extends PValueMapper{
 	   // Erzeugen eines ungef�llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
-	 //Erzeugen einer ArrayList
+	   //Erzeugen einer ArrayList
 	    ArrayList<Contact> al = new ArrayList();
 	    
 	   // F�llen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT Firstname FROM contacts " + "WHERE Firstname=" + fn + " ORDER BY -");
+	   ResultSet rs = stmt.executeQuery("SELECT * FROM contacts " + "WHERE Firstname=" + fn + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
