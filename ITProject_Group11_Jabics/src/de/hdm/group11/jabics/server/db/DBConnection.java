@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 /**
  * 
- * Die DBConnection-Klasse stellt über die connection() Methode eine Verbindung mit der Datenbank zur Verfügung. 
+ * Die DBConnection-Klasse stellt ï¿½ber die connection() Methode eine Verbindung mit der Datenbank zur Verfï¿½gung. 
  * 
  * @author Brase
  * @author Stahl
@@ -43,7 +43,7 @@ public static Connection connection() throws ClassNotFoundException {
 			System.err.print(e);
 		
 		} 
-		//Rückgabe der Verbindung
+		//Rï¿½ckgabe der Verbindung
 		return con;
 	
 }
