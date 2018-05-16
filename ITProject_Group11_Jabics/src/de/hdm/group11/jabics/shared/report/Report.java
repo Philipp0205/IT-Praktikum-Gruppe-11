@@ -17,31 +17,17 @@ public abstract class Report implements Serializable {
 	
 	static final long serialVersionUID = 1L;
 	
-	Paragraph headline; 
-	Paragraph footline; 
+	
 	Date creationDate;
 	User creator;
 	
-	public String toString() {
-		return this.headline + ": " + this. footline + ". Created on " + this.creationDate.toString() + " by " + this.creator.toString();
-	}
+	
 	
 	/*
 	 * Getters and Setters
 	 */
 	
-	public Paragraph getHeadline() {
-		return headline;
-	}
-	public void setHeadline(Paragraph headline) {
-		this.headline = headline;
-	}
-	public Paragraph getFootline() {
-		return footline;
-	}
-	public void setFootline(Paragraph footline) {
-		this.footline = footline;
-	}
+	
 	public Date getCreationDate() {
 		return creationDate;
 	}
