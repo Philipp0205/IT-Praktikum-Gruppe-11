@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.google.gwt.thirdparty.javascript.jscomp.regex.CaseCanonicalize;
@@ -91,7 +92,7 @@ public class PValueMapper {
 			
 			 // Herausfinden der bisher h�chsten PValue-ID.
 			
-		ResultSet rs = stmt0.executeQuery("SELECT MAX(pv-id) AS maxid " + "FROM PValues ");
+		ResultSet rs = stmt0.executeQuery("SELECT MAX(pValueID) AS maxid " + "FROM pValue ");
 
 			if (rs.next()) {
 				
@@ -101,69 +102,71 @@ public class PValueMapper {
 		  
 	   // Erzeugen eines ungef�llten SQL-Statements
 	   Statement stmt = con.createStatement();
-	
-	   //Integer- Werte k�nnen auf !null �berpr�ft werden. Dies wird gleich ben�tigt.
-	   Integer itg = pv.getIntValue();
-	   
 	 /**
-	  * Diese If-Kaskade sucht den richtigen Datentyp des <code>PValue</code> Objekts
+	  * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 	  * und tr�gt den Wert in die Datenbank ein
 	  */
-	   
-	    if(pv.getDateValue()!=null) {
+	   switch (pv.getProperty().getType()) {
+	   case STRING: {
+		   String value = pv.getStringValue();
+   		
+   		// F�llen des Statements
+   		   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+			   		
+					   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+			   
+					   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + value + "null,"  
+					   
+					   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  ); 
+	   }
+	   case INT: {
+		   int value = pv.getIntValue();
 	    	
-	     Date value = (Date) pv.getDateValue();
-	     
-	     /**
+	 	   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+			   		
+					   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+			   
+					   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + value  
+					   
+					   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  );  
+	   }
+	   case DATE: {
+		   LocalDate value = pv.getDateValue();
+	   /**
 	      *  Bef�llen�llen des Statements.
 	      * (Die Tabelle hat folgende Spalten:
-	      *    c-id | pv-id | string | date | int | float)
+	      * 
+	      *     dateCreated|dateUpdated|stringValue|intValue|floatValue|pValueID|dateValue|propertyID|contactID)
 	      */
-		 stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id,string, date, int, float) VALUES " 
-		   
-				   + "(" + c.getId() + "," + pv.getId() + "," + "null," + value + "," + "null," +  "null" +  ")"  ); 
-	     
-		//Hier wird auf den Integer-Wert zur�ckgegriffen.	
-	    	}if(itg !=null) {
-	    	
-	    	Integer value = itg;
-	    	
-	    	// F�llen des Statements
-	 	   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
-		   
-				   + "(" + c.getId() + "," + pv.getId() +"," + "null," + "null," +  value +  "null" +  ")"  ); 
-	    	
-	    		}if(pv.getStringValue()!=null) {
-	    	
-	    		String value = pv.getStringValue();
-	    		
-	    		// F�llen des Statements
-	    		   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
-		   
-				   + "(" + c.getId() + "," + pv.getId() +"," +  value + "null," +  "null" + "null" +  ")"  );   
-	    		
-	    			}if(pv.getProperty()!=null) {
- 
-	    	
-	    				}else {
-	    	
-	    				Float value = pv.getFloatValue();
-	    				
-	    				// F�llen des Statements
-	    				   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
-	    				   
-	    						   + "(" + c.getId() + "," + pv.getId() + "null," +  "null" + "null" + "," + value +  ")"  ); 		
-	    			}
-			}
-	   
+		 stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+			   		
+					   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+			   
+					   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + "null," 
+					   
+					   + "," + pv.getId() + "," + value + "," + pv.getProperty().getId() + "," + c.getId() + ")"  );
+	   }
+	   case FLOAT: {
+		   Float value = pv.getFloatValue();
+			
+			// F�llen des Statements
+			   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+			   		
+					   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+			   
+					   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + "," +  "null," +  "null," + value +
+					   
+					   "," + pv.getId() + "," + "null" + "," + pv.getProperty().getId() + ","  + c.getId() + ")"  ); 
+	   				}
+	   									}
 	   /**
 	    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
 	    * 
 	    */
-			insertCollaboration(pv.getOwner(), pv, true);
-			
-	   //R�ckgabe des PValue
+	   insertCollaboration(pv.getOwner(), pv, true);
+	 //R�ckgabe des PValue
 	   return pv;
+			}
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -198,88 +201,88 @@ public class PValueMapper {
 		  * und tr�gt den Wert in die Datenbank ein
 		  */
 		   
-		    if(pv.getDateValue()!=null) {
+		   switch (pv.getProperty().getType()) {
+		   case STRING: {
+			   String value = pv.getStringValue();
+	   		
+	   		// F�llen des Statements
+	   		   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+				   		
+						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+				   
+						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + value + "null,"  
+						   
+						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  ); 
+		   }
+		   case INT: {
+			   Integer value = itg;
 		    	
-		     Date value = (Date) pv.getDateValue();
-		     
-		     /**
+		    	
+		 	   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+				   		
+						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+				   
+						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + value  
+						   
+						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  );  
+		   }
+		   case DATE: {
+			   LocalDate value = pv.getDateValue();
+		   /**
 		      *  Bef�llen�llen des Statements.
 		      * (Die Tabelle hat folgende Spalten:
 		      *    c-id | pv-id | string | date | int | float)
 		      */
-			 stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
+			 stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+				   		
+						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+				   
+						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + "null," 
+						   
+						   + "," + pv.getId() + "," + value + "," + pv.getProperty().getId() + "," + c.getId() + ")"  ); 
 			   
-					   + "(" + c.getId() + "," + pv.getId() + "," + "null," + value + "," + "null," +  "null" +  ")"  ); 
-		     
-			//Hier wird auf den Integer-Wert zur�ckgegriffen.	
-		    	}if(itg !=null) {
-		    	
-		    	Integer value = itg;
-		    	
-		    	// F�llen des Statements
-		 	   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
-			   
-					   + "(" + c.getId() + "," + pv.getId() + "," + "null," + "null," +  value +  "null" +  ")"  ); 
-		    	
-		    		}if(pv.getStringValue()!=null) {
-		    	
-		    		String value = pv.getStringValue();
-		    		
-		    		// F�llen des Statements
-		    		   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
-			   
-					   + "(" + c.getId() + "," + pv.getId() +"," +  value + "null," +  "null" + "null" +  ")"  );   
-		    		
-		    			}if(pv.getProperty()!=null) {
-	 
-		    	
-		    				}else {
-		    	
-		    				Float value = pv.getFloatValue();
-		    				
-		    				// F�llen des Statements
-		    				   stmt.executeUpdate("INSERT INTO PValues (c-id, pv-id, string, date, int, float) VALUES " 
-		    				   
-		    						   + "(" + c.getId() + "," + pv.getId()  + "null," +  "null" + "null" + "," + value +  ")"  ); 		
-		    			}
+		   }
+		   case FLOAT: {
+			   Float value = pv.getFloatValue();
 				
-		   
+				// F�llen des Statements
+				   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+				   		
+						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+				   
+						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + "," +  "null," +  "null," + value +
+						   
+						   "," + pv.getId() + "," + "null" + "," + pv.getProperty().getId() + ","  + c.getId() + ")"  ); 
+		   				}
+		   									}
 		   /**
 		    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
 		    * 
 		    */
 				insertCollaboration(u, pv, true);
-	
 	  	  return pv;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	      return null;
 	    }
-
-	  }
-
-	
-	
+	  }	
 	/**
 	 * Diese Methode l�scht ein <code>PValue</code> Objekt aus der Datenbank.
 	 * 
 	 * @param pv das <code>PValue</code> Objekt, dass gel�scht werden soll.
 	 * 
 	 */
-	
 	public void deletePValue(PValue pv){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
-	    
 	  try {
 	   
 		  // Erzeugen eines ungef�llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
 		   // F�llen des Statements
-		   stmt.executeUpdate("DELETE FROM PValues WHERE PV-id=" + pv.getId()); 
-		   
+		   stmt.executeUpdate("DELETE FROM pValue WHERE pValueID=" + pv.getId()); 
 		   /** 
 		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gel�st.
 		    */
@@ -300,29 +303,26 @@ public class PValueMapper {
 	public ArrayList<User> findCollaborators(PValue pv){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
-	    
 	  try {
 	   // Erzeugen eines ungef�llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	 //Erzeugen einer ArrayList
-	    ArrayList<User> al = new ArrayList();
-	    
+	    ArrayList<User> al = new ArrayList<User>();
 	    
 	   // F�llen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT U-ID,Username FROM PV-Teilhaberschaft " + "WHERE PV-Id=" 
+	   ResultSet rs = stmt.executeQuery("SELECT systemUserID, Username FROM pValueCollaboration " + "WHERE pValueID" 
 	   
-			   	 + pv.getId() + " ORDER BY -");
+			   	 + pv.getId() );
 
 	  while (rs.next()) {
 	      
 		//Bef�llen des User-Objekts
 	        User u = new User();
-	        u.setId(rs.getInt("U-ID"));
+	        u.setId(rs.getInt("systemUserID"));
 	        u.setUsername(rs.getString("Username"));
 	      //  c.setOwnerID(rs.getInt("owner"));
 	        al.add(u);
-	        
 	      }
 	  return al;
 	    }
@@ -330,9 +330,7 @@ public class PValueMapper {
 	    	System.err.print(e);
 	      return null;
 	    }
-
 	  }
-	
 	/**
 	 * Diese Methode tr�gt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>PValue</code> Objekt
 	 * in die Datenbank ein.
@@ -353,9 +351,9 @@ public class PValueMapper {
 	   
 	    
 	   // F�llen des Statements
-	   stmt.executeUpdate("INSERT INTO PV-Teilhaberschaft (PV-id, U-id, IsOwner) VALUES " 
+	   stmt.executeUpdate("INSERT INTO pValueCollaboration (pvCollaborationID, IsOwner, pValueID, systemUserID) VALUES " 
 	   
-			   + "(" + pv.getId() + "," + u.getId() + "," + IsOwner + ")"  );
+			   + "(" + pv.getId() + "," + IsOwner + "," + pv.getProperty().getId() + "," + u.getId() +   ")"  );
 
 	  	  return pv;
 	    }
@@ -383,7 +381,8 @@ public class PValueMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // F�llen des Statements
-		   stmt.executeUpdate("DELETE FROM PV-Teilhaberschaft WHERE U-id=" + u.getId() + "AND PV-Id=" + pv.getId() ); 
+		   stmt.executeUpdate("DELETE FROM pvCollaborationID WHERE systemUserID=" + u.getId() + 
+				   "AND pvCollaborationID=" + pv.getId() ); 
 
 	  	  
 	    }

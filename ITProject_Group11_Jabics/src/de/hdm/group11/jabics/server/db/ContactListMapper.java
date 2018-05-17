@@ -69,7 +69,7 @@ public class ContactListMapper {
 	}
 		
 		/** 
-		 * Diese Methode tr�gt einen <code>ContactList</code> Objekt in die Datenbank ein.
+		 * Diese Methode trägt ein <code>ContactList</code> Objekt in die Datenbank ein.
 		 *
 		 * @param cl das <code>ContactList</code> Objekt, dass in die Datenbank eingetragen werden soll.
 		 * @return Das als Parameter �bergebene- <code>ContactList</code> Objekt.

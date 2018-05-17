@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  */
 
-public abstract class SimpleReport extends Report  {
+public abstract class ContactReport extends Report  {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -18,7 +18,7 @@ public abstract class SimpleReport extends Report  {
 	/**
 	 * simple constructor that needs at least one Property view in an ArrayList
 	 */
-	public SimpleReport(ArrayList<PropertyView> pv, String contactInfo) {
+	public ContactReport(ArrayList<PropertyView> pv, String contactInfo) {
 		this.content = pv;
 		this.contactInfo = contactInfo;
 	}
@@ -27,7 +27,7 @@ public abstract class SimpleReport extends Report  {
 	 * constructor that needs at least one Property view in an ArrayList and sets contactInfo based on Information in that ArrayList.
 	 * Only the last name is set as contactInfo, surnames are not searched for. Only use this Constructor if contactName cannot be determined.
 	 */
-	public SimpleReport(ArrayList<PropertyView> pv) {
+	public ContactReport(ArrayList<PropertyView> pv) {
 		this.content = pv;
 		try {
 			for(PropertyView p : pv) {
