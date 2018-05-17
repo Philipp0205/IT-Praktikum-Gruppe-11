@@ -7,7 +7,7 @@ public class Jabics implements EntryPoint {
 	
 	public void onModuleLoad() {
 		MainView mainView = new MainView();
-		RootPanel.get().add(mainView);
+		RootPanel.get("content").add(mainView);
 	}
 	
 }
