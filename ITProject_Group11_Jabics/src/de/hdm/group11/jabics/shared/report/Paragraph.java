@@ -2,7 +2,7 @@ package de.hdm.group11.jabics.shared.report;
 
 /**
  * TODO
- * @author P
+ * @author 
  *
  */
 

@@ -22,6 +22,9 @@ public class CompositeReport extends Report implements Serializable {
 	/**
 	 * Constructors:
 	 */
+	public CompositeReport() {
+		super();
+	}
 	public CompositeReport(ArrayList<Report> reports, Paragraph head, Paragraph foot) {
 		this.subReports = reports;
 		/**
