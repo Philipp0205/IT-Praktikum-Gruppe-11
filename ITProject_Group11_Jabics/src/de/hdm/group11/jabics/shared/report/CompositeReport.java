@@ -15,9 +15,12 @@ public class CompositeReport extends Report implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Composite report consists of Simple Reports or Composite Reports, which are both subclasses of Report
+	 * Ein CompositeReport besteht aus subReports und einer Kopf und Fußzeile, in denen Informationen gegeben werden
 	 */
 	private ArrayList<Report> subReports = new ArrayList<Report>();
+	Paragraph headline; 
+	Paragraph footline; 
+	
 	
 	/**
 	 * Constructors:
@@ -47,7 +50,13 @@ public class CompositeReport extends Report implements Serializable {
 		this.headline.setContent("Report for unknownUser, containing " + reports.size() + " subreports");
 		this.footline.setContent("End of Report");
 	}
-	
+	/**
+	 * Eine toString(), die als Ergebnis einen String mit eine textuellen Ausgabe des Reports hat. Eine Ausgabe erfolgt in dieser Art:
+	 * "Report for User, containing XX subreports: Created on Date YYYY-MM-DD by name"
+	 */
+	public String toString() {
+		return this.headline +  ": Created on " + this.creationDate.toString() + " by " + this.creator.toString();
+	}
 	
 	/**
 	 * adding and removing a report to the composite Report
@@ -65,6 +74,18 @@ public class CompositeReport extends Report implements Serializable {
 	/**
 	 * Getter and Setter
 	 */
+	public Paragraph getHeadline() {
+		return headline;
+	}
+	public void setHeadline(Paragraph headline) {
+		this.headline = headline;
+	}
+	public Paragraph getFootline() {
+		return footline;
+	}
+	public void setFootline(Paragraph footline) {
+		this.footline = footline;
+	}
 	public ArrayList<Report> getSubReports() {
 		return subReports;
 	}

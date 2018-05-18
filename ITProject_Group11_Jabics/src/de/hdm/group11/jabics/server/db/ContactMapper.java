@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.ContactList;
 
 /**
  * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>Contact</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontakte in der Datenbank zur Verfügung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontakte in der Datenbank zur Verfï¿½gung. 
  * 
  * @author Brase
  * @author Stahl
@@ -24,12 +25,55 @@ import de.hdm.group11.jabics.shared.bo.User;
  */
 public class ContactMapper extends PValueMapper{
 
+	/**
+	 * Die Klasse ContactMapper wird nur einmal instantiiert. Man spricht
+     * hierbei von einem sogenannten <b>Singleton</b>.
+     * <p>
+     * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fÃ¼r
+     * sÃ¤mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+     * einzige Instanz dieser Klasse.
+     * 
+     * @see contactMapper()
+	 */  	
+	
+	private static ContactMapper contactMapper = null;
+	
+	/**
+	 * GeschÃ¼tzter Konstruktor - verhindert die MÃ¶glichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen. 
+	 */
+	
+	protected ContactMapper() {
+		
+	}
+	
+	/**
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>ContactMapper.contactMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafÃ¼r sorgt, dass nur eine einzige
+	 * Instanz von <code>ContactMapper</code> existiert.
+	 * <p>
+	 * 
+	 * <b>Fazit:</b> ContactMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
+	 * 
+	 * @return Das <code>ContactMapper</code>-Objekt.
+	 * @see contactMapper
+	 */  
+	
+	public static ContactMapper contactMapper() {
+		if (contactMapper == null) {
+			contactMapper = new ContactMapper();
+		}
+		
+		return contactMapper;
+	}
 	
 	/** 
-	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
+	 * Diese Methode trï¿½gt einen Kontakt in die Datenbank ein.
 	 * 
 	 * @param c das <code>Contact</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
+	 * @return Das als Parameter ï¿½bergebene- <code>Contact</code> Objekt.
 	 */
 	public Contact insertContact(Contact c){
 		// Erzeugen der Datenbankverbindung
@@ -39,7 +83,7 @@ public class ContactMapper extends PValueMapper{
 	   
 		  Statement stmt = con.createStatement();
 			
-			 // Herausfinden der bisher höchsten Kontakt-ID.
+			 // Herausfinden der bisher hï¿½chsten Kontakt-ID.
 			
 		ResultSet rs = stmt.executeQuery("SELECT MAX(c-id) AS maxid " + "FROM contacts ");
 
@@ -49,17 +93,17 @@ public class ContactMapper extends PValueMapper{
 				 
 				c.setId(rs.getInt("maxid") + 1); 
 		  
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt2 = con.createStatement();
 	   
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   stmt2.executeUpdate("INSERT INTO contacts (c-id) VALUES " 
 	   
 			   + "(" + c.getId() + ")"  );
 	   
 	   /**
-	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und über die 
+	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und ï¿½ber die 
 	    * @insertPValue Methode in der Datenbank gespeichert.
 	    */
 	   
@@ -68,7 +112,7 @@ public class ContactMapper extends PValueMapper{
 	   for (int i =0; i<cv.size(); i++) {
 	  
 		   /**
-		    * Einfügen der Eigenschaftsausprägungen in die Datenbank über die @insertPValue - Methode
+		    * Einfï¿½gen der Eigenschaftsausprï¿½gungen in die Datenbank ï¿½ber die @insertPValue - Methode
 		    */
 		   insertPValue(cv.get(i), c);
 	   		}
@@ -85,8 +129,8 @@ public class ContactMapper extends PValueMapper{
 	 * Diese Methode aktualisiert ein <code>Contact</code> Objekt in der Datenbank.
 	 * 
 	 * @param c das <code>Contact</code> Objekt, dass aktualisiert werden soll.
-	 * @param u der <code>User</code>, der die Änderung durchführt
-	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
+	 * @param u der <code>User</code>, der die ï¿½nderung durchfï¿½hrt
+	 * @return Das als Parameter ï¿½bergebene- <code>Contact</code> Objekt.
 	 */
 	
 	public Contact updateContact(Contact c, User u){
@@ -95,28 +139,28 @@ public class ContactMapper extends PValueMapper{
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("DELETE FROM contacts WHERE id=" + c.getId()); 
 	  
-		  // Erzeugen eines zweiten ungefüllten SQL-Statements
+		  // Erzeugen eines zweiten ungefï¿½llten SQL-Statements
 	   Statement stmt2 = con.createStatement();
 	   
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   stmt2.executeUpdate("INSERT INTO contacts (id) VALUES " 
 	   
 			   + "(" + c.getId() + ")"  );
 	   /**
-	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und über die 
+	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und ï¿½ber die 
 	    * @insertPValue Methode in der Datenbank gespeichert.
 	    */
 	   ArrayList<PValue> cv = c.getValues();
 	   
 	   for (int i =0; i<cv.size(); i++) {
 	  
-		   //Der als Parameter mitgegebene User wird als Owner der einzelnen neuen Eigenschaftsausprägungen festgelegt.
+		   //Der als Parameter mitgegebene User wird als Owner der einzelnen neuen Eigenschaftsausprï¿½gungen festgelegt.
 		   updatePValue(cv.get(i), c, u);
 	   }
 	  	  
@@ -128,9 +172,9 @@ public class ContactMapper extends PValueMapper{
 	  return c;
 	}
 		/**
-		 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
+		 * Diese Methode lï¿½scht ein <code>Contact</code> Objekt aus der Datenbank.
 		 * 
-		 * @param c das <code>Contact</code> Objekt, dass gelöscht werden soll.
+		 * @param c das <code>Contact</code> Objekt, dass gelï¿½scht werden soll.
 		 * 
 		 */
 
@@ -140,10 +184,10 @@ public class ContactMapper extends PValueMapper{
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("DELETE FROM contacts WHERE id=" + c.getId()); 
 
 	  	  
@@ -158,7 +202,7 @@ public class ContactMapper extends PValueMapper{
 	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten eines <code>User</code>
-	 * Objekts aus der Datenbank zurück.
+	 * Objekts aus der Datenbank zurï¿½ck.
 	 * 
 	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
@@ -169,18 +213,18 @@ public class ContactMapper extends PValueMapper{
 		Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	 //Erzeugen einer ArrayList
 	    ArrayList<Contact> al = new ArrayList();
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   ResultSet rs = stmt.executeQuery("SELECT C-ID FROM C-Teilhaberschaft " + "WHERE U-ID=" + u.getId() + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
-		  //Befüllen des Kontakt-Objekts
+		  //Befï¿½llen des Kontakt-Objekts
 	        Contact c = new Contact();
 	        c.setId(rs.getInt("C-ID"));
 	      //  c.setOwnerID(rs.getInt("owner"));
@@ -198,7 +242,7 @@ public class ContactMapper extends PValueMapper{
 	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Vornamen
-	 * zurück
+	 * zurï¿½ck
 	 * @param fn der Vorname nach dem gesucht werden soll.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Vornamen.
 	 */
@@ -208,18 +252,18 @@ public class ContactMapper extends PValueMapper{
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
-	 //Erzeugen einer ArrayList
+	   //Erzeugen einer ArrayList
 	    ArrayList<Contact> al = new ArrayList();
 	    
-	   // Füllen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT Firstname FROM contacts " + "WHERE Firstname=" + fn + " ORDER BY -");
+	   // Fï¿½llen des Statements
+	   ResultSet rs = stmt.executeQuery("SELECT * FROM contacts " + "WHERE Firstname=" + fn + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
-		//Befüllen des Kontakt-Objekts
+		//Befï¿½llen des Kontakt-Objekts
 	        Contact c = new Contact();
 	        c.setFirstname(rs.getString("FirstName"));
 	      //  c.setOwnerID(rs.getInt("owner"));
@@ -238,9 +282,9 @@ public class ContactMapper extends PValueMapper{
 	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Nachamen
-	 * zurück
+	 * zurï¿½ck
 	 * @param ln der Nachname nach dem gesucht werden soll.
-	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Vornamen.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Nachname.
 	 */
 	
 	public ArrayList<Contact> findContactByLastName(String ln){
@@ -248,18 +292,18 @@ public class ContactMapper extends PValueMapper{
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	 //Erzeugen einer ArrayList
 	    ArrayList<Contact> al = new ArrayList();
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   ResultSet rs = stmt.executeQuery("SELECT Lastname FROM contacts " + "WHERE Lastname=" + ln + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
-		//Befüllen des Kontakt-Objekts
+		//Befï¿½llen des Kontakt-Objekts
 	        Contact c = new Contact();
 	        c.setLastName(rs.getString("LastName"));
 	      //  c.setOwnerID(rs.getInt("owner"));
@@ -274,10 +318,279 @@ public class ContactMapper extends PValueMapper{
 	    }
 
 	  }
-		
 	
 	/**
-	 * Diese Methode gibt ein <code>Contact</code> Objekt zurück, dass eine bestimmte ID hat.
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten StraÃŸe
+	 * zurï¿½ck
+	 * @param street Die StraÃŸe nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit dieser StraÃŸe.
+	 */
+	
+	public ArrayList<Contact> findContactByStreet(String street){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefï¿½llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// Fï¿½llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE Street =" + street + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Befï¿½llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten Telefonnummer
+	 * zurï¿½ck
+	 * @param fon Die Telefonnummer nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit dieser Telefonnummer.
+	 */
+	
+	public ArrayList<Contact> findContactByFonNumber(String fon){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefï¿½llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// Fï¿½llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE FonNumber =" + fon + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Befï¿½llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten eMail-Adresse
+	 * zurï¿½ck
+	 * @param mail Die eMail-Adresse nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit dieser eMail-Adresse.
+	 */
+	
+	public ArrayList<Contact> findContactByEMail(String mail){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefï¿½llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// Fï¿½llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE EMail =" + mail + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Befï¿½llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einer bestimmten Postleitzahl
+	 * zurï¿½ck
+	 * @param zip Die Postleitzahl nach der gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten dieser Postleitzahl.
+	 */
+	
+	public ArrayList<Contact> findContactByZip(String zip){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefï¿½llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// Fï¿½llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE Zip =" + zip + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Befï¿½llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Ort
+	 * zurï¿½ck
+	 * @param place Der Ort nach dem gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Ort.
+	 */
+	
+	public ArrayList<Contact> findContactByPlace(String place){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefï¿½llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// Fï¿½llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE EMail =" + place + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Befï¿½llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Geburtsdatum
+	 * zurï¿½ck
+	 * @param birthday Das Geburtsdatum nach dem gesucht werden soll.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Geburtsdatum.
+	 */
+	
+	public ArrayList<Contact> findContactByBirthday(String birthday){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefï¿½llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
+	    
+	    	// Fï¿½llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT C-ID FROM contacts " + "WHERE EMail =" + birthday + " ORDER BY -");
+
+	    	while (rs.next()) {
+	      
+	    		//Befï¿½llen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("C-ID"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		al.add(c);
+	        
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+
+	  }
+	
+	/**
+	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurï¿½ck, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
+	 */
+	
+	public ContactList findContactListById(int id)  {
+	    // Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungefï¿½llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen eines Kontakt-Objektes
+	    	ContactList cl = new ContactList();
+
+	    	// Fï¿½llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT id FROM contactlists " + "WHERE id = " + id + " ORDER BY -");
+	   
+	    	if (rs.next()) {
+	       
+	    		//Befï¿½llen des Kontakt-Objekts
+	    		cl.setId(rs.getInt("id"));
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	        
+	    	}
+	    return cl;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	 
+	  }
+	
+	/**
+	 * Diese Methode gibt ein <code>Contact</code> Objekt zurï¿½ck, dass eine bestimmte ID hat.
 	 * @param id die Id nach welcher gesucht werden soll.
 	 * @return Das <code>Contact</code> Objekt mit der gesuchten id.
 	 */
@@ -287,18 +600,18 @@ public class ContactMapper extends PValueMapper{
 	    Connection con = DBConnection.connection();
 
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	 //Erzeugen eines Kontakt-Objektes
 	   Contact c = new Contact();
 
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   ResultSet rs = stmt.executeQuery("SELECT id FROM contacts " + "WHERE id=" + id + " ORDER BY -");
 	   
 	  if (rs.next()) {
 	       
-		//Befüllen des Kontakt-Objekts
+		//Befï¿½llen des Kontakt-Objekts
 	        c.setId(rs.getInt("id"));
 	      //  c.setOwnerID(rs.getInt("owner"));
 	        
@@ -324,18 +637,18 @@ public class ContactMapper extends PValueMapper{
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	 //Erzeugen einer ArrayList
 	    ArrayList<User> al = new ArrayList();
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   ResultSet rs = stmt.executeQuery("SELECT U-ID FROM C-Teilhaberschaft " + "WHERE C-Id=" + c.getId() + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
-		//Befüllen des User-Objekts
+		//Befï¿½llen des User-Objekts
 	        User u = new User();
 	        u.setId(rs.getInt("id"));
 	      //  c.setOwnerID(rs.getInt("owner"));
@@ -352,13 +665,13 @@ public class ContactMapper extends PValueMapper{
 	  }
 	
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>Contact</code> Objekt
+	 * Diese Methode trï¿½gt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>Contact</code> Objekt
 	 * in die Datenbank ein.
 	 * 
 	 * @param u der User der an einem Kontakt Teilhaberschaftsrechte erlangen soll.
 	 * @param c der Kontakt an dem ein User Teilhaberschaft haben soll.
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
-	 * @return das Übergebene <code>Contact</code> Objekt
+	 * @return das ï¿½bergebene <code>Contact</code> Objekt
 	 */
 	
 	public Contact insertCollaboration(User u, Contact c, boolean IsOwner){
@@ -366,11 +679,11 @@ public class ContactMapper extends PValueMapper{
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
+	   // Erzeugen eines ungefï¿½llten SQL-Statements
 	   Statement stmt = con.createStatement();
 	   
 	    
-	   // Füllen des Statements
+	   // Fï¿½llen des Statements
 	   stmt.executeUpdate("INSERT INTO K-Teilhaberschaft (K-id, U-id, IsOwner) VALUES " 
 	   
 			   + "(" + c.getId() + "," + u.getId() + "," + IsOwner + ")"  );
@@ -385,9 +698,9 @@ public class ContactMapper extends PValueMapper{
 	  }
 	
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code> Objekt und einem <code>Contact</code> Objekt.
+	 * Diese Methode lï¿½scht eine Teilhaberschaft zwischen einem <code>User</code> Objekt und einem <code>Contact</code> Objekt.
 	 * 
-	 * @param c der ausgewählte Kontakt.
+	 * @param c der ausgewï¿½hlte Kontakt.
 	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>Contact</code> Objekt verlieren soll.
 	 */
 	
@@ -397,10 +710,10 @@ public class ContactMapper extends PValueMapper{
 	    
 	  try {
 	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
+		   // Fï¿½llen des Statements
 		   stmt.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE U-id=" + u.getId() + "AND C-Id=" + c.getId() ); 
 
 	  	  

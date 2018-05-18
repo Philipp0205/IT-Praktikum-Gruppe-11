@@ -12,6 +12,11 @@ public class Property extends BusinessObject {
 	private Type type;
 	private boolean isStandard = false;
 	
+	public Property(String label, Type type) {
+		this.label = label;
+		this.type = type;
+	}
+	
 	/**
 	 * Getters and Setters. Setting DateUpdated to current time whenever substantial information in the Object is changed.
 	 */
