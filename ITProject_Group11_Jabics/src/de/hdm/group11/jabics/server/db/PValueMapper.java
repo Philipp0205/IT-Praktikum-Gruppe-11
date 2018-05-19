@@ -184,23 +184,23 @@ public class PValueMapper {
 	 * @return Das als Parameter ï¿½bergebene- <code>PValue</code> Objekt.
 	 */
 	
-	public PValue updatePValue(PValue pv, Contact c, User u){
+	/**
+	 * Aktualisieren eines PValue in der Datenbank. Der Contact kann dabei nicht geändert werden und wird auch nicht benötigt
+	 * @param Das PValue, das aktalisiert werden soll.
+	 * @return
+	 */
+	public PValue updatePValue(PValue pv){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   
 		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
-
-		   //Integer- Werte kï¿½nnen auf !null ï¿½berprï¿½ft werden. Dies wird gleich benï¿½tigt.
-		   Integer itg = pv.getIntValue();
 		   
 		 /**
 		  * Diese If-Kaskade sucht den richtigen Datentyp des <code>PValue</code> Objekts
 		  * und trï¿½gt den Wert in die Datenbank ein
 		  */
-		   
 		   switch (pv.getProperty().getType()) {
 		   case STRING: {
 			   String value = pv.getStringValue();
@@ -208,23 +208,23 @@ public class PValueMapper {
 	   		// Fï¿½llen des Statements
 	   		   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 				   		
-						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+						   + "pValueID, dateValue, propertyID) VALUES " 
 				   
-						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + value + "null,"  
+						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + ","  + value + "null,"  
 						   
-						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  ); 
+						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + ")"  ); 
 		   }
 		   case INT: {
-			   Integer value = itg;
+			   Integer value = pv.getIntValue();
 		    	
 		    	
 		 	   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 				   		
-						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+						   + "pValueID, dateValue, propertyID) VALUES " 
 				   
-						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + value  
+						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + ","  + "null," + value  
 						   
-						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  );  
+						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + pv.getId() + ")"  );  
 		   }
 		   case DATE: {
 			   LocalDate value = pv.getDateValue();
@@ -235,11 +235,11 @@ public class PValueMapper {
 		      */
 			 stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 				   		
-						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+						   + "pValueID, dateValue, propertyID) VALUES " 
 				   
-						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + "null," 
+						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + ","  + "null," + "null," 
 						   
-						   + "," + pv.getId() + "," + value + "," + pv.getProperty().getId() + "," + c.getId() + ")"  ); 
+						   + "," + pv.getId() + "," + value + "," + pv.getProperty().getId() + ")"  ); 
 			   
 		   }
 		   case FLOAT: {
@@ -248,25 +248,21 @@ public class PValueMapper {
 				// Fï¿½llen des Statements
 				   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 				   		
-						   + "pValueID, dateValue, propertyID, contactID) VALUES " 
+						   + "pValueID, dateValue, propertyID) VALUES " 
 				   
-						   + "(" + c.getDateCreated() + "," + c.getDateUpdated() + "," +  "null," +  "null," + value +
+						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + "," +  "null," +  "null," + value +
 						   
-						   "," + pv.getId() + "," + "null" + "," + pv.getProperty().getId() + ","  + c.getId() + ")"  ); 
+						   "," + pv.getId() + "," + "null" + "," + pv.getProperty().getId() + ")"  ); 
 		   				}
-		   									}
-		   /**
-		    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
-		    * 
-		    */
-				insertCollaboration(u, pv, true);
+		   	}
 	  	  return pv;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	      return null;
 	    }
-	  }	
+	}	
+	
 	/**
 	 * Diese Methode lï¿½scht ein <code>PValue</code> Objekt aus der Datenbank.
 	 * 

@@ -231,6 +231,25 @@ public class ContactListMapper {
 	
 	
 	/**
+	 * Löschen eines Contact aus einer Liste
+	 * @author Anders
+	 */
+	public void removeContactFromList(ContactList cl, Contact c) {
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	  try {
+		   // Erzeugen eines ungefï¿½llten SQL-Statements
+		   Statement stmt = con.createStatement();
+		   // Lï¿½schen der veralteten Verknï¿½pfungen zu Kontakten
+		   stmt.executeUpdate("DELETE FROM contacts-contactlists WHERE CL-id =" + cl.getId() + " AND C-id=" + c.getId()); 
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    }
+	}
+	
+	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code> Objekten die eine Teilhaberschaft 
 	 * an einer bestimmten Kontaktliste besitzen.
 	 * @param cl das <code>ContactList</code> Objekt, dessen Teilhaber gesucht werden.
@@ -249,7 +268,7 @@ public class ContactListMapper {
 	    ArrayList<User> al = new ArrayList();
 	    
 	   // Fï¿½llen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT U-ID FROM KL-Teilhaberschaft " + "WHERE CL-Id=" + cl.getId() + " ORDER BY -");
+	   ResultSet rs = stmt.executeQuery("SELECT U-id FROM KL-Teilhaberschaft " + "WHERE CL-id=" + cl.getId() + " ORDER BY -");
 
 	  while (rs.next()) {
 	      
