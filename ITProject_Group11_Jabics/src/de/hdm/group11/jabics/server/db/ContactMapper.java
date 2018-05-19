@@ -226,7 +226,8 @@ public class ContactMapper extends PValueMapper{
 	      
 		//Befï¿½llen des Kontakt-Objekts
 	        Contact c = new Contact();
-	        c.setFirstname(rs.getString("FirstName"));
+	        c.setId(rs.getInt("id"));
+	        // setzen weiterer attribute wie datecreated und dateUpdated hier einfügen
 	      //  c.setOwnerID(rs.getInt("owner"));
 	        al.add(c);
 	        
@@ -264,9 +265,8 @@ public class ContactMapper extends PValueMapper{
 
 	  while (rs.next()) {
 	      
-		//Befï¿½llen des Kontakt-Objekts
+		//Befüllen des Kontakt-Objekts
 	        Contact c = new Contact();
-	        c.setLastName(rs.getString("LastName"));
 	      //  c.setOwnerID(rs.getInt("owner"));
 	        al.add(c);
 	        
