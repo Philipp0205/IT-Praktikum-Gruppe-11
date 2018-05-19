@@ -214,15 +214,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		/**
 		 * TODO: implement method findPValueById in PValue Mapper
 		 */
-		PValue pvtemp = pvMapper.findPValueById();
+		PValue pvtemp = pvMapper.findPValueById(pv.getId());
 		if(pv != pvtemp) {
+			 pv.setDateUpdated(dateUpdated);
 			 pvMapper.updatePValue(pv);
 		}
 	}
 	
 	public void updateContactList(ContactList cl){
-		ContactList cltemp = clMapper.findContactListById();
+		ContactList cltemp = clMapper.findContactListById(cl.getId());
 		if(cl != cltemp) {
+			cl.setDateUpdated(dateUpdated);
 			clMapper.updateContactList(cl);
 		}
 			/**

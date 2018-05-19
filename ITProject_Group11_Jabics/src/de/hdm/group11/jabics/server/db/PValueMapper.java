@@ -197,64 +197,46 @@ public class PValueMapper {
 		  // Erzeugen eines ungefï¿½llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
+
 		 /**
-		  * Diese If-Kaskade sucht den richtigen Datentyp des <code>PValue</code> Objekts
+		  * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 		  * und trï¿½gt den Wert in die Datenbank ein
 		  */
 		   switch (pv.getProperty().getType()) {
 		   case STRING: {
 			   String value = pv.getStringValue();
-	   		
-	   		// Fï¿½llen des Statements
-	   		   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-				   		
-						   + "pValueID, dateValue, propertyID) VALUES " 
-				   
-						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + ","  + value + "null,"  
-						   
-						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + ")"  ); 
+	   	
+			   String columnname = "stringValue";
+	   		   stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" +
+						   pv.getStringValue() + " WHERE pValueID = " + pv.getId() +")");
 		   }
 		   case INT: {
-			   Integer value = pv.getIntValue();
-		    	
-		    	
-		 	   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-				   		
-						   + "pValueID, dateValue, propertyID) VALUES " 
-				   
-						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + ","  + "null," + value  
-						   
-						   + "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + pv.getId() + ")"  );  
+			   String columnname = "intValue";
+	   		   stmt.executeUpdate("UPDATE contact SET dateUpdated =" + c.getDateUpdated() + "," + columnname + "=" +
+						   pv.getIntValue() + " WHERE pValueID = " + pv.getId() +")");  
 		   }
 		   case DATE: {
-			   LocalDate value = pv.getDateValue();
-		   /**
-		      *  Befï¿½llenï¿½llen des Statements.
-		      * (Die Tabelle hat folgende Spalten:
-		      *    c-id | pv-id | string | date | int | float)
-		      */
-			 stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-				   		
-						   + "pValueID, dateValue, propertyID) VALUES " 
-				   
-						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + ","  + "null," + "null," 
-						   
-						   + "," + pv.getId() + "," + value + "," + pv.getProperty().getId() + ")"  ); 
-			   
+
+			   LocalDate locald = pv.getDateValue();
+			   Date date = Date.valueOf(locald); 
+			   String columnname = "dateValue";
+	   		   stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" +
+				date + " WHERE pValueID = " + pv.getId() +")"); 
 		   }
 		   case FLOAT: {
-			   Float value = pv.getFloatValue();
-				
-				// Fï¿½llen des Statements
-				   stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-				   		
-						   + "pValueID, dateValue, propertyID) VALUES " 
-				   
-						   + "(" + pv.getDateCreated() + "," + pv.getDateUpdated() + "," +  "null," +  "null," + value +
-						   
-						   "," + pv.getId() + "," + "null" + "," + pv.getProperty().getId() + ")"  ); 
+
+			   String columnname = "floatValue";
+	   		   stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" +
+				pv.getFloatValue() + " WHERE pValueID = " + pv.getId() +")"); 
 		   				}
 		   	}
+		  
+		   /**
+		    * Dieser Teil wirklich benötigt?
+		    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
+		    * 
+		    */insertCollaboration(u, pv, true);
+				
 	  	  return pv;
 	    }
 	    catch (SQLException e) {
