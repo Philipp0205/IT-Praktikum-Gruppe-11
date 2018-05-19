@@ -65,4 +65,10 @@ public abstract class ContactReport extends Report  {
 		this.contactInfo = value;
 	}
 
+	public ArrayList<PropertyView> getPropertyViews() {
+		return content;
+	}
+	
+	
+
 }

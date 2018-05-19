@@ -16,8 +16,9 @@ public class PropertyView {
 	public PropertyView (PValue pv) throws IllegalArgumentException {
 		this.pname = pv.getProperty().getLabel();
 		switch(pv.getPointer()) {
+		
 			/**
-			 * TODO: convert data types different to String to String, so they can be displayed in a report
+			 * TODO: convert data types to String, so they can be displayed in a report 
 			 * case 1: this.pvalue = pv.getIntValue();
 			 * case 1: this.pvalue = pv.getStringValue();
 			 * case 1: this.pvalue = pv.getDateValue();
