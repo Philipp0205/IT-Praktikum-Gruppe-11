@@ -7,10 +7,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import com.google.appengine.api.utils.SystemProperty;
 /**
  * 
- * Die DBConnection-Klasse stellt ï¿½ber die connection() Methode eine Verbindung mit der Datenbank zur Verfï¿½gung. 
+ * Die DBConnection-Klasse stellt über die connection() Methode eine Verbindung mit der Datenbank zur Verfügung. 
  * 
  * @author Brase
  * @author Stahl
@@ -22,7 +22,7 @@ public class DBConnection {
 
 	//private static String googleUrl = "";
 	
-public static Connection connection() throws ClassNotFoundException {
+	public static Connection connection() { //wozu der  throws ClassNotFoundException {
 		
 		try {
 		/** 
@@ -36,14 +36,15 @@ public static Connection connection() throws ClassNotFoundException {
 		 */
 		con = DriverManager.getConnection("jdbc:mysql://localhost");
 					
-		System.out.println("Connected");
+		System.out.println("Connected to DB");
 			
-		} catch (SQLException e) {
-
+		} catch (Exception e) {
+			con = null;
+			e.printStackTrace();
 			System.err.print(e);
 		
 		} 
-		//Rï¿½ckgabe der Verbindung
+		//Rückgabe der Verbindung
 		return con;
 	
 }
