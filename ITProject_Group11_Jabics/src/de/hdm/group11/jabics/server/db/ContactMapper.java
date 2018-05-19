@@ -80,42 +80,23 @@ public class ContactMapper extends PValueMapper{
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   
 		  Statement stmt = con.createStatement();
 			
-			 // Herausfinden der bisher h�chsten Kontakt-ID.
-			
-		ResultSet rs = stmt.executeQuery("SELECT MAX(c-id) AS maxid " + "FROM contacts ");
+		 // Herausfinden der bisher h�chsten Kontakt-ID.
+		ResultSet rs = stmt.executeQuery("SELECT MAX(contactID) AS maxid " + "FROM contact ");
 
 			if (rs.next()) {
-				
 				// Setzen der Kontakt-ID
-				 
 				c.setId(rs.getInt("maxid") + 1); 
 		  
 		  // Erzeugen eines ungef�llten SQL-Statements
-	   Statement stmt2 = con.createStatement();
+				Statement stmt2 = con.createStatement();
 	   
-	    
 	   // F�llen des Statements
-	   stmt2.executeUpdate("INSERT INTO contacts (c-id) VALUES " 
+	   stmt2.executeUpdate("INSERT INTO contact (contactID, dateCreated, dateUpdated,) VALUES " 
 	   
-			   + "(" + c.getId() + ")"  );
-	   
-	   /**
-	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und �ber die 
-	    * @insertPValue Methode in der Datenbank gespeichert.
-	    */
-	   
-	   ArrayList<PValue> cv = c.getValues();
-	   
-	   for (int i =0; i<cv.size(); i++) {
+			   + "(" + c.getId() + c.getDateCreated() + "," + c.getDateUpdated() + ","  + ")"  );
 	  
-		   /**
-		    * Einf�gen der Eigenschaftsauspr�gungen in die Datenbank �ber die @insertPValue - Methode
-		    */
-		   insertPValue(cv.get(i), c);
-	   		}
 			}
 	  }
 	    catch (SQLException e) {
@@ -138,32 +119,12 @@ public class ContactMapper extends PValueMapper{
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   
 		  // Erzeugen eines ungef�llten SQL-Statements
 		   Statement stmt = con.createStatement();
-		   
-		   // F�llen des Statements
-		   stmt.executeUpdate("DELETE FROM contacts WHERE id=" + c.getId()); 
-	  
-		  // Erzeugen eines zweiten ungef�llten SQL-Statements
-	   Statement stmt2 = con.createStatement();
-	   
-	   // F�llen des Statements
-	   stmt2.executeUpdate("INSERT INTO contacts (id) VALUES " 
-	   
-			   + "(" + c.getId() + ")"  );
-	   /**
-	    * Die <code>Values</code> des <code>Contact</code> Objektes werden in eine Arraylist extrahiert und �ber die 
-	    * @insertPValue Methode in der Datenbank gespeichert.
-	    */
-	   ArrayList<PValue> cv = c.getValues();
-	   
-	   for (int i =0; i<cv.size(); i++) {
-	  
-		   //Der als Parameter mitgegebene User wird als Owner der einzelnen neuen Eigenschaftsauspr�gungen festgelegt.
-		   updatePValue(cv.get(i), c, u);
-	   }
-	  	  
+		  
+	   // Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
+	   stmt.executeUpdate("UPDATE contact SET dateUpdated = " + c.getDateUpdated() + "WHERE contactID=" + c.getId() + ")"  );
+	 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -178,28 +139,28 @@ public class ContactMapper extends PValueMapper{
 		 * 
 		 */
 
-	public void deleteContact(Contact c){
+	public void deleteContact(Contact c, User u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-	   
-		  // Erzeugen eines ungef�llten SQL-Statements
+		// Erzeugen eines ungef�llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // F�llen des Statements
-		   stmt.executeUpdate("DELETE FROM contacts WHERE id=" + c.getId()); 
-
-	  	  
+		   // Löschen des Kontakts.
+		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE contactID=" + c.getId()); 
+		   
+		// Erzeugen eines zweiten ungef�llten SQL-Statements
+		   Statement stmt2 = con.createStatement();
+		   
+		   // Löschen des Kontakts.
+		   stmt2.executeUpdate("DELETE FROM Collaboration WHERE contactID=" + c.getId()); 
+		   
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      
 	    }
-
 	  }
-	
-	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten eines <code>User</code>
 	 * Objekts aus der Datenbank zur�ck.
@@ -208,7 +169,7 @@ public class ContactMapper extends PValueMapper{
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
 	 */
 
-	public ArrayList<Contact> findAllContact(User u){
+	public ArrayList<Contact> findAllContacts(User u){
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 	    
