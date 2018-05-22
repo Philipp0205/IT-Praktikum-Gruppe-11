@@ -9,7 +9,7 @@ public class PValue extends BusinessObject {
 
 /**
  * Realises a Poperty Value of a Contact. For example: Name, mobilenumber, adress etc.
- * @author Philipp 
+ * @author Kurrle  
  */
 	
 	private int intValue; 

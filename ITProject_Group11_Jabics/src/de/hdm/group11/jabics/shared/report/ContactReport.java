@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  */
 
-public abstract class ContactReport extends Report  {
+public class ContactReport extends Report  {
 	
 	private static final long serialVersionUID = 1L;
 	

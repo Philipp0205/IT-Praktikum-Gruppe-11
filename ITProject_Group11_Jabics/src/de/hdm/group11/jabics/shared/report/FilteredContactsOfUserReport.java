@@ -2,6 +2,8 @@ package de.hdm.group11.jabics.shared.report;
 
 import java.util.ArrayList;
 
+import de.hdm.group11.jabics.shared.bo.Contact;
+import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 
 /**
@@ -20,13 +22,15 @@ public class FilteredContactsOfUserReport extends CompositeReport {
 
 
 	ArrayList<ContactReport> subReports = new ArrayList<ContactReport>();
+	ArrayList<Contact> contacts = new ArrayList<Contact>();
 	Paragraph filtercriteria; // String, float, int oder Contact
 	Property property;
+	PValue pv;
 
-	public FilteredContactsOfUserReport(ArrayList<ContactReport> reports, Paragraph pa, Property pp, String search) {
-		this.subReports = reports;	
-		this.filtercriteria = pa;
-		this.property = pp;
+	public FilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv) {
+		this.contacts = contacts;	
+		this.pv = pv;
+		
 	}
 
 	public Paragraph getFiltercriteria() {
@@ -35,11 +39,6 @@ public class FilteredContactsOfUserReport extends CompositeReport {
 
 	public void setFiltercriteria(Paragraph filtercriteria) {
 		this.filtercriteria = filtercriteria;
-	}
-	
-	public ArrayList<ContactReport> filter(Paragraph p) {
-		
-		return subReports;		
 	}
 	
 	public void addReport(ContactReport cr) {

@@ -1,6 +1,7 @@
 /**
  * Die Klasse EditorServiceImpl impelemtiert die Applikationslogik für den Editor von Jabics.
  * Sie stellt die Lodik zur verfügung, die bei einem RPC aufgerufen wird und gibt die angefragten Objekte zurück.
+ * 
  * @author Anders
  * @author Kurrle
  */
@@ -19,6 +20,11 @@ import de.hdm.group11.jabics.shared.EditorService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * TODO: implement all methods
@@ -211,6 +217,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @param Ein PropertyValue, das aktualisiert werden soll
 	 */
 	public void updatePValue(PValue pv) {
+		
 		/**
 		 * TODO: implement method findPValueById in PValue Mapper
 		 */
@@ -300,10 +307,76 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<User> getAllUsers(User u);
 	
 	
-	public void initialise() {
+	public void init() {
 		/**
 		 * TODO: Implemetieren Init methode
 		 */
+	}
+
+	@Override
+	public Contact createContact(ArrayList<PValue> cArray) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ContactList createContactList(ArrayList<Contact> cArray) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PValue createPValue(Property p, String s, Contact c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PValue createPValue(Property p, int i, Contact c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Property createProperty(String label) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUserById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contact addValueToContact(PValue pv, Contact c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Contact> searchInLists(String s) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contact deleteAllPValueFromContact(Contact c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateContact(Contact c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initialise() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

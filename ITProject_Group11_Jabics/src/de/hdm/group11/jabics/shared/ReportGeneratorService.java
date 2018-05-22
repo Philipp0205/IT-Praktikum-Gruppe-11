@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
+import de.hdm.group11.jabics.shared.bo.Contact;
+import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 
 /**
@@ -28,7 +30,7 @@ public interface ReportGeneratorService extends RemoteService {
 	
 	public AllContactsInSystemReport createAllContactsInSystemReport();
 
-	FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<ContactReport> reports, Paragraph pa, Property pp, String search) throws IllegalArgumentException;
+	FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv) throws IllegalArgumentException;
 	
 	/** 
 	 *  Diese Methode erstelle einen FilteredContactsOfUserReport.
