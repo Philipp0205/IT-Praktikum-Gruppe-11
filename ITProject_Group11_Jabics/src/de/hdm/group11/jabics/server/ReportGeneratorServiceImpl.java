@@ -2,6 +2,7 @@ package de.hdm.group11.jabics.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
@@ -123,7 +124,23 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			} 	
 		} results.add(new ContactReport(pviews));
 		
-		return results;  		
+		return results;  				
+	}
+	
+	public ArrayList<ContactReport> filterContractsByFirstLetter(ArrayList<Contact> contacts, String search) {
+		
+		for (Contact c : contacts) {
+			List<PValue> lPValues = c.getValues();
+			for (PValue pv : lPValues) {
+				List<PValue> filteredList = lPValues.stream().filter(new java.util.function.Predicate<String>() {
+					@Override
+		            public boolean test(String s) {
+		                return s.startsWith(search);
+		            }
+				}).collect(Collectors.toList());
+			}
+		}
+		return null;
 		
 	}
 	
