@@ -4,16 +4,13 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
-import de.hdm.group11.jabics.shared.report.ContactReport;
-import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
-import de.hdm.group11.jabics.shared.report.Paragraph;
+import de.hdm.group11.jabics.shared.bo.*;
+import de.hdm.group11.jabics.shared.report.*;
 
 public interface ReportGeneratorServiceAsync {
-
+	
+	void createAllContactsOfUserReport(User u, AsyncCallback<AllContactsOfUserReport> callback);
+	
 	void createAllContactsInSystemReport(AsyncCallback<AllContactsInSystemReport> callback);
 
 	void createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv,

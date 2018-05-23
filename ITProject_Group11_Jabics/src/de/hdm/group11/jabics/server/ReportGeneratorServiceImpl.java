@@ -7,32 +7,50 @@ import java.util.stream.Collectors;
 import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
 import com.google.gwt.user.server.rpc.*;
+import de.hdm.group11.jabics.server.db.ContactMapper;
+import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.ReportGeneratorService;
-import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
-import de.hdm.group11.jabics.shared.report.ContactReport;
-import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
-import de.hdm.group11.jabics.shared.report.Paragraph;
-import de.hdm.group11.jabics.shared.report.PropertyView;
-import de.hdm.group11.jabics.shared.report.ContactReport;
+import de.hdm.group11.jabics.shared.bo.*;
+import de.hdm.group11.jabics.shared.report.*;
 
 
 public class ReportGeneratorServiceImpl extends RemoteServiceServlet 
 	implements ReportGeneratorService {
 
 	/**
-	 * 
+	 * Instanzenvariablen
 	 */
+	ContactMapper cMapper = ContactMapper.contactMapper();
+	UserMapper uMapper = UserMapper.userMapper();
 	private static final long serialVersionUID = -4462530285584570547L;
+	
+	
 	/**
-	 * 
+	 * TODO: beschreibung
 	 */
 	@Override
 	public AllContactsInSystemReport createAllContactsInSystemReport() {
-		// TODO Auto-generated method stub
-		return null;
+		AllContactsInSystemReport result = new AllContactsInSystemReport();
+		/**
+		 * ArrayList<User> allUsers = uMapper.getAllUser();
+		 * Dem result AllContactsInUser Reports für alle Nutzer hinzufügen
+		 */
+		for (User u: uMapper.getAllUser()) {
+			result.addReport(createAllContactsOfUserReport(u));
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * TODO: beschreibung
+	 */
+	@Override
+	public AllContactsOfUserReport createAllContactsOfUserReport(User u) {
+		AllContactsOfUserReport result = new AllContactsOfUserReport();
+		ArrayList<Contact> allContacts = cMapper.findAllContacts(u);
+		return result;
+	}
 	}
 
 	@Override

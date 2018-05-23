@@ -20,19 +20,17 @@ public class ContactList extends BusinessObject {
 	     * Constructor
 	     */
 	    public ContactList() {
-	      this.dateCreated = LocalDateTime.now();
+	      super();
 	    }
 	    public ContactList(ArrayList<Contact> al) {
-	      this.contacts = al;
+	        this();
+	    	this.contacts = al;
 	    }
 			
-			/**
-			 * Constructor
-			 */
-			public ContactList(ArrayList<Contact> al, String ln) {
-				this.contacts = al;
-				this.listName = ln;
-			}
+		public ContactList(ArrayList<Contact> al, String ln) {
+			this(al);
+			this.listName = ln;
+		}
 			
 			
 			/**

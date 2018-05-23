@@ -12,15 +12,34 @@ import java.util.ArrayList;
 
 import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
-/**
- * TODO: write interface EditorService
- */
+
 import de.hdm.group11.jabics.shared.EditorService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
-	
+	/**
+	 * test objects
+	 */
+	User u;
+	Property p1; 
+	Property p2;
+	Property p3; 
+	Property p4; 
+	Property p5;
+	Property p6;
+	Property p7;
+	PValue pv1;
+	PValue pv2;
+	PValue pv3;
+	PValue pv4;
+	PValue pv5;
+	PValue pv6;
+	PValue pv7;
+	Contact c1;
+	Contact c2;
+	Contact c3;
+	ContactList cl;
 	/**
 	 * 
 	 */
@@ -93,24 +112,31 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return pMapper.insertProperty(newProperty);
 	}
 	
-	// TODO
 	public ArrayList<ContactList> getListsOf(User u) {
-		return clMapper.findAllContactList(u);
+		//return clMapper.findAllContactList(u);
+		// kann gelöscht werden
+		ArrayList<ContactList> cl = new ArrayList<ContactList>();
+		cl.add(this.cl);
+		return cl; 
 	}
 	
 	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
 	public ArrayList<Contact> getContactsOf(User u) { 
-		ArrayList<Contact> cons = cMapper.findAllContact(u);
+		//ArrayList<Contact> cons = cMapper.findAllContact(u);
 		//sind die Kontakte die der mapper zurückgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
 		/*for (Contact c : cons) {
 			pvMapper.
 		}*/
-		return cons;
+		//return cons;
+		
+		//temporary: kann gelöscht werden sobal fertig
+		return cl.getContacts();
 	}
 	
 	// is this method really needed?
-	public User getUSerById(int id) {
-		return uMapper.findUserById(id);
+	public User getUserById(int id) {
+		//return uMapper.findUserById(id);
+		return this.u;
 	}
 	
 	/**
@@ -311,6 +337,44 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		/**
 		 * TODO: Implemetieren Init methode
 		 */
+		u = new User();
+		p1 = new Property("Name", Type.STRING);
+		p2 = new Property("VorName", Type.STRING);
+		p1.setStandard(true);
+		p3 = new Property("Straße", Type.STRING);
+		p4 = new Property("Hausnummer", Type.INT);
+		p5 = new Property("Geb", Type.DATE);
+		p6 = new Property("Irgendwas1", Type.INT);
+		p7 = new Property("Irgendwas2", Type.FLOAT);
+		ArrayList<PValue> val = new ArrayList<PValue>();
+		val.add(new PValue( p1, "Max"));
+		val.add(new PValue( p2, "Mustermann"));
+		val.add(new PValue( p3, "eineStraße"));
+		val.add(new PValue( p4, 63));
+		val.add(new PValue( p5, LocalDate.of(2000, 5, 1)));
+		val.add(new PValue( p7, 188.5f));
+		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitüberlänge)");
+		ArrayList<PValue> val2 = new ArrayList<PValue>();
+		val2.add(new PValue( p1, "Alex"));
+		val2.add(new PValue( p2, "Muster123"));
+		val2.add(new PValue( p3, "eineStraße1234"));
+		val2.add(new PValue( p4, 4));
+		val2.add(new PValue( p5, LocalDate.of(1993, 2, 1)));
+		val2.add(new PValue( p7, 167.2f));
+		c2 = new Contact(val2);
+		ArrayList<PValue> val3 = new ArrayList<PValue>();
+		val3.add(new PValue( p1, "Udo"));
+		val3.add(new PValue( p2, "Mildenberger"));
+		val3.add(new PValue( p3, "Nobelstraße"));
+		val3.add(new PValue( p4, 8));
+		val3.add(new PValue( p5, LocalDate.of(2015, 2, 1)));
+		val3.add(new PValue( p7, 7.2f));
+		c3 = new Contact(val3);
+		ArrayList<Contact> contacts = new ArrayList<Contact>();
+		contacts.add(c1);
+		contacts.add(c2);
+		contacts.add(c3);
+		cl = new ContactList(contacts, "MeineListe");
 	}
 
 	@Override
@@ -344,18 +408,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	@Override
-	public User getUserById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Contact addValueToContact(PValue pv, Contact c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ArrayList<Contact> searchInLists(String s) {
 		// TODO Auto-generated method stub
 		return null;
@@ -378,10 +430,5 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-	
-	
-	
 	
 }

@@ -22,23 +22,27 @@ public class PValue extends BusinessObject {
 	/**
 	 * Constructor for every possible Data Type
 	 */
-	public PValue(Property p, int i) {
+	public PValue(Property p) {
+		super();
 		this.property = p;
+	}
+	public PValue(Property p, int i) {
+		this(p);
 		this.intValue = i;
 		this.pointer = 1;
 	}
 	public PValue(Property p, String s) {
-		this.property = p;
+		this(p);
 		this.stringValue = s;
 		this.pointer = 2;
 	}
 	public PValue(Property p, LocalDate date) {
-		this.property = p;
+		this(p);
 		this.dateValue = date;
 		this.pointer = 3;
 	}
 	public PValue(Property p, float f) {
-		this.property = p;
+		this(p);
 		this.floatValue = f;
 		this.pointer = 4;
 	}

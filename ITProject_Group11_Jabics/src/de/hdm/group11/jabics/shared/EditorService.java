@@ -2,12 +2,7 @@ package de.hdm.group11.jabics.shared;
 
 import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.ContactList;
-import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.bo.Type;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.*;
 
 public interface EditorService {
 	
@@ -33,7 +28,7 @@ public interface EditorService {
 	
 	public ContactList addContactToList(Contact c, ContactList cl);
 	
-	public Contact addValueToContact(PValue pv, Contact c);
+	public Contact addValueToContact(PValue pv, Contact c, User u);
 	
 	public ArrayList<Contact> searchInLists(String s);
 	

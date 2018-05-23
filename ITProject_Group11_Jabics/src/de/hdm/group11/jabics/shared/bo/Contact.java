@@ -16,39 +16,46 @@ import java.util.ArrayList;
 
 public class Contact extends BusinessObject {
 	
+	/**
+	 * Instanzenvariablen
+	 */
+		ArrayList<PValue> values = new ArrayList<PValue>();
+		private String name;
+		private BoStatus shareStatus;
+		
+		
 	public Contact(ArrayList<PValue> a, String name) { 
-		this.dateCreated = LocalDateTime.now();
+		this();
+		this.values = a;
+		this.name = name;
 	}
 	
 	public Contact(ArrayList<PValue> a) { 
-		
+		this();
 		StringBuffer sBuffer = new StringBuffer("bName");
-			for (PValue p : a) {
-				if (p.getProperty().getLabel() == "name") {
-					sBuffer.append(p.getStringValue());					
+		for (PValue p : a) {
+			if (p.getProperty().getLabel() == "name") {
+				sBuffer.append(p.getStringValue());					
 				} else {
 					System.out.println("Constructor in Contact: No name in Array.");
 				}
-			for (PValue p2: a) {
-				if (p2.getProperty().getLabel() == "lastname") {
-					sBuffer.append(p.getStringValue());				
+		}
+		for (PValue p2: a) {
+			if (p2.getProperty().getLabel() == "lastname") {
+				sBuffer.append(p2.getStringValue());				
 			} else {
 				System.out.println("No lastname in Array");
 			}
-			
 		}
-	}
+		this.name = sBuffer.toString();
+	
 	}
 
-	//Code will be added soon
-	public Contact() { 
-		this.dateCreated = LocalDateTime.now();
-	}
-	
-	//Code will be added soon
-	ArrayList<PValue> values = new ArrayList<PValue>();
-	private String name;
-	private BoStatus shareStatus;
+	//Leerer Konstruktor
+		public Contact() { 
+			super();
+		}
+
 	
 	@Override
 	public String toString() {		

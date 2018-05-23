@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 public abstract class BusinessObject {
 	
 	public BusinessObject() { 
-		
+		this.dateCreated = LocalDateTime.now();
+		this.dateUpdated = this.dateCreated;
 	}
 
 	int id;

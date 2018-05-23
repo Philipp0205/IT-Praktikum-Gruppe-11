@@ -13,6 +13,7 @@ public class Property extends BusinessObject {
 	private boolean isStandard = false;
 	
 	public Property(String label, Type type) {
+		super();
 		this.label = label;
 		this.type = type;
 	}

@@ -12,7 +12,10 @@ public class User {
 	private String email;  
 	
 	
-	
+	public User(String name) {
+		super();
+		this.username= name;
+	}
 
 	public String toString() {
 		return this.username;
