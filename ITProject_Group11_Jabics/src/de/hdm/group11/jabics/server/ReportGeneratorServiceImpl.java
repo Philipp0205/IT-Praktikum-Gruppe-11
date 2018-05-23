@@ -69,8 +69,19 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 * @return
 	 */
 	@Override
-	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv
+	
+	/**
+	 * public FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv
 			) throws IllegalArgumentException {
+	 */
+	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, User u) throws IllegalArgumentException {
+		
+		/**
+		 *  Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt. 
+		 *  Aus dieser werden dann anschlieﬂend die entsprechenden Kontakte gefiltert.
+		 */
+		ArrayList<Contact> contacts = new ArrayList<Contact>();
+		cMapper.findAllContacts(u);
 
 		// Zuerst wird ein leerer Report angelegt. 
 		FilteredContactsOfUserReport results = new FilteredContactsOfUserReport(contacts, pv);
@@ -80,7 +91,6 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		// Erstellungsdatum des Reports auf "jetzt" stellen. 
 		results.setCreationDate(LocalDateTime.now());
-		
 		
 		
 		String[] filtercriteria = new String[4];

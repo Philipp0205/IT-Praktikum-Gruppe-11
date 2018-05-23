@@ -13,7 +13,7 @@ public interface ReportGeneratorServiceAsync {
 	
 	void createAllContactsInSystemReport(AsyncCallback<AllContactsInSystemReport> callback);
 
-	void createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv,
+	void createFilteredContactsOfUserReport(PValue pv, User u,
 			AsyncCallback<FilteredContactsOfUserReport> callback);
 
 }
