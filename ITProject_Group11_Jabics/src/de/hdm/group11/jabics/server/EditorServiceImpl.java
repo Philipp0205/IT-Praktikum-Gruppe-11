@@ -8,6 +8,7 @@
 
 package de.hdm.group11.jabics.server;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.server.db.*;
@@ -249,7 +250,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 */
 		PValue pvtemp = pvMapper.findPValueById(pv.getId());
 		if(pv != pvtemp) {
-			 pv.setDateUpdated(dateUpdated);
+			 pv.setDateUpdated(LocalDateTime.now());
 			 pvMapper.updatePValue(pv);
 		}
 	}
@@ -257,7 +258,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void updateContactList(ContactList cl){
 		ContactList cltemp = clMapper.findContactListById(cl.getId());
 		if(cl != cltemp) {
-			cl.setDateUpdated(dateUpdated);
+			cl.setDateUpdated(LocalDateTime.now());
 			clMapper.updateContactList(cl);
 		}
 			/**
@@ -313,7 +314,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		pvMapper.deleteCollaboration(pv, u);
 	}
 	
-	
+	/**
+	 * TODO: implement
+	 */
 	public ArrayList<PValue> getPValueOf(Contact c , User u);
 	
 	public ArrayList<Contact> searchInList(String s, ContactList cl);
