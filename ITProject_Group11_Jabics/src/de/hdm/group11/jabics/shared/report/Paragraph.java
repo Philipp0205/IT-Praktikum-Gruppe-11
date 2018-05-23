@@ -1,8 +1,9 @@
 package de.hdm.group11.jabics.shared.report;
 
 /**
- * TODO
- * @author 
+ * Paragraphen dienen der Darstellung von Filterkriteren in Reports. 
+ * 
+ * @author Kurrle und Anders
  *
  */
 

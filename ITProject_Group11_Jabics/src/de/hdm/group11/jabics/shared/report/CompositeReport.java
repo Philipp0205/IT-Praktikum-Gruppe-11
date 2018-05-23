@@ -15,7 +15,7 @@ public class CompositeReport extends Report implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Ein CompositeReport besteht aus subReports und einer Kopf und FuÃŸzeile, in denen Informationen gegeben werden
+	 * Ein CompositeReport besteht aus subReports und einer Kopf und Fußzeile, in denen Informationen gegeben werden
 	 */
 	private ArrayList<Report> subReports = new ArrayList<Report>();
 	Paragraph headline; 
@@ -80,11 +80,21 @@ public class CompositeReport extends Report implements Serializable {
 	public void setHeadline(Paragraph headline) {
 		this.headline = headline;
 	}
+	// Methode überladen damit auch nur ein String mitgegeben werden kann. 
+	public void setHeadline(String s) {
+		Paragraph p = new Paragraph();
+		p.setContent(s);
+	}
 	public Paragraph getFootline() {
 		return footline;
 	}
 	public void setFootline(Paragraph footline) {
 		this.footline = footline;
+	}
+	// Ebenfalls überladen
+	public void setFootline(String s) {
+		Paragraph p = new Paragraph();
+		p.setContent(s);
 	}
 	public ArrayList<Report> getSubReports() {
 		return subReports;

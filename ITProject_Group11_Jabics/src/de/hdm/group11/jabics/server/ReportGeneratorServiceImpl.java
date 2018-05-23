@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.server;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +13,14 @@ import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.ReportGeneratorService;
 import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.report.*;
+import de.hdm.thies.bankProjekt.shared.ReportGenerator;
 
+/**
+ * Implementierung des <code>ReportGeneratorService</code>-Interface. 
+ * 
+ * @see ReportGeneratorService
+ * @author Kurrle und Anders
+ */
 
 public class ReportGeneratorServiceImpl extends RemoteServiceServlet 
 	implements ReportGeneratorService {
@@ -63,37 +71,44 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	@Override
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv
 			) throws IllegalArgumentException {
-		
-		FilteredContactsOfUserReport results = new FilteredContactsOfUserReport(contacts, pv);
-		Paragraph headline = new Paragraph();
-		Paragraph footline = new Paragraph();
-		//String[] filtercriteria;
-		headline.setContent(pv.toString());
-		footline.setContent(pv.toString());
 
-		results.setFootline(footline);
-		//results.setFiltercriteria(filtercriteria.setFiltercriteria(pv.toString()));
+		// Zuerst wird ein leerer Report angelegt. 
+		FilteredContactsOfUserReport results = new FilteredContactsOfUserReport(contacts, pv);
+		
+		// Jeder Report hat eine ‹berschrift sowe eine abschlieﬂende Nachricht, welche hier headline und footline genannt werden.
+		results.setFootline("Ende des Reports.");
+		
+		// Erstellungsdatum des Reports auf "jetzt" stellen. 
+		results.setCreationDate(LocalDateTime.now());
+		
+		
+		
+		String[] filtercriteria = new String[4];
+		Paragraph p = new Paragraph();
 			
 		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle passenden Report Objekte mit, welche dann den results mitgegeben werden.
 		switch (pv.getProperty().getType())  {
 		case STRING: 
 			for (ContactReport i : this.filterContactsByString(contacts, pv)) {
-				//filtercriteria.setFiltercriteria(filtercriteria);
+				filtercriteria[0] = "string";
 				results.addReport(i);
 		}
 		break;
 		case INT: 
 			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
+				filtercriteria[1] = "int";
 				results.addReport(i);
 		}
 		break; 
 		case FLOAT: 
-			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
+			for (ContactReport i : this.filterContactsByDate(contacts, pv)) {
+				filtercriteria[2] = "date";
 				results.addReport(i);
 		}
 		break;
 		case DATE: 
-			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
+			for (ContactReport i : this.filterContactsByFloat(contacts, pv)) {
+				filtercriteria[2] = "float";
 				results.addReport(i);
 		}
 		break;
@@ -101,12 +116,20 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		break;
 			
 		}
-
+		results.setFiltercriteria(p, filtercriteria);
+		/**
+		 *  Oben im Report wird angegeben, wie der nachfolgende Report gefiltert wurde.
+		 */
+		for (String i : filtercriteria) {
+			if (i != null) {
+				results.setHeadline("Dieser Report wurde nach dem Datentyp " + i + " gefiltert.");
+			}
+		}
+		
 		return results;
 	}
 	
 	/**
-	 * 
 	 * @param contacts
 	 * @param pv
 	 * @return ArrayList mit Contact-Report-Objekten results
