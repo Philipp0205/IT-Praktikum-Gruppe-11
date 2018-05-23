@@ -51,30 +51,66 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		ArrayList<Contact> allContacts = cMapper.findAllContacts(u);
 		return result;
 	}
-	}
 
+
+	/**
+	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus gefilterten ContactReport zurück.
+	 * @param ArrayList mit Contact-Objekten "contacts"
+	 * @param Ein PValue-Objekt pv
+	 * 
+	 * @return
+	 */
 	@Override
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv
 			) throws IllegalArgumentException {
 		
-		
+		FilteredContactsOfUserReport results = new FilteredContactsOfUserReport(contacts, pv);
+		Paragraph headline = new Paragraph();
+		Paragraph footline = new Paragraph();
+		//String[] filtercriteria;
+		headline.setContent(pv.toString());
+		footline.setContent(pv.toString());
+
+		results.setFootline(footline);
+		//results.setFiltercriteria(filtercriteria.setFiltercriteria(pv.toString()));
+			
+		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle passenden Report Objekte mit, welche dann den results mitgegeben werden.
 		switch (pv.getProperty().getType())  {
-		case STRING: this.filterContactsByString(contacts, pv);
+		case STRING: 
+			for (ContactReport i : this.filterContactsByString(contacts, pv)) {
+				//filtercriteria.setFiltercriteria(filtercriteria);
+				results.addReport(i);
+		}
 		break;
-		case INT: this.filterContactsByInt(contacts, pv);
+		case INT: 
+			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
+				results.addReport(i);
+		}
+		break; 
+		case FLOAT: 
+			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
+				results.addReport(i);
+		}
 		break;
-		case FLOAT: this.filterContactsByFloat(contacts, pv);
-		break;
-		case DATE: this.filterContactsByDate(contacts, pv);
+		case DATE: 
+			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
+				results.addReport(i);
+		}
 		break;
 		default: System.out.println("Switch statement failed.");
 		break;
 			
 		}
-	
-		return null;
+
+		return results;
 	}
 	
+	/**
+	 * 
+	 * @param contacts
+	 * @param pv
+	 * @return ArrayList mit Contact-Report-Objekten results
+	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
@@ -89,7 +125,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			} 	
 		} results.add(new ContactReport(pviews));
 		
-		return results;
+		return results; //? 
 	}
 		
 	public ArrayList<ContactReport> filterContactsByInt(ArrayList<Contact> contacts, PValue pv) {
@@ -145,22 +181,23 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		return results;  				
 	}
 	
-	public ArrayList<ContactReport> filterContractsByFirstLetter(ArrayList<Contact> contacts, String search) {
-		
-		for (Contact c : contacts) {
-			List<PValue> lPValues = c.getValues();
-			for (PValue pv : lPValues) {
-				List<PValue> filteredList = lPValues.stream().filter(new java.util.function.Predicate<String>() {
-					@Override
-		            public boolean test(String s) {
-		                return s.startsWith(search);
-		            }
-				}).collect(Collectors.toList());
-			}
-		}
-		return null;
-		
-	}
+//	public ArrayList<ContactReport> filterContractsByStringAndFirstLetter(ArrayList<Contact> contacts, PValue pv, String search) {
+//		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
+//		ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
+//		ArrayList<String> strings = new ArrayList<String>();
+//	
+//		for (Contact c : contacts) {
+//			List<PValue> pvalues = c.getValues();
+//			for (PValue i : pvalues) {
+//				strings.add(i.getStringValue());
+//			}
+//			List<String> filteredList = strings.stream()
+//					.filter(s -> s.startsWith(search))
+//					.collect(Collectors.toList());		
+//		} 
+//		
+//		
+//	} 
 	
 		
 		
