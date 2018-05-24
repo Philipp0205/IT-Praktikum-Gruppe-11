@@ -1,0 +1,79 @@
+/*
+  Template: It Projekt 2018
+  Author: Alexander Gerlings
+*/
+
+h1, h2, h3, h4, p, span, a, tr, td {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+body {
+  width: 100%;
+  margin:0;
+}
+
+table tr {
+  width:100%;
+}
+
+table th, table td {
+   width: 16%;
+   text-align: left
+}
+
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.clear {
+  height: 20px;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  height: 120px;
+  box-shadow: 0px 10px 10px -15px black;
+  width: 100%;
+}
+
+.headerItem {
+  float:left;
+  width: 14%;
+  padding: 20px 0px;
+  text-align: center;
+  margin: 31px 0px;
+}
+
+.headerItem:hover span {
+  color: grey;
+}
+
+.headerImg img {
+	width: 11%;
+	float:left;
+	padding:20px 80px;
+}
+
+.content {
+	width: 80%;
+	margin: 25px auto;
+}
+
+.searchImg {
+	float:left;
+	width: 16%;
+	padding: 20px 5px;
+	text-align: center;
+	margin: 31px 0px;
+}
+
+.searchImg img {
+	width:14%;
+}
