@@ -303,11 +303,14 @@ public class PValueMapper {
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		
-				Date date1 = rs.getDate("dateValue");
-	    		pv.setDateValue(date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-	    		//muss noch besprochen werden!
-	    		pv.setDateUpdated(rs.getDate("dateUpdated"));
-	    		pv.setDateCreated(rs.getDate("dateCreated"));
+				Date date = rs.getDate("dateValue");
+	    		LocalDate ld = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    		pv.setDateValue(ld.getYear(), ld.getMonthValue(), ld.getDayOfMonth());
+	    		
+	    		Date date2 = rs.getDate("dateUpdated");
+	    		pv.setDateUpdated(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+	    		
+	    		//pv.setDateCreated(rs.getDate("dateCreated"));
 	    	}
 	    return pv;
 	    }
