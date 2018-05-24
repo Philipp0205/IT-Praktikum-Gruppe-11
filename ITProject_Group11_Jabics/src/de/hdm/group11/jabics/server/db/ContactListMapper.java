@@ -82,42 +82,31 @@ public class ContactListMapper {
 	   
 	  try {
 	   	   
-		  Statement stmt = con.createStatement();
-		
-			 // Herausfinden der bisher h�chsten Kontaktlisten-ID.
-			
-		ResultSet rs = stmt.executeQuery("SELECT MAX(cl-id) AS maxid " + "FROM contactlists ");
-
-			if (rs.next()) {
-				
-				// Setzen der Kontaktlisten-ID
-				 
-				cl.setId(rs.getInt("maxid") + 1); 
 	   
-	   // Erzeugen eines ungef�llten SQL-Statements
-	   Statement stmt2 = con.createStatement();
+	   // Erzeugen eines ungefüllten SQL-Statements
+	   Statement stmt = con.createStatement();
 	   
-	   // Bef�llen der Kontaktlistentabelle.
-	   stmt2.executeUpdate("INSERT INTO contactlists (cl-id, CL-name, Cr-Date) VALUES " + cl.getId() 
+	   // Befüllen der Kontaktlistentabelle.
+	   stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated) VALUES " + cl.getId() 
 	   
 	   	+ cl.getListName()  + cl.getDateCreated() );
 	   
-	// Verkn�pfungen zwischen Kontaktliste und Kontakten erzeugen.
+	// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
 	   
 	   for(int i = 0; i<al.size();i++) {
 		   
 		// Erzeugen eines zweiten ungef�llten SQL-Statements
 		   Statement stmt3 = con.createStatement();
 		   
-		
-		   stmt3.executeUpdate("INSERT INTO contacts-contactlists (cl-id, c-id) VALUES " + al.get(i).getId() +  cl.getId() );
+		   stmt3.executeUpdate("INSERT INTO contactContactLists (contactlistID, contactID) VALUES "  +  cl.getId() + al.get(i).getId() );
 	   		}
 	   /**
 	    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>ContactList</code> 
 	    * Objekts festgelegt.
 	    * 
 	    */
-		} insertCollaboration(cl.getOwner(), cl, true);
+	   insertCollaboration(cl.getOwner(), cl, true);
+		
 	  }
 	   
 	    catch (SQLException e) {
@@ -145,42 +134,37 @@ public class ContactListMapper {
 	    
 	  try {
 	   
-		// Erzeugen eines ungef�llten SQL-Statements
+		// Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // L�schen der veralteten Version der Kontaktliste
-		   stmt.executeUpdate("DELETE FROM contactlists WHERE CL-id=" + cl.getId()); 
+		   // Löschen der veralteten Version der Kontaktliste
+		   stmt.executeUpdate("DELETE FROM contactList WHERE contactlistID=" + cl.getId()); 
 
-		   // Erzeugen eines ungef�llten SQL-Statements
+		   // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt2 = con.createStatement();
 		   
-		   // L�schen der veralteten Verkn�pfungen zu Kontakten
-		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE CL-id=" + cl.getId()); 
+		   // Löschen der veralteten Verknüpfungen zu Kontakten
+		   stmt2.executeUpdate("DELETE FROM contactContactLists WHERE contactlistID=" + cl.getId()); 
 		  
 //--------------------------------------------------------------------------------------------	
 	  
 		   // Erzeugen eines ungef�llten SQL-Statements
 		   Statement stmt3 = con.createStatement();
 		   
-		   // Bef�llen der Kontaktlistentabelle.
-		   stmt3.executeUpdate("INSERT INTO contactlists (cl-id, CL-name, Cr-Date) VALUES " + cl.getId() 
+		   // Befüllen der Kontaktlistentabelle.
+		   stmt3.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated) VALUES " + cl.getId() 
 		   
 		   	+ cl.getListName()  + cl.getDateCreated() );
 		   
 		   for(int i = 0; i<al.size();i++) {
 			   
-			// Erzeugen eines zweiten ungef�llten SQL-Statements
+			// Erzeugen eines zweiten ungefüllten SQL-Statements
 			   Statement stmt4 = con.createStatement();
 			   
-			// Verkn�pfungen zwischen Kontaktliste und Kontakten erzeugen.
-			   stmt4.executeUpdate("INSERT INTO contacts-contactlists (cl-id, c-id) VALUES " + al.get(i).getId() +  cl.getId() );
-			   
-			   /**
-			    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>ContactList</code> 
-			    * Objekts festgelegt.
-			    * 
-			    */
-				} insertCollaboration(cl.getOwner(), cl, true);
+			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
+			   stmt4.executeUpdate("INSERT INTO contactContactLists (contactlistID, contactID) VALUES "  +  cl.getId() + al.get(i).getId());
+			  
+				} 
 	   
 	  	  return cl;
 	    }
@@ -192,7 +176,7 @@ public class ContactListMapper {
 	  }
 	
 	/**
-	 * Diese Methode l�scht ein <code>ContactList</code> Objekt aus der Datenbank.
+	 * Diese Methode löscht ein <code>ContactList</code> Objekt aus der Datenbank.
 	 * 
 	 * @param cl das <code>ContactList</code> Objekt, dass gel�scht werden soll.
 	 */
@@ -206,14 +190,14 @@ public class ContactListMapper {
 		  // Erzeugen eines ungef�llten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // F�llen des Statements
-		   stmt.executeUpdate("DELETE FROM contactlists WHERE CL-id=" + cl.getId()); 
+		   // Füllen des Statements
+		   stmt.executeUpdate("DELETE FROM contactList WHERE  contactlistID =" + cl.getId()); 
 
-		   // Erzeugen eines ungef�llten SQL-Statements
+		   // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt2 = con.createStatement();
 		   
-		   // F�llen des Statements
-		   stmt2.executeUpdate("DELETE FROM contacts-contactlists WHERE CL-id=" + cl.getId()); 
+		   // Füllen des Statements
+		   stmt2.executeUpdate("DELETE FROM contactsContactlists WHERE contactlistID =" + cl.getId()); 
 		   
 		   /** 
 		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gel�st.
@@ -222,15 +206,68 @@ public class ContactListMapper {
 	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      
 	    }
+	  }
+	/**
+	 * Diese Methode löscht ein <code>Contact</code> Objekt aus einer Kontaktliste.
+	 * 
+	 * @param cl das <code>ContactList</code> Objekt, aus welchem der Kontakt gelöscht werden soll.
+	 * @param c das <code>Contact</code> Objekt, dass aus der Liste gelöscht werden soll.
+	 */
+	
+	public void deleteContactfromContactList(ContactList cl, Contact c){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	  try {
+		  // Erzeugen eines ungef�llten SQL-Statements
+		   Statement stmt = con.createStatement();
+		   
+		   // Löschen des Kontakts aus der Liste
+		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID=" + cl.getId() + "AND contactListID = " + cl.getId()); 
 
 	  }
-	
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    }
+	  }
 	
 	/**
-	 * L�schen eines Contact aus einer Liste
-	 * @author Anders
+	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurück, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
+	 */
+	
+	public ContactList findContactListById(int id)  {
+	    // Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen eines Kontaktlisten-Objektes
+	    	ContactList cl = new ContactList();
+
+	    	// F�llen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM contactList " + "WHERE contactlistID = " + id );
+	   
+	    	if (rs.next()) {
+	       
+	    		//Befüllen des Kontaktlisten-Objekts
+	    		cl.setId(rs.getInt("id"));
+	    		cl.setListName(rs.getString("listname"));
+	    		cl.setDateUpdated(rs.get//wird noch besprochen!
+	    	}
+	    return cl;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	  }
+	/**
+	 * Löschen eines <code>Contact</code> Objekts aus einer Liste.
+	 * @author Brase
 	 */
 	public void removeContactFromList(ContactList cl, Contact c) {
 		// Erzeugen der Datenbankverbindung
@@ -271,9 +308,8 @@ public class ContactListMapper {
 	  while (rs.next()) {
 	      
 		//Bef�llen des User-Objekts
-	        User u = new User();
-	        u.setId(rs.getInt("id"));
-	      //  c.setOwnerID(rs.getInt("owner"));
+	        User u = new User(rs.getString("email"));
+	        u.setId(rs.getInt("systemUserID"));
 	        al.add(u);
 	        
 	      }
