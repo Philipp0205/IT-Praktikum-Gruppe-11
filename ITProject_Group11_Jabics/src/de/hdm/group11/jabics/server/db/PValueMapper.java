@@ -310,7 +310,6 @@ public class PValueMapper {
 	    		Date date2 = rs.getDate("dateUpdated");
 	    		pv.setDateUpdated(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 	    		
-	    		//pv.setDateCreated(rs.getDate("dateCreated"));
 	    	}
 	    return pv;
 	    }

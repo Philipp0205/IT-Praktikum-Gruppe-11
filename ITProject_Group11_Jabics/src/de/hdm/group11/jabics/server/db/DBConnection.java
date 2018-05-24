@@ -10,7 +10,7 @@ import java.sql.Statement;
 import com.google.appengine.api.utils.SystemProperty;
 /**
  * 
- * Die DBConnection-Klasse stellt über die connection() Methode eine Verbindung mit der Datenbank zur Verfügung. 
+ * Die DBConnection-Klasse stellt ï¿½ber die connection() Methode eine Verbindung mit der Datenbank zur Verfï¿½gung. 
  * 
  * @author Brase
  * @author Stahl
@@ -34,7 +34,7 @@ public class DBConnection {
 		 * Der DriverManager baut mit den angegebenen Verbindungsinformationen die Verbindung zur Datenbank auf. 
 		 * Diese Verbinfung wird in der Variable  "con" gespeichert.  
 		 */
-		con = DriverManager.getConnection("jdbc:mysql://localhost");
+		con = DriverManager.getConnection("http://mysql.webhosting31.1blu.de/phpMyAdmin/db_structure.php?server=1&db=db242770x2739576&token=fea7589569dc0203a67963a8687a0d73","s242770_2739576","itPROJEKT2018");
 					
 		System.out.println("Connected to DB");
 			
@@ -44,7 +44,7 @@ public class DBConnection {
 			System.err.print(e);
 		
 		} 
-		//Rückgabe der Verbindung
+		//Rï¿½ckgabe der Verbindung
 		return con;
 	
 }
