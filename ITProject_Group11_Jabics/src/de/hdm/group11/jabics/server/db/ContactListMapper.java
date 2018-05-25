@@ -1,4 +1,3 @@
-
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
