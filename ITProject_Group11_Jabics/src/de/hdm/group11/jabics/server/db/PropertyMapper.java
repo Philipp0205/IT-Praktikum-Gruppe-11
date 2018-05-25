@@ -16,12 +16,15 @@ import de.hdm.group11.jabics.shared.bo.Property;
  * @author Stahl
  *
  * Diese Mapper-Klasse realisiert die Abbildung von <code>Property</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der Eigenschaften in der Datenbank zur Verf�gung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der Eigenschaften in der Datenbank zur Verfügung. 
  *
  */
 public class PropertyMapper {
 	
 	/**
+	 * @author Thies
+     * Aus dem Bankprojekt
+     * 
 	 * Die Klasse PropertyMapper wird nur einmal instantiiert. Man spricht
      * hierbei von einem sogenannten <b>Singleton</b>.
      * <p>
@@ -35,6 +38,9 @@ public class PropertyMapper {
 	private static PropertyMapper propertyMapper = null;
 	
 	/**
+	 * @author Thies
+     * Aus dem Bankprojekt
+     * 
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
 	 * neue Instanzen dieser Klasse zu erzeugen. 
 	 */
@@ -44,6 +50,9 @@ public class PropertyMapper {
 	}
 	
 	/**
+	 * @author Thies
+     * Aus dem Bankprojekt
+     * 
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>PropertyMapper.propertyMapper()</code>. Sie stellt die
 	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
@@ -66,10 +75,10 @@ public class PropertyMapper {
 	}
 	
 	/** 
-	 * Diese Methode tr�gt eine Eigenschaft in die Datenbank ein.
+	 * Diese Methode trägt eine Eigenschaft in die Datenbank ein.
 	 * 
 	 * @param p das <code>Property</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @return Das als Parameter �bergebene- <code>Property</code> Objekt.
+	 * @return Das als Parameter übergebene- <code>Property</code> Objekt.
 	 */
 	
 	public Property insertProperty(Property p){
@@ -77,11 +86,11 @@ public class PropertyMapper {
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-	    // Erzeugen eines ungef�llten SQL-Statements
+	    // Erzeugen eines ungefüllten SQL-Statements
 	    Statement stmt = con.createStatement();
 	   
 	    
-	    // F�llen des Statements
+	    // Füllen des Statements
 	    stmt.executeUpdate("INSERT INTO Property (P-id, P-label, P-type, P-isStandard) VALUES " 
 	   
 			+ "(" + p.getId() + "," + p.getLabel() + "," + p.getType() + "," + p.isStandard() + ")"  ); 
@@ -99,7 +108,7 @@ public class PropertyMapper {
 	 * Diese Methode aktualisiert ein <code>Property</code> Objekt in der Datenbank.
 	 * 
 	 * @param p das <code>Property</code> Objekt, dass aktualisiert werden soll.
-	 * @return Das als Parameter �bergebene- <code>Property</code> Objekt.
+	 * @return Das als Parameter übergebene- <code>Property</code> Objekt.
 	 */
 	
 	public Property updatePValue(Property p){
@@ -108,16 +117,16 @@ public class PropertyMapper {
 	    
 	    try {
 	   
-	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 		   
-	    	// F�llen des Statements
+	    	// Füllen des Statements
 	    	stmt.executeUpdate("DELETE FROM Property WHERE id=" + p.getId()); 
 		   
-	    	// Erzeugen eines zweiten ungef�llten SQL-Statements
+	    	// Erzeugen eines zweiten ungefüllten SQL-Statements
 	    	Statement stmt2 = con.createStatement();
 	   
-	    	// F�llen des Statements
+	    	// Füllen des Statements
 	    	stmt2.executeUpdate("INSERT INTO Property (P-id, P-label, P-type, P-isStandard) VALUES " 
 			   
 				+ "(" + p.getId() + "," + p.getLabel() + "," + p.getType() + "," + p.isStandard() + ")"  ); 
@@ -133,9 +142,9 @@ public class PropertyMapper {
 	
 	
 	/**
-	 * Diese Methode l�scht ein <code>Property</code> Objekt aus der Datenbank.
+	 * Diese Methode löscht ein <code>Property</code> Objekt aus der Datenbank.
 	 * 
-	 * @param p das <code>Property</code> Objekt, dass gel�scht werden soll.
+	 * @param p das <code>Property</code> Objekt, dass gelöscht werden soll.
 	 * 
 	 */
 	
@@ -145,10 +154,10 @@ public class PropertyMapper {
 	    
 	    try {
 	   
-	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 		   
-	    	// F�llen des Statements
+	    	// Füllen des Statements
 	    	stmt.executeUpdate("DELETE FROM Property WHERE P-id=" + p.getId()); 
 	  	  
 	    }
