@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import de.hdm.group11.jabics.shared.bo.ContactList;
+import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 
 /**
@@ -165,6 +167,42 @@ public class PropertyMapper {
 	    	System.err.print(e); 
 	    }
 
+	  }
+	
+	/**
+	 * Diese Methode gibt ein <code>Property</code> Objekt zurück, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
+	 */
+	
+	public Property findPropertyById(int id)  {
+	    // Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungef�llten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen eines Property-Objektes
+	    	
+	    	Property p = null;
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Property " + "WHERE PropertyID = " + id + " ORDER BY -");
+	   
+	    	if (rs.next()) {
+	    		
+	    		//Befüllen des Property-Objekts
+	    		p.setId(rs.getInt("propertyID"));
+	    		
+	    		
+	    	}
+	    	return p;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	 
 	  }
 
 }

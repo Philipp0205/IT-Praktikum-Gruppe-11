@@ -160,28 +160,27 @@ public class UserMapper {
 		   // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		 //Erzeugen eines User-Objektes
-		   User u = new User();
+		 
 
 		   // Füllen des Statements
 		   ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE id=" + id + " ORDER BY -");
 		   
 		  if (rs.next()) {
 		       
+			//Erzeugen eines User-Objektes
+			   User u = new User(rs.getString("email"));
+        
 			//Befüllen des Kontakt-Objekts
 		        u.setId(rs.getInt("id"));
-		      //  c.setOwnerID(rs.getInt("owner"));
-		        
-		      }
-		  return u;
+		        return u;
+		      }else
+		  return null;
 		    }
 		    catch (SQLException e) {
 		    	System.err.print(e);
 		      return null;
 		    }
-		 
 		  }
-		
 		/**
 		 * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank.
 		 * 
@@ -198,7 +197,7 @@ public class UserMapper {
 		    	Statement stmt = con.createStatement();
 		   
 		    	//Erzeugen eines User-Objektes
-		    	User u = new User();
+		    	User u = null;
 
 		    	// Füllen des Statements
 		    	ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE Mail = " + mail + " ORDER BY -");

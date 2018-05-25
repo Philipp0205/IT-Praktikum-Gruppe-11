@@ -8,7 +8,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import com.google.gwt.thirdparty.javascript.jscomp.regex.CaseCanonicalize;
@@ -173,9 +175,9 @@ public class PValueMapper {
 	    * 
 	    */
 	   insertCollaboration(pv.getOwner(), pv, true);
-	 //Rückgabe des PValue
-	   return pv;
-			}
+	 
+			}//Rückgabe des PValue
+			   return pv;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -221,7 +223,7 @@ public class PValueMapper {
 		   }
 		   case INT: {
 			   String columnname = "intValue";
-	   		   stmt.executeUpdate("UPDATE contact SET dateUpdated =" + c.getDateUpdated() + "," + columnname + "=" +
+	   		   stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" +
 						   pv.getIntValue() + " WHERE pValueID = " + pv.getId() +")");  
 		   }
 		   case DATE: {
@@ -279,6 +281,51 @@ public class PValueMapper {
 	    	System.err.print(e);
 	    }
 	  }
+	
+	/**
+	 * Diese Methode gibt ein <code>PValue</code> Objekt zurück, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
+	 */
+	
+	public PValue findPValueById(int id)  {
+	    // Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen eines PValue-Objektes
+	    	PValue pv = null;
+
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE PValue-id = " + id + " ORDER BY -");
+	   
+	    	if (rs.next()) {
+	       
+	    		//Befüllen des PValue-Objekts
+	    		pv.setId(rs.getInt("id"));
+	    		pv.setStringValue(rs.getString("stringValue"));
+	    		Property pfpv = PropertyMapper.propertyMapper().findPropertyById(rs.getInt("PropertyID"));
+	    		pv.setProperty(pfpv);
+	    		pv.setIntValue(rs.getInt("intValue"));
+	    		pv.setFloatValue(rs.getFloat("floatValue"));
+	    		
+				Date date1 = rs.getDate("dateValue");
+	    		pv.setDateValue(date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+	    		//muss noch besprochen werden!
+	    		pv.setDateUpdated(rs.getDate("dateUpdated"));
+	    		pv.setDateCreated(rs.getDate("dateCreated"));
+	    	}
+	    return pv;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	 
+	  }
 
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code> Objekten die eine Teilhaberschaft 
@@ -305,10 +352,8 @@ public class PValueMapper {
 	  while (rs.next()) {
 	      
 		//Befüllen des User-Objekts
-	        User u = new User();
+	        User u = new User(rs.getString("email"));
 	        u.setId(rs.getInt("systemUserID"));
-	        u.setUsername(rs.getString("Username"));
-	      //  c.setOwnerID(rs.getInt("owner"));
 	        al.add(u);
 	      }
 	  return al;
