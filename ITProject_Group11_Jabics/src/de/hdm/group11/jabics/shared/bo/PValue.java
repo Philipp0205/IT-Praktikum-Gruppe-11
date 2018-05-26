@@ -14,7 +14,7 @@ public class PValue extends BusinessObject {
 	
 	private int intValue; 
 	private String stringValue; 
-	private LocalDate dateValue;
+	private LocalDateTime dateValue;
 	private float floatValue; 
 	private Property property;
 	private int pointer = 0; 
@@ -36,7 +36,7 @@ public class PValue extends BusinessObject {
 		this.stringValue = s;
 		this.pointer = 2;
 	}
-	public PValue(Property p, LocalDate date) {
+	public PValue(Property p, LocalDateTime date) {
 		this(p);
 		this.dateValue = date;
 		this.pointer = 3;

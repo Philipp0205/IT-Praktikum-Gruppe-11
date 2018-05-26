@@ -39,11 +39,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	@Override
 	public AllContactsInSystemReport createAllContactsInSystemReport() {
 		AllContactsInSystemReport result = new AllContactsInSystemReport();
-		/**
-		 * ArrayList<User> allUsers = uMapper.getAllUser();
-		 * Dem result AllContactsInUser Reports für alle Nutzer hinzufügen
-		 */
-		for (User u: uMapper.getAllUser()) {
+		result.setHeadline(new Paragraph("Report aller Kontakte im System"));
+		result.setFootline(new Paragraph("Ende des Reports"));
+		for (User u: uMapper.findAllUser()) {
 			result.addReport(createAllContactsOfUserReport(u));
 		}
 		return result;
@@ -62,7 +60,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 
 
 	/**
-	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus gefilterten ContactReport zurück.
+	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus gefilterten ContactReport zurï¿½ck.
 	 * @param ArrayList mit Contact-Objekten "contacts"
 	 * @param Ein PValue-Objekt pv
 	 * 
@@ -78,7 +76,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		/**
 		 *  Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt. 
-		 *  Aus dieser werden dann anschließend die entsprechenden Kontakte gefiltert.
+		 *  Aus dieser werden dann anschlieï¿½end die entsprechenden Kontakte gefiltert.
 		 */
 		ArrayList<Contact> contacts = new ArrayList<Contact>();
 		cMapper.findAllContacts(u);
@@ -86,7 +84,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		// Zuerst wird ein leerer Report angelegt. 
 		FilteredContactsOfUserReport results = new FilteredContactsOfUserReport(contacts, pv);
 		
-		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
+		// Jeder Report hat eine ï¿½berschrift sowe eine abschlieï¿½ende Nachricht, welche hier headline und footline genannt werden.
 		results.setFootline("Ende des Reports.");
 		
 		// Erstellungsdatum des Reports auf "jetzt" stellen. 
@@ -147,71 +145,59 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
-	
-		for (Contact c : contacts ) {
-			ArrayList<PValue> pvalues = c.getValues();
-			for (PValue p : pvalues) {
-				if (p.getStringValue() == pv.getStringValue()) {
-					pviews.add(new PropertyView(pv));					
-				} 
-			} 	
-		} results.add(new ContactReport(pviews));
 		
+		for (Contact c : Filter.filterContactsByString(contacts, pv)) {
+			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
+			for (PValue p : c.getValues()) {
+				pviews.add(new PropertyView(p));
+			}
+			results.add(new ContactReport(pviews));
+		}
 		return results; //? 
 	}
 		
 	public ArrayList<ContactReport> filterContactsByInt(ArrayList<Contact> contacts, PValue pv) {
 		
-		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
-	
-		for (Contact c : contacts ) {
-			ArrayList<PValue> pvalues = c.getValues();
-			for (PValue p : pvalues) {
-				if (p.getIntValue() == pv.getIntValue()) {
-					pviews.add(new PropertyView(pv));					
-				} 
-			} 	
-		} results.add(new ContactReport(pviews));
+ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
-		return results; 		
+		for (Contact c : Filter.filterContactsByInt(contacts, pv)) {
+			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
+			for (PValue p : c.getValues()) {
+				pviews.add(new PropertyView(p));
+			}
+			results.add(new ContactReport(pviews));
+		}
+		return results; //? 		
 		
 	}
 	
 	public ArrayList<ContactReport> filterContactsByDate(ArrayList<Contact> contacts, PValue pv) {
 		
-		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
-	
-		for (Contact c : contacts ) {
-			ArrayList<PValue> pvalues = c.getValues();
-			for (PValue p : pvalues) {
-				if (p.getDateValue() == pv.getDateValue()) {
-					pviews.add(new PropertyView(pv));					
-				} 
-			} 	
-		} results.add(new ContactReport(pviews));
+ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
-		return results; 		
+		for (Contact c : Filter.filterContactsByDate(contacts, pv)) {
+			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
+			for (PValue p : c.getValues()) {
+				pviews.add(new PropertyView(p));
+			}
+			results.add(new ContactReport(pviews));
+		}
+		return results; //? 	
 		
 	}
 	
 	public ArrayList<ContactReport> filterContactsByFloat(ArrayList<Contact> contacts, PValue pv) {
 		
-		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
-	
-		for (Contact c : contacts ) {
-			ArrayList<PValue> pvalues = c.getValues();
-			for (PValue p : pvalues) {
-				if (p.getFloatValue() == pv.getFloatValue()) {
-					pviews.add(new PropertyView(pv));					
-				} 
-			} 	
-		} results.add(new ContactReport(pviews));
+ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
-		return results;  				
+		for (Contact c : Filter.filterContactsByFloat(contacts, pv)) {
+			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
+			for (PValue p : c.getValues()) {
+				pviews.add(new PropertyView(p));
+			}
+			results.add(new ContactReport(pviews));
+		}
+		return results; //? 				
 	}
 	
 //	public ArrayList<ContactReport> filterContractsByStringAndFirstLetter(ArrayList<Contact> contacts, PValue pv, String search) {

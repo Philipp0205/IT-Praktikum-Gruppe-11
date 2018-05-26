@@ -137,7 +137,7 @@ public class ContactMapper extends PValueMapper{
 		 * 
 		 */
 
-	public void deleteContact(Contact c, User u){
+	public void deleteContact(Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -152,7 +152,7 @@ public class ContactMapper extends PValueMapper{
 		   Statement stmt2 = con.createStatement();
 		   
 		   // Löschen des Kontakts.
-		   stmt2.executeUpdate("DELETE FROM Collaboration WHERE contactID=" + c.getId()); 
+		   stmt2.executeUpdate("DELETE FROM contact WHERE contactID=" + c.getId()); 
 		   
 	    }
 	    catch (SQLException e) {
