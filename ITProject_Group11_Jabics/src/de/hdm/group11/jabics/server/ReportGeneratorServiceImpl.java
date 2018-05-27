@@ -217,6 +217,13 @@ ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		}
 		return results; //? 				
 	}
+
+	@Override
+	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 //	public ArrayList<ContactReport> filterContractsByStringAndFirstLetter(ArrayList<Contact> contacts, PValue pv, String search) {
 //		ArrayList<ContactReport> results = new ArrayList<ContactReport>();

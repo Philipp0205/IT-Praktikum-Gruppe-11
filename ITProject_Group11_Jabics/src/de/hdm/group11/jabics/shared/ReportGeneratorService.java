@@ -45,7 +45,7 @@ public interface ReportGeneratorService extends RemoteService {
 	 * @return Das gefilterte Reportobjekt.
 	 * @throws IllegalArgumentException
 	 */
-	FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv) throws IllegalArgumentException;
+	FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, User u) throws IllegalArgumentException;
 	
 	
 	
