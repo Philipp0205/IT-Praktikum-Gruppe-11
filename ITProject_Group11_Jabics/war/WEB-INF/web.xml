@@ -22,5 +22,16 @@
   <welcome-file-list>
     <welcome-file>ITProject_Group11_Jabics.html</welcome-file>
   </welcome-file-list>
+  
+   <!-- Servlets NICHT LÖSCHEN -->
+  <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>de.hdm.group11.jabics.server.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/stockwatcher/login</url-pattern>
+  </servlet-mapping>
 
 </web-app>
