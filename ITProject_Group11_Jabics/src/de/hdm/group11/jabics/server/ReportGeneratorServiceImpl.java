@@ -13,7 +13,6 @@ import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.ReportGeneratorService;
 import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.report.*;
-import de.hdm.thies.bankProjekt.shared.ReportGenerator;
 
 /**
  * Implementierung des <code>ReportGeneratorService</code>-Interface. 
@@ -53,8 +52,20 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 */
 	@Override
 	public AllContactsOfUserReport createAllContactsOfUserReport(User u) {
+		
 		AllContactsOfUserReport result = new AllContactsOfUserReport();
-		ArrayList<Contact> allContacts = cMapper.findAllContacts(u);
+		result.setHeadline(new Paragraph("Report aller Kontakte für " + u.getUsername()));
+		result.setFootline(new Paragraph("Ende des Reports"));
+		/**
+		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue von diesem 
+		 */
+		for (Contact c : cMapper.findAllContacts(u)) {
+			ArrayList<PropertyView> pval = new ArrayList<PropertyView>();
+			for (PValue pv : c.getValues()) {
+				pval.add(new PropertyView(pv));
+			}
+			result.addReport(new ContactReport(pval));
+		}
 		return result;
 	}
 
@@ -82,59 +93,59 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		cMapper.findAllContacts(u);
 
 		// Zuerst wird ein leerer Report angelegt. 
-		FilteredContactsOfUserReport results = new FilteredContactsOfUserReport(contacts, pv);
+		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport(contacts, pv);
 		
-		// Jeder Report hat eine ï¿½berschrift sowe eine abschlieï¿½ende Nachricht, welche hier headline und footline genannt werden.
-		results.setFootline("Ende des Reports.");
+		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
+		
+		result.setFootline("Ende des Reports.");
 		
 		// Erstellungsdatum des Reports auf "jetzt" stellen. 
-		results.setCreationDate(LocalDateTime.now());
+		result.setCreationDate(LocalDateTime.now());
 		
 		
 		String[] filtercriteria = new String[4];
-		Paragraph p = new Paragraph();
 			
 		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle passenden Report Objekte mit, welche dann den results mitgegeben werden.
 		switch (pv.getProperty().getType())  {
 		case STRING: 
 			for (ContactReport i : this.filterContactsByString(contacts, pv)) {
 				filtercriteria[0] = "string";
-				results.addReport(i);
+				result.addReport(i);
 		}
 		break;
 		case INT: 
 			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
 				filtercriteria[1] = "int";
-				results.addReport(i);
+				result.addReport(i);
 		}
 		break; 
 		case FLOAT: 
 			for (ContactReport i : this.filterContactsByDate(contacts, pv)) {
 				filtercriteria[2] = "date";
-				results.addReport(i);
+				result.addReport(i);
 		}
 		break;
 		case DATE: 
 			for (ContactReport i : this.filterContactsByFloat(contacts, pv)) {
 				filtercriteria[2] = "float";
-				results.addReport(i);
+				result.addReport(i);
 		}
 		break;
 		default: System.out.println("Switch statement failed.");
 		break;
 			
 		}
-		results.setFiltercriteria(p, filtercriteria);
+		result.setFiltercriteria(p, filtercriteria);
 		/**
 		 *  Oben im Report wird angegeben, wie der nachfolgende Report gefiltert wurde.
 		 */
 		for (String i : filtercriteria) {
 			if (i != null) {
-				results.setHeadline("Dieser Report wurde nach dem Datentyp " + i + " gefiltert.");
+				result.setHeadline("Dieser Report wurde nach dem Datentyp " + i + " gefiltert.");
 			}
 		}
 		
-		return results;
+		return result;
 	}
 	
 	/**
@@ -146,7 +157,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
-		for (Contact c : Filter.filterContactsByString(contacts, pv)) {
+		for (Contact c : Filter.filterContactsByString(contacts, pv.getStringValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
@@ -160,7 +171,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
-		for (Contact c : Filter.filterContactsByInt(contacts, pv)) {
+		for (Contact c : Filter.filterContactsByInt(contacts, pv.getIntValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
@@ -175,7 +186,7 @@ ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
 ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
-		for (Contact c : Filter.filterContactsByDate(contacts, pv)) {
+		for (Contact c : Filter.filterContactsByDate(contacts, pv.getDateValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
@@ -190,7 +201,7 @@ ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
 ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
-		for (Contact c : Filter.filterContactsByFloat(contacts, pv)) {
+		for (Contact c : Filter.filterContactsByFloat(contacts, pv.getFloatValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));

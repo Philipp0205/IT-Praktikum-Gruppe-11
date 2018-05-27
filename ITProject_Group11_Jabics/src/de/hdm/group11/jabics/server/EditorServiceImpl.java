@@ -321,7 +321,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return pvMapper.getPValueForContact(c, u);
 	};
 	
-	public ArrayList<Contact> searchInList(String s, ContactList cl);
+	public ArrayList<Contact> searchInList(String s, ContactList cl){
+		return Filter.filterContactsByString(cl.getContacts(), new PValue());
+	};
 	
 	public ArrayList<Contact> searchInList(int i, ContactList cl);
 	

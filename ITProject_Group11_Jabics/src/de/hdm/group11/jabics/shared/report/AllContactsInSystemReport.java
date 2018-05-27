@@ -14,14 +14,4 @@ public class AllContactsInSystemReport extends CompositeReport{
 		subReports.remove(cr);
 	}
 	
-	@Override
-	public ArrayList<AllContactsOfUserReport> getSubReports() {
-		return subReports;
-	}
-
-	@Override
-	public void setSubReports(ArrayList<AllContactsOfUserReport> subReports) {
-		this.subReports = subReports;
-	}
-	
 }

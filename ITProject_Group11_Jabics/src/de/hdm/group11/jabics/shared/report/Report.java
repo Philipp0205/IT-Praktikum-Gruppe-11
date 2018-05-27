@@ -17,7 +17,6 @@ public abstract class Report implements Serializable {
 	
 	static final long serialVersionUID = 1L;
 	
-	
 	LocalDateTime creationDate;
 	User creator;
 	

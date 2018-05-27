@@ -17,6 +17,15 @@ public class Paragraph {
 		this.content = content;
 	}
 	
+	public String getFilterAsString() {
+		StringBuffer result = new StringBuffer();
+		result.append("Es wurde nach ");
+		for (String s : filtercriteria) {
+			result.append(s + ", ");
+		}
+		result.append(" gefiltert.");
+		return result.toString();
+	}
 	
 	public String[] getFiltercriteria() {
 		return filtercriteria;
