@@ -96,7 +96,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport(contacts, pv);
 		
 		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
-		
+		result.setHeadline("Gefilterter Report für Nutzer " + u.getUsername());
 		result.setFootline("Ende des Reports.");
 		
 		// Erstellungsdatum des Reports auf "jetzt" stellen. 
@@ -106,6 +106,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		String[] filtercriteria = new String[4];
 			
 		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle passenden Report Objekte mit, welche dann den results mitgegeben werden.
+		/**
+		 * TODO: konkrete werte, nach denen gefiltert wurde, zum filtercriteria aray hinzufügen
+		 */
 		switch (pv.getProperty().getType())  {
 		case STRING: 
 			for (ContactReport i : this.filterContactsByString(contacts, pv)) {
@@ -135,15 +138,19 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		break;
 			
 		}
-		result.setFiltercriteria(p, filtercriteria);
+		
 		/**
-		 *  Oben im Report wird angegeben, wie der nachfolgende Report gefiltert wurde.
+		 * Filterkriterien, nach denen gefiltert wurde, setzen
 		 */
-		for (String i : filtercriteria) {
-			if (i != null) {
-				result.setHeadline("Dieser Report wurde nach dem Datentyp " + i + " gefiltert.");
+		StringBuffer filt = new StringBuffer();
+		filt.append("Es wurde nach ");
+		for (String s : filtercriteria) {
+			if (s != null) {
+				filt.append(s + ", ");
 			}
 		}
+		filt.append(" gefiltert.");
+		result.setFiltercriteria(new Paragraph(filt.toString()));
 		
 		return result;
 	}
