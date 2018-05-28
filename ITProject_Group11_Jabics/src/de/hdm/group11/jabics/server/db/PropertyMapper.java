@@ -18,9 +18,13 @@ import de.hdm.group11.jabics.shared.bo.Property;
 public class PropertyMapper {
 	
 	/**
+	 * Struktur von
 	 * @author Thies
-     * Aus dem Bankprojekt
-     * 
+	 * 
+	 * Angepasst von
+	 * @author Brase
+	 * @author Stahl
+	 * 
 	 * Die Klasse PropertyMapper wird nur einmal instantiiert. Man spricht
      * hierbei von einem sogenannten <b>Singleton</b>.
      * <p>
@@ -33,9 +37,13 @@ public class PropertyMapper {
 	private static PropertyMapper propertyMapper = null;
 	
 	/**
+	 * Struktur von
 	 * @author Thies
-     * Aus dem Bankprojekt
-     * 
+	 * 
+	 * Angepasst von
+	 * @author Brase
+	 * @author Stahl
+	 * 
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
 	 * neue Instanzen dieser Klasse zu erzeugen. 
 	 */
@@ -43,9 +51,13 @@ public class PropertyMapper {
 	}
 	
 	/**
+	 * Struktur von
 	 * @author Thies
-     * Aus dem Bankprojekt
-     * 
+	 * 
+	 * Angepasst von
+	 * @author Brase
+	 * @author Stahl
+	 * 
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>PropertyMapper.propertyMapper()</code>. Sie stellt die
 	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
