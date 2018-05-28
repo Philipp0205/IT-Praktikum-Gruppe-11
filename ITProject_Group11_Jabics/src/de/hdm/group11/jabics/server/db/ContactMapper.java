@@ -223,44 +223,37 @@ public class ContactMapper extends PValueMapper{
 	 * @param fn der Vorname nach dem gesucht werden soll.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Vornamen.
 	 */
-	//Übergabeparameter Anpassen, in der DB gibt es die Spalten String, int, float, date
-	/**
 	public ArrayList<Contact> findContactByPValue(String pvalue){
-
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
-	   Statement stmt = con.createStatement();
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
 	   
-	   //Erzeugen einer ArrayList
-	    ArrayList<Contact> al = new ArrayList();
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<Contact> al = new ArrayList();
 	    
-	   // Füllen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT * FROM contacts " + "WHERE Firstname=" + fn + " ORDER BY -");
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM contacts " + "WHERE Firstname=" + fn + " ORDER BY -");
 
-	  while (rs.next()) {
-	      
-		//Befüllen des Kontakt-Objekts
-	        Contact c = new Contact();
-	        c.setId(rs.getInt("id"));
+	    	while (rs.next()) {
+	      		//Befüllen des Kontakt-Objekts
+	    		Contact c = new Contact();
+	    		c.setId(rs.getInt("id"));
 
-	      // setzen weiterer attribute wie datecreated und dateUpdated hier einfügen
-	      //  c.setOwnerID(rs.getInt("owner"));
-	        al.add(c);
-	        
-	      }
-	  return al;
+	    		// setzen weiterer attribute wie datecreated und dateUpdated hier einfügen
+	    		//  c.setOwnerID(rs.getInt("owner"));
+	    		
+	    		al.add(c);
+	        }
+	    	return al;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      return null;
+	    	return null;
 	    }
-
-	  }
-
-	*/
+	}
 	
 	/**
 	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurück, dass eine bestimmte ID hat.

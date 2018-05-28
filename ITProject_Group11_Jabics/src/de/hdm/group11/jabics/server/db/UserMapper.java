@@ -4,10 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -99,7 +96,6 @@ public class UserMapper {
 	 * 
 	 * @param u das <code>User</code> Objekt, dass gelöscht werden soll.
 	 */
-		
 	public void deleteUser(User u){
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -169,7 +165,6 @@ public class UserMapper {
 	 * @param mail  die mail nach der gesucht werden soll.
 	 * @return das gesuchte  <code>User</code> Objekt.
 	 */
-		
 	public User findUserByMail(String mail)  {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
