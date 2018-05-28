@@ -19,7 +19,6 @@ import de.hdm.group11.jabics.shared.bo.User;
  * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontaktlisten in der Datenbank zur Verfügung. 
  *
  */
-
 public class ContactListMapper {
 		
 	/**
@@ -106,7 +105,6 @@ public class ContactListMapper {
 	    	 * 
 	    	 */
 	    	insertCollaboration(cl.getOwner(), cl, true);
-		
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -149,7 +147,6 @@ public class ContactListMapper {
 	 * @param cl das <code>ContactList</code> Objekt, dass gelöscht werden soll.
 	 */
 	public void deleteContactList(ContactList cl){
-		
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -169,8 +166,7 @@ public class ContactListMapper {
 	    	/** 
 	    	 * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelöst.
 	    	 */
-	    	deleteCollaboration(cl, cl.getOwner());
-	    	
+	    	deleteCollaboration(cl, cl.getOwner());	
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -256,7 +252,7 @@ public class ContactListMapper {
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		cl.setId(rs.getInt("id"));
 	    		cl.setListName(rs.getString("listname"));
-	    		cl.setDateUpdated(rs.get);//wird noch besprochen!
+	    		//cl.setDateUpdated(rs.get);//wird noch besprochen!
 	    	}
 	    	return cl;
 	    }
@@ -264,7 +260,7 @@ public class ContactListMapper {
 	    	System.err.print(e);
 	    	return null;
 	    }
-	  }
+	}
 	
 	/**
 	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurück, dass einen bestimmten Namen hat.
