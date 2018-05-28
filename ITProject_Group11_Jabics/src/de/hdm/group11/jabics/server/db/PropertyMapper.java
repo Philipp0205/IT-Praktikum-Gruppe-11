@@ -107,43 +107,6 @@ public class PropertyMapper {
 	}
 	
 	/**
-	 * Diese Methode aktualisiert ein <code>Property</code> Objekt in der Datenbank.
-	 * 
-	 * @param p das <code>Property</code> Objekt, dass aktualisiert werden soll.
-	 * @return Das als Parameter übergebene- <code>Property</code> Objekt.
-	 */
-	
-	public Property updatePValue(Property p){
-		// Erzeugen der Datenbankverbindung
-	    Connection con = DBConnection.connection();
-	    
-	    try {
-	   
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-		   
-	    	// Füllen des Statements
-	    	stmt.executeUpdate("DELETE FROM Property WHERE id=" + p.getId()); 
-		   
-	    	// Erzeugen eines zweiten ungefüllten SQL-Statements
-	    	Statement stmt2 = con.createStatement();
-	   
-	    	// Füllen des Statements
-	    	stmt2.executeUpdate("INSERT INTO Property (P-id, P-label, P-type, P-isStandard) VALUES " 
-			   
-				+ "(" + p.getId() + "," + p.getLabel() + "," + p.getType() + "," + p.isStandard() + ")"  ); 
-
-	  	  	return p;
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return null;
-	    }
-
-	}
-	
-	
-	/**
 	 * Diese Methode löscht ein <code>Property</code> Objekt aus der Datenbank.
 	 * 
 	 * @param p das <code>Property</code> Objekt, dass gelöscht werden soll.
