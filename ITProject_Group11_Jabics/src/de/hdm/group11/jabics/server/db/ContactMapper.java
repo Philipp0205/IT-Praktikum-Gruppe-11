@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
@@ -38,7 +35,6 @@ public class ContactMapper extends PValueMapper{
      * 
      * @see contactMapper()
 	 */  	
-	
 	private static ContactMapper contactMapper = null;
 	
 	/**
@@ -47,9 +43,7 @@ public class ContactMapper extends PValueMapper{
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
 	 * neue Instanzen dieser Klasse zu erzeugen. 
 	 */
-	
 	protected ContactMapper() {
-		
 	}
 	
 	/**
@@ -68,12 +62,10 @@ public class ContactMapper extends PValueMapper{
 	 * @return Das <code>ContactMapper</code>-Objekt.
 	 * @see contactMapper
 	 */  
-	
 	public static ContactMapper contactMapper() {
 		if (contactMapper == null) {
 			contactMapper = new ContactMapper();
 		}
-		
 		return contactMapper;
 	}
 	
@@ -87,22 +79,20 @@ public class ContactMapper extends PValueMapper{
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	  try {
-		  // Erzeugen eines ungefüllten SQL-Statements
-				Statement stmt = con.createStatement();
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
 	   
-	   // Füllen des Statements
-	   stmt.executeUpdate("INSERT INTO contact (contactID, dateCreated, dateUpdated,) VALUES " 
-	   
-			   + "(" + c.getId() + c.getDateCreated() + "," + c.getDateUpdated() + ","  + ")"  );
-	  
-	  }
+			// Füllen des Statements
+			stmt.executeUpdate("INSERT INTO contact (contactID, dateCreated, dateUpdated,) VALUES " 
+			+ "(" + c.getId() + c.getDateCreated() + "," + c.getDateUpdated() + ","  + ")"  );
+	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      return null;
+	    	return null;
 	    }
-	  return c;
-	  }
+	    return c;
+	}
 	
 	/**
 	 * Diese Methode aktualisiert ein <code>Contact</code> Objekt in der Datenbank.
@@ -111,54 +101,52 @@ public class ContactMapper extends PValueMapper{
 	 * @param u der <code>User</code>, der die Änderung durchführt
 	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
 	 */
-	
 	public Contact updateContact(Contact c, User u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	  try {
-		  // Erzeugen eines ungefüllten SQL-Statements
-		   Statement stmt = con.createStatement();
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
 		  
-	   // Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	   stmt.executeUpdate("UPDATE contact SET dateUpdated = " + c.getDateUpdated() + "WHERE contactID=" + c.getId() + ")"  );
-	 
+	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = " + c.getDateUpdated() + "WHERE contactID=" + c.getId() + ")"  );
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      return null;
+	    	return null;
 	    }
-	  return c;
+	    return c;
 	}
-		/**
-		 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
-		 * 
-		 * @param c das <code>Contact</code> Objekt, dass gelöscht werden soll.
-		 * 
-		 */
 
+	/**
+	 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
+	 * 
+	 * @param c das <code>Contact</code> Objekt, dass gelöscht werden soll.
+	 * 
+	 */
 	public void deleteContact(Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	  try {
-		// Erzeugen eines ungefüllten SQL-Statements
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
 		   // Löschen des Kontakts.
 		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE contactID=" + c.getId()); 
 		   
-		// Erzeugen eines zweiten ungefüllten SQL-Statements
+		   // Erzeugen eines zweiten ungefüllten SQL-Statements
 		   Statement stmt2 = con.createStatement();
 		   
 		   // Löschen des Kontakts.
 		   stmt2.executeUpdate("DELETE FROM contact WHERE contactID=" + c.getId()); 
-		   
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    }
-	  }
+	}
+	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten eines <code>User</code>
 	 * Objekts aus der Datenbank zurück.
@@ -166,36 +154,36 @@ public class ContactMapper extends PValueMapper{
 	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
 	 */
-
 	public ArrayList<Contact> findAllContacts(User u){
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 	    
-	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
-	   Statement stmt = con.createStatement();
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
 	   
-	 //Erzeugen einer ArrayList
-	    ArrayList<Contact> al = new ArrayList();
+			//Erzeugen einer ArrayList
+			ArrayList<Contact> al = new ArrayList();
 	    
-	   // Füllen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT C-ID FROM C-Teilhaberschaft " + "WHERE U-ID=" + u.getId() + " ORDER BY -");
+			// Füllen des Statements
+			ResultSet rs = stmt.executeQuery("SELECT C-ID FROM C-Teilhaberschaft " + "WHERE U-ID=" + u.getId() + " ORDER BY -");
 
-	  while (rs.next()) {
+			while (rs.next()) {
 	      
-		  //Befüllen des Kontakt-Objekts
-	        Contact c = new Contact();
-	        c.setId(rs.getInt("C-ID"));
-	      //  c.setOwnerID(rs.getInt("owner"));
-	        al.add(c);
-	      }
-	  return al;
+				//Befüllen des Kontakt-Objekts
+				Contact c = new Contact();
+				c.setId(rs.getInt("C-ID"));
+				//  c.setOwnerID(rs.getInt("owner"));
+				
+				al.add(c);
+			}
+			return al;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      return null;
+	    	return null;
 	    }
-	  }
+	}
 	
 	/**
 	 * Diese Methode gibt ein <code>Contact</code> Objekt zurück, dass eine bestimmte ID hat.
@@ -206,30 +194,28 @@ public class ContactMapper extends PValueMapper{
 	    // Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
-	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
-	   Statement stmt = con.createStatement();
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
 	   
-	 //Erzeugen eines Kontakt-Objektes
-	   Contact c = new Contact();
+	    	//Erzeugen eines Kontakt-Objektes
+	    	Contact c = new Contact();
 
-	   // Füllen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT id FROM contacts " + "WHERE id=" + id + " ORDER BY -");
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT id FROM contacts " + "WHERE id=" + id + " ORDER BY -");
 	   
-	  if (rs.next()) {
-	       
-		//Befüllen des Kontakt-Objekts
-	        c.setId(rs.getInt("id"));
-	     //   c.setDateUpdated();//wird noch besprochen!
-	      
-	      }
-	  return c;
+	    	if (rs.next()) {
+	    		//Befüllen des Kontakt-Objekts
+	    		c.setId(rs.getInt("id"));
+	    		//   c.setDateUpdated();//wird noch besprochen! 
+	    	}
+	    	return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      return null;
+	    	return null;
 	    }
-	  }
+	}
 	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Vornamen
@@ -237,7 +223,6 @@ public class ContactMapper extends PValueMapper{
 	 * @param fn der Vorname nach dem gesucht werden soll.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Vornamen.
 	 */
-	
 	//Übergabeparameter Anpassen, in der DB gibt es die Spalten String, int, float, date
 	/**
 	public ArrayList<Contact> findContactByPValue(String pvalue){
@@ -282,9 +267,8 @@ public class ContactMapper extends PValueMapper{
 	 * @param id die Id nach welcher gesucht werden soll.
 	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
 	 */
-	
 	public ContactList findContactListById(int id)  {
-	    // Erzeugen der Datenbankverbindung
+		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
 	    try {
@@ -298,11 +282,9 @@ public class ContactMapper extends PValueMapper{
 	    	ResultSet rs = stmt.executeQuery("SELECT id FROM contactlists " + "WHERE id = " + id + " ORDER BY -");
 	   
 	    	if (rs.next()) {
-	       
 	    		//Befüllen des Kontakt-Objekts
 	    		cl.setId(rs.getInt("id"));
 	    		//  c.setOwnerID(rs.getInt("owner"));
-	        
 	    	}
 	    return cl;
 	    }
@@ -310,8 +292,7 @@ public class ContactMapper extends PValueMapper{
 	    	System.err.print(e);
 	    	return null;
 	    }
-	 
-	  }
+	}
 	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code> Objekten die eine Teilhaberschaft 
@@ -319,38 +300,34 @@ public class ContactMapper extends PValueMapper{
 	 * @param c das <code>Contact</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
-	
 	public ArrayList<User> findCollaborators(Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	   
-	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
-	   Statement stmt = con.createStatement();
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
 	   
-	 //Erzeugen einer ArrayList
-	    ArrayList<User> al = new ArrayList();
+	    	//Erzeugen einer ArrayList
+	    	ArrayList<User> al = new ArrayList();
 
-	   // Füllen des Statements
-	   ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID=" + c.getId() );
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID=" + c.getId() );
 
-	  while (rs.next()) {
-	      
-		//Befüllen des User-Objekts
-		  User u = new User(rs.getString("email"));
-	        u.setId(rs.getInt("systemUserID"));
+	    	while (rs.next()) {
+	    		//Befüllen des User-Objekts
+	    		User u = new User(rs.getString("email"));
+	    		u.setId(rs.getInt("systemUserID"));
 
-	        al.add(u);
-	        
-	      }
-	  return al;
+	    		al.add(u);
+	    	}
+	    	return al;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      return null;
+	    	return null;
 	    }
-
-	  }
+	}
 	
 	/**
 	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>Contact</code> Objekt
@@ -361,29 +338,25 @@ public class ContactMapper extends PValueMapper{
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>Contact</code> Objekt
 	 */
-	
 	public Contact insertCollaboration(User u, Contact c, boolean IsOwner){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	  try {
-	   // Erzeugen eines ungefüllten SQL-Statements
-	   Statement stmt = con.createStatement();
-	   
-	    
-	   // Füllen des Statements
-	   stmt.executeUpdate("INSERT INTO K-Teilhaberschaft (K-id, U-id, IsOwner) VALUES " 
-	   
-			   + "(" + c.getId() + "," + u.getId() + "," + IsOwner + ")"  );
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
 
-	  	  return c;
+	    	// Füllen des Statements
+	    	stmt.executeUpdate("INSERT INTO K-Teilhaberschaft (K-id, U-id, IsOwner) VALUES " 
+	    	+ "(" + c.getId() + "," + u.getId() + "," + IsOwner + ")"  );
+
+	  	  	return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      return null;
+	    	return null;
 	    }
-
-	  }
+	}
 	
 	/**
 	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code> Objekt und einem <code>Contact</code> Objekt.
@@ -391,26 +364,19 @@ public class ContactMapper extends PValueMapper{
 	 * @param c der ausgewählte Kontakt.
 	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>Contact</code> Objekt verlieren soll.
 	 */
-	
 	public void deleteCollaboration(Contact c, User u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	  try {
-	   
-		  // Erzeugen eines ungefüllten SQL-Statements
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
 		   // Füllen des Statements
-		   stmt.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE U-id=" + u.getId() + "AND C-Id=" + c.getId() ); 
-
-	  	  
+		   stmt.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE U-id=" + u.getId() + "AND C-Id=" + c.getId() );   	  
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
-	      
 	    }
-
-	  }
-	
+	}
 }
