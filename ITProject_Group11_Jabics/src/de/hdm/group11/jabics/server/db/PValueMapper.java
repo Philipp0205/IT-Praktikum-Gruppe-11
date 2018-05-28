@@ -186,6 +186,42 @@ public class PValueMapper {
 	  
 	  }
 	
+	public ArrayList<PValue> getPValueForContact(Contact c) {
+		
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	   
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+
+	    	//Erzeugen einer ArrayList
+		    ArrayList<User> al = new ArrayList();
+
+	 	   	// Füllen des Statements
+	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
+
+	 	   	while (rs.next()) {
+	 	      
+	 	   		//Befüllen des User-Objekts
+	 	   		PValue u = new PValue(rs.getString("email"));
+
+	 	        al.add(u);
+	 	        
+	 	      }
+	 	  return al;
+	    			
+	    }
+	    
+	    catch (SQLException e) {
+	    	
+	    	System.err.print(e);
+	    	return null;
+	    	
+	    }
+	}
+	
 	/**
 	 * Diese Methode aktualisiert ein <code>PValue</code> Objekt in der Datenbank.
 	 * 
