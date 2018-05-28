@@ -44,7 +44,7 @@ public class DBConnection {
 			System.err.print(e);
 		
 		} 
-		//R�ckgabe der Verbindung
+		//Rückgabe der Verbindung
 		return con;
 	
 }
