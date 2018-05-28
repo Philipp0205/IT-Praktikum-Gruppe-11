@@ -92,7 +92,6 @@ public class ContactListMapper {
 	   
 	    	// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
 	    	for(int i = 0; i<al.size();i++) {
-		   
 	    		// Erzeugen eines zweiten ungefüllten SQL-Statements
 	    		Statement stmt2 = con.createStatement();
 	    		
