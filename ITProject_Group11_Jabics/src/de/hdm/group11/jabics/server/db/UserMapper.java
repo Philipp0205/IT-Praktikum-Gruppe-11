@@ -18,13 +18,16 @@ import de.hdm.group11.jabics.shared.bo.User;
  * @author Stahl
  * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>User</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der User in der Datenbank zur Verf�gung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der User in der Datenbank zur Verfügung. 
  * 
  *
  */
 public class UserMapper {
 	
 	/**
+	 * @author Thies
+     * Aus dem Bankprojekt
+     * 
 	 * Die Klasse UserMapper wird nur einmal instantiiert. Man spricht
      * hierbei von einem sogenannten <b>Singleton</b>.
      * <p>
@@ -38,6 +41,9 @@ public class UserMapper {
 	private static UserMapper userMapper = null;
 	
 	/**
+	 * @author Thies
+     * Aus dem Bankprojekt
+     * 
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
 	 * neue Instanzen dieser Klasse zu erzeugen. 
 	 */
@@ -47,6 +53,9 @@ public class UserMapper {
 	}
 	
 	/**
+	 * @author Thies
+     * Aus dem Bankprojekt
+     * 
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>UserMapper.userMapper()</code>. Sie stellt die
 	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
@@ -69,10 +78,10 @@ public class UserMapper {
 	}
 	
 	 /** 
-	 * Diese Methode tr�gt ein <code>User</code> Objekt in die Datenbank ein.
+	 * Diese Methode trägt ein <code>User</code> Objekt in die Datenbank ein.
 
 	 * @param u das <code>User</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @return Das als Parameter �bergebene- <code>User</code> Objekt.
+	 * @return Das als Parameter übergebene- <code>User</code> Objekt.
 	 */
 
 
@@ -81,11 +90,11 @@ public class UserMapper {
 		    Connection con = DBConnection.connection();
 		    
 		  try {
-		   // Erzeugen eines ungef�llten SQL-Statements
+		   // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
 		    
-		   // F�llen des Statements
+		   // Füllen des Statements
 		   stmt.executeUpdate("INSERT INTO User (id) VALUES " 
 		   
 				   + "(" + u.getId() +  ")"  );
@@ -100,9 +109,9 @@ public class UserMapper {
 		  }
 		
 		/**
-		 * Diese Methode l�scht ein <code>User</code> Objekt aus der Datenbank.
+		 * Diese Methode löscht ein <code>User</code> Objekt aus der Datenbank.
 		 * 
-		 * @param u das <code>User</code> Objekt, dass gel�scht werden soll.
+		 * @param u das <code>User</code> Objekt, dass gelöscht werden soll.
 		 */
 		
 		public void deleteUser(User u){
@@ -111,22 +120,22 @@ public class UserMapper {
 		    
 		  try {
 		   
-			  // Erzeugen eines ungef�llten SQL-Statements
+			  // Erzeugen eines ungefüllten SQL-Statements
 			   Statement stmt = con.createStatement();
 			   
-			   // L�schen des Users
+			   // Löschen des Users
 			   stmt.executeUpdate("DELETE FROM users WHERE id=" + u.getId()); 
 			   
-			// Erzeugen eines zweiten ungef�llten SQL-Statements
+			// Erzeugen eines zweiten ungefüllten SQL-Statements
 			   Statement stmt2 = con.createStatement();
 			   
-			   // L�schen aller Teilhaberschaften an Kontakten.
+			   // Löschen aller Teilhaberschaften an Kontakten.
 			   stmt2.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE u-id=" + u.getId()); 
 			   
-			// L�schen aller Teilhaberschaften an KontaktListen.
+			// Löschen aller Teilhaberschaften an KontaktListen.
 			   stmt2.executeUpdate("DELETE FROM CL-Teilhaberschaft WHERE u-id=" + u.getId()); 
 			   
-			// L�schen aller Teilhaberschaften an <code>PValue</code> Objekten.
+			// Löschen aller Teilhaberschaften an <code>PValue</code> Objekten.
 			   stmt2.executeUpdate("DELETE FROM PValue-Teilhaberschaft WHERE u-id=" + u.getId()); 
 
 		    }
@@ -148,18 +157,19 @@ public class UserMapper {
 		    Connection con = DBConnection.connection();
 
 		  try {
-		   // Erzeugen eines ungef�llten SQL-Statements
+		   // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
 		 
 
-		   // F�llen des Statements
+		   // Füllen des Statements
 		   ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE id=" + id + " ORDER BY -");
 		   
 		  if (rs.next()) {
 		       
 			//Erzeugen eines User-Objektes
 			   User u = new User(rs.getString("email"));
+        
 			//Befüllen des Kontakt-Objekts
 		        u.setId(rs.getInt("id"));
 		        return u;
@@ -183,7 +193,7 @@ public class UserMapper {
 		    Connection con = DBConnection.connection();
 
 		    try {
-		    	// Erzeugen eines ungef�llten SQL-Statements
+		    	// Erzeugen eines ungefüllten SQL-Statements
 		    	Statement stmt = con.createStatement();
 		   
 		    	//Erzeugen eines User-Objektes
