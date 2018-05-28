@@ -81,7 +81,6 @@ public class PValueMapper {
 		if (pValueMapper == null) {
 			pValueMapper = new PValueMapper();
 		}
-		
 		return pValueMapper;
 	}
 	
@@ -98,19 +97,7 @@ public class PValueMapper {
 	    Connection con = DBConnection.connection();
 	    
 	  try {
-		  
-		  Statement stmt0 = con.createStatement();
-			
-			 // Herausfinden der bisher höchsten PValue-ID.
-			
-		ResultSet rs = stmt0.executeQuery("SELECT MAX(pValueID) AS maxid " + "FROM pValue ");
-
-			if (rs.next()) {
-				
-				// Setzen der <code>PValue</code>-ID
-				 
-				pv.setId(rs.getInt("maxid") + 1); 	  
-		  
+		
 	   // Erzeugen eines ungefüllten SQL-Statements
 	   Statement stmt = con.createStatement();
 	 /**
