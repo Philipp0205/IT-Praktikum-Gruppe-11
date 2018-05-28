@@ -176,8 +176,8 @@ public class PValueMapper {
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
 
 	 	   	while (rs.next()) {
-	 	   		//Befüllen des User-Objekts
-	 	   		PValue pv = PValueMapper.pValueMapper().findPValueById(rs.getInt("PValueID"));
+	 	   		//Befüllen des PValue-Objekts
+	 	   		PValue pv = PValueMapper.pValueMapper().findPValueById(rs.getInt("pValueID"));
 
 	 	        al.add(pv);
 	 	    }

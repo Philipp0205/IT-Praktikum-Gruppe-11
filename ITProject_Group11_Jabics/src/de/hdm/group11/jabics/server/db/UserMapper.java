@@ -160,10 +160,11 @@ public class UserMapper {
 	}
 	
 	/**
-	 * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank.
+	 * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank,
+	 * welches eine bestimmte eMail besitzt.
 	 * 
-	 * @param mail  die mail nach der gesucht werden soll.
-	 * @return das gesuchte  <code>User</code> Objekt.
+	 * @param mail die Mail nach der gesucht werden soll.
+	 * @return das gesuchte <code>User</code> Objekt.
 	 */
 	public User findUserByMail(String mail)  {
 		// Erzeugen der Datenbankverbindung
@@ -174,15 +175,14 @@ public class UserMapper {
 		    Statement stmt = con.createStatement();
 		   
 		    //Erzeugen eines User-Objektes
-		    User u = null;
+		    User u = new User();
 
 		    // Füllen des Statements
 		    ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE Mail = " + mail + " ORDER BY -");
 		   
 		    if (rs.next()) {
-		    	//Befüllen des Kontakt-Objekts
-		    	u.setId(rs.getInt("id"));
-		    	//  c.setOwnerID(rs.getInt("owner"));
+		    	//Befüllen des User-Objekts
+		    	u = UserMapper.userMapper().findUserById(rs.getInt("systemUserID"));
 		    }
 		    return u;
 		}
