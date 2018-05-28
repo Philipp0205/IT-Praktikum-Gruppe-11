@@ -170,16 +170,16 @@ public class PValueMapper {
 	    	Statement stmt = con.createStatement();
 
 	    	//Erzeugen einer ArrayList
-		    ArrayList<User> al = new ArrayList();
+		    ArrayList<PValue> al = new ArrayList();
 
 	 	   	// Füllen des Statements
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
 
 	 	   	while (rs.next()) {
 	 	   		//Befüllen des User-Objekts
-	 	   		PValue u = new PValue(rs.getString("email"));
+	 	   		PValue pv = PValueMapper.pValueMapper().findPValueById(rs.getInt("PValueID"));
 
-	 	        al.add(u);
+	 	        al.add(pv);
 	 	    }
 	 	   	return al;
 	    }
