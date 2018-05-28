@@ -306,6 +306,9 @@ public class ContactMapper extends PValueMapper{
 
 	    	// Füllen des Statements
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID=" + c.getId() );
+	   // Füllen des Statements
+	   ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID=" + c.getId() 
+	   + " ORDER BY id");
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts
