@@ -11,6 +11,9 @@ public class User {
 	private String username;
 	private String email;  
 	
+	public User() {
+		super();	
+	}
 	
 	public User(String name) {
 		super();

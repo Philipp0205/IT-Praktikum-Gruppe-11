@@ -10,10 +10,14 @@ import java.sql.Statement;
 import com.google.appengine.api.utils.SystemProperty;
 /**
  * 
+<<<<<<< HEAD
  * Die DBConnection-Klasse stellt über die connection() Methode eine Verbindung mit der Datenbank zur Verfügung.
  * 
  * @author Thies
  * Aus dem Bankprojekt
+=======
+ * Die DBConnection-Klasse stellt �ber die connection() Methode eine Verbindung mit der Datenbank zur Verf�gung. 
+>>>>>>> branch 'BraseBranch2' of https://github.com/Philipp0205/IT-Praktikum-Gruppe-11
  * 
  * @author Brase
  * @author Stahl

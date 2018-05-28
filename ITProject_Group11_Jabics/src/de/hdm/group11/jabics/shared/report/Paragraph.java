@@ -12,6 +12,11 @@ public class Paragraph {
 	private String[] filtercriteria = new String[4];
 	private String content;
 	
+	public Paragraph(String content) {
+		super();
+		this.content = content;
+	}
+	
 	
 	public String[] getFiltercriteria() {
 		return filtercriteria;

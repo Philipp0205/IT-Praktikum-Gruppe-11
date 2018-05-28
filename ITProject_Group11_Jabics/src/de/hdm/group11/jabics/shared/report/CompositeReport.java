@@ -7,17 +7,16 @@ import java.util.ArrayList;
 /**
  * Realization of a composite reports. Can consist of multiple simple or composite reports. 
  * @author Kurrle and Anders
- * 
  */
 
-public class CompositeReport extends Report implements Serializable {
+public class CompositeReport<T> extends Report implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Ein CompositeReport besteht aus subReports und einer Kopf und Fußzeile, in denen Informationen gegeben werden
 	 */
-	private ArrayList<Report> subReports = new ArrayList<Report>();
+	private ArrayList<T> subReports = new ArrayList<T>();
 	Paragraph headline; 
 	Paragraph footline; 
 	
@@ -28,7 +27,7 @@ public class CompositeReport extends Report implements Serializable {
 	public CompositeReport() {
 		super();
 	}
-	public CompositeReport(ArrayList<Report> reports, Paragraph head, Paragraph foot) {
+	public CompositeReport(ArrayList<T> reports, Paragraph head, Paragraph foot) {
 		this.subReports = reports;
 		/**
 		 * TODO: change Date to Calendar or whatever is not deprecated
@@ -39,9 +38,9 @@ public class CompositeReport extends Report implements Serializable {
 	}
 	
 	/**
-	 * If Paragraphs headline and footline are obtainable, do not use this constructor
+	 * Wenn Headline und Footline bekannt sind, diesen Konstruktor nicht verwenden
 	 */
-	public CompositeReport(ArrayList<Report> reports) {
+	public CompositeReport(ArrayList<T> reports) {
 		this.subReports = reports;
 		/**
 		 * TODO: change Date to Calendar or whatever is not deprecated
@@ -59,12 +58,12 @@ public class CompositeReport extends Report implements Serializable {
 	}
 	
 	/**
-	 * adding and removing a report to the composite Report
+	 * Hinzufügen und Entfernen eines Reports zu einem CompositeReport
 	 * @param r
 	 */
 	
-	public void addReport(Report r) { 
-		subReports.add(r);
+	public void addReport(T report) { 
+		subReports.add(report);
 	}
 	
 	public void removeReport(Report r) { 
@@ -80,27 +79,45 @@ public class CompositeReport extends Report implements Serializable {
 	public void setHeadline(Paragraph headline) {
 		this.headline = headline;
 	}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> Testing
 	// Methode überladen damit auch nur ein String mitgegeben werden kann. 
 	public void setHeadline(String s) {
-		Paragraph p = new Paragraph();
-		p.setContent(s);
+		this.headline = new Paragraph(s);
 	}
+	
+<<<<<<< HEAD
+>>>>>>> stash
+=======
+>>>>>>> Testing
 	public Paragraph getFootline() {
 		return footline;
 	}
 	public void setFootline(Paragraph footline) {
 		this.footline = footline;
 	}
+<<<<<<< HEAD
+<<<<<<< HEAD
+	public ArrayList<Report> getSubReports() {
+=======
+=======
+>>>>>>> Testing
 	// Ebenfalls überladen
 	public void setFootline(String s) {
-		Paragraph p = new Paragraph();
-		p.setContent(s);
+		this.footline = new Paragraph(s);
 	}
-	public ArrayList<Report> getSubReports() {
+	public ArrayList<T> getSubReports() {
+<<<<<<< HEAD
+>>>>>>> stash
+=======
+>>>>>>> Testing
 		return subReports;
 	}
 
-	public void setSubReports(ArrayList<Report> subReports) {
+	public void setSubReports(ArrayList<T> subReports) {
 		this.subReports = subReports;
 	}
 	

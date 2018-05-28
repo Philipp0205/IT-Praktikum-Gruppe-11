@@ -31,8 +31,8 @@ public class FilteredContactsOfUserReport extends CompositeReport {
 		return filtercriteria;
 	}
 
-	public void setFiltercriteria(Paragraph filtercriteria, String[] string) {
-		filtercriteria.setFiltercriteria(string);
+	public void setFiltercriteria(Paragraph filtercriteria) {
+		this.filtercriteria = filtercriteria;
 	}
 	
 	

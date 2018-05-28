@@ -55,7 +55,7 @@ public class ContactListMapper {
      * 
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>ContactListMapper.contactListMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie dafÃ¼r sorgt, dass nur eine einzige
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
 	 * Instanz von <code>ContactListMapper</code> existiert.
 	 * <p>
 	 * 

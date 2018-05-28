@@ -14,7 +14,7 @@ public class PValue extends BusinessObject {
 	
 	private int intValue; 
 	private String stringValue; 
-	private LocalDate dateValue;
+	private LocalDateTime dateValue;
 	private float floatValue; 
 	private Property property;
 	private int pointer = 0; 
@@ -36,7 +36,7 @@ public class PValue extends BusinessObject {
 		this.stringValue = s;
 		this.pointer = 2;
 	}
-	public PValue(Property p, LocalDate date) {
+	public PValue(Property p, LocalDateTime date) {
 		this(p);
 		this.dateValue = date;
 		this.pointer = 3;
@@ -84,20 +84,19 @@ public class PValue extends BusinessObject {
 		this.pointer = 2; 
 
 	}
-	public LocalDate getDateValue() {
+	public LocalDateTime getDateValue() {
 		return dateValue;
 	}
 	public void setDateValue(int year, int month, int dayOfMonth) {
-		this.dateValue = LocalDate.of(year, month, dayOfMonth);
+		this.dateValue = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
 		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
 	}
 	// overload method if date is given in the datatype "month". 
 	public void setDateValue(int year, Month month, int dayOfMonth) {
-		this.dateValue = LocalDate.of(year, month, dayOfMonth);
+		this.dateValue = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
 		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
-
 	}
 	public float getFloatValue() {
 		return floatValue;
