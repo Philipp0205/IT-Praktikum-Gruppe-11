@@ -22,9 +22,13 @@ import de.hdm.group11.jabics.shared.bo.User;
 public class ContactListMapper {
 		
 	/**
+	 * Struktur von
 	 * @author Thies
-     * Aus dem Bankprojekt
-     * 
+	 * 
+	 * Angepasst von
+	 * @author Brase
+	 * @author Stahl
+	 * 
 	 * Die Klasse ContactListMapper wird nur einmal instantiiert. Man spricht
      * hierbei von einem sogenannten <b>Singleton</b>.
      * <p>
@@ -37,9 +41,13 @@ public class ContactListMapper {
 	private static ContactListMapper contactListMapper = null;
 	
 	/**
+	 * Struktur von
 	 * @author Thies
-     * Aus dem Bankprojekt
-     * 
+	 * 
+	 * Angepasst von
+	 * @author Brase
+	 * @author Stahl
+	 * 
 	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
 	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
@@ -47,9 +55,13 @@ public class ContactListMapper {
 	}
 	
 	/**
+	 * Struktur von
 	 * @author Thies
-     * Aus dem Bankprojekt
-     * 
+	 * 
+	 * Angepasst von
+	 * @author Brase
+	 * @author Stahl
+	 * 
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>ContactListMapper.contactListMapper()</code>. Sie stellt die
 	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine einzige
@@ -73,14 +85,11 @@ public class ContactListMapper {
 	 * Diese Methode trägt ein <code>ContactList</code> Objekt in die Datenbank ein.
 	 *
 	 * @param cl das <code>ContactList</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @return Das als Parameter übergebene- <code>ContactList</code> Objekt.
+	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList insertContactList(ContactList cl){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
-	    
-	    //Extrahieren aller Kontakte aus der Kontaktliste in eine Arraylist.
-	    ArrayList<Contact> al = cl.getContacts();
 	   
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
@@ -89,21 +98,6 @@ public class ContactListMapper {
 	    	// Befüllen der Kontaktlistentabelle.
 	    	stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated, dateUpdated) VALUES " + cl.getId() 
 	    	+ cl.getListName()  + cl.getDateCreated() + cl.getDateUpdated());
-	   
-	    	// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
-	    	for(int i = 0; i<al.size();i++) {
-	    		// Erzeugen eines zweiten ungefüllten SQL-Statements
-	    		Statement stmt2 = con.createStatement();
-	    		
-	    		//Befüllen des SQL-Statements 
-	    		stmt2.executeUpdate("INSERT INTO contactContactLists ( contactID, contactlistID) VALUES "  + al.get(i).getId() +  cl.getId() );
-	    	}
-	    	/**
-	    	 * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>ContactList</code> 
-	    	 * Objekts festgelegt.
-	    	 * 
-	    	 */
-	    	insertCollaboration(cl.getOwner(), cl, true);
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -130,7 +124,8 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 		   
 	    	//Update des Namens der Kontaktliste und des letzten Updates
-	    	stmt.executeUpdate("UPDATE contactList SET listname = " + cl.getListName() + ", dateUpdate = " + cl.getDateUpdated() + "  WHERE contactlistID = " + cl.getId()); 
+	    	stmt.executeUpdate("UPDATE contactList SET listname = " + cl.getListName() + ", dateUpdate = " + cl.getDateUpdated() 
+	    	+ "WHERE contactlistID = " + cl.getId()); 
 	   
 	  	  	return cl;
 	    }
@@ -154,18 +149,7 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 		   
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("DELETE FROM contactList WHERE  contactlistID =" + cl.getId()); 
-
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt2 = con.createStatement();
-		   
-	    	// Füllen des Statements
-	    	stmt2.executeUpdate("DELETE FROM contactsContactlists WHERE contactlistID =" + cl.getId()); 
-		   
-	    	/** 
-	    	 * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelöst.
-	    	 */
-	    	deleteCollaboration(cl, cl.getOwner());	
+	    	stmt.executeUpdate("DELETE FROM contactList WHERE  contactlistID = " + cl.getId());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -173,7 +157,7 @@ public class ContactListMapper {
 	}
 	
 	/**
-	 * Diese Methode fügt einem <code>ContactList</code> Objekt einen oder mehrere <code>Contact</code> Objekt in der Datenbank hinzu.
+	 * Diese Methode fügt einem <code>ContactList</code> Objekt ein <code>Contact</code> Objekt in der Datenbank hinzu.
 	 * Dazu mussen in der Datenbank neue Tupel in der Kontakt-Kontaktliste-Tabelle angelegt werden.
 	 * 
 	 * @param cl das <code>ContactList</code> Objekt, dass aktualisiert werden soll.
@@ -220,7 +204,6 @@ public class ContactListMapper {
 		   
 		   // Löschen des Kontakts aus der Liste
 		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID=" + cl.getId() + "AND contactListID = " + cl.getId()); 
-
 	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -370,7 +353,7 @@ public class ContactListMapper {
 	    	ArrayList<User> al = new ArrayList();
 	    
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() + " ORDER BY -");
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() + " ORDER BY systemUserID");
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts
@@ -384,6 +367,39 @@ public class ContactListMapper {
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
+	    }
+	}
+	
+	/**
+	 * 
+	 * @param u
+	 * @return
+	 */
+	public boolean checkOwnership(ContactList cl, User u) {
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    // Erzeugen 
+	    boolean owner;
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT isOwner FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() 
+	    	+ "AND systemUserID" + u.getId());
+	    	
+	    	if(rs.getInt("isOwner")==1) {
+	    		owner = true;
+	        } else {
+	        	owner = false;
+	        }
+	    	return owner;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return false;
 	    }
 	}
 }

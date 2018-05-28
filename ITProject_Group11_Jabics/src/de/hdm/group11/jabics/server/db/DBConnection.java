@@ -8,9 +8,10 @@ import com.google.appengine.api.utils.SystemProperty;
  * 
  * Die DBConnection-Klasse stellt über die connection() Methode eine Verbindung mit der Datenbank zur Verfügung.
  * 
+ * Struktur von
  * @author Thies
- * Aus dem Bankprojekt
  * 
+ * Angepasst von
  * @author Brase
  * @author Stahl
  *
