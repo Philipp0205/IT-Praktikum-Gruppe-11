@@ -11,7 +11,7 @@ public class MainView extends Composite {
 	
 	public MainView() {
 		initWidget(this.vPanel);
-		vPanel.getElement().setId("OuterTabel");
+		vPanel.getElement().setId("mainTabel");
 		this.vPanel.setBorderWidth(1);
 		
 		MenuView menu = new MenuView(this);
@@ -20,7 +20,7 @@ public class MainView extends Composite {
 		this.contentPanel = new VerticalPanel();
 		this.vPanel.add(contentPanel);
 		
-		Label textLbl = new Label("Press a Button to see a new Page");
+		Label textLbl = new Label("Herzlich Willkommen bei JABICS");
 		this.contentPanel.add(textLbl);
 		
 	}
