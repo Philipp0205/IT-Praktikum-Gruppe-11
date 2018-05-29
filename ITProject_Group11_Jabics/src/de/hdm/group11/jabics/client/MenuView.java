@@ -13,7 +13,7 @@ public class MenuView extends Composite {
 	
 	public MenuView(MainView main) {
 		initWidget(this.hPanel);
-		hPanel.getElement().setId("Tabellenstruktur");
+		hPanel.getElement().setId("hMenuPanel");
 		this.main = main;
 		
 		Anchor contactBtn = new Anchor("Kontakt");
