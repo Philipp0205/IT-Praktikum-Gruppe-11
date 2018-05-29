@@ -12,6 +12,7 @@ import de.hdm.group11.jabics.shared.*;
  * @author Gerlings
  * 
  * */
+
 public class ClientsideSettings {
 
 	/*
