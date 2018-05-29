@@ -248,7 +248,7 @@ public class ContactMapper extends PValueMapper{
 	    	ArrayList<Contact> al = new ArrayList();
 	    
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM contacts " + "WHERE Firstname=" + fn + " ORDER BY -");
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM contacts " + "WHERE Firstname=" + pvalue + " ORDER BY -");
 
 	    	while (rs.next()) {
 	      		//Befüllen des Kontakt-Objekts
