@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
@@ -123,8 +124,9 @@ public class PValueMapper {
 						+ "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  );  
 					}
 					case DATE: {
-						LocalDate value = pv.getDateValue();
-						
+						//Cast von LocalDateTime zu Date.
+		    			LocalDateTime locald = pv.getDateValue();
+		    			Date value = (Date) Date.from(locald.atZone(ZoneId.systemDefault()).toInstant());
 						/**
 						 *  Befüllen des Statements.
 						 * (Die Tabelle hat folgende Spalten:
@@ -203,7 +205,7 @@ public class PValueMapper {
 	 * @param Das PValue, das aktalisiert werden soll.
 	 * @return
 	 */
-	public PValue updatePValue(PValue pv){
+	public PValue updatePValue(PValue pv, User u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -229,9 +231,9 @@ public class PValueMapper {
 	    			+ pv.getIntValue() + " WHERE pValueID = " + pv.getId() +")");  
 	    		}
 	    		case DATE: {
-	    			LocalDate locald = pv.getDateValue();
-	    			
-	    			Date date = Date.valueOf(locald); 
+	    			//Cast von LocalDateTime zu Date.
+	    			LocalDateTime locald = pv.getDateValue();
+	    			Date date = (Date) Date.from(locald.atZone(ZoneId.systemDefault()).toInstant());
 	    			
 	    			String columnname = "dateValue";
 	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
@@ -312,11 +314,20 @@ public class PValueMapper {
 	    		pv.setProperty(pfpv);
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
-				Date date1 = rs.getDate("dateValue");
-	    		pv.setDateValue(date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-	    		//muss noch besprochen werden!
-	    		pv.setDateUpdated(rs.getDate("dateUpdated"));
-	    		pv.setDateCreated(rs.getDate("dateCreated"));
+				Date dateV = rs.getDate("dateValue");
+	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		
+	    		Date dateC = rs.getDate("dateCreated");
+	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
 	    	}
 	    	return pv;
 	    }
