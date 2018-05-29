@@ -97,7 +97,8 @@ public class ContactListMapper {
 	 
 	    	// Befüllen der Kontaktlistentabelle.
 	    	stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated, dateUpdated) VALUES " + cl.getId() 
-	    	+ cl.getListName()  + cl.getDateCreated() + cl.getDateUpdated());
+	    	+ cl.getListName()  + cl.getDateCreated() + cl.getDateUpdated());/*
+	    	*/
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -375,7 +376,7 @@ public class ContactListMapper {
 	 * @param u
 	 * @return
 	 */
-	public boolean checkOwnership(ContactList cl, User u) {
+	public int checkOwnership(ContactList cl, User u) {
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -390,12 +391,9 @@ public class ContactListMapper {
 	    	ResultSet rs = stmt.executeQuery("SELECT isOwner FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() 
 	    	+ "AND systemUserID" + u.getId());
 	    	
-	    	if(rs.getInt("isOwner")==1) {
-	    		owner = true;
-	        } else {
-	        	owner = false;
-	        }
-	    	return owner;
+
+	    	}
+	    	return //...
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
