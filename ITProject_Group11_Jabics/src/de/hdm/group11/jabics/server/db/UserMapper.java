@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -136,6 +138,46 @@ public class UserMapper {
 		    System.err.print(e);
 		}
 	}
+	
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten eines <code>User</code>
+	 * Objekts aus der Datenbank zurück.
+	 * 
+	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden sollen.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
+	 */
+	public ArrayList<User> findAllUser(){
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+	    
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+	   
+			//Erzeugen einer ArrayList
+			ArrayList<User> al = new ArrayList();
+	    
+			// Füllen des Statements
+			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser");
+
+			while (rs.next()) {
+	      
+				//Erstellen eines User-Objekts
+				User u = new User();
+				
+				//Befüllen des Kontakt-Objekts
+				u.setId(rs.getInt("systemUserID"));
+				u.setEmail(rs.getString("email"));
+				
+				al.add(u);
+			}
+			return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
 		
 	/**
 	 * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank.
@@ -163,44 +205,11 @@ public class UserMapper {
 		        
 		        return u;
 			}else
-				return null;
-		    }
-		    catch (SQLException e) {
-		    	System.err.print(e);
-		    	return null;
-		    }
-	}
-	
-	/**
-	 * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank,
-	 * welches eine bestimmte eMail besitzt.
-	 * 
-	 * @param mail die Mail nach der gesucht werden soll.
-	 * @return das gesuchte <code>User</code> Objekt.
-	 */
-	public User findUserByMail(String mail)  {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-		    // Erzeugen eines ungefüllten SQL-Statements
-		    Statement stmt = con.createStatement();
-		   
-		    //Erzeugen eines User-Objektes
-		    User u = new User();
-
-		    // Füllen des Statements
-		    ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE Mail = " + mail + " ORDER BY -");
-		   
-		    if (rs.next()) {
-		    	//Befüllen des User-Objekts
-		    	u = UserMapper.userMapper().findUserById(rs.getInt("systemUserID"));
-		    }
-		    return u;
+			return null;
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
 		    return null;
 		}
-	}		
+	}	
 }
