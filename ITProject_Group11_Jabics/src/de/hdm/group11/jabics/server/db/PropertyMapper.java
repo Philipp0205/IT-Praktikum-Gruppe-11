@@ -92,8 +92,13 @@ public class PropertyMapper {
 	    	Statement stmt = con.createStatement();
 	   
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("INSERT INTO Property (P-id, P-label, P-type, P-isStandard) VALUES " 
-	    	+ "(" + p.getId() + "," + p.getLabel() + "," + p.getType() + "," + p.isStandard() + ")"  ); 
+	    	stmt.executeUpdate("INSERT INTO property (propertyID, dateCreated, dateUpdated, isStandard, type, name ) VALUES " 
+	    	+ "(" + p.getId() + "," 
+	    	+ p.getDateCreated() + "," 
+	    	+ p.getDateUpdated() + "," 
+	    	+ p.isStandard() + "," 
+	    	+ p.getType() + "," 
+	    	+ p.getLabel() + ")"); 
 
 	    	return p;
 	    }
@@ -117,7 +122,7 @@ public class PropertyMapper {
 	    	Statement stmt = con.createStatement();
 		   
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("DELETE FROM Property WHERE P-id=" + p.getId()); 
+	    	stmt.executeUpdate("DELETE FROM property WHERE propertyID=" + p.getId()); 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e); 

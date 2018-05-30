@@ -175,7 +175,7 @@ public class PValueMapper {
 	    }
 	}
 	
-	public ArrayList<PValue> getPValueForContact(Contact c) {
+	public ArrayList<PValue> findPValueForContact(Contact c) {
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -190,12 +190,83 @@ public class PValueMapper {
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
 
 	 	   	while (rs.next()) {
-	 	   		//Befüllen des PValue-Objekts
-	 	   		PValue pv = PValueMapper.pValueMapper().findPValueById(rs.getInt("pValueID"));
-
-	 	        al.add(pv);
+	 	   	//Befüllen des PValue-Objekts
+	 	   		PValue pv = new PValue(rs.getInt("propertyID"));
+	 	   		
+	    		pv.setId(rs.getInt("pValueID"));
+	    		pv.setStringValue(rs.getString("stringValue"));
+	    		pv.setIntValue(rs.getInt("intValue"));
+	    		pv.setFloatValue(rs.getFloat("floatValue"));
+				Date dateV = rs.getDate("dateValue");
+	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		
+	    		Date dateC = rs.getDate("dateCreated");
+	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		
+	    		al.add(pv);
+	    		
 	 	    }
 	 	   	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
+	
+	
+	/**
+	 * Diese Methode gibt ein <code>PValue</code> Objekt zurück, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
+	 */
+	public PValue findPValueById(int id)  {
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen eines PValue-Objektes
+	    	PValue pv = null;
+
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE PValue-id = " + id + " ORDER BY -");
+	   
+	    	if (rs.next()) {
+	    		//Befüllen des PValue-Objekts
+	    		PValue pv = new PValue(rs.getInt("propertyID"));
+	 	   		
+	    		pv.setId(rs.getInt("pValueID"));
+	    		pv.setStringValue(rs.getString("stringValue"));
+	    		pv.setIntValue(rs.getInt("intValue"));
+	    		pv.setFloatValue(rs.getFloat("floatValue"));
+				Date dateV = rs.getDate("dateValue");
+	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		
+	    		Date dateC = rs.getDate("dateCreated");
+	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    	}
+	    	return pv;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -217,7 +288,7 @@ public class PValueMapper {
 	 * @param Das PValue, das aktalisiert werden soll.
 	 * @return
 	 */
-	public PValue updatePValue(PValue pv, User u){
+	public PValue updatePValue(PValue pv){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -257,13 +328,7 @@ public class PValueMapper {
 	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
 	    			+ pv.getFloatValue() + " WHERE pValueID = " + pv.getId() +")"); 
 	    		}
-	    	}
-		   /**
-		    * Dieser Teil wirklich benötigt?
-		    * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
-		    * 
-		    */insertCollaboration(u, pv, true);
-				
+	    	}	
 		    return pv;
 	    }
 	    catch (SQLException e) {
@@ -288,66 +353,12 @@ public class PValueMapper {
 		   
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("DELETE FROM pValue WHERE pValueID=" + pv.getId()); 
-		   
-	    	/** 
-		    * <code>Collaborations</code> werden mit der @deleteCollaboration Methode gelöst.
-		    */
-		   deleteCollaboration(pv, pv.getOwner());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    }
 	}
-	
-	/**
-	 * Diese Methode gibt ein <code>PValue</code> Objekt zurück, dass eine bestimmte ID hat.
-	 * @param id die Id nach welcher gesucht werden soll.
-	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
-	 */
-	public PValue findPValueById(int id)  {
-		// Erzeugen der Datenbankverbindung
-	    Connection con = DBConnection.connection();
 
-	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	   
-	    	//Erzeugen eines PValue-Objektes
-	    	PValue pv = null;
-
-	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE PValue-id = " + id + " ORDER BY -");
-	   
-	    	if (rs.next()) {
-	    		//Befüllen des PValue-Objekts
-	    		pv.setId(rs.getInt("id"));
-	    		pv.setStringValue(rs.getString("stringValue"));
-	    		Property pfpv = PropertyMapper.propertyMapper().findPropertyById(rs.getInt("PropertyID"));
-	    		pv.setProperty(pfpv);
-	    		pv.setIntValue(rs.getInt("intValue"));
-	    		pv.setFloatValue(rs.getFloat("floatValue"));
-				Date dateV = rs.getDate("dateValue");
-	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
-	    		Date dateC = rs.getDate("dateCreated");
-	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    	}
-	    	return pv;
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return null;
-	    }
-	}
 
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code> Objekten die eine Teilhaberschaft 

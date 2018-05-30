@@ -1,9 +1,11 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -147,13 +149,7 @@ public class ContactMapper extends PValueMapper{
 		   Statement stmt = con.createStatement();
 		   
 		   // Löschen des Kontakts.
-		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE contactID=" + c.getId()); 
-		   
-		   // Erzeugen eines zweiten ungefüllten SQL-Statements
-		   Statement stmt2 = con.createStatement();
-		   
-		   // Löschen des Kontakts.
-		   stmt2.executeUpdate("DELETE FROM contact WHERE contactID=" + c.getId()); 
+		   stmt.executeUpdate("DELETE FROM contact WHERE contactID=" + c.getId()); 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -179,14 +175,26 @@ public class ContactMapper extends PValueMapper{
 			ArrayList<Contact> al = new ArrayList();
 	    
 			// Füllen des Statements
-			ResultSet rs = stmt.executeQuery("SELECT C-ID FROM C-Teilhaberschaft " + "WHERE U-ID=" + u.getId() + " ORDER BY -");
-
+			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+			+ "FROM contact"
+			+ "LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
+			+ "WHERE contactCollaboration.systemUserID =" + u.getId());
+			
 			while (rs.next()) {
+				
+				//Instanzierung 
+				Contact c = new Contact();
 	      
 				//Befüllen des Kontakt-Objekts
-				Contact c = new Contact();
-				c.setId(rs.getInt("C-ID"));
-				//  c.setOwnerID(rs.getInt("owner"));
+				c.setId(rs.getInt("contactID"));
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		Date dateC = rs.getDate("dateCreated");
+	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
 				
 				al.add(c);
 			}
@@ -215,84 +223,24 @@ public class ContactMapper extends PValueMapper{
 	    	Contact c = new Contact();
 
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT id FROM contacts " + "WHERE id=" + id + " ORDER BY -");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM conact WHERE contactID =" + id);
 	   
 	    	if (rs.next()) {
-	    		//Befüllen des Kontakt-Objekts
-	    		c.setId(rs.getInt("id"));
-	    		//   c.setDateUpdated();//wird noch besprochen! 
+	    		//Instanzierung 
+				Contact c = new Contact();
+	      
+				//Befüllen des Kontakt-Objekts
+				c.setId(rs.getInt("contactID"));
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		Date dateC = rs.getDate("dateCreated");
+	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
 	    	}
 	    	return c;
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return null;
-	    }
-	}
-	
-	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten mit einem bestimmten Vornamen
-	 * zurück
-	 * @param fn der Vorname nach dem gesucht werden soll.
-	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten mit diesem Vornamen.
-	 */
-	public ArrayList<Contact> findContactByPValue(String pvalue){
-		// Erzeugen der Datenbankverbindung
-	    Connection con = DBConnection.connection();
-	    
-	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	   
-	    	//Erzeugen einer ArrayList
-	    	ArrayList<Contact> al = new ArrayList();
-	    
-	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM contacts " + "WHERE Firstname=" + pvalue + " ORDER BY -");
-
-	    	while (rs.next()) {
-	      		//Befüllen des Kontakt-Objekts
-	    		Contact c = new Contact();
-	    		c.setId(rs.getInt("id"));
-
-	    		// setzen weiterer attribute wie datecreated und dateUpdated hier einfügen
-	    		//  c.setOwnerID(rs.getInt("owner"));
-	    		
-	    		al.add(c);
-	        }
-	    	return al;
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return null;
-	    }
-	}
-	
-	/**
-	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurück, dass eine bestimmte ID hat.
-	 * @param id die Id nach welcher gesucht werden soll.
-	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
-	 */
-	public ContactList findContactListById(int id)  {
-		// Erzeugen der Datenbankverbindung
-	    Connection con = DBConnection.connection();
-
-	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	   
-	    	//Erzeugen eines Kontakt-Objektes
-	    	ContactList cl = new ContactList();
-
-	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT id FROM contactlists " + "WHERE id = " + id + " ORDER BY -");
-	   
-	    	if (rs.next()) {
-	    		//Befüllen des Kontakt-Objekts
-	    		cl.setId(rs.getInt("id"));
-	    		//  c.setOwnerID(rs.getInt("owner"));
-	    	}
-	    return cl;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -354,8 +302,10 @@ public class ContactMapper extends PValueMapper{
 	    	Statement stmt = con.createStatement();
 
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("INSERT INTO K-Teilhaberschaft (K-id, U-id, IsOwner) VALUES " 
-	    	+ "(" + c.getId() + "," + u.getId() + "," + IsOwner + ")"  );
+	    	stmt.executeUpdate("INSERT INTO contactCollaboration (cCollaborationID, isOwner, contactID, systemUserID) VALUES " 
+	    	+ "(" + IsOwner + ","
+	    	+ c.getId() + ","
+	    	+ u.getId() + ")");
 
 	  	  	return c;
 	    }
@@ -380,7 +330,7 @@ public class ContactMapper extends PValueMapper{
 		   Statement stmt = con.createStatement();
 		   
 		   // Füllen des Statements
-		   stmt.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE U-id=" + u.getId() + "AND C-Id=" + c.getId() );   	  
+		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID=" + u.getId() + "AND contactID=" + c.getId() );   	  
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
