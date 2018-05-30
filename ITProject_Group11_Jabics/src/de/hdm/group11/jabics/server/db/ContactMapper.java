@@ -22,7 +22,7 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
  * @author Stahl
  *
  */
-public class ContactMapper extends PValueMapper{
+public class ContactMapper{
 
 	/**
 	 * Struktur von
