@@ -98,8 +98,8 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 	 
 	    	// Befüllen der Kontaktlistentabelle.
-	    	stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated, dateUpdated) VALUES"
-	    	+ cl.getId() + cl.getListName()  + cl.getDateCreated() + cl.getDateUpdated());
+	    	stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated, dateUpdated) VALUES "
+	    	+ cl.getId() + ", " + cl.getListName()  + ", " + cl.getDateCreated() + ", " + cl.getDateUpdated());
 	    	
 	    	return cl;
 	    }
@@ -202,7 +202,7 @@ public class ContactListMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // Löschen des Kontakts aus der Liste.
-		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID=" + cl.getId() + " AND contactListID = " + cl.getId()); 
+		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID= " + cl.getId() + " AND contactListID = " + cl.getId()); 
 	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -271,9 +271,9 @@ public class ContactListMapper {
 
 	    	// Join zwischen ContactList und ContactListCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
 	    	ResultSet rs = stmt.executeQuery("SELECT contactList.contactlistID, contactList.listname, contactList.dateCreated, contactList.dateUpdated"
-	    			+ "FROM contactList"
-	    			+ "LEFT JOIN contactlistCollaboration ON contactList.contactListID = contactlistCollaboration.contactListID"
-	    			+ "WHERE contactlistCollaboration.systemUserID =" + u.getId());
+	    			+ " FROM contactList"
+	    			+ " LEFT JOIN contactlistCollaboration ON contactList.contactListID = contactlistCollaboration.contactListID"
+	    			+ " WHERE contactlistCollaboration.systemUserID =" + u.getId());
 	   
 	    	if (rs.next()) {
 	    		//Befüllen des Kontaktlisten-Objekts

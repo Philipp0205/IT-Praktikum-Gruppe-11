@@ -100,7 +100,7 @@ public class ContactMapper{
 	   
 			// Einfügen eines <code>Contact</code> Objekts in die Datenbank.
 			stmt.executeUpdate("INSERT INTO contact (contactID, dateCreated, dateUpdated,) VALUES " 
-			+ "(" + c.getId() + c.getDateCreated() + "," + c.getDateUpdated() + ","  + ")"  );
+			+ "(" + c.getId() + ", "  + c.getDateCreated() + ", " + c.getDateUpdated() + ", "  + ")"  );
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -124,7 +124,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = " + c.getDateUpdated() + "WHERE contactID=" + c.getId() + ")"  );
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = " + c.getDateUpdated() + "WHERE contactID= " + c.getId() + ")"  );
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -148,7 +148,7 @@ public class ContactMapper{
 		   Statement stmt = con.createStatement();
 		   
 		   // Löschen des Kontakts.
-		   stmt.executeUpdate("DELETE FROM contact WHERE contactID=" + c.getId()); 
+		   stmt.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId()); 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -175,9 +175,9 @@ public class ContactMapper{
 	    
 			// Join zwischen Contact und ContactCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
 			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
-			+ "FROM contact"
-			+ "LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
-			+ "WHERE contactCollaboration.systemUserID =" + u.getId());
+			+ " FROM contact"
+			+ " LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
+			+ " WHERE contactCollaboration.systemUserID = " + u.getId());
 			
 			while (rs.next()) {
 				
@@ -217,7 +217,7 @@ public class ContactMapper{
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 	    	// Auswählen eines Kontakts mit einer bestimmten ID.
-			ResultSet rs = stmt.executeQuery("SELECT * FROM contact WHERE contactID =" + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM contact WHERE contactID = " + id);
 	   
 	    	if (rs.next()) {
 	    		//Erzeugen eines Kontakt-Objektes
@@ -323,7 +323,7 @@ public class ContactMapper{
 		   Statement stmt = con.createStatement();
 		   
 		   // Löschen der Teilhaberschaft.
-		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID=" + u.getId() + " AND contactID=" + c.getId() );   	  
+		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= " + c.getId() );   	  
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);

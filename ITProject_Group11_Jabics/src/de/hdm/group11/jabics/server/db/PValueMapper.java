@@ -100,16 +100,6 @@ public class PValueMapper {
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-	    	//..
-	    	Statement stmt0 = con.createStatement();
-			
-			// Herausfinden der bisher höchsten PValue-ID.
-			ResultSet rs = stmt0.executeQuery("SELECT MAX(pValueID) AS maxid " + "FROM pValue ");
-
-			if (rs.next()) {
-				// Setzen der <code>PValue</code>-ID 
-				pv.setId(rs.getInt("maxid") + 1); 	  
-		  
 				// Erzeugen eines ungefüllten SQL-Statements
 				Statement stmt = con.createStatement();
 				
@@ -124,16 +114,16 @@ public class PValueMapper {
 						// Füllen des Statements
 						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + value + "null,"  
-						+ "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  ); 
+						+ "(" + c.getDateCreated() + " ," + c.getDateUpdated() + " , "  + value + " null, "  
+						+ ", " + " null, " + pv.getId() + ", " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
 					}
 					case INT: {
 						int value = pv.getIntValue();
 	    	
 						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + value  
-						+ "," + "null," + pv.getId() + "," + "null," + pv.getProperty().getId() + "," + c.getId() + ")"  );  
+						+ "(" + c.getDateCreated() + ", " + c.getDateUpdated() + ", "  + "null, " + value  
+						+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
 					}
 					case DATE: {
 						//Cast von LocalDateTime zu Date.
@@ -147,8 +137,8 @@ public class PValueMapper {
 						 */
 						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + "," + c.getDateUpdated() + ","  + "null," + "null," 
-						+ "," + pv.getId() + "," + value + "," + pv.getProperty().getId() + "," + c.getId() + ")"  );
+						+ "(" + c.getDateCreated() + ", " + c.getDateUpdated() + ", "  + "null, " + "null, " 
+						+ ", " + pv.getId() + ", " + value + ", " + pv.getProperty().getId() + ", " + c.getId() + ")"  );
 					}
 					case FLOAT: {
 						Float value = pv.getFloatValue();
@@ -156,8 +146,8 @@ public class PValueMapper {
 						// Füllen des Statements
 						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + "," + c.getDateUpdated() + "," +  "null," +  "null," + value 
-						+ "," + pv.getId() + "," + "null" + "," + pv.getProperty().getId() + ","  + c.getId() + ")"  ); 
+						+ "(" + c.getDateCreated() + ", " + c.getDateUpdated() + ", " +  "null, " +  "null, " + value 
+						+ ", " + pv.getId() + ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
 					}
 	   			}
 				/**
@@ -165,15 +155,22 @@ public class PValueMapper {
 				 * 
 				 */
 				insertCollaboration(pv.getOwner(), pv, true);
-			}
+			
 			//Rückgabe des PValue
 			return pv;
 		}
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
-	    }
+	  }
 	}
+
+	/** 
+	 * Diese Methode sucht die <code>PValue</code> Objekte eines Kontaktes und gibt sie in Form einer ArrayList zurück.
+	 * 
+	 * @param c der Kontakt zu welchem die <code>PValue</code> Objekte ermittelt werden sollen.
+	 * @return Die ArrayList mit <code>PValue</code> Objekten.
+	 */
 	
 	public ArrayList<PValue> findPValueForContact(Contact c) {
 		// Erzeugen der Datenbankverbindung
@@ -190,7 +187,7 @@ public class PValueMapper {
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
 
 	 	   	while (rs.next()) {
-	 	   	//Befüllen des PValue-Objekts
+	 	   	//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 	 	   		PValue pv = new PValue(rs.getInt("propertyID"));
 	 	   		
 	    		pv.setId(rs.getInt("pValueID"));
@@ -211,9 +208,7 @@ public class PValueMapper {
 	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
 	    		al.add(pv);
-	    		
 	 	    }
 	 	   	return al;
 	    }
@@ -222,7 +217,6 @@ public class PValueMapper {
 	    	return null;
 	    }
 	}
-	
 	
 	/**
 	 * Diese Methode gibt ein <code>PValue</code> Objekt zurück, dass eine bestimmte ID hat.
@@ -241,10 +235,10 @@ public class PValueMapper {
 	    	PValue pv = null;
 
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE PValue-id = " + id + " ORDER BY -");
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE pValueID = " + id );
 	   
 	    	if (rs.next()) {
-	    		//Befüllen des PValue-Objekts
+	    		//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 	    		PValue pv = new PValue(rs.getInt("propertyID"));
 	 	   		
 	    		pv.setId(rs.getInt("pValueID"));
@@ -278,15 +272,7 @@ public class PValueMapper {
 	 * Diese Methode aktualisiert ein <code>PValue</code> Objekt in der Datenbank.
 	 * 
 	 * @param pv das <code>PValue</code> Objekt, dass aktualisiert werden soll.
-	 * @param c der Kontakt zu dem das <code>PValue</code> Objekt gehört.
-	 * @param u der User, welcher die Eigenschaftsausprägung aktualisiert.
 	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
-	 */
-	
-	/**
-	 * Aktualisieren eines PValue in der Datenbank. Der Contact kann dabei nicht geändert werden und wird auch nicht benötigt
-	 * @param Das PValue, das aktalisiert werden soll.
-	 * @return
 	 */
 	public PValue updatePValue(PValue pv){
 		// Erzeugen der Datenbankverbindung
@@ -377,15 +363,14 @@ public class PValueMapper {
 	    	//Erzeugen einer ArrayList
 	    	ArrayList<User> al = new ArrayList<User>();
 	    
-	    	// Füllen des Statements
+	    	// Auswählen der <code>User</code> Objekte mit einer bestimmten ID aus der Teilhaberschaftstabelle.
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID, Username FROM pValueCollaboration " + "WHERE pValueID" 
 	    	+ pv.getId() );
 
 	    	while (rs.next()) {
-	    		//Befüllen des User-Objekts
+	    		//Befüllen des User-Objekts und Hinzufügen zur ArrayList.
 	    		User u = new User(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
-	        
 	    		al.add(u);
 	    	}
 	    	return al;
@@ -415,7 +400,7 @@ public class PValueMapper {
 	   
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (pvCollaborationID, IsOwner, pValueID, systemUserID) VALUES " 
-	    	+ "(" + pv.getId() + "," + IsOwner + "," + pv.getProperty().getId() + "," + u.getId() +   ")"  );
+	    	+ "(" + pv.getId() + ", " + IsOwner + ", " + pv.getProperty().getId() + ", " + u.getId() +   ")"  );
 
 	    	return pv;
 	    }
@@ -440,8 +425,8 @@ public class PValueMapper {
 	    	Statement stmt = con.createStatement();
 	    	
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("DELETE FROM pvCollaborationID WHERE systemUserID=" + u.getId()
-	    	+ "AND pvCollaborationID=" + pv.getId() ); 
+	    	stmt.executeUpdate("DELETE FROM pvCollaborationID WHERE systemUserID= " + u.getId()
+	    	+ "AND pvCollaborationID= " + pv.getId() ); 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e); 
