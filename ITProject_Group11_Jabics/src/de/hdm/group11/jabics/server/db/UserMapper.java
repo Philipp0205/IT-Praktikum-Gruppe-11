@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -94,8 +92,8 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen des Users in die Datenbank.
-			stmt.executeUpdate("INSERT INTO systemUser (systemUserID, email) VALUES " + "(" + u.getId() + "," + u.getEmail() + ")"  );
+			// Füllen des Statements
+			stmt.executeUpdate("INSERT INTO User (id) VALUES " + "(" + u.getId() +  ")"  );
 
 			return u;
 		}
@@ -118,51 +116,25 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 			   
-			// Löschen des Users.
-			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID=" + u.getId()); 
+			// Löschen des Users
+			stmt.executeUpdate("DELETE FROM users WHERE id=" + u.getId()); 
+			   
+			// Erzeugen eines zweiten ungefüllten SQL-Statements
+			Statement stmt2 = con.createStatement();
+			   
+			// Löschen aller Teilhaberschaften an Kontakten.
+			stmt2.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE u-id=" + u.getId()); 
+			   
+			// Löschen aller Teilhaberschaften an KontaktListen.
+			stmt2.executeUpdate("DELETE FROM CL-Teilhaberschaft WHERE u-id=" + u.getId()); 
+			   
+			// Löschen aller Teilhaberschaften an <code>PValue</code> Objekten.
+			stmt2.executeUpdate("DELETE FROM PValue-Teilhaberschaft WHERE u-id=" + u.getId()); 
+
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
 		}
-	}
-	
-	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code> Objekten eines <code>User</code>
-	 * Objekts aus der Datenbank zurück.
-	 * 
-	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden sollen.
-	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
-	 */
-	public ArrayList<User> findAllUser(){
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-	    
-		try {
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-	   
-			//Erzeugen einer ArrayList
-			ArrayList<User> al = new ArrayList();
-	    
-			// Auswählen der <code>User</code> Objekte geordnet nach ihrer E-Mail Adresse.
-			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser ORDER BY email");
-
-			while (rs.next()) {
-	      
-				//Erstellen eines User-Objekts
-				User u = new User();
-				
-				//Befüllen des Kontakt-Objekts und Einfügen in die Arraylist.
-				u.setId(rs.getInt("systemUserID"));
-				u.setEmail(rs.getString("email"));
-				al.add(u);
-			}
-			return al;
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return null;
-	    }
 	}
 		
 	/**
@@ -179,23 +151,56 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 		   
-			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
-			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + "WHERE systemUserID=" + id);
+			// Füllen des Statements
+			ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE id=" + id + " ORDER BY -");
 		   
 			if (rs.next()) {
-				User u = new User();
-				
+				//Erzeugen eines User-Objektes
+				User u = new User(rs.getString("email"));
+        
 				//Befüllen des Kontakt-Objekts
-				u.setId(rs.getInt("systemUserID"));
-				u.setEmail(rs.getString("email"));
+		        u.setId(rs.getInt("id"));
 		        
 		        return u;
 			}else
-			return null;
+				return null;
+		    }
+		    catch (SQLException e) {
+		    	System.err.print(e);
+		    	return null;
+		    }
+	}
+	
+	/**
+	 * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank,
+	 * welches eine bestimmte eMail besitzt.
+	 * 
+	 * @param mail die Mail nach der gesucht werden soll.
+	 * @return das gesuchte <code>User</code> Objekt.
+	 */
+	public User findUserByMail(String mail)  {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+		    // Erzeugen eines ungefüllten SQL-Statements
+		    Statement stmt = con.createStatement();
+		   
+		    //Erzeugen eines User-Objektes
+		    User u = new User();
+
+		    // Füllen des Statements
+		    ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE Mail = " + mail + " ORDER BY -");
+		   
+		    if (rs.next()) {
+		    	//Befüllen des User-Objekts
+		    	u = UserMapper.userMapper().findUserById(rs.getInt("systemUserID"));
+		    }
+		    return u;
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
 		    return null;
 		}
-	}	
+	}		
 }
