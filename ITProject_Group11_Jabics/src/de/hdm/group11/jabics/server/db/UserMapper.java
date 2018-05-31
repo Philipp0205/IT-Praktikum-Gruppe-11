@@ -94,8 +94,8 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Füllen des Statements
-			stmt.executeUpdate("INSERT INTO User (id) VALUES " + "(" + u.getId() +  ")"  );
+			// Einfügen des Users in die Datenbank.
+			stmt.executeUpdate("INSERT INTO systemUser (systemUserID, email) VALUES " + "(" + u.getId() + "," + u.getEmail() + ")"  );
 
 			return u;
 		}
@@ -118,21 +118,8 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 			   
-			// Löschen des Users
-			stmt.executeUpdate("DELETE FROM users WHERE id=" + u.getId()); 
-			   
-			// Erzeugen eines zweiten ungefüllten SQL-Statements
-			Statement stmt2 = con.createStatement();
-			   
-			// Löschen aller Teilhaberschaften an Kontakten.
-			stmt2.executeUpdate("DELETE FROM C-Teilhaberschaft WHERE u-id=" + u.getId()); 
-			   
-			// Löschen aller Teilhaberschaften an KontaktListen.
-			stmt2.executeUpdate("DELETE FROM CL-Teilhaberschaft WHERE u-id=" + u.getId()); 
-			   
-			// Löschen aller Teilhaberschaften an <code>PValue</code> Objekten.
-			stmt2.executeUpdate("DELETE FROM PValue-Teilhaberschaft WHERE u-id=" + u.getId()); 
-
+			// Löschen des Users.
+			stmt.executeUpdate("DELETE FROM systemUser WHERE sysid=" + u.getId()); 
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
@@ -157,7 +144,7 @@ public class UserMapper {
 			//Erzeugen einer ArrayList
 			ArrayList<User> al = new ArrayList();
 	    
-			// Füllen des Statements
+			// Auswählen der <code>User</code> Objekte geordnet nach ihrer E-Mail Adresse.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser ORDER BY email");
 
 			while (rs.next()) {
@@ -165,10 +152,9 @@ public class UserMapper {
 				//Erstellen eines User-Objekts
 				User u = new User();
 				
-				//Befüllen des Kontakt-Objekts
+				//Befüllen des Kontakt-Objekts und Einfügen in die Arraylist.
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
-				
 				al.add(u);
 			}
 			return al;
@@ -193,8 +179,8 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 		   
-			// Füllen des Statements
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users " + "WHERE id=" + id);
+			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
+			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + "WHERE systemUserID=" + id);
 		   
 			if (rs.next()) {
 				User u = new User();
