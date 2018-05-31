@@ -316,7 +316,7 @@ public class ContactListMapper {
 	   
 	    	// Einfügen einer neuen Teilhaberschaft mit Eigentümerschaft in die ContactlistCollaboration Tabelle.
 	    	stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES " 
-	    	+ "(" + IsOwner + "," + cl.getId() + "," + u.getId() + ")"  );
+	    	+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")"  );
 
 	    	return cl;
 	    }
