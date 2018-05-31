@@ -98,7 +98,7 @@ public class ContactMapper{
 	    	// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 	   
-			// Füllen des Statements
+			// Einfügen eines <code>Contact</code> Objekts in die Datenbank.
 			stmt.executeUpdate("INSERT INTO contact (contactID, dateCreated, dateUpdated,) VALUES " 
 			+ "(" + c.getId() + c.getDateCreated() + "," + c.getDateUpdated() + ","  + ")"  );
 	    }
@@ -113,10 +113,9 @@ public class ContactMapper{
 	 * Diese Methode aktualisiert ein <code>Contact</code> Objekt in der Datenbank.
 	 * 
 	 * @param c das <code>Contact</code> Objekt, dass aktualisiert werden soll.
-	 * @param u der <code>User</code>, der die Änderung durchführt
 	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
 	 */
-	public Contact updateContact(Contact c, User u){
+	public Contact updateContact(Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -174,7 +173,7 @@ public class ContactMapper{
 			//Erzeugen einer ArrayList
 			ArrayList<Contact> al = new ArrayList();
 	    
-			// Füllen des Statements
+			// Join zwischen Contact und ContactCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
 			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
 			+ "FROM contact"
 			+ "LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
@@ -182,10 +181,10 @@ public class ContactMapper{
 			
 			while (rs.next()) {
 				
-				//Instanzierung 
+				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
 	      
-				//Befüllen des Kontakt-Objekts
+				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
@@ -195,7 +194,6 @@ public class ContactMapper{
 	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-				
 				al.add(c);
 			}
 			return al;
@@ -218,18 +216,14 @@ public class ContactMapper{
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
-	    	//Erzeugen eines Kontakt-Objektes
-	    	Contact c = new Contact();
-
-	    	// Füllen des Statements
-			ResultSet rs = stmt.executeQuery("SELECT * FROM conact WHERE contactID =" + id);
+	    	// Auswählen eines Kontakts mit einer bestimmten ID.
+			ResultSet rs = stmt.executeQuery("SELECT * FROM contact WHERE contactID =" + id);
 	   
 	    	if (rs.next()) {
-	    		//Instanzierung 
-				Contact c = new Contact();
+	    		//Erzeugen eines Kontakt-Objektes
+		    	Contact c = new Contact();
 	      
-				//Befüllen des Kontakt-Objekts
+		    	//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
@@ -239,8 +233,8 @@ public class ContactMapper{
 	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		return c;
 	    	}
-	    	return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -265,15 +259,14 @@ public class ContactMapper{
 	    	//Erzeugen einer ArrayList
 	    	ArrayList<User> al = new ArrayList<User>();
 
-	    	// Füllen des Statements
+	    	// Auswählen von Usern mit einer Bestimmten ID in der contactCollaboration Tabelle.
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID = " + c.getId() 
 	    	+ " ORDER BY systemUserID");
 
 	    	while (rs.next()) {
-	    		//Befüllen des User-Objekts
+	    		//Befüllen des User-Objekts und hinzufügen in die ArrayList.
 	    		User u = new User(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
-
 	    		al.add(u);
 	    	}
 	    	return al;
@@ -301,10 +294,10 @@ public class ContactMapper{
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 
-	    	// Füllen des Statements
+	    	// Einfügen der Teilhaberschaft in die contactCollaboration-Tabelle.
 	    	stmt.executeUpdate("INSERT INTO contactCollaboration (cCollaborationID, isOwner, contactID, systemUserID) VALUES " 
-	    	+ "(" + IsOwner + ","
-	    	+ c.getId() + ","
+	    	+ "(" + IsOwner + ", "
+	    	+ c.getId() + ", "
 	    	+ u.getId() + ")");
 
 	  	  	return c;
@@ -329,8 +322,8 @@ public class ContactMapper{
 	    	// Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Füllen des Statements
-		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID=" + u.getId() + "AND contactID=" + c.getId() );   	  
+		   // Löschen der Teilhaberschaft.
+		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID=" + u.getId() + " AND contactID=" + c.getId() );   	  
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
