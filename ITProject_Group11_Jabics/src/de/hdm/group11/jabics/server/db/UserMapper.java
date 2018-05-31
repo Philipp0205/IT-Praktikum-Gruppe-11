@@ -119,7 +119,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 			   
 			// Löschen des Users.
-			stmt.executeUpdate("DELETE FROM systemUser WHERE sysid=" + u.getId()); 
+			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID=" + u.getId()); 
 		}
 		catch (SQLException e) {
 		    System.err.print(e);

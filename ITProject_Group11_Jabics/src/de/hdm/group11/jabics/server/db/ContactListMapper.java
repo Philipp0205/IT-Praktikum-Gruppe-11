@@ -231,7 +231,7 @@ public class ContactListMapper {
 	   
 	    	if (rs.next()) {
 	    		//Befüllen des Kontaktlisten-Objekts
-	    		cl.setId(rs.getInt("contactID"));
+	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
@@ -243,6 +243,54 @@ public class ContactListMapper {
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
 	    	}
 	    	return cl;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
+	
+	/**
+	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurück, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
+	 */
+	public ArrayList<ContactList> findContactListOfUser(User u)  {   
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	   
+	    	//Erzeugen einer ArrayList
+			ArrayList<ContactList> al = new ArrayList();
+	    	
+	    	//Erzeugen eines Kontaktlisten-Objektes
+	    	ContactList cl = new ContactList();
+
+	    	// Füllen des Statements
+	    	ResultSet rs = stmt.executeQuery("SELECT contactList.contactlistID, contactList.listname, contactList.dateCreated, contactList.dateUpdated"
+	    			+ "FROM contactList"
+	    			+ "LEFT JOIN contactlistCollaboration ON contactList.contactListID = contactlistCollaboration.contactListID"
+	    			+ "WHERE contactlistCollaboration.systemUserID =" + u.getId());
+	   
+	    	if (rs.next()) {
+	    		//Befüllen des Kontaktlisten-Objekts
+	    		cl.setId(rs.getInt("contactListID"));
+	    		cl.setListName(rs.getString("listname"));
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		Date dateC = rs.getDate("dateCreated");
+	    		cl.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		al.add(cl);
+	    	}
+	    	return al;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
