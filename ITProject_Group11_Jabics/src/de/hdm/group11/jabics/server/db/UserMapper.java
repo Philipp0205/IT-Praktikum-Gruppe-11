@@ -158,7 +158,7 @@ public class UserMapper {
 			ArrayList<User> al = new ArrayList();
 	    
 			// Füllen des Statements
-			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser ORDER BY email");
 
 			while (rs.next()) {
 	      
@@ -194,14 +194,14 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 		   
 			// Füllen des Statements
-			ResultSet rs = stmt.executeQuery("SELECT id FROM users " + "WHERE id=" + id + " ORDER BY -");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users " + "WHERE id=" + id);
 		   
 			if (rs.next()) {
-				//Erzeugen eines User-Objektes
-				User u = new User(rs.getString("email"));
-        
+				User u = new User();
+				
 				//Befüllen des Kontakt-Objekts
-		        u.setId(rs.getInt("id"));
+				u.setId(rs.getInt("systemUserID"));
+				u.setEmail(rs.getString("email"));
 		        
 		        return u;
 			}else
