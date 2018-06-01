@@ -13,24 +13,14 @@ public class ContactPage extends Composite {
 	public ContactPage() {
 		initWidget(this.vPanel);
 		
-		private String btnStyle = "standardButton";
+		final Button findAllContacts = new Button("Alle Kontakte finden");
+		findAllContacts.setStylePrimaryName("standardButton");
 		
-		final Button createContactButton = new Button("Kontakte erstellen");
-		createContactButton.setStylePrimaryName(btnStyle);
-		this.vPanel.add(createContactButton);
+		this.vPanel.add(findAllContacts);
 		
-		final Button editContactButton = new Button("Kontakt bearbeiten");
-		editContactButton.setStylePrimaryName(btnStyle);
-		this.vPanel.add(editContactButton);
-		
-		final Button showContactButton = new Button("Kontakt anzeigen");
-		showContactButton.setStylePrimaryName(btnStyle);
-		this.vPanel.add(showContactButton);
-		
-		final Button deleteContactButton = new Button("Kontakt löschen");
-		deleteContactButton.setStylePrimaryName(btnStyle);
-		
-		
+		final Button showContact = new Button("ausgewÃ¤hlten Kontakt anzeigen");
+		showContact.setStylePrimaryName("standardButton");
+		this.vPanel.add(showContact);
 		
 	}	
 }

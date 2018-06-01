@@ -91,9 +91,14 @@ public class PropertyMapper {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 	   
-	    	// Füllen des Statements
-	    	stmt.executeUpdate("INSERT INTO Property (P-id, P-label, P-type, P-isStandard) VALUES " 
-	    	+ "(" + p.getId() + "," + p.getLabel() + "," + p.getType() + "," + p.isStandard() + ")"  ); 
+	    	// Einfügen der neuen Eigenschaft in die Datenbank.
+	    	stmt.executeUpdate("INSERT INTO property (propertyID, dateCreated, dateUpdated, isStandard, type, name ) VALUES " 
+	    	+ "(" + p.getId() + ", " 
+	    	+ p.getDateCreated() + ", " 
+	    	+ p.getDateUpdated() + ", " 
+	    	+ p.isStandard() + ", " 
+	    	+ p.getType() + ", " 
+	    	+ p.getLabel() + ")"); 
 
 	    	return p;
 	    }
@@ -116,8 +121,8 @@ public class PropertyMapper {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 		   
-	    	// Füllen des Statements
-	    	stmt.executeUpdate("DELETE FROM Property WHERE P-id=" + p.getId()); 
+	    	// Löschen der Eigenschaft aus der Datenbank.
+	    	stmt.executeUpdate("DELETE FROM property WHERE propertyID = " + p.getId()); 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e); 
@@ -140,8 +145,8 @@ public class PropertyMapper {
 	    	//Erzeugen eines Property-Objektes
 	    	Property p = null;
 	    	
-	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Property " + "WHERE PropertyID = " + id + " ORDER BY -");
+	    	// Auswählen der Eigenschaften mit einer bestimmten id. 
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Property " + "WHERE PropertyID = " + id );
 	   
 	    	if (rs.next()) {	
 	    		//Befüllen des Property-Objekts
