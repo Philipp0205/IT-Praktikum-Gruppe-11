@@ -4,23 +4,30 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-
+/**
+ * Diese Klasse realisiert die Eigenschaftsausprägungen eines Kontakts.
+ * Diese können entweder im Datentyp int, String, float oder LocalDateTime angelegt sein.
+ * Der int pointer repräsentiert die Information, welcher Datentyp in PValue gespeichert ist.
+ * 1 bedeutet int, 2 String, 3 Date und 4 float.
+ * Zusätzlich ist in jedem PValue Objekt ein Property Objekt gespeichert,
+ * welches Informationen über den Charakter der Eigenschaft, zu welcher die Ausprägung gehört, enthält.
+ * 
+ * @author Kurrle und Anders
+ */
 public class PValue extends BusinessObject {
 
-/**
- * Realises a Poperty Value of a Contact. For example: Name, mobilenumber, adress etc.
- * @author Kurrle  
- */
+
 	
 	private int intValue; 
 	private String stringValue; 
 	private LocalDateTime dateValue;
 	private float floatValue; 
 	private Property property;
+	private int propertyId;
 	private int pointer = 0; 
 	
 	/**
-	 * Constructor for every possible Data Type
+	 * Konstruktoren
 	 */
 	public PValue(Property p) {
 		super();
@@ -63,8 +70,7 @@ public class PValue extends BusinessObject {
 	}
 	
 	/** 
-	 * Getter and Setters. Setting DateUpdated to current time whenever substantial information in the Object is changed. 
-	 * Return a String representation of the Property Value. 
+	 * Getter und Setter. DateUpdated wird bei allen substantiellen Informationsänderungen mitgeändert.
 	 */
 	public int getIntValue() {
 		return intValue;
@@ -112,6 +118,12 @@ public class PValue extends BusinessObject {
 	public void setProperty(Property property) {
 		this.property = property;
 		this.dateUpdated = LocalDateTime.now();
+	}
+	public int getPropertyId() {
+		return propertyId;
+	}
+	public void setPropertyId(int propertyId) {
+		this.propertyId = propertyId;
 	}
 	public int getPointer() {
 		return pointer;
