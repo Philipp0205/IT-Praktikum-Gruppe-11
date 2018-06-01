@@ -78,35 +78,92 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		clMapper.insertContactList(newContactList);
 		clMapper.insertCollaboration(u, newContactList, true);
 		return newContactList;
-		
-		
 	}
 	
-	//Are the create PValue Methods really needed? can't this be done on clientside and we just insert these values into the database?
+	/*
+	 * Erstellen eines neuen <code>PValue</code> Objekts, das einen String speichert.
+	 */
 	public PValue createPValue(Property p, String s, Contact c, User u) {
 		PValue newPValue = new PValue(p, s);
-		c.addPValue(newPValue);
-		//to be determined: does insert pv also connect pv with contact? if yes, next method is unnecessary
-		pvMapper.insertPValue(newPValue, c);
+		/*
+		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
+		 */
+		Contact cnew = cMapper.findContactById(c.getId());
+		cnew.setDateUpdated(LocalDateTime.now());
+		/*
+		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
+		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
+		 */
+		newPValue = pvMapper.insertPValue(newPValue, cnew);
 		pvMapper.insertCollaboration(u, newPValue, true);
-		// potentially add user object into method parameters
-		cMapper.updateContact(c, u);
-		return newPValue; 
+		cMapper.updateContact(cnew);
+		return pvMapper.findPValueById(newPValue.getId()); 
 		
 	}
 	
 	/**
-	 * Erstellt ein PValue mit einem int Wert und fï¿½gt diesen mitsamt collaboration in die DB ein.
+	 * Erstellt ein PValue mit einem int Wert und fügt diesen mitsamt collaboration in die DB ein.
+	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, int i, Contact c, User u) {
 		PValue newPValue = new PValue(p, i);
-		c.addPValue(newPValue);
-		pvMapper.insertPValue(newPValue, c);
+		/*
+		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
+		 */
+		Contact cnew = cMapper.findContactById(c.getId());
+		cnew.setDateUpdated(LocalDateTime.now());
+		/*
+		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
+		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
+		 */
+		newPValue = pvMapper.insertPValue(newPValue, cnew);
 		pvMapper.insertCollaboration(u, newPValue, true);
-		cMapper.updateContact(c, u);
-		return newPValue;
-		
+		cMapper.updateContact(cnew);
+		return pvMapper.findPValueById(newPValue.getId());
 	}
+	
+	/**
+	 * Erstellt ein PValue mit einem Datums Wert und fügt diesen mitsamt collaboration in die DB ein.
+	 * @return das neu erstellte PValue Objekt
+	 */
+	public PValue createPValue(Property p, LocalDateTime dt, Contact c, User u) {
+		PValue newPValue = new PValue(p, dt);
+		/*
+		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
+		 */
+		Contact cnew = cMapper.findContactById(c.getId());
+		cnew.setDateUpdated(LocalDateTime.now());
+		/*
+		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
+		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
+		 */
+		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		pvMapper.insertCollaboration(u, newPValue, true);
+		cMapper.updateContact(cnew);
+		return pvMapper.findPValueById(newPValue.getId());
+	}
+	
+	/**
+	 * Erstellt ein PValue mit einem float Wert und fügt diesen mitsamt Collaboration in die DB ein.
+	 * @return das neu erstellte PValue Objekt
+	 */
+	public PValue createPValue(Property p, float f, Contact c, User u) {
+		PValue newPValue = new PValue(p, f);
+		/*
+		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
+		 */
+		Contact cnew = cMapper.findContactById(c.getId());
+		cnew.setDateUpdated(LocalDateTime.now());
+		/*
+		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
+		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
+		 */
+		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		pvMapper.insertCollaboration(u, newPValue, true);
+		cMapper.updateContact(cnew);
+		return pvMapper.findPValueById(newPValue.getId());
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see de.hdm.group11.jabics.shared.EditorService#createProperty(java.lang.String, de.hdm.group11.jabics.shared.bo.Type)
@@ -161,30 +218,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 	}
 	
+	/*
+	 * TODO: Diese Methode wird höchstwahrscheinlich nie gebraucht, da stattdessen immer create PValue verwendet wird
+	 * erstmal noch drinlassen. Jan
+	 */
 	public Contact addValueToContact(PValue pv, Contact c, User u) {
 		c.addPValue(pv);
-		return cMapper.updateContact(c, u);
+		return cMapper.updateContact(c);
 	}
 	
-	/**
-	 * Suche nach allen <code>Contacts</code> in einer <code>ContactList</code>, die den mitgegebenen String als Property oder PropertyValue enthalten.
-	 * @return Eine ArrayList mit allen Contacts, die dem Suchkriterium entsprechen
-	 */
-	public ArrayList<Contact> searchInList(ContactList cl, String s){
-		ArrayList<Contact> result = new ArrayList<Contact>();
-		for(Contact c : cl.getContacts()) {
-			if(c.getName().contains(s)) result.add(c);
-			for (PValue pv : c.getValues()) {
-				/**
-				 * TODO: add more fields that are searched through
-				 */
-				if (pv.getProperty().toString().contains(s) || pv.getStringValue().contains(s)) {
-					result.add(c);
-				}
-			}
-		}
-		return result;
-	}
 	
 	/**
 	 * Suche nach allen <code>Contacts</code> eines <code>Users</code>, die den mitgegebenen String als Property oder PropertyValue enthalten.
@@ -193,8 +235,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<Contact> searchForContactByExpression(String s, User u){
 		//neue Kontaktliste, um bereits implementierte Methode verwenden zu können
 		ContactList cl = new ContactList(cMapper.findAllContacts(u));
-		return this.searchInList(cl, s);
-		
+		return this.searchExpressionInList(s, cl);
 	}
 	/**
 	 * Entfernt einen <code>Contact</code> aus einer <code>ContactList</code>
@@ -272,6 +313,31 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			 */
 	}
 	
+	/*
+	 * Diese Methode checkt, ob der Contact in dieser Form in der DB vorhanden ist,
+	 * wenn nicht wird alles auf Konsitenz geprüft und fehlende Inhalte werden upgedated
+	 */
+	public void updateContact(Contact c){
+		Contact ctemp = cMapper.findContactById(c.getId());
+		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
+		/*
+		 * TODO: hier die !equals oder != operatoren? was ist besser um zu überprüfen, dass pvalues gleich sind
+		 * .equals in Contact noch schreiben?
+		 */
+		if(c.equals(ctemp) == false) {
+			c.setDateUpdated(LocalDateTime.now());
+			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
+			for (PValue pv : c.getValues()) {
+				if(pvMapper.findPValueById(pv.getId()) != pv) {
+					pvMapper.updatePValue(pv);
+					pvMapper.deleteCollaboration(pv, pv.getOwner());
+					pvMapper.insertCollaboration(u, pv, true);
+				}
+			}
+			cMapper.updateContact(c);
+		}
+	}
+	
 	/**
 	 * Eine Freigabe zwischen einem Nutzer und einer Kontaktliste einfï¿½gen.Diese Methode nicht! beim erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
 	 * @param ContactList, um die es sich handelt
@@ -324,26 +390,76 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * TODO: implement
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, User u){
-		return pvMapper.getPValueForContact(c, u);
+		return pvMapper.findPValueForContact(c);
 	};
 	
+	/**
+	 * Diese Methode wird verwendet, wenn der Datentyp des Suchkriteriums nicht bekannt ist!
+	 * Suche nach allen <code>Contacts</code> in einer <code>ContactList</code>, die den mitgegebenen String als Property oder PropertyValue enthalten.
+	 * @return Eine ArrayList mit allen Contacts, die dem Suchkriterium entsprechen
+	 */
+	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl){
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		for(Contact c : cl.getContacts()) {
+			if(c.getName().contains(s)) result.add(c);
+			for (PValue pv : c.getValues()) {
+				/**
+				 * TODO: add more fields that are searched through
+				 */
+				if (pv.getProperty().toString().contains(s) || pv.getStringValue().contains(s)) {
+					result.add(c);
+				}
+			}
+		}
+		return result;
+	}
+	
+	/*
+	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder kriterien verwendet.
+	 * Für eine allgemeine Suche siehe searchExpressionInList
+	 */
 	public ArrayList<Contact> searchInList(String s, ContactList cl){
-		return Filter.filterContactsByString(cl.getContacts(), new PValue());
-	};
+		return Filter.filterContactsByString(cl.getContacts(), s);
+	}
 	
-	public ArrayList<Contact> searchInList(int i, ContactList cl);
+	public ArrayList<Contact> searchInList(int i, ContactList cl){
+		return Filter.filterContactsByInt(cl.getContacts(), i);
+	}
 	
-	public ArrayList<Contact> searchInList(float f, ContactList cl );
+	public ArrayList<Contact> searchInList(float f, ContactList cl ){
+		return Filter.filterContactsByFloat(cl.getContacts(), f);
+	}
 	
-	public ArrayList<Contact> searchInList(User u, ContactList cl);
+	public ArrayList<Contact> searchInList(User u, ContactList cl){
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		for(Contact c : cl.getContacts()) {
+			/*
+			 * Wenn der Contact Owner der übergebene Nutzer ist oder
+			 * ein Collaborator an einem der Kontakte der übergebene Nutzer ist
+			 * dann wird der Kontakt zurückgegeben
+			 */
+			if(c.getOwner().getId() == u.getId() || cMapper.findCollaborators(c).contains(u)) {
+					result.add(c);
+			}
+		}
+		return result;
+	}
 
-	public ArrayList<User> getCollaborators(Contact c);
+	public ArrayList<User> getCollaborators(Contact c){
+		return cMapper.findCollaborators(c);
+	}
 	
-	public ArrayList<User> getCollaborators(ContactList cl);
+	public ArrayList<User> getCollaborators(ContactList cl){
+		return clMapper.findCollaborators(cl);
+	}
 	
-	public ArrayList<User> getCollaborators(PValue pv);
+	public ArrayList<User> getCollaborators(PValue pv){
+		return pvMapper.findCollaborators(pv);
+	}
 	
-	public ArrayList<User> getAllUsers(User u);
+	public ArrayList<User> getAllUsers(User u){
+		return uMapper.findAllUser();
+	}
 	
 	
 	public void init() {
@@ -390,55 +506,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		cl = new ContactList(contacts, "MeineListe");
 	}
 
-	@Override
-	public Contact createContact(ArrayList<PValue> cArray) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public ContactList createContactList(ArrayList<Contact> cArray) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PValue createPValue(Property p, String s, Contact c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PValue createPValue(Property p, int i, Contact c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Property createProperty(String label) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<Contact> searchInLists(String s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Contact deleteAllPValueFromContact(Contact c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void updateContact(Contact c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void initialise() {
 		// TODO Auto-generated method stub
 		

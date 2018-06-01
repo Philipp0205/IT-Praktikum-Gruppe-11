@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -11,15 +12,17 @@ public interface EditorServiceAsync {
 
 	void createUser(String name, AsyncCallback<User> callback) throws IllegalArgumentException;
 	
-	void createContact(ArrayList<PValue> cArray, AsyncCallback<Contact> callback);
+	void createContact(ArrayList<PValue> cArray, User u, AsyncCallback<Contact> callback);
 	
-	void createContactList(ArrayList<Contact> cArray, AsyncCallback<ContactList> callback);
+	void createContactList(ArrayList<Contact> cArray, User u, AsyncCallback<ContactList> callback);
 	
-	void createPValue(Property p, String s, Contact c, AsyncCallback<PValue> callback);
+	void createPValue(Property p, String s, Contact c, User u, AsyncCallback<PValue> callback);
 	
-	void createPValue(Property p, int i, Contact c, AsyncCallback<PValue> callback);
+	void createPValue(Property p, int i, Contact c, User u, AsyncCallback<PValue> callback);
+
+	void createPValue(Property p, LocalDateTime dt, Contact c, User u, AsyncCallback<PValue> callback);
 	
-	void createProperty(String label, AsyncCallback<Property> callback);
+	void createPValue(Property p, float f, Contact c, User u, AsyncCallback<PValue> callback);
 	
 	void createProperty(String label, Type type, AsyncCallback<Property> callback);
 	
@@ -33,13 +36,9 @@ public interface EditorServiceAsync {
 	
 	void addValueToContact(PValue pv, Contact c, AsyncCallback<Contact> callback);
 	
-	void searchInLists(String s, AsyncCallback<ArrayList<Contact>> callback);
-	
 	void searchForContactByExpression(String s, User u, AsyncCallback<ArrayList<Contact>> callback);
 	
 	void removeContactFromList(Contact c, ContactList cl, AsyncCallback<ContactList> callback);
-	
-	void deleteAllPValueFromContact(Contact c, AsyncCallback<Contact> callback);
 	
 	void deleteContact(Contact c, AsyncCallback<Void> callback);
 	
@@ -66,6 +65,8 @@ public interface EditorServiceAsync {
 	void deleteCollaboration(ContactList cl, User u, AsyncCallback<Void> callback);
 	
 	void getPValueOf(Contact c , User u, AsyncCallback<ArrayList<PValue>> callback);
+	
+	void searchExpressionInList(String s, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 	
 	void searchInList(String s, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 	

@@ -1,7 +1,14 @@
 package de.hdm.group11.jabics.shared.report;
 
+import java.time.LocalDateTime;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
+
+/*
+ * Die Klasse PropertyView implementiert eine generische Sicht auf ein PValue Objekt, das für die Anzeige einer
+ * Eigenschaftsausprägung in einem Report geeignet ist. Ein PropertyView enthält einen String für den Namen 
+ * der Eigenschaft und einen String für den Wert der Ausprägung.
+ */
 public class PropertyView {
 
 	
@@ -17,19 +24,23 @@ public class PropertyView {
 		this.pname = pv.getProperty().getLabel();
 		switch(pv.getPointer()) {
 		
-			/**
-			 * TODO: convert data types to String, so they can be displayed in a report 
-			 * case 1: this.pvalue = pv.getIntValue();
-			 * case 1: this.pvalue = pv.getStringValue();
-			 * case 1: this.pvalue = pv.getDateValue();
-			 * case 1: this.pvalue = pv.getFloatValue();
-			 */
+			 case 1: Integer i = pv.getIntValue();
+			 		 this.pvalue = i.toString();
+					 break;
+			 case 2: this.pvalue = pv.getStringValue();
+			 		 break;
+			 case 3: LocalDateTime dt = pv.getDateValue();
+			         this.pvalue = dt.toString();
+			         break;
+			 case 4: Float f = pv.getFloatValue();
+			 		 this.pvalue = f.toString();
+			 		 break;
 			default: System.out.println("PropertyValue could not be found by PropertyView");
 		}
 	}
 	
 	/**
-	 * Getters and Setters 
+	 * Getter und Setter 
 	 */
 	public String getPname() {
 		return pname;

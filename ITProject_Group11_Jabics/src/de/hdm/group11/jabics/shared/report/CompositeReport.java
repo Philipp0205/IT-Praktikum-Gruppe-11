@@ -79,44 +79,24 @@ public class CompositeReport<T> extends Report implements Serializable {
 	public void setHeadline(Paragraph headline) {
 		this.headline = headline;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> Testing
+
 	// Methode überladen damit auch nur ein String mitgegeben werden kann. 
 	public void setHeadline(String s) {
 		this.headline = new Paragraph(s);
 	}
-	
-<<<<<<< HEAD
->>>>>>> stash
-=======
->>>>>>> Testing
 	public Paragraph getFootline() {
 		return footline;
 	}
 	public void setFootline(Paragraph footline) {
 		this.footline = footline;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public ArrayList<Report> getSubReports() {
-=======
-=======
->>>>>>> Testing
 	// Ebenfalls überladen
 	public void setFootline(String s) {
 		this.footline = new Paragraph(s);
 	}
 	public ArrayList<T> getSubReports() {
-<<<<<<< HEAD
->>>>>>> stash
-=======
->>>>>>> Testing
 		return subReports;
 	}
-
 	public void setSubReports(ArrayList<T> subReports) {
 		this.subReports = subReports;
 	}
