@@ -1,9 +1,11 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -96,23 +98,23 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 	 
 	    	// Befüllen der Kontaktlistentabelle.
-	    	stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated, dateUpdated) VALUES " + cl.getId() 
-	    	+ cl.getListName()  + cl.getDateCreated() + cl.getDateUpdated());/*
-	    	*/
+	    	stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated, dateUpdated) VALUES "
+	    	+ cl.getId() + ", " + cl.getListName()  + ", " + cl.getDateCreated() + ", " + cl.getDateUpdated());
+	    	
+	    	return cl;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
-	    return cl;
 	}
 	
 	/**
 	 * Diese Methode aktualisiert ein <code>ContactList</code> Objekt in der Datenbank.
-	 * In der Datenbank muss in der Kontaktlisten-Tabelle ein Update des Namens erfolgen.
+	 * In der Datenbank muss in der Kontaktlisten-Tabelle ein Update des Namens erfolgen, sowie des Datums des letzten Updates.
 	 * 
 	 * @param cl das <code>ContactList</code> Objekt, dass aktualisiert werden soll.
-	 * @return Das als Parameter übergebene- <code>ContactList</code> Objekt.
+	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList updateContactList(ContactList cl){
 		
@@ -120,7 +122,6 @@ public class ContactListMapper {
 	    Connection con = DBConnection.connection();
 
 	    try {
-	   
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 		   
@@ -138,7 +139,6 @@ public class ContactListMapper {
 	
 	/**
 	 * Diese Methode löscht ein <code>ContactList</code> Objekt aus der Datenbank.
-	 * 
 	 * @param cl das <code>ContactList</code> Objekt, dass gelöscht werden soll.
 	 */
 	public void deleteContactList(ContactList cl){
@@ -149,7 +149,7 @@ public class ContactListMapper {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 		   
-	    	// Füllen des Statements
+	    	// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
 	    	stmt.executeUpdate("DELETE FROM contactList WHERE  contactlistID = " + cl.getId());
 	    }
 	    catch (SQLException e) {
@@ -160,9 +160,8 @@ public class ContactListMapper {
 	/**
 	 * Diese Methode fügt einem <code>ContactList</code> Objekt ein <code>Contact</code> Objekt in der Datenbank hinzu.
 	 * Dazu mussen in der Datenbank neue Tupel in der Kontakt-Kontaktliste-Tabelle angelegt werden.
-	 * 
 	 * @param cl das <code>ContactList</code> Objekt, dass aktualisiert werden soll.
-	 * @return Das als Parameter übergebene- <code>ContactList</code> Objekt.
+	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList insertContactIntoContactList(ContactList cl, Contact c){
 		
@@ -179,8 +178,8 @@ public class ContactListMapper {
 	    	// Erzeugen eines zweiten ungefüllten SQL-Statements
 	    	Statement stmt2 = con.createStatement();
 		   
-	    	//Update des letzten Updates der Kontaktliste
-	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdate = " + cl.getDateUpdated() + "  WHERE contactlistID = " + cl.getId()); 
+	    	//Update des letzten Updates der Kontaktliste.
+	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = " + cl.getDateUpdated() + "  WHERE contactlistID = " + cl.getId()); 
 		   
 	    	return cl;
 	    }  
@@ -192,7 +191,6 @@ public class ContactListMapper {
 	
 	/**
 	 * Diese Methode löscht ein <code>Contact</code> Objekt aus einer Kontaktliste.
-	 * 
 	 * @param cl das <code>ContactList</code> Objekt, aus welchem der Kontakt gelöscht werden soll.
 	 * @param c das <code>Contact</code> Objekt, dass aus der Liste gelöscht werden soll.
 	 */
@@ -203,8 +201,8 @@ public class ContactListMapper {
 		  // Erzeugen eines ungefüllten SQL-Statements
 		   Statement stmt = con.createStatement();
 		   
-		   // Löschen des Kontakts aus der Liste
-		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID=" + cl.getId() + "AND contactListID = " + cl.getId()); 
+		   // Löschen des Kontakts aus der Liste.
+		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID= " + cl.getId() + " AND contactListID = " + cl.getId()); 
 	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -228,14 +226,21 @@ public class ContactListMapper {
 	    	//Erzeugen eines Kontaktlisten-Objektes
 	    	ContactList cl = new ContactList();
 
-	    	// Füllen des Statements
+	    	// Auswählen eines Contaktlistenobjekts mit einer bestimmten ID.
 	    	ResultSet rs = stmt.executeQuery("SELECT * FROM contactList " + "WHERE contactlistID = " + id );
 	   
 	    	if (rs.next()) {
 	    		//Befüllen des Kontaktlisten-Objekts
-	    		cl.setId(rs.getInt("id"));
+	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
-	    		//cl.setDateUpdated(rs.get);//wird noch besprochen!
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		Date dateC = rs.getDate("dateCreated");
+	    		cl.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
 	    	}
 	    	return cl;
 	    }
@@ -246,34 +251,42 @@ public class ContactListMapper {
 	}
 	
 	/**
-	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurück, dass einen bestimmten Namen hat.
-	 * @param name der Name nach welcher gesucht werden soll.
-	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
+	 * Diese Methode gibt alle <code>ContactList</code> Objekte zurück, die einen bestimmten Teilhaber haben haben. 
+	 * @param u der Teilhaber, dessen <code>ContactList</code> Objekte zurückgegeben werden sollen.
+	 * @return Die ArrayList, die mit den <code>ContactList</code> Objekten befüllt ist.
 	 */
-	public ArrayList<ContactList> findContactListByName(String name)  {
-	   
+	public ArrayList<ContactList> findContactListOfUser(User u)  {   
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
 	    try {
-	    	
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-		    ArrayList<ContactList> al = new ArrayList();
+			ArrayList<ContactList> al = new ArrayList();
+	    	
+	    	//Erzeugen eines Kontaktlisten-Objektes
+	    	ContactList cl = new ContactList();
 
-	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM contactList " + "WHERE listname = " + name );
+	    	// Join zwischen ContactList und ContactListCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
+	    	ResultSet rs = stmt.executeQuery("SELECT contactList.contactlistID, contactList.listname, contactList.dateCreated, contactList.dateUpdated"
+	    			+ " FROM contactList"
+	    			+ " LEFT JOIN contactlistCollaboration ON contactList.contactListID = contactlistCollaboration.contactListID"
+	    			+ " WHERE contactlistCollaboration.systemUserID =" + u.getId());
 	   
-	    	while (rs.next()) {
+	    	if (rs.next()) {
 	    		//Befüllen des Kontaktlisten-Objekts
-	    		ContactList cl = new ContactList();
-	    		cl.setId(rs.getInt("id"));
+	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
-	    		cl.setDateCreated(rs.get);//wird noch besprochen!
-	    		cl.setDateUpdated(rs.get);//wird noch besprochen!
-	    		
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    		Date dateC = rs.getDate("dateCreated");
+	    		cl.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
 	    		al.add(cl);
 	    	}
 	    	return al;
@@ -283,7 +296,7 @@ public class ContactListMapper {
 	    	return null;
 	    }
 	}
-	
+		
 	/**
 	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu einem <code>ContactList</code> Objekt
 	 * in die Datenbank ein.
@@ -301,9 +314,9 @@ public class ContactListMapper {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 	   
-	    	// Füllen des Statements
+	    	// Einfügen einer neuen Teilhaberschaft mit Eigentümerschaft in die ContactlistCollaboration Tabelle.
 	    	stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES " 
-	    	+ "(" + IsOwner + "," + cl.getId() + "," + u.getId() + ")"  );
+	    	+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")"  );
 
 	    	return cl;
 	    }
@@ -318,7 +331,7 @@ public class ContactListMapper {
 	 * einem <code>ContactList</code> Objekt.
 	 * 
 	 * @param cl die ausgewählte Kontaktliste.
-	 * @param u der Nutzer der die Teilhaberschaft zu der Kontaktlite verlieren soll.
+	 * @param u der Nutzer der die Teilhaberschaft zu der Kontaktliste verlieren soll.
 	 */
 	public void deleteCollaboration(ContactList cl, User u){
 		// Erzeugen der Datenbankverbindung
@@ -328,7 +341,7 @@ public class ContactListMapper {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
 		   
-	    	// Füllen des Statements
+	    	// Löschen einer Teilhaberschaft aus der ContactlistCollaboration Tabelle.
 	    	stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId() + " AND systemUserID = " + u.getId());   
 	    }
 	    catch (SQLException e) {
@@ -353,14 +366,13 @@ public class ContactListMapper {
 	    	//Erzeugen einer ArrayList
 	    	ArrayList<User> al = new ArrayList();
 	    
-	    	// Füllen des Statements
+	    	// Auswählen von Tupeln mit einer bestimmten User-Id. 
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() + " ORDER BY systemUserID");
 
 	    	while (rs.next()) {
-	    		//Befüllen des User-Objekts
+	    		//Befüllen des User-Objekts und hinzufügen zur Arraylist.
 	    		User u = new User(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
-
 	    		al.add(u);
 	        }
 	    	return al;
@@ -368,36 +380,6 @@ public class ContactListMapper {
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
-	    }
-	}
-	
-	/**
-	 * 
-	 * @param u
-	 * @return
-	 */
-	public int checkOwnership(ContactList cl, User u) {
-		// Erzeugen der Datenbankverbindung
-	    Connection con = DBConnection.connection();
-	    
-	    // Erzeugen 
-	    boolean owner;
-
-	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	    
-	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT isOwner FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() 
-	    	+ "AND systemUserID" + u.getId());
-	    	
-
-	    	}
-	    	return //...
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return false;
 	    }
 	}
 }
