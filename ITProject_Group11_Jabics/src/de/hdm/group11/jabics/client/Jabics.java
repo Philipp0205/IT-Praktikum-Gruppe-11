@@ -51,6 +51,7 @@ public class Jabics implements EntryPoint {
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("stockList").add(loginPanel);
+	    
 	  }
 	
 }

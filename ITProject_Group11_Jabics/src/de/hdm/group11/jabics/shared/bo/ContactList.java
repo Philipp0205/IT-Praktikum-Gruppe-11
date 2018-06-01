@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
- * This Class realises the Object Oriented Version of Contact Lists in Jabics. It can store an undefined amount of Contact Objects.
- * Contacts can be added using the addContacts or addContact method or removed using removeContact. ContactLists have a list name.
+ * Diese Klasse implementiert Kontaktlisten in Jabics. Kontaktlisten haben einen Namen und ein Feld aus Kontakten.
+ * Diese können eine nicht definierte Menge an <code>Contact</code> Objekten speichern.
+ * Kontakte können einer Liste mittels addContact() und removeContact() hinzugefügt oder entfernt werden.
  * @author Anders
  *
  */

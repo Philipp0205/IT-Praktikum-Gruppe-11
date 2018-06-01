@@ -104,33 +104,42 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		pvMapper.insertPValue(newPValue, c);
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(c, u);
-		return newPValue; 
+		return newPValue;
 		
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see de.hdm.group11.jabics.shared.EditorService#createProperty(java.lang.String, de.hdm.group11.jabics.shared.bo.Type)
+	 */
 	public Property createProperty(String label, Type type) {
 		Property newProperty = new Property(label, type);
 		return pMapper.insertProperty(newProperty);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see de.hdm.group11.jabics.shared.EditorService#getListsOf(de.hdm.group11.jabics.shared.bo.User)
+	 */
 	public ArrayList<ContactList> getListsOf(User u) {
 		//return clMapper.findAllContactList(u);
-		// kann gelï¿½scht werden
+		
+		
+		// temporär: kann gelöscht werden
 		ArrayList<ContactList> cl = new ArrayList<ContactList>();
 		cl.add(this.cl);
 		return cl; 
 	}
 	
-	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurï¿½ck.
+	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
 	public ArrayList<Contact> getContactsOf(User u) { 
 		//ArrayList<Contact> cons = cMapper.findAllContact(u);
-		//sind die Kontakte die der mapper zurï¿½ckgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
+		//sind die Kontakte die der mapper zurückgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
 		/*for (Contact c : cons) {
 			pvMapper.
 		}*/
 		//return cons;
 		
-		//temporary: kann gelï¿½scht werden sobal fertig
+		//temporary: kann gelöscht werden sobal fertig
 		return cl.getContacts();
 	}
 	
@@ -182,7 +191,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Eine ArrayList mit allen Contacts, die dem Suchkriterium entsprechen
 	 */
 	public ArrayList<Contact> searchForContactByExpression(String s, User u){
-		//creating new ContactList for all contacts of given user to be able to call already implemented method
+		//neue Kontaktliste, um bereits implementierte Methode verwenden zu können
 		ContactList cl = new ContactList(cMapper.findAllContacts(u));
 		return this.searchInList(cl, s);
 		
@@ -193,12 +202,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ContactList removeContactFromList(Contact c, ContactList cl) {
 		cl.removeContact(c);
-		clMapper.removeContactFromList(cl, c);
+		clMapper.deleteContactfromContactList(cl, c);
 		return cl;
 	}
 	
 	/**
-	 * Lï¿½scht einen <code>Contact</code> aus der Datenbank. Lï¿½scht den Contact fï¿½r alle Nutzer permanent. Kann nicht rï¿½ckgï¿½ngig gemacht werden.
+	 * Löscht einen <code>Contact</code> aus der Datenbank. Löscht den Contact für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.
 	 * @param Contact, der gelï¿½scht werden soll
 	 */
 	public void deleteContact(Contact c){
@@ -218,13 +227,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			clMapper.deleteCollaboration(cl, u);
 		}
 		for (Contact c: cl.getContacts()) {
-			clMapper.deleteContactFromContactList(cl, c);
+			clMapper.deleteContactfromContactList(cl, c);
 		}
 		clMapper.deleteContactList(cl);
 	}
 	/**
-	 * Eine Property aus der Datenbank lï¿½schen. Es wird ï¿½berprï¿½ft, ob die Eigenschaft gelï¿½scht werden darf.
-	 * @param Property, die gelï¿½scht werden soll
+	 * Eine Property aus der Datenbank löschen. Es wird überprüft, ob die Eigenschaft gelöscht werden darf.
+	 * @param Property, die gelöscht werden soll
 	 */
 	public void deleteProperty(Property p){
 		if(!p.isStandard()) {
@@ -245,9 +254,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public void updatePValue(PValue pv) {
 		
-		/**
-		 * TODO: implement method findPValueById in PValue Mapper
-		 */
 		PValue pvtemp = pvMapper.findPValueById(pv.getId());
 		if(pv != pvtemp) {
 			 pv.setDateUpdated(LocalDateTime.now());
@@ -262,7 +268,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			clMapper.updateContactList(cl);
 		}
 			/**
-			 * TODO Nachdenken, ob wir nur ï¿½nderungen ï¿½berprï¿½fen und nur diese an die db weitergeben oder das ganze ding in die DB geben
+			 * TODO Nachdenken, ob wir nur Änderungen überprüfen und nur diese an die DB weitergeben oder das ganze ding in die DB geben
 			 */
 	}
 	
