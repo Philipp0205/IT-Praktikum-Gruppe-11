@@ -16,7 +16,7 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 /**
  * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>Contact</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontakte in der Datenbank zur VerfÃ¼gung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontakte in der Datenbank zur Verfügung. 
  * 
  * @author Brase
  * @author Stahl
@@ -36,7 +36,7 @@ public class ContactMapper{
      * hierbei von einem sogenannten <b>Singleton</b>.
      * <p>
      * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fÃ¼r
-     * sÃ¤mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+     * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
      * einzige Instanz dieser Klasse.
      * 
      * @see contactMapper()
@@ -184,7 +184,7 @@ public class ContactMapper{
 				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
 	      
-				//BefÃ¼llen des Kontakt-Objekts und hinzufÃ¼gen in die ArrayList.
+				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 

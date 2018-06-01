@@ -9,6 +9,7 @@ import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
 import com.google.gwt.user.server.rpc.*;
 import de.hdm.group11.jabics.server.db.ContactMapper;
+import de.hdm.group11.jabics.server.db.PValueMapper;
 import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.ReportGeneratorService;
 import de.hdm.group11.jabics.shared.bo.*;
@@ -29,6 +30,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 */
 	ContactMapper cMapper = ContactMapper.contactMapper();
 	UserMapper uMapper = UserMapper.userMapper();
+	PValueMapper pvMapper = PValueMapper.pValueMapper();
 	private static final long serialVersionUID = -4462530285584570547L;
 	
 	
@@ -60,7 +62,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		 */
 		for (Contact c : cMapper.findAllContacts(u)) {
 			ArrayList<PropertyView> pval = new ArrayList<PropertyView>();
-			for (PValue pv : c.getValues()) {
+			for (PValue pv : pvMapper.findPValueForContact(c)) {
 				pval.add(new PropertyView(pv));
 			}
 			result.addReport(new ContactReport(pval));

@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -8,15 +9,17 @@ public interface EditorService {
 	
 	public User createUser(String name) throws IllegalArgumentException;
 	
-	public Contact createContact(ArrayList<PValue> cArray );
+	public Contact createContact(ArrayList<PValue> cArray, User u);
 	
-	public ContactList createContactList(ArrayList<Contact> cArray);
+	public ContactList createContactList(ArrayList<Contact> cArray, User u);
 	
-	public PValue createPValue(Property p, String s, Contact c);
+	public PValue createPValue(Property p, String s, Contact c, User u);
 	
-	public PValue createPValue(Property p, int i, Contact c);
+	public PValue createPValue(Property p, int i, Contact c, User u);
 	
-	public Property createProperty(String label);
+	public PValue createPValue(Property p, LocalDateTime dt, Contact c, User u);
+	
+	public PValue createPValue(Property p, float i, Contact c, User u);
 	
 	public Property createProperty(String label, Type type);
 	
@@ -30,13 +33,9 @@ public interface EditorService {
 	
 	public Contact addValueToContact(PValue pv, Contact c, User u);
 	
-	public ArrayList<Contact> searchInLists(String s);
-	
 	public ArrayList<Contact> searchForContactByExpression(String s, User u);
 	
 	public ContactList removeContactFromList(Contact c, ContactList cl);
-	
-	public Contact deleteAllPValueFromContact(Contact c);
 	
 	public void deleteContact(Contact c);
 	
@@ -63,6 +62,8 @@ public interface EditorService {
 	public void deleteCollaboration(ContactList cl, User u);
 	
 	public ArrayList<PValue> getPValueOf(Contact c , User u);
+	
+	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl);
 	
 	public ArrayList<Contact> searchInList(String s, ContactList cl);
 	
