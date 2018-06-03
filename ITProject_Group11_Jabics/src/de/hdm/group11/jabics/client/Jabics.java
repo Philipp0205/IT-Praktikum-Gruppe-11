@@ -47,8 +47,8 @@ public class Jabics implements EntryPoint {
 	
 	public void onModuleLoad() {
 		MainView mainView = new MainView();
+		// Content is die ID des Body-Elements von Stockwatcher 
 		RootPanel.get("content").add(mainView);
-		
 		
 		
 		// Login-Status überüfen
