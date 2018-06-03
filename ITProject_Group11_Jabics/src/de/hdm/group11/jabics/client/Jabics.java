@@ -19,6 +19,8 @@ public class Jabics implements EntryPoint {
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
 	
 	// Objekte die später für den Login gebraucht werden
+	
+	// Login noch auskommentieren
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label("Bitte melden sie sich mit ihren Google-Account an um Jabics nutzen zu können.");
@@ -47,6 +49,7 @@ public class Jabics implements EntryPoint {
 	
 	private void loadLogin() {
 	    // Assemble login panel.
+		// Noch aus Stockwatcher? -> todo
 	    signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);

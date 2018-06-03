@@ -16,25 +16,21 @@ public class MenuView extends Composite {
 		hPanel.getElement().setId("hMenuPanel");
 		this.main = main;
 		
-		Anchor contactBtn = new Anchor("Kontakt");
+		Anchor contactBtn = new Anchor("Kontakte");
 		contactBtn.addClickHandler(new ContactButtonHandler());
 		contactBtn.getElement().setId("menuButton");
 		this.hPanel.add(contactBtn);
 		
-		Anchor listBtn = new Anchor("Liste");
+		Anchor listBtn = new Anchor("Listen");
 		listBtn.addClickHandler(new ListButtonHandler());
 		listBtn.getElement().setId("menuButton");
 		this.hPanel.add(listBtn);
 		
-		Anchor sharedContactBtn = new Anchor("geteilte Kontakt");
-		sharedContactBtn.addClickHandler(new ContactButtonHandler());
-		sharedContactBtn.getElement().setId("menuButton");
-		this.hPanel.add(sharedContactBtn);
+		Anchor searchBtn = new Anchor("Suche");
+		searchBtn.addClickHandler(new ContactButtonHandler());
+		searchBtn.getElement().setId("menuButton");
+		this.hPanel.add(searchBtn);
 		
-		Anchor sharedListBtn = new Anchor("geteilte Liste");
-		sharedListBtn.addClickHandler(new ListButtonHandler());
-		sharedListBtn.getElement().setId("menuButton");
-		this.hPanel.add(sharedListBtn);
 	}
 	
 	private class ContactButtonHandler implements ClickHandler {
