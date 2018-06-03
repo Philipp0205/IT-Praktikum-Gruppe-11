@@ -81,7 +81,7 @@ public class UserMapper {
 	}
 	
 	 /** 
-	 * Diese Methode trÃ¤gt ein <code>User</code> Objekt in die Datenbank ein.
+	 * Diese Methode trägt ein <code>User</code> Objekt in die Datenbank ein.
 	 * @param u das <code>User</code> Objekt, dass in die Datenbank eingetragen werden soll.
 	 * @return Das als Parameter Ã¼bergebene- <code>User</code> Objekt.
 	 */
@@ -106,7 +106,7 @@ public class UserMapper {
 	}
 		
 	/**
-	 * Diese Methode lÃ¶scht ein <code>User</code> Objekt aus der Datenbank.
+	 * Diese Methode lÃöscht ein <code>User</code> Objekt aus der Datenbank.
 	 * 
 	 * @param u das <code>User</code> Objekt, dass gelÃ¶scht werden soll.
 	 */
