@@ -33,10 +33,20 @@ public class BOEditor extends Composite {
 			      showProp(ary[i]);
 			    }
 			
+			
+			final Button addProp = new Button("Eigenschaft hinzufügen");
+			Box.add(addProp);
+			final Button delCon = new Button("Kontakt löschen");
+			Box.add(delCon);
+			
+			/*
+			 * RPC zu Kontakt löschen
+			 */
+			
 		}
 		
 		
-		public void showProp(Property prop) {
+		private void showProp(Property prop) {
 			
 			/**
 			 *  Für jedes Wertepaar (Eigenschaft & Eigenschaftsausprägung) erstellt die Methode
@@ -68,13 +78,17 @@ public class BOEditor extends Composite {
 			
 		}
 		
-		
-		final Button delCon = new Button("Kontakt löschen");
-		Box.add(delCon);
-		
-		/*
-		 * RPC zu Kontakt löschen
-		 */
+		private void delProp(Property prop) {
+			
+			/**
+			 *  Aufruf der Löschmethode für Eigenschaften eines Kontaktes
+			 *  TODO Ersetzen von void durch Rückgabewert ob Funktion erfolgreich
+			 */
+			
+			deleteProperty(prop);
+			
+
+		}
 		
 	}
 	
