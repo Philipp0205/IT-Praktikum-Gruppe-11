@@ -188,12 +188,13 @@ public class PValueMapper {
 
 	 	   	while (rs.next()) {
 	 	   	//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
-	 	   		PValue pv = new PValue(rs.getInt("propertyID"));
+	 	   		PValue pv = new PValue();
 	 	   		
 	    		pv.setId(rs.getInt("pValueID"));
 	    		pv.setStringValue(rs.getString("stringValue"));
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
+	    		pv.setPropertyId(rs.getInt("propertyID"));
 				Date dateV = rs.getDate("dateValue");
 	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
@@ -239,12 +240,13 @@ public class PValueMapper {
 	   
 	    	if (rs.next()) {
 	    		//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
-	    		PValue pv = new PValue(rs.getInt("propertyID"));
+	    		PValue pv = new PValue();
 	 	   		
 	    		pv.setId(rs.getInt("pValueID"));
 	    		pv.setStringValue(rs.getString("stringValue"));
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
+	    		pv.setPropertyId(rs.getInt("propertyID"));
 				Date dateV = rs.getDate("dateValue");
 	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
