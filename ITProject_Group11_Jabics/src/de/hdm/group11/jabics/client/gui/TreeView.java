@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.TreeViewModel;
@@ -38,7 +39,13 @@ public class TreeView implements TreeViewModel {
 	private ArrayList<ContactList> cLists = new ArrayList<ContactList>();
 	private EditorServiceImpl eService = new EditorServiceImpl();
 	
-	private ListDataProvider<Contact> contactDataProviders = null;
+	/*
+	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer wenn etwas geändert wird. 
+	 * Also Controller (m-v-c-Modell), zwischen der Anzeige (CellTable) und dem Modell (Liste von Objekten).
+	 * 
+	 * In diesem Fall werden werden Kontaktlisten bereitgestellt. 
+	 */
+	private ListDataProvider<ContactList> contactListDataProviders = null;
 	private EditorServiceAsync eServiceAsync = null;
 	
 	
@@ -47,8 +54,13 @@ public class TreeView implements TreeViewModel {
 		// "A simple selection model, that allows only one item to be selected a time." 
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		
-		contactListDataProvider = new HashMap<Contact, ListDataProvider<ContactList>>();
+		/*
+		 * Assoziativspeicher, bei dem Kontakte Kontaktlisten zugeordnet werden.
+		 * Freunde --> Max Mustermann 
+		 * 
+		 * (wird weiter unten deklariert)
+		 */
+		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
 		
 	}
 	
@@ -56,16 +68,13 @@ public class TreeView implements TreeViewModel {
 	 * In der Map werden die ListDataProviders für die expandierten Kontakte gepespeichert.
 	 * 
 	 * Das Java Map Interface "mappt" einzigartige Schlüssel (keys) und den zugehörigen Wert (value), vergleichbar mit einem Wörterbuch oder 
-	 * Zuweisungstabellen in der DB. Die values können jeder Zeit anhand der Keys aufgerufen werden. 
+	 * Zuweisungstabellen in der DB. Die values können jeder Zeit anhand der Keys aufgerufen werden. Also ein Assoziativspeicher. 
 	 * 
 	 * Beispiel: 
 	 * key: 1234 --> Value: Kontakt (Max, Mustermann, 1990, ...)  
 	 * 
-	 * Weiter im Text: 
-	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktuallisieren, immer wenn etwas geändert wird. 
-	 * Also Controller (m-v-c-Modell), zwischen der Anzeige (CellTable) und dem Modell (Liste von Objekten).
 	 */
-	private Map<Contact, ListDataProvider<ContactList>> contactListDataProvider = null;
+	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
 	
 	/**
 	 * In folgender Klasse werden BusinessObjects auf eindeutige Zahlenobjekte abgebildet, die als Schlüssel für Baumknoten dienen. 
@@ -155,43 +164,93 @@ public class TreeView implements TreeViewModel {
 	}
 	 
 	 /**
-	  * Erstellen von einem neuen Kontakt.
+	  * Erstellen einer neuen Kontaktliste.
 	  */
-	 public void addContact(Contact c) { 
-		 contactDataProviders.getList().add(c);
-		 selectionModel.setSelected(c, true);
+	 public void addContactList(ContactList cl) { 
+		 //Neue Kontaktliste wird dem DataProvider hinzugefügt.
+		 contactListDataProviders.getList().add(cl);
+		 //Die neue Liste wird ausgewählt.
+		 selectionModel.setSelected(cl, true);
 		 
 	 }
 	 
-	 public void updateContact(Contact c) {
-		 List<Contact> contacts = contactDataProviders.getList();
+	 public void updateContactList(ContactList cl) {
+		 List<ContactList> contactlists = contactListDataProviders.getList();
 		 int i = 0;
-			for (Contact c2 : contacts) {
-				if (c.getId() == c.getId()) {
-					contacts.set(i, c);
+			for (ContactList cl2 : contactlists) {
+				if (cl2.getId() == cl2.getId()) {
+					contactlists.set(i, cl);
 					break;
 				} else {
 					i++;
 				}
 			}
-			contactDataProviders.refresh();
+			contactListDataProviders.refresh();
 	 }
 	 
-	 public void removeContact(Contact c) {
-		 contactDataProviders.getList().remove(c);
-		 contactListDataProvider.remove(c);
+	 public void removeContactList(Contact cl) {
+		 contactListDataProviders.getList().remove(cl);
+		 contactDataProviders.remove(cl);
 	 }
 	 
-	 public void addContactList(Contact c, ContactList cl) { 
-		 if (!contactListDataProvider.containsKey(c)) {
+	 /*
+	  * Weiter zu den Kontakten
+	  */	 
+	 public void addContactOfList(ContactList cl, Contact c) {
+		 // wenn es noch keinen Kontaktlisten Provider für den Kontakt gitb, dann wurde der Baum noch nicht geöffnet und es passiert nichts.
+		 if (!contactDataProviders.containsKey(cl)) {
 			 return;
 		 }
-		 ListDataProvider<ContactList> contactsProvider = contactListDataProvider.get(c);
-		 if (!contactsProvider.getList().contains(cl)) {
-			 contactsProvider.getList().add(cl);
+		 ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
+		 if (!contactsProvider.getList().contains(c)) {
+			 contactsProvider.getList().add(c);
 			 
 		 }
+		 selectionModel.setSelected(c, true);
+	 }
+	 
+	 public void removeContactOfContactList(ContactList cl, Contact c) {
+		 if (!contactDataProviders.containsKey(cl)) {
+			 return;
+		 }
+		 contactDataProviders.get(cl).getList().remove(c);
 		 selectionModel.setSelected(cl, true);
+	 }
+	 
+	 /* TODO
+	  * Ein altes Kontakt-Objekt wird durch einen neues ersetzt, die ID bleibt gleich! 
+	  */
+	 public void updateContact(Contact c) {
+		 //eService.getContactById(c.getOwnerID(), new UpdateContactCallback(a));
+	 }
+	 
+	 private class UpdateContactCallback implements AsyncCallback<ContactList> {
+		 
+		 Contact contact = null;
+		 
+		 UpdateContactCallback(Contact c) {
+			 contact = c;
+		 }
+
+		@Override
+		public void onFailure(Throwable caught) {
+			//nix. 
+		}
+
+		@Override
+		public void onSuccess(ContactList cl) {
+			List<Contact> contacts = contactDataProviders.get(cl).getList();
+			
+			for (int i = 0; i<contacts.size(); i++) {
+				if(contact.getId() == contacts.get(i).getId()) {
+					contacts.set(i, contact);
+					break;
+				}
+			}
+
+			
+		}
+		 
 	 }
 
 
