@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 
-public class Jabics implements EntryPoint {
+public class Editor implements EntryPoint {
 
 	private VerticalPanel vPanel = new VerticalPanel();
 	
