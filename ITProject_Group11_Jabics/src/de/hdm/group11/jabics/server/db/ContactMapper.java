@@ -16,7 +16,7 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 /**
  * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>Contact</code> Objekten auf die relationale Datenbank.
- * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontakte in der Datenbank zur Verfügung. 
+ * Sie stellt alle notwendigen Methoden zur Verwaltung der Kontakte in der Datenbank zur VerfÃ¼gung. 
  * 
  * @author Brase
  * @author Stahl
@@ -36,7 +36,7 @@ public class ContactMapper{
      * hierbei von einem sogenannten <b>Singleton</b>.
      * <p>
      * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fÃ¼r
-     * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+     * sÃ¤mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
      * einzige Instanz dieser Klasse.
      * 
      * @see contactMapper()
@@ -184,7 +184,7 @@ public class ContactMapper{
 				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
 	      
-				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
+				//BefÃ¼llen des Kontakt-Objekts und hinzufï¿½gen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
@@ -219,10 +219,9 @@ public class ContactMapper{
 	    	// AuswÃ¤hlen eines Kontakts mit einer bestimmten ID.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM contact WHERE contactID = " + id);
 	   
+			//Erzeugen eines Kontakt-Objektes
+	    	Contact c = new Contact();
 	    	if (rs.next()) {
-	    		//Erzeugen eines Kontakt-Objektes
-		    	Contact c = new Contact();
-	      
 		    	//BefÃ¼llen des Kontakt-Objekts und hinzufÃ¼gen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 	    		Date dateU = rs.getDate("dateUpdated");
@@ -233,8 +232,8 @@ public class ContactMapper{
 	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		return c;
 	    	}
+	    	return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
