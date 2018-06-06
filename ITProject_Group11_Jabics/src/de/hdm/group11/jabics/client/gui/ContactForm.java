@@ -11,11 +11,28 @@ import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.User;
 
-/*
- * Formular für die Darstellung von Kontakten eines Users
- * */
+/**
+ * 
+ * Dieses Formular realisiert die Darstellung von <code>Contact</code> Objekten eines Nutzers auf der grafischen Benutzeroberfläche.
+ * Sie stellt für den Nutzer alle notwendigen Methoden zur Verwaltung von Kontakten zur verfügung. 
+ * 
+ * @author Brase
+ * @author Ilg
+ *
+ */
 
 public class ContactForm extends VerticalPanel {
+	/**
+	 * Struktur von
+	 * @author Christian Rathke
+	 * 
+	 * Angepasst von
+	 * @author Brase
+	 * @author Ilg
+     * 
+     * 
+     * @see
+	 */
 
 	EditorServiceAsync editorAdmin = ClientsideSettings.getEditorService();
 	
