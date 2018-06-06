@@ -23,23 +23,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * test objects
 	 */
 	User u;
-	Property p1; 
-	Property p2;
-	Property p3; 
-	Property p4; 
-	Property p5;
-	Property p6;
-	Property p7;
-	PValue pv1;
-	PValue pv2;
-	PValue pv3;
-	PValue pv4;
-	PValue pv5;
-	PValue pv6;
-	PValue pv7;
-	Contact c1;
-	Contact c2;
-	Contact c3;
+	Property p1, p2, p3, p4, p5, p6, p7;
+	PValue pv1, pv2, pv3, pv4, pv5, pv6, pv7;
+	Contact c1, c2, c3;
 	ContactList cl;
 	/**
 	 * 
