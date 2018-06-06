@@ -28,7 +28,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
  *
  */
 
-public class TreeView implements TreeViewModel {
+public class TreeViewMenu implements TreeViewModel {
 	
 	private ContactView cView; 
 	private ContactListView clView;
@@ -49,7 +49,7 @@ public class TreeView implements TreeViewModel {
 	private EditorServiceAsync eServiceAsync = null;
 	
 	
-	public TreeView() {
+	public TreeViewMenu() {
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time." 
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);

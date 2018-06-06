@@ -1,5 +1,5 @@
 package de.hdm.group11.jabics.client.gui;
 
-public class ContactView {
+public class ContactListCollaborationForm {
 
 }
