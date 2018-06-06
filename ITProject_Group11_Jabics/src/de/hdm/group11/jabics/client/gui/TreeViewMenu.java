@@ -4,17 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.TreeViewModel;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.group11.jabics.server.EditorServiceImpl;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
+import de.hdm.group11.jabics.shared.bo.User;
 
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -30,14 +33,16 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 public class TreeViewMenu implements TreeViewModel {
 	
-	private ContactView cView; 
-	private ContactListView clView;
+	private ContactForm cView; 
+	private ContactListForm clView;
 	
 	private Contact selectedContact;
 	private ContactList selectedContactList;
 	
 	private ArrayList<ContactList> cLists = new ArrayList<ContactList>();
-	private EditorServiceImpl eService = new EditorServiceImpl();
+	// User?
+	private EditorServiceAsync eService = null;
+	private User user = new User();
 	
 	/*
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer wenn etwas geändert wird. 
@@ -126,19 +131,19 @@ public class TreeViewMenu implements TreeViewModel {
 	}
 	
 
-	public ContactView getContactView() {
+	public ContactForm getContactForm() {
 		return cView;
 	}
 
-	public void setContactView(ContactView cView) {
+	public void setContactForm(ContactForm cView) {
 		this.cView = cView;
 	}
 
-	public ContactListView getContactListView() {
+	public ContactListForm getContactListForm() {
 		return clView;
 	}
 
-	public void setContactListView(ContactListView clView) {
+	public void setContactListForm(ContactListForm clView) {
 		this.clView = clView;
 	}
 
@@ -154,8 +159,25 @@ public class TreeViewMenu implements TreeViewModel {
 
 	private void setSelectedContact(Contact c) {
 		selectedContact	= c;
-		//cView.setSelected(c);
-		//
+		//ContactForm.setSelectred(c);
+		
+		if (c != null) {
+			eService.getUserById(c.getOwner().getId(), new AsyncCallback<User>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// nix.
+					
+				}
+
+				@Override
+				public void onSuccess(User result) {
+					selectedContact = c;
+					//contactForm.setSelected(c);				
+				}
+				
+			});
+		}
 		
 	}
 	
@@ -260,14 +282,68 @@ public class TreeViewMenu implements TreeViewModel {
      */
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		
+		if (value.equals("Root")) {
+			contactListDataProviders = new ListDataProvider<ContactList>();
+			
+			eService.getListsOf(user, new AsyncCallback<ArrayList<ContactList>>() {
 
+				@Override
+				public void onFailure(Throwable caught) {
+					// Nix.
+					
+				}
+
+				@Override
+				public void onSuccess(ArrayList<ContactList> contactlists) {
+					for (ContactList cl : contactlists) {
+						contactListDataProviders.getList().add(cl);
+					}
+					
+				}
+				
+			});
+			
+		// Return a node info that pairs the data with a cell.	
+			return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
+			
+		}
+		
+		if (value instanceof ContactList) {
+			final ListDataProvider<Contact> contactProvider = new ListDataProvider<Contact>();
+			contactDataProviders.put((ContactList) value, contactProvider);
+			
+			eService.getContactsOf((User) value, new AsyncCallback<ArrayList<Contact>>() {
+				
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// Nix.
+					
+				}
+
+				@Override
+				public void onSuccess(ArrayList<Contact> contacts) {
+					for (Contact c : contacts) {
+						contactProvider.getList().add(c);
+					}			
+				}		
+			});
+			
+			// Return a node info that pairs the data with a cell.
+			return new DefaultNodeInfo<Contact>(contactProvider, new ContactCell(), selectionModel, null);
+		}
+		return null;
+		
+		
+	}
+	
+	// Check if the specified value represents a leaf node. Leaf nodes
+	// cannot be opened.
 	@Override
 	public boolean isLeaf(Object value) {
-		// TODO Auto-generated method stub
-		return false;
+		// value is of type Account
+		return (value instanceof Contact);
 	}
 
 }
