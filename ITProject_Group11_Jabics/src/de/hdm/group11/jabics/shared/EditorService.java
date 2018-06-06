@@ -79,7 +79,7 @@ public interface EditorService {
 	
 	public ArrayList<User> getCollaborators(PValue pv);
 	
-	public ArrayList<User> getAllUsers(User u);
+	public ArrayList<User> getAllUsers();
 	
 	public void initialise();
 

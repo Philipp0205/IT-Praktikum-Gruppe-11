@@ -82,7 +82,7 @@ public interface EditorServiceAsync {
 	
 	void getCollaborators(PValue pv, AsyncCallback<ArrayList<User>> callback);
 	
-	void getAllUsers(User u, AsyncCallback<ArrayList<User>> callback);
+	void getAllUsers(AsyncCallback<ArrayList<User>> callback);
 	
 	void initialise(AsyncCallback<Void> callback);
 }
