@@ -443,7 +443,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return pvMapper.findCollaborators(pv);
 	}
 	
-	public ArrayList<User> getAllUsers(User u){
+	public ArrayList<User> getAllUsers(){
 		return uMapper.findAllUser();
 	}
 	
