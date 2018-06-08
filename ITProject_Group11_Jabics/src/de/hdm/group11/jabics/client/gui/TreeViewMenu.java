@@ -24,7 +24,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 
 /**
- * Diese Klasse repräsentiert die Baum-Ansicht der Kontaktlisten und Listen.
+ * Diese Klasse reprï¿½sentiert die Baum-Ansicht der Kontaktlisten und Listen.
  * @author Philipp
  * 
  * Struktur von @author Thies
@@ -45,7 +45,7 @@ public class TreeViewMenu implements TreeViewModel {
 	private User user = new User();
 	
 	/*
-	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer wenn etwas geändert wird. 
+	 * Der DataProvider ist dafï¿½r zustï¿½ndig, die Anzeige zu aktualisieren, immer wenn etwas geï¿½ndert wird. 
 	 * Also Controller (m-v-c-Modell), zwischen der Anzeige (CellTable) und dem Modell (Liste von Objekten).
 	 * 
 	 * In diesem Fall werden werden Kontaktlisten bereitgestellt. 
@@ -70,10 +70,10 @@ public class TreeViewMenu implements TreeViewModel {
 	}
 	
 	/*
-	 * In der Map werden die ListDataProviders für die expandierten Kontakte gepespeichert.
+	 * In der Map werden die ListDataProviders fï¿½r die expandierten Kontakte gepespeichert.
 	 * 
-	 * Das Java Map Interface "mappt" einzigartige Schlüssel (keys) und den zugehörigen Wert (value), vergleichbar mit einem Wörterbuch oder 
-	 * Zuweisungstabellen in der DB. Die values können jeder Zeit anhand der Keys aufgerufen werden. Also ein Assoziativspeicher. 
+	 * Das Java Map Interface "mappt" einzigartige Schlï¿½ssel (keys) und den zugehï¿½rigen Wert (value), vergleichbar mit einem Wï¿½rterbuch oder 
+	 * Zuweisungstabellen in der DB. Die values kï¿½nnen jeder Zeit anhand der Keys aufgerufen werden. Also ein Assoziativspeicher. 
 	 * 
 	 * Beispiel: 
 	 * key: 1234 --> Value: Kontakt (Max, Mustermann, 1990, ...)  
@@ -82,11 +82,11 @@ public class TreeViewMenu implements TreeViewModel {
 	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
 	
 	/**
-	 * In folgender Klasse werden BusinessObjects auf eindeutige Zahlenobjekte abgebildet, die als Schlüssel für Baumknoten dienen. 
+	 * In folgender Klasse werden BusinessObjects auf eindeutige Zahlenobjekte abgebildet, die als Schlï¿½ssel fï¿½r Baumknoten dienen. 
 	 * Dadurch werden im Selektionsmodell alle Objekte mit derselben id selektiert, wenn eines davon selektiert wird. Der
-	 * Schlüssel für Kontaktobjekte ist eine positive, der für Kundenobjekte eine
+	 * Schlï¿½ssel fï¿½r Kontaktobjekte ist eine positive, der fï¿½r Kundenobjekte eine
 	 * negative Zahl, die sich jeweils aus der id des Objektes ergibt. Dadurch
-	 * können Kunden- von Kontenobjekten unterschieden werden, auch wenn sie dieselbe id haben.
+	 * kï¿½nnen Kunden- von Kontenobjekten unterschieden werden, auch wenn sie dieselbe id haben.
 	 * 
 	 * @author Thies
 	 */
@@ -112,7 +112,7 @@ public class TreeViewMenu implements TreeViewModel {
 	
 	/**
 	 * Implementation der GWT Klasse SelectionsChangeEvent. Diese Methode regelt, was passiert, wenn ein Objekt
-	 * im Baum ausgewählt wird. Es wird zwischen ausgewählten Kontakten und Kontaktlisten unterschieden.
+	 * im Baum ausgewï¿½hlt wird. Es wird zwischen ausgewï¿½hlten Kontakten und Kontaktlisten unterschieden.
 	 *
 	 */
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
@@ -159,7 +159,7 @@ public class TreeViewMenu implements TreeViewModel {
 
 	private void setSelectedContact(Contact c) {
 		selectedContact	= c;
-		//ContactForm.setSelectred(c);
+		//ContactForm.setSelected(c);
 		
 		if (c != null) {
 			eService.getUserById(c.getOwner().getId(), new AsyncCallback<User>() {
@@ -172,6 +172,7 @@ public class TreeViewMenu implements TreeViewModel {
 
 				@Override
 				public void onSuccess(User result) {
+					//Muss das result nicht ein Kontakt sein?
 					selectedContact = c;
 					//contactForm.setSelected(c);				
 				}
@@ -189,9 +190,9 @@ public class TreeViewMenu implements TreeViewModel {
 	  * Erstellen einer neuen Kontaktliste.
 	  */
 	 public void addContactList(ContactList cl) { 
-		 //Neue Kontaktliste wird dem DataProvider hinzugefügt.
+		 //Neue Kontaktliste wird dem DataProvider hinzugefï¿½gt.
 		 contactListDataProviders.getList().add(cl);
-		 //Die neue Liste wird ausgewählt.
+		 //Die neue Liste wird ausgewï¿½hlt.
 		 selectionModel.setSelected(cl, true);
 		 
 	 }
@@ -219,7 +220,7 @@ public class TreeViewMenu implements TreeViewModel {
 	  * Weiter zu den Kontakten
 	  */	 
 	 public void addContactOfList(ContactList cl, Contact c) {
-		 // wenn es noch keinen Kontaktlisten Provider für den Kontakt gitb, dann wurde der Baum noch nicht geöffnet und es passiert nichts.
+		 // wenn es noch keinen Kontaktlisten Provider fï¿½r den Kontakt gitb, dann wurde der Baum noch nicht geï¿½ffnet und es passiert nichts.
 		 if (!contactDataProviders.containsKey(cl)) {
 			 return;
 		 }
