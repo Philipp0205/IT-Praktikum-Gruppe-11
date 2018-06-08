@@ -60,40 +60,6 @@ public class ContactForm extends VerticalPanel {
 	
 	TreeViewMenu Contacttree = new TreeViewMenu();
 	
-	/** 
-	 * Im folgenden Code werden die Namen der Standardeigenschaften zur Anzeige gebracht.
-	 */
-//	Label userInformationLabel = new Label("User: ");
-	Label contactFirstNameLabel = new Label("Vorname: ");
-	Label contactLastNameLabel = new Label("Nachname: ");
-	Label contactBirthdayLabel = new Label("Geburtstag: ");
-	Label contactEmailLabel = new Label("E-Mail: ");
-	Label contactTelefonLabel = new Label("Telefon: ");
-	Label contactStreetLabel = new Label("Straße: ");
-	Label contactZipLabel = new Label("Postleitzahl: ");
-	Label contactOrtLabel = new Label("Ort: ");
-	
-	/**
-	 * Im nächsten Schritt werden die Labels für die konkreten Eigenschaftsausprägungen instanziiert. 
-	 */
-	
-//	Label userSetInformationLabel = new Label();
-	Label contactSetFirstNameLabel = new Label();
-	Label contactSetLastNameLabel = new Label();
-	Label contactSetBirthdayLabel = new Label();
-	Label contactSetEmailLabel = new Label();
-	Label contactSetTelefonLabel = new Label();
-	Label contactSetStreetLabel = new Label();
-	Label contactSetZipLabel = new Label();
-	Label contactSetOrtLabel = new Label();
-	
-//	Button createContactButton = new Button("Kontakt erstellen");
-	Button deleteContactButton = new Button("Kontakt löschen");
-	Button editContactButton = new Button("Kontakt editieren");
-	Button shareContactButton = new Button("Kontakt teilen");
-	
-
-	
 	public void onLoad() {
 		
 		super.onLoad();
