@@ -1,6 +1,6 @@
 /**
- * Die Klasse EditorServiceImpl impelemtiert die Applikationslogik f�r den Editor von Jabics.
- * Sie stellt die Lodik zur verf�gung, die bei einem RPC aufgerufen wird und gibt die angefragten Objekte zur�ck.
+ * Die Klasse EditorServiceImpl impelemtiert die Applikationslogik für den Editor von Jabics.
+ * Sie stellt die Logik zur Verfügung, die bei einem RPC aufgerufen wird und gibt die angefragten Objekte zurück.
  * 
  * @author Anders
  * @author Kurrle
@@ -20,7 +20,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
 	/**
-	 * test objects
+	 * Testobjekte
 	 */
 	User u;
 	Property p1, p2, p3, p4, p5, p6, p7;
@@ -32,10 +32,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * TODO: implement all methods
-	 */
-	
+
 	ContactMapper cMapper = ContactMapper.contactMapper();
 	ContactListMapper clMapper = ContactListMapper.contactListMapper();
 	PValueMapper pvMapper = PValueMapper.pValueMapper();
@@ -88,7 +85,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Erstellt ein PValue mit einem int Wert und f�gt diesen mitsamt collaboration in die DB ein.
+	 * Erstellt ein PValue mit einem int Wert und fügt diesen mitsamt collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, int i, Contact c, User u) {
@@ -109,7 +106,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Erstellt ein PValue mit einem Datums Wert und f�gt diesen mitsamt collaboration in die DB ein.
+	 * Erstellt ein PValue mit einem Datums Wert und fügt diesen mitsamt collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, LocalDateTime dt, Contact c, User u) {
@@ -130,7 +127,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Erstellt ein PValue mit einem float Wert und f�gt diesen mitsamt Collaboration in die DB ein.
+	 * Erstellt ein PValue mit einem float Wert und fügt diesen mitsamt Collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, float f, Contact c, User u) {
@@ -167,22 +164,22 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		//return clMapper.findAllContactList(u);
 		
 		
-		// tempor�r: kann gel�scht werden
+		// temporär: kann gelöscht werden
 		ArrayList<ContactList> cl = new ArrayList<ContactList>();
 		cl.add(this.cl);
 		return cl; 
 	}
 	
-	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zur�ck.
+	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
 	public ArrayList<Contact> getContactsOf(User u) { 
 		//ArrayList<Contact> cons = cMapper.findAllContact(u);
-		//sind die Kontakte die der mapper zur�ckgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
+		//sind die Kontakte die der mapper zurückgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
 		/*for (Contact c : cons) {
 			pvMapper.
 		}*/
 		//return cons;
 		
-		//temporary: kann gel�scht werden sobal fertig
+		//temporary: kann gelöscht werden sobal fertig
 		return cl.getContacts();
 	}
 	
@@ -205,7 +202,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/*
-	 * TODO: Diese Methode wird h�chstwahrscheinlich nie gebraucht, da stattdessen immer create PValue verwendet wird
+	 * TODO: Diese Methode wird höchstwahrscheinlich nie gebraucht, da stattdessen immer create PValue verwendet wird
 	 * erstmal noch drinlassen. Jan
 	 */
 	public Contact addValueToContact(PValue pv, Contact c, User u) {
@@ -219,7 +216,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Eine ArrayList mit allen Contacts, die dem Suchkriterium entsprechen
 	 */
 	public ArrayList<Contact> searchForContactByExpression(String s, User u){
-		//neue Kontaktliste, um bereits implementierte Methode verwenden zu k�nnen
+		//neue Kontaktliste, um bereits implementierte Methode verwenden zu können
 		ContactList cl = new ContactList(cMapper.findAllContacts(u));
 		return this.searchExpressionInList(s, cl);
 	}
@@ -234,8 +231,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * L�scht einen <code>Contact</code> aus der Datenbank. L�scht den Contact f�r alle Nutzer permanent. Kann nicht r�ckg�ngig gemacht werden.
-	 * @param Contact, der gel�scht werden soll
+	 * Löscht einen <code>Contact</code> aus der Datenbank. Löscht den Contact für alle Nutzer permanent. Kann nicht rückgüngig gemacht werden.
+	 * @param Contact, der gelöscht werden soll
 	 */
 	public void deleteContact(Contact c){
 		for (PValue pv : c.getValues()) {
@@ -245,8 +242,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Eine <code>ContactList</code> aus der DB l�schen. L�scht die Liste f�r alle Nutzer permanent. Kann nicht r�ckg�ngig gemacht werden.
-	 * @param cl ContactList, die gel�scht werden soll
+	 * Eine <code>ContactList</code> aus der DB löschen. Löscht die Liste für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.
+	 * @param cl ContactList, die gelöscht werden soll
 	 */
 	public void deleteContactList(ContactList cl){
 		ArrayList<User> users = clMapper.findCollaborators(cl);
@@ -259,8 +256,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		clMapper.deleteContactList(cl);
 	}
 	/**
-	 * Eine Property aus der Datenbank l�schen. Es wird �berpr�ft, ob die Eigenschaft gel�scht werden darf.
-	 * @param Property, die gel�scht werden soll
+	 * Eine Property aus der Datenbank löschen. Es wird überprüft, ob die Eigenschaft gelöscht werden darf.
+	 * @param Property, die gelöscht werden soll
 	 */
 	public void deleteProperty(Property p){
 		if(!p.isStandard()) {
@@ -295,24 +292,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			clMapper.updateContactList(cl);
 		}
 			/**
-			 * TODO Nachdenken, ob wir nur �nderungen �berpr�fen und nur diese an die DB weitergeben oder das ganze ding in die DB geben
+			 * TODO Nachdenken, ob wir nur Änderungen überprüfen und nur diese an die DB weitergeben oder das ganze ding in die DB geben
 			 */
 	}
 	
 	/*
 	 * Diese Methode checkt, ob der Contact in dieser Form in der DB vorhanden ist,
-	 * wenn nicht wird alles auf Konsitenz gepr�ft und fehlende Inhalte werden upgedated
+	 * wenn nicht wird alles auf Konsitenz geprüft und fehlende Inhalte werden upgedated
 	 */
 	public void updateContact(Contact c){
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
-		 * TODO: hier die !equals oder != operatoren? was ist besser um zu �berpr�fen, dass pvalues gleich sind
+		 * TODO: hier die !equals oder != operatoren? was ist besser um zu überprüfen, dass pvalues gleich sind
 		 * .equals in Contact noch schreiben?
 		 */
 		if(c.equals(ctemp) == false) {
 			c.setDateUpdated(LocalDateTime.now());
-			// �berpr�fen, ob pvalue �bereinstimmt, wenn nicht update in db
+			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				if(pvMapper.findPValueById(pv.getId()) != pv) {
 					pvMapper.updatePValue(pv);
@@ -325,7 +322,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Eine Freigabe zwischen einem Nutzer und einer Kontaktliste einf�gen.Diese Methode nicht! beim erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
+	 * Eine Freigabe zwischen einem Nutzer und einer Kontaktliste einfügen.Diese Methode nicht! beim erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
 	 * @param ContactList, um die es sich handelt
 	 * @param Nutzer, dem die Liste freigegeben werden soll
 	 */
@@ -337,8 +334,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Eine Freigabe zwischen einem Nutzer und einer ContactList einf�gen. Diese Methode nicht! beim erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
-	 * @param ContactList, f�r den eine Collaboration hinzugef�gt werden soll
+	 * Eine Freigabe zwischen einem Nutzer und einer ContactList einfügen. Diese Methode nicht! beim erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
+	 * @param ContactList, für den eine Collaboration hinzugefügt werden soll
 	 * @param Nutzer, dem der Contact freigegeben werden soll
 	 */
 	public void addCollaboration(Contact c, User u) {
@@ -349,8 +346,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Eine Freigabe zwischen einem Nutzer und einem PValue einf�gen. Diese Methode nicht! beim erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
-	 * @param PValue, f�r den eine Collaboration hinzugef�gt werden soll
+	 * Eine Freigabe zwischen einem Nutzer und einem PValue einfügen. Diese Methode nicht! beim erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
+	 * @param PValue, für den eine Collaboration hinzugefügt werden soll
 	 * @param Nutzer, dem das PValue freigegeben werden soll
 	 */
 	public void addCollaboration(PValue pv, User u) {
@@ -373,11 +370,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * TODO: implement
+	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, User u){
-		return pvMapper.findPValueForContact(c);
-	};
+		ArrayList<PValue> result = new ArrayList<PValue>();
+		for (PValue pv : pvMapper.findPValueForContact(c)) {
+			for (User uu : pvMapper.findCollaborators(pv)) {
+				if (u.getId() == uu.getId()) result.add(pv);
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * Diese Methode wird verwendet, wenn der Datentyp des Suchkriteriums nicht bekannt ist!
@@ -402,7 +405,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	
 	/*
 	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder kriterien verwendet.
-	 * F�r eine allgemeine Suche siehe searchExpressionInList
+	 * Für eine allgemeine Suche siehe searchExpressionInList
 	 */
 	public ArrayList<Contact> searchInList(String s, ContactList cl){
 		return Filter.filterContactsByString(cl.getContacts(), s);
@@ -420,9 +423,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for(Contact c : cl.getContacts()) {
 			/*
-			 * Wenn der Contact Owner der �bergebene Nutzer ist oder
-			 * ein Collaborator an einem der Kontakte der �bergebene Nutzer ist
-			 * dann wird der Kontakt zur�ckgegeben
+			 * Wenn der Contact Owner der übergebene Nutzer ist oder
+			 * ein Collaborator an einem der Kontakte der übergebene Nutzer ist
+			 * dann wird der Kontakt zurückgegeben
 			 */
 			if(c.getOwner().getId() == u.getId() || cMapper.findCollaborators(c).contains(u)) {
 					result.add(c);
@@ -465,7 +468,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		p1 = new Property("Name", Type.STRING);
 		p2 = new Property("VorName", Type.STRING);
 		p1.setStandard(true);
-		p3 = new Property("Stra�e", Type.STRING);
+		p3 = new Property("Straße", Type.STRING);
 		p4 = new Property("Hausnummer", Type.INT);
 		p5 = new Property("Geb", Type.DATE);
 		p6 = new Property("Irgendwas1", Type.INT);
@@ -473,15 +476,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<PValue> val = new ArrayList<PValue>();
 		val.add(new PValue( p1, "Max"));
 		val.add(new PValue( p2, "Mustermann"));
-		val.add(new PValue( p3, "eineStra�e"));
+		val.add(new PValue( p3, "eineStraße"));
 		val.add(new PValue( p4, 63));
 		val.add(new PValue( p5, LocalDateTime.of(2000, 5, 1, 20, 10)));
 		val.add(new PValue( p7, 188.5f));
-		c1 = new Contact(val, "maxmuster(absichtlichfalschundmit�berl�nge)");
+		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
 		ArrayList<PValue> val2 = new ArrayList<PValue>();
 		val2.add(new PValue( p1, "Alex"));
 		val2.add(new PValue( p2, "Muster123"));
-		val2.add(new PValue( p3, "eineStra�e1234"));
+		val2.add(new PValue( p3, "eineStraße1234"));
 		val2.add(new PValue( p4, 4));
 		val2.add(new PValue( p5, LocalDateTime.of(1993, 2, 1, 10, 34)));
 		val2.add(new PValue( p7, 167.2f));
@@ -489,7 +492,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<PValue> val3 = new ArrayList<PValue>();
 		val3.add(new PValue( p1, "Udo"));
 		val3.add(new PValue( p2, "Mildenberger"));
-		val3.add(new PValue( p3, "Nobelstra�e"));
+		val3.add(new PValue( p3, "Nobelstraße"));
 		val3.add(new PValue( p4, 8));
 		val3.add(new PValue( p5, LocalDateTime.of(2015, 2, 1, 3, 15)));
 		val3.add(new PValue( p7, 7.2f));
