@@ -14,7 +14,7 @@ import java.time.Month;
  * 
  * @author Kurrle und Anders
  */
-public class PValue extends BusinessObject {
+public class PValue extends BusinessObject implements Comparable<PValue>{
 
 
 	
@@ -134,6 +134,13 @@ public class PValue extends BusinessObject {
 	}
 	public void setPointer(int pointer) {
 		this.pointer = pointer;
+	}
+	@Override
+	// das mit dem implements comparable und compare to nochmal überlgen
+	public int compareTo(PValue pv) {
+		if (pv.getId() == this.id) {
+			return 0;
+		} else return -1;
 	}
 
 }

@@ -15,7 +15,9 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.dom.client.Style.Unit;
 
 
 public class ContactCollaborationForm extends HorizontalPanel{
@@ -28,7 +30,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	
 	Button shareContact = new Button("Kontakt freigeben");
 	Button exit = new Button("Abbrechen");
-	Button addButton = new Button("Nutzer hinzufügen");
+	Button addButton = new Button("Nutzer hinzufï¿½gen");
 	
 	
 	MultiWordSuggestOracle  oracle;
@@ -39,18 +41,24 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	User selectedUserAdd = null;
 	User selectedUserRemove = null;
 	
+	CellTable<PValue> selValues;
+	ListDataProvider<PValue> valueProvider;
+
+
+
 	
 	public void onLoad() {
 		//SuggestOracle oracle = 
 		retrieveUser();
 		createSuggestBox();
+		createPValueBox();
 	}
 	
 	//selUser.getResources und getRowElement
 	
 	public void createSuggestBox() {
 		/**
-		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
+		 * Tabelle erstellen, die ausgewÃ¤hlte Nutzer anzeigt.
 		 */
 		ldp = new ListDataProvider<User>();
 		selUser = new CellTable<User>();
@@ -93,7 +101,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		selUser.addColumn(username, "Nutzer");
 		
 		/**
-		 * SuggestBox hinzufügen und mit Optionen befüllen
+		 * SuggestBox hinzufÃ¼gen und mit Optionen befÃ¼llen
 		 */
 		oracle = new MultiWordSuggestOracle();
 		sug = new SuggestBox(oracle);
@@ -110,8 +118,8 @@ public class ContactCollaborationForm extends HorizontalPanel{
 			}
 		}
 		/**
-		 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durhc die suggestbox ausgewählt wurde.
-		 * Dieser wird durch Klick auf den button "Nutzer hinzufügen" zur liste der zu teilenden Nutzer hinzugefügt
+		 * selectionHandler, der den hinzuzufÃ¼genden Nutzer setzt, sobald einer durch die suggestbox ausgewÃ¤hlt wurde.
+		 * Dieser wird durch Klick auf den button "Nutzer hinzufÃ¼gen" zur liste der zu teilenden Nutzer hinzugefÃ¼gt
 		 */
 		sug.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel){
@@ -124,7 +132,62 @@ public class ContactCollaborationForm extends HorizontalPanel{
 			});
 		sug.setLimit(5);
 		
-		//hier muss noch die Suggestbox in die form eingefügt werden.
+		//hier muss noch die Suggestbox in die form eingefÃ¼gt werden.
+	}
+	
+	public void createPValueBox() {
+		PValue selectedPV;
+		selValues = new CellTable<PValue>();
+		valueProvider = new ListDataProvider<PValue>();
+		valueProvider.addDataDisplay(selValues);
+		// Es kann sein, dass hier noch kexprovider benÃ¶tigt werden
+		MultiSelectionModel<PValue> selectionModel  = new MultiSelectionModel<PValue>();
+		
+		/* wird wahrscheinlich auch nicht gebraucht
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			         public void onSelectionChange(SelectionChangeEvent event) {
+			            // TODO
+			        	 selectedPV = selectionModel.getSelectedObjects();
+			         }
+			      });
+		*/
+		selValues.setSelectionModel(selectionModel);
+		
+		/* Wenn funktional kann dieser code gelÃ¶scht werden
+		CheckboxCell check = new CheckboxCell(true, false) {
+		      public Boolean getValue(PValue object) {
+		        return selectionModel.isSelected(object);
+		      }
+		    };
+		TextCell prop = new TextCell() {
+			public String getValue(PValue object) {
+		        return object.getProperty().getLabel();
+		      }
+		}; */
+		
+		
+		Column<PValue, Boolean> checkbox = new Column<PValue, Boolean>(new CheckboxCell(true, false)){
+			public Boolean getValue(PValue object) {
+		        return selectionModel.isSelected(object);
+		      }
+		};
+		Column<PValue, String> property = new Column<PValue, String>(new TextCell()) {
+			public String getValue(PValue object) {
+		        return object.getProperty().getLabel();
+		      }
+		};
+		Column<PValue, String> propertyvalue = new Column<PValue, String>(new TextCell()) {
+			public String getValue(PValue object) {
+		        return object.toString();
+		      }
+		};
+		
+		selValues.addColumn(checkbox, "Auswahl");
+		selValues.setColumnWidth(checkbox, 50, Unit.PX);
+		selValues.addColumn(property, "Merkmal");
+		selValues.setColumnWidth(property, 30, Unit.EM);
+		selValues.addColumn(propertyvalue, "Wert");
+		selValues.setColumnWidth(propertyvalue, 50, Unit.EM);
 	}
 	
 	public void shareContacts() {
@@ -148,7 +211,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erolgreich geteilt!");
 			/**
-			 * TODO: nach erfolgreichem teilen zurückkehren zur anzeige des kontakts.
+			 * TODO: nach erfolgreichem teilen zurï¿½ckkehren zur anzeige des kontakts.
 			 */
 		}
 	}
