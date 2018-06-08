@@ -88,7 +88,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Erstellt ein PValue mit einem int Wert und fügt diesen mitsamt collaboration in die DB ein.
+	 * Erstellt ein PValue mit einem int Wert und fï¿½gt diesen mitsamt collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, int i, Contact c, User u) {
@@ -109,7 +109,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Erstellt ein PValue mit einem Datums Wert und fügt diesen mitsamt collaboration in die DB ein.
+	 * Erstellt ein PValue mit einem Datums Wert und fï¿½gt diesen mitsamt collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, LocalDateTime dt, Contact c, User u) {
@@ -130,7 +130,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Erstellt ein PValue mit einem float Wert und fügt diesen mitsamt Collaboration in die DB ein.
+	 * Erstellt ein PValue mit einem float Wert und fï¿½gt diesen mitsamt Collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, float f, Contact c, User u) {
@@ -167,22 +167,22 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		//return clMapper.findAllContactList(u);
 		
 		
-		// temporär: kann gelöscht werden
+		// temporï¿½r: kann gelï¿½scht werden
 		ArrayList<ContactList> cl = new ArrayList<ContactList>();
 		cl.add(this.cl);
 		return cl; 
 	}
 	
-	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
+	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurï¿½ck.
 	public ArrayList<Contact> getContactsOf(User u) { 
 		//ArrayList<Contact> cons = cMapper.findAllContact(u);
-		//sind die Kontakte die der mapper zurückgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
+		//sind die Kontakte die der mapper zurï¿½ckgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
 		/*for (Contact c : cons) {
 			pvMapper.
 		}*/
 		//return cons;
 		
-		//temporary: kann gelöscht werden sobal fertig
+		//temporary: kann gelï¿½scht werden sobal fertig
 		return cl.getContacts();
 	}
 	
@@ -205,7 +205,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/*
-	 * TODO: Diese Methode wird höchstwahrscheinlich nie gebraucht, da stattdessen immer create PValue verwendet wird
+	 * TODO: Diese Methode wird hï¿½chstwahrscheinlich nie gebraucht, da stattdessen immer create PValue verwendet wird
 	 * erstmal noch drinlassen. Jan
 	 */
 	public Contact addValueToContact(PValue pv, Contact c, User u) {
@@ -219,7 +219,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Eine ArrayList mit allen Contacts, die dem Suchkriterium entsprechen
 	 */
 	public ArrayList<Contact> searchForContactByExpression(String s, User u){
-		//neue Kontaktliste, um bereits implementierte Methode verwenden zu können
+		//neue Kontaktliste, um bereits implementierte Methode verwenden zu kï¿½nnen
 		ContactList cl = new ContactList(cMapper.findAllContacts(u));
 		return this.searchExpressionInList(s, cl);
 	}
@@ -234,7 +234,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Löscht einen <code>Contact</code> aus der Datenbank. Löscht den Contact für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.
+	 * Lï¿½scht einen <code>Contact</code> aus der Datenbank. Lï¿½scht den Contact fï¿½r alle Nutzer permanent. Kann nicht rï¿½ckgï¿½ngig gemacht werden.
 	 * @param Contact, der gelï¿½scht werden soll
 	 */
 	public void deleteContact(Contact c){
@@ -259,8 +259,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		clMapper.deleteContactList(cl);
 	}
 	/**
-	 * Eine Property aus der Datenbank löschen. Es wird überprüft, ob die Eigenschaft gelöscht werden darf.
-	 * @param Property, die gelöscht werden soll
+	 * Eine Property aus der Datenbank lï¿½schen. Es wird ï¿½berprï¿½ft, ob die Eigenschaft gelï¿½scht werden darf.
+	 * @param Property, die gelï¿½scht werden soll
 	 */
 	public void deleteProperty(Property p){
 		if(!p.isStandard()) {
@@ -295,24 +295,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			clMapper.updateContactList(cl);
 		}
 			/**
-			 * TODO Nachdenken, ob wir nur Änderungen überprüfen und nur diese an die DB weitergeben oder das ganze ding in die DB geben
+			 * TODO Nachdenken, ob wir nur ï¿½nderungen ï¿½berprï¿½fen und nur diese an die DB weitergeben oder das ganze ding in die DB geben
 			 */
 	}
 	
 	/*
 	 * Diese Methode checkt, ob der Contact in dieser Form in der DB vorhanden ist,
-	 * wenn nicht wird alles auf Konsitenz geprüft und fehlende Inhalte werden upgedated
+	 * wenn nicht wird alles auf Konsitenz geprï¿½ft und fehlende Inhalte werden upgedated
 	 */
 	public void updateContact(Contact c){
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
-		 * TODO: hier die !equals oder != operatoren? was ist besser um zu überprüfen, dass pvalues gleich sind
+		 * TODO: hier die !equals oder != operatoren? was ist besser um zu ï¿½berprï¿½fen, dass pvalues gleich sind
 		 * .equals in Contact noch schreiben?
 		 */
 		if(c.equals(ctemp) == false) {
 			c.setDateUpdated(LocalDateTime.now());
-			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
+			// ï¿½berprï¿½fen, ob pvalue ï¿½bereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				if(pvMapper.findPValueById(pv.getId()) != pv) {
 					pvMapper.updatePValue(pv);
@@ -402,7 +402,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	
 	/*
 	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder kriterien verwendet.
-	 * Für eine allgemeine Suche siehe searchExpressionInList
+	 * Fï¿½r eine allgemeine Suche siehe searchExpressionInList
 	 */
 	public ArrayList<Contact> searchInList(String s, ContactList cl){
 		return Filter.filterContactsByString(cl.getContacts(), s);
@@ -420,9 +420,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for(Contact c : cl.getContacts()) {
 			/*
-			 * Wenn der Contact Owner der übergebene Nutzer ist oder
-			 * ein Collaborator an einem der Kontakte der übergebene Nutzer ist
-			 * dann wird der Kontakt zurückgegeben
+			 * Wenn der Contact Owner der ï¿½bergebene Nutzer ist oder
+			 * ein Collaborator an einem der Kontakte der ï¿½bergebene Nutzer ist
+			 * dann wird der Kontakt zurï¿½ckgegeben
 			 */
 			if(c.getOwner().getId() == u.getId() || cMapper.findCollaborators(c).contains(u)) {
 					result.add(c);
@@ -449,6 +449,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	
 	
 	public void init() {
+		/*
+		 * Instanzen von allen Mappern
+		 */
+		
+		this.cMapper = ContactMapper.contactMapper();
+		this.clMapper = ContactListMapper.contactListMapper();
+		this.pvMapper = PValueMapper.pValueMapper();
+		this.pMapper = PropertyMapper.propertyMapper();
+		this.uMapper = UserMapper.userMapper();
 		/**
 		 * TODO: Implemetieren Init methode
 		 */

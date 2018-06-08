@@ -15,5 +15,7 @@ public interface ReportGeneratorServiceAsync {
 
 	void createFilteredContactsOfUserReport(PValue pv, User u,
 			AsyncCallback<FilteredContactsOfUserReport> callback);
+	
+	void init(AsyncCallback<Void> callback);
 
 }

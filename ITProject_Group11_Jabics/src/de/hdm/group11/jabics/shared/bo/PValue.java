@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 /**
- * Diese Klasse realisiert die Eigenschaftsausprägungen eines Kontakts.
- * Diese können entweder im Datentyp int, String, float oder LocalDateTime angelegt sein.
- * Der int pointer repräsentiert die Information, welcher Datentyp in PValue gespeichert ist.
+ * Diese Klasse realisiert die Eigenschaftsausprï¿½gungen eines Kontakts.
+ * Diese kï¿½nnen entweder im Datentyp int, String, float oder LocalDateTime angelegt sein.
+ * Der int pointer reprï¿½sentiert die Information, welcher Datentyp in PValue gespeichert ist.
  * 1 bedeutet int, 2 String, 3 Date und 4 float.
- * Zusätzlich ist in jedem PValue Objekt ein Property Objekt gespeichert,
- * welches Informationen über den Charakter der Eigenschaft, zu welcher die Ausprägung gehört, enthält.
+ * Zusï¿½tzlich ist in jedem PValue Objekt ein Property Objekt gespeichert,
+ * welches Informationen ï¿½ber den Charakter der Eigenschaft, zu welcher die Ausprï¿½gung gehï¿½rt, enthï¿½lt.
  * 
  * @author Kurrle und Anders
  */
@@ -70,7 +70,7 @@ public class PValue extends BusinessObject {
 	}
 	
 	/** 
-	 * Getter und Setter. DateUpdated wird bei allen substantiellen Informationsänderungen mitgeändert.
+	 * Getter und Setter. DateUpdated wird bei allen substantiellen Informationsï¿½nderungen mitgeï¿½ndert.
 	 */
 	public int getIntValue() {
 		return intValue;
@@ -102,6 +102,10 @@ public class PValue extends BusinessObject {
 	public void setDateValue(int year, Month month, int dayOfMonth) {
 		this.dateValue = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
 		this.dateUpdated = LocalDateTime.now();
+		this.pointer = 3; 
+	}
+	public void setDateValue(LocalDateTime t) {
+		this.dateValue = t;
 		this.pointer = 3; 
 	}
 	public float getFloatValue() {

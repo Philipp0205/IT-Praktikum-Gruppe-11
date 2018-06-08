@@ -33,6 +33,29 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	PValueMapper pvMapper = PValueMapper.pValueMapper();
 	private static final long serialVersionUID = -4462530285584570547L;
 	
+	// Alternative LÃ¶sung die wir vorerst nicht beachten mÃ¼ssen
+	private EditorServiceImpl eService = null;
+	// 
+	
+	
+	public ReportGeneratorServiceImpl() throws IllegalArgumentException {
+	  }
+	
+	// Vorerst ebenfalls nicht beachten.
+	@Override
+	public void init() throws IllegalArgumentException {
+	    /*
+	     * Ein ReportGeneratorServiceImpl-Objekt instantiiert fÃ¼r seinen Eigenbedarf eine
+	     * EditorServiceImpl-Instanz.
+	     */
+	
+	EditorServiceImpl e = new EditorServiceImpl();
+	e.init();
+	this.eService = e;	
+	//
+	  
+	  }
+	
 	
 	/**
 	 * TODO: beschreibung
@@ -54,11 +77,14 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	@Override
 	public AllContactsOfUserReport createAllContactsOfUserReport(User u) {
 		
+		// Es wird ein leerer Report engelegt.
 		AllContactsOfUserReport result = new AllContactsOfUserReport();
-		result.setHeadline(new Paragraph("Report aller Kontakte für " + u.getUsername()));
+		// Headline und Foorline werden gesetzt.
+		result.setHeadline(new Paragraph("Report aller Kontakte fï¿½r " + u.getUsername()));
 		result.setFootline(new Paragraph("Ende des Reports"));
+		
 		/**
-		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue von diesem 
+		 * Einen neuen ContactReport fÃ¼r jeden Kontakt eines Nutzers und jedes PValue von diesem 
 		 */
 		for (Contact c : cMapper.findAllContacts(u)) {
 			ArrayList<PropertyView> pval = new ArrayList<PropertyView>();
@@ -94,8 +120,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		// Zuerst wird ein leerer Report angelegt. 
 		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport(contacts, pv);
 		
-		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
-		result.setHeadline("Gefilterter Report für Nutzer " + u.getUsername());
+		// Jeder Report hat eine ï¿½berschrift sowe eine abschlieï¿½ende Nachricht, welche hier headline und footline genannt werden.
+		result.setHeadline("Gefilterter Report fï¿½r Nutzer " + u.getUsername());
 		result.setFootline("Ende des Reports.");
 		
 		// Erstellungsdatum des Reports auf "jetzt" stellen. 
@@ -106,7 +132,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			
 		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle passenden Report Objekte mit, welche dann den results mitgegeben werden.
 		/**
-		 * TODO: konkrete werte, nach denen gefiltert wurde, zum filtercriteria aray hinzufügen
+		 * TODO: konkrete werte, nach denen gefiltert wurde, zum filtercriteria aray hinzufï¿½gen
 		 */
 		switch (pv.getProperty().getType())  {
 		case STRING: 
