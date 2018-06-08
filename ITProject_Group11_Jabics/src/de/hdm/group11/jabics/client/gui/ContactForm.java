@@ -210,20 +210,7 @@ public class ContactForm extends VerticalPanel {
 				}
 			}
 
-	private class CreateOwnerCallback implements AsyncCallback<User> {
 
-	private class DeleteClickHandler implements ClickHandler {
-		@Override
-		public void onClick(ClickEvent event) {
-			
-			if(contactToDisplay == null) {
-				Window.alert("Kein Kontakt ausgewählt");
-			}else {
-			editorService.deleteContact(contactToDisplay, new deleteContactCallback(contactToDisplay));
-			}
-		}
-	}
-	}
 	
 	private class deleteContactCallback implements AsyncCallback<Void> {
 
