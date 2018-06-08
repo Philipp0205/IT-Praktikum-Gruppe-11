@@ -97,37 +97,35 @@ public class ContactForm extends VerticalPanel {
 	public void onLoad() {
 		
 		super.onLoad();
-
-		createForm(contactToDisplay);
 		
-		editorAdmin.getUserById(userToDisplay, new CreateOwnerCallback()); //Zeile von Alex G.
+		createForm(contactToDisplay);
 		
 	}
 	
 	
-	private void createForm(Contact contact) {
+	public void createForm(Contact contact) {
 		
 		/** 
 		 * Ziel ist es, ein Grid mit 5 Zeilen und nur einer Spalte zu erstellen
-		 * Die erste Zeile [des Grids] enthält den Namen des Fensters ("Kontakt-Editor")
+		 * Die erste Zeile [des Grids] enthÃ¤lt den Namen des Fensters ("Kontakt-Editor")
 		 * 
-		 * Die zweite Zeile enthält den Namen des Kontakts
+		 * Die zweite Zeile enthÃ¤lt den Namen des Kontakts
 		 * 
-		 * Die dritte Zeile enthält wiederum ein Grid, das
-		 * 		für jede Eigenschaft eine Zeile enthält, die jeweils Spalten für
+		 * Die dritte Zeile enthÃ¤lt wiederum ein Grid, das
+		 * 		fÃ¼r jede Eigenschaft eine Zeile enthÃ¤lt, die jeweils Spalten fÃ¼r
 		 *			A) den Eigenschaftstyp (z.B. 'E-Mail'),
-		 *			B) die Ausprägung (z.B. 'xyz@hdm.de'),
-		 *			C) einen Button zum Löschen der Eigenschaft,
-		 *			D) einen Button zum Speichern von Änderungen
-		 *		enthält. Zeilen des Grids = Anzahl der Eigenschaften (Name und Modified / Create-Date abgezogen)
+		 *			B) die AusprÃ¤gung (z.B. 'xyz@hdm.de'),
+		 *			C) einen Button zum LÃ¶schen der Eigenschaft,
+		 *			D) einen Button zum Speichern von Ã„nderungen
+		 *		enthÃ¤lt. Zeilen des Grids = Anzahl der Eigenschaften (Name und Modified / Create-Date abgezogen)
 		 *
-		 *Die vierte Zeile enthält wiederum ein Grid, das die Möglichkeit zum
-		 *Anlegen einer neuen Eigenschaft enthält. Dieses Grid hat eine Zeile und je eine Spalte
+		 *Die vierte Zeile enthÃ¤lt wiederum ein Grid, das die MÃ¶glichkeit zum
+		 *Anlegen einer neuen Eigenschaft enthÃ¤lt. Dieses Grid hat eine Zeile und je eine Spalte
 		 *		- zur Auswahl des Eigenschaftstyps (s.o.)
-		 *		- zur Eingabe der Ausprägung	(s.o.)
-		 *		- für einen Button zum hinzufügen der Eingaben
+		 *		- zur Eingabe der AusprÃ¤gung	(s.o.)
+		 *		- fÃ¼r einen Button zum hinzufÃ¼gen der Eingaben
 		 *
-		 *Die fünfte Zeile enthält einen Button zum löschen des Kontaktes 
+		 *Die fÃ¼nfte Zeile enthÃ¤lt einen Button zum lÃ¶schen des Kontaktes 
 		 *TODO (ggf. auch einen Button zum erstellen eines neuen Kontaktes???)
 		 */
 		
@@ -147,41 +145,41 @@ public class ContactForm extends VerticalPanel {
 		Grid propertyGrid = createPropertyGrid(contact);
 		userInformationGrid.setWidget(2, 0, propertyGrid);		
 
-		//GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
+		//GRID-ZEILE 4: Optionen zum hinzufï¿½gen einer Eigenschaft
 		//Die gesamte Zeile (4) wird ein HorizontalPanel
 			HorizontalPanel propertyAddBox = new HorizontalPanel();
 			//in diesem Horizontal Panel gibt es 4 Felder
-			// 1. eine Listbox zum Auswählen des Eigenschafts-Typs (z.B. "Mail")
+			// 1. eine Listbox zum Auswï¿½hlen des Eigenschafts-Typs (z.B. "Mail")
 			ListBox selectProperty = new ListBox();
 			propertyAddBox.add(selectProperty);
-			// 2. ein Eingabefeld, um die Eigenschaftsausprägung festzulegen (z.B. "xyz@hdm...")
+			// 2. ein Eingabefeld, um die Eigenschaftsausprï¿½gung festzulegen (z.B. "xyz@hdm...")
 			TextBox propertyValue = new TextBox();
 			propertyAddBox.add(propertyValue);
-			// 3. einen Button zum Hinzufügen
-		    Button addPropertyButton = new Button("Eigenschaft hinzufügen") 
+			// 3. einen Button zum HinzufÃ¼gen
+		    Button addPropertyButton = new Button("Eigenschaft hinzufÃ¼gen");
 		    /*, new ClickHandler() {
 		        public void onClick(ClickEvent event) {
 		          Window.alert("TODO Clickhandler")
 		    }; */
 		    propertyAddBox.add(addPropertyButton);
 		    
-		    //hinzufügen von Zeile 4 zum Hauptgrid
+		    //hinzufÃ¼gen von Zeile 4 zum Hauptgrid
 		    userInformationGrid.setWidget(3, 0, propertyAddBox);
 		
 		    
 		//GRID-ZEILE 5: 
 		    HorizontalPanel contactDeleteBox = new HorizontalPanel();
-		    Label deleteQuestion = new Label("Wollen Sie diesen Kontakt löschen?");
+		    Label deleteQuestion = new Label("Wollen Sie diesen Kontakt lï¿½schen?");
 		    contactDeleteBox.add(deleteQuestion);
 		    
-		    Button deleteContactButton = new Button("Kontakt löschen") 
+		    Button deleteContactButton = new Button("Kontakt lï¿½schen") 
 		    /*, new ClickHandler() {
 		        public void onClick(ClickEvent event) {
 		          Window.alert("TODO Clickhandler")
 		    }; */
 		    contactDeleteBox.add(deleteContactButton);
 		    
-		    //hinzufügen von Zeile 4 zum Hauptgrid
+		    //hinzufï¿½gen von Zeile 4 zum Hauptgrid
 		    userInformationGrid.setWidget(4, 0, contactDeleteBox);	
 		
 	}
@@ -205,19 +203,19 @@ public class ContactForm extends VerticalPanel {
 		//Alle Eigenschaften des Kontakts werden 'geladen'
 		ArrayList<PValue> contactProperties = contact.getValues();
 		
-		//Für jede Eigenschaft wird nun eine Zeile angelegt
+		//Fï¿½r jede Eigenschaft wird nun eine Zeile angelegt
 	    for (i=0; i<contactProperties.size(); i++) {
 	        //TODO Hier ListDataProvider integrieren??
 	    	
 	    	//Textbox erstellen, die den Wert der Eigenschaft hat
 	    	TextBox textBox = new TextBox(contactProperties.get(i));
 	    	
-	    	//Textbox dem DatenGrid hinzufügen
+	    	//Textbox dem DatenGrid hinzufï¿½gen
 	    	Column propColumn = new Column(textBox);
 
 	    }
 	    
-	    	//abschließend der Zeile die zwei Buttons hinzufügen
+	    	//abschlieÃŸend der Zeile die zwei Buttons hinzufÃ¼gen
 	        propertyDataGrid.addColumn(deletePropertyButton, "");
 	        propertyDataGrid.addColumn(savePropertyButton, "");
 	        
@@ -226,57 +224,6 @@ public class ContactForm extends VerticalPanel {
 	    }
 		
 
-		/**
-		 * Erstellen und BefÃ¼llen eines Grids.
-		 */
-		Grid contactGrid = new Grid(9, 1);
-		this.add(contactGrid);
-		
-		contactGrid.setWidget(1, 0, contactFirstNameLabel);
-		contactGrid.setWidget(1, 1, contactSetFirstNameLabel);
-		
-		contactGrid.setWidget(2, 0, contactLastNameLabel);
-		contactGrid.setWidget(2, 1, contactSetLastNameLabel);
-		
-		contactGrid.setWidget(3, 0, contactBirthdayLabel);
-		contactGrid.setWidget(3, 1, contactSetBirthdayLabel);
-		
-		contactGrid.setWidget(4, 0, contactEmailLabel);
-		contactGrid.setWidget(4, 1, contactSetEmailLabel);
-		
-		contactGrid.setWidget(5, 0, contactTelefonLabel);
-		contactGrid.setWidget(5, 1, contactSetTelefonLabel);
-		
-		contactGrid.setWidget(6, 0, contactStreetLabel);
-		contactGrid.setWidget(6, 1, contactSetStreetLabel);
-		
-		contactGrid.setWidget(7, 0, contactZipLabel);
-		contactGrid.setWidget(7, 1, contactSetZipLabel);
-		
-		contactGrid.setWidget(8, 0, contactOrtLabel);
-		contactGrid.setWidget(8, 1, contactSetOrtLabel);
-		
-		/**
-		 * Den Buttons werden Clickhandler hinzugefÃ¼gt. Zudem werden die Buttons in ein Horizontal Panel abgelegt,
-		 * welches wiederum in das Grid eingefÃ¼gt wird.
-		 */
-		deleteContactButton.addClickHandler(new DeleteClickHandler());
-		deleteContactButton.setEnabled(false);
-		
-		editContactButton.addClickHandler(new EditClickHandler());
-		editContactButton.setEnabled(false);
-
-		
-		shareContactButton.addClickHandler(new ShareClickhandler());
-		shareContactButton.setEnabled(false);
-		
-		HorizontalPanel contactButtonsPanel = new HorizontalPanel();
-		contactGrid.setWidget(9, 0, contactButtonsPanel);
-		
-		contactButtonsPanel.add(editContactButton);
-		contactButtonsPanel.add(deleteContactButton);
-		contactButtonsPanel.add(shareContactButton);
-	}
 	
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe fÃ¼r die Operationen Editieren, LÃ¶schen oder Teilen 
@@ -299,6 +246,7 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 	}
+	}
 	
 	private class deleteContactCallback implements AsyncCallback<Void> {
 
@@ -316,12 +264,35 @@ public class ContactForm extends VerticalPanel {
 		@Override
 		public void onSuccess(Void result) {
 			if(c != null) {
-				Contacttree.removeContact(contact);
+				//Contacttree.removeContact(contact);
 			}
 		}
+	
+	}
+	
+	   void setSelected (Contact c) {
+			if (c != null) {
+				contactToDisplay = c;
+				deleteContactButton.setEnabled(true);
+				idValueLabel.setText("Konto: " + Integer.toString(contactToDisplay.getId()));
+				editorService.getPValueOf(c, userToDisplay, callback);
+			} else {
+				contactToDisplay = null;
+				deleteContactButton.setEnabled(false);
+		//		this.idValueLabel.setText("Konto: ");
+		//		this.amountTextBox.setText("");
+		//		this.balanceValueLabel.setText("");
+			}
+		
+	 }
+	
 	}
 
 
-}
+
+
+    
 	
+
+
 
