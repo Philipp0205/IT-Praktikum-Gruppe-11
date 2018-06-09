@@ -55,21 +55,21 @@ public class ContactForm extends VerticalPanel {
 	
 	User userToDisplay = null;
 	Contact contactToDisplay = null;
-
-	//CustomDetailsViewModal cdvm = null;
-	
-	TreeViewMenu Contacttree = new TreeViewMenu();
+	PValue selectedPValue = null;
+	TreeViewMenu Contacttree = null;
+	Label[] PropertyLabels = new Label[30];
+	Label[] PValueLabels = new Label[30];
 	
 	public void onLoad() {
 		
 		super.onLoad();
 		
-		createForm(contactToDisplay);
+//		createForm(contactToDisplay);
 		
 	}
 	
 	
-	public void createForm(Contact contact) {
+//	public void createForm(Contact contact) {
 		
 		/** 
 		 * Ziel ist es, ein Grid mit 5 Zeilen und nur einer Spalte zu erstellen
@@ -123,10 +123,7 @@ public class ContactForm extends VerticalPanel {
 			propertyAddBox.add(propertyValue);
 			// 3. einen Button zum Hinzufügen
 		    Button addPropertyButton = new Button("Eigenschaft hinzufügen");
-		    /*, new ClickHandler() {
-		        public void onClick(ClickEvent event) {
-		          Window.alert("TODO Clickhandler")
-		    }; */
+		    addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		    propertyAddBox.add(addPropertyButton);
 		    
 		    //hinzufügen von Zeile 4 zum Hauptgrid
@@ -139,16 +136,13 @@ public class ContactForm extends VerticalPanel {
 		    contactDeleteBox.add(deleteQuestion);
 		    
 		    Button deleteContactButton = new Button("Kontakt l�schen") 
-		    /*, new ClickHandler() {
-		        public void onClick(ClickEvent event) {
-		          Window.alert("TODO Clickhandler")
-		    }; */
+		    deleteContactButton.addClickHandler(new DeleteContactClickHandler());
 		    contactDeleteBox.add(deleteContactButton);
 		    
 		    //hinzuf�gen von Zeile 4 zum Hauptgrid
 		    userInformationGrid.setWidget(4, 0, contactDeleteBox);	
 		
-	}
+//	}
 
 	/**
 	 * Methode, die alle Properties eines Kontakts anzeigen soll
@@ -198,7 +192,7 @@ public class ContactForm extends VerticalPanel {
 	 *
 	 */
 	
-	private class DeleteClickHandler implements ClickHandler {
+	private class DeleteContactClickHandler implements ClickHandler {
 				@Override
 				public void onClick(ClickEvent event) {
 					
@@ -211,33 +205,85 @@ public class ContactForm extends VerticalPanel {
 			}
 
 
-	
 	private class deleteContactCallback implements AsyncCallback<Void> {
 
-		@Override
-		
 		private Contact contact = null;
 		
 		deleteContactCallback(Contact c) {
 			contact = c;
 		}
-		
 		public void onFailure(Throwable caugth) {
 		}
-		
 		@Override
 		public void onSuccess(Void result) {
 			if(c != null) {
 				//Contacttree.removeContact(contact);
 			}
 		}
-	
 	}
 	
-	   void setSelected (Contact c) {
+	private class DeletePValueClickHandler implements ClickHandler {
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			if(contactToDisplay == null) {
+				Window.alert("Kein Kontakt ausgewählt");
+			}else {
+			editorService.deletePValue(contactToDisplay, new deletePValueCallback(selectedPValue));
+			}
+		}
+	}
+
+
+	private class deletePValueCallback implements AsyncCallback<Void> {
+
+			private PValue pvalue = null;
+
+			deletePValueCallback(PValue pv) {
+				pvalue = pv;
+			}
+			public void onFailure(Throwable caugth) {
+			}
+			@Override
+			public void onSuccess(Void result) {
+				if(c != null) {
+		//update Contact
+				}
+			}
+	}
+	   void setSelected (Contact c, User u) {
 			if (c != null) {
 				contactToDisplay = c;
+				userToDisplay = u;
 				deleteContactButton.setEnabled(true);
+				
+				editorService.getPValueOf(c, userToDisplay, new GetPValuesCallback());
+			} else {
+				contactToDisplay = null;
+				deleteContactButton.setEnabled(false);
+			}
+	   }
+
+	   private class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>>{
+		   public void onFailure(Throwable caught) {
+			   
+		   }
+		   public void onSuccess(ArrayList<PValue> result) {
+			   
+			   for (int i = result.size(); i>0; i--) {
+			   
+				   PropertyLabels[i] = new Label(result.get(i).getProperty().toString());
+				   
+				   PValueLabels[i] = new Label(result.get(i).toString());
+				   
+			   }
+		   }
+	   
+	   
+	   //Wenn der DeletePValueButton gedrückt wird, wird das PValue Objekt daneben selected.
+	   void setSelected (PValue pv) {
+			if (pv != null) {
+				selectedPValue = pv;
 				idValueLabel.setText("Konto: " + Integer.toString(contactToDisplay.getId()));
 				editorService.getPValueOf(c, userToDisplay, callback);
 			} else {
