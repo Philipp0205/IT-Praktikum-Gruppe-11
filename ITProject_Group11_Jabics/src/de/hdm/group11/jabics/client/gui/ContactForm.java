@@ -271,13 +271,20 @@ public class ContactForm extends VerticalPanel {
 			   
 				Label[] PropertyLabels = new Label[result.size()];
 				Label[] PValueLabels = new Label[result.size()];
+				Grid contactGrid = new Grid(result.size(), 1);
 			   
 			   for (int i = result.size(); i>0; i--) {
 			   
 				   PropertyLabels[i] = new Label(result.get(i).getProperty().toString());
 				   
 				   PValueLabels[i] = new Label(result.get(i).toString());
+				   }
 				   
+			   for (int j = PropertyLabels.length; j > 0 ; j--) {
+				  
+				   contactGrid.setWidget(j,0,PropertyLabels[j]);
+				   contactGrid.setWidget(j, 1, PValueLabels[j]);
+			   }
 			   }
 		   }
 	   
