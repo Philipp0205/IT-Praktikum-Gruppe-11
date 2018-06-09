@@ -57,8 +57,7 @@ public class ContactForm extends VerticalPanel {
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu Contacttree = null;
-	Label[] PropertyLabels = new Label[30];
-	Label[] PValueLabels = new Label[30];
+
 	
 	public void onLoad() {
 		
@@ -269,6 +268,9 @@ public class ContactForm extends VerticalPanel {
 			   
 		   }
 		   public void onSuccess(ArrayList<PValue> result) {
+			   
+				Label[] PropertyLabels = new Label[result.size()];
+				Label[] PValueLabels = new Label[result.size()];
 			   
 			   for (int i = result.size(); i>0; i--) {
 			   
