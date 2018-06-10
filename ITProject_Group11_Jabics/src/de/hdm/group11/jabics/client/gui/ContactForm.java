@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.client.gui;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 import com.google.gwt.user.cellview.client.Column;
@@ -245,9 +246,30 @@ public class ContactForm extends VerticalPanel {
 				   SaveButton[pointer] = new Button("Save");
 				   
 				   SaveButton[pointer].addClickHandler(new ClickHandler() {
-					    public void onClick(ClickEvent event) {
+					   //TODO Bisher noch nicht funktional
+					    public PValue onClick(ClickEvent event) {
+					    	
 					    	PValue currentPV = result.get(pointer);
-					    	currentPV.setStringValue(PValueTextBox[pointer].getValue().toString());
+					    	int currentID = currentPV.getPropertyId();
+					    	String currentContent = PValueTextBox[pointer].getValue().toString();
+					    	
+					    	switch (currentPV.getPointer()){ 
+								case 1 : 
+									return PValueTextBox[pointer].getValue().parseInt();
+								case 2: 
+									return PValueTextBox[pointer].getValue().toString(); 
+								case 3: 
+									DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+									Date date = format.parse(PValueTextBox[pointer].getValue().toString());
+									return format;
+								case 4:
+									return Float.toString(PValueTextBox[pointer].getValue().toString());
+								default: 
+									return null;
+					    		}	
+					    		
+					    		
+					    	// TODO Dann RPC mit Speicherung des Rückgabewertes
 					    	
 					    	Window.alert("Wert" + PValueTextBox[pointer].getValue().toString() + "gespeichert");
 					    }}
@@ -263,7 +285,11 @@ public class ContactForm extends VerticalPanel {
 					    }}
 				   );
 				   
-				   //Refresh?
+				   //TODO Falsche Resize-Methode?
+				   contactGrid.resize();
+				   userInformationGrid.resize();
+				   
+				   
 				   }
 				   
 			   for (int j = PropertyLabels.length; j > 0 ; j--) {
