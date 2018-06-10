@@ -101,11 +101,22 @@ public class ContactForm extends VerticalPanel {
 		//GRID-ZEILE 5: 
 		    HorizontalPanel contactShareBox = new HorizontalPanel();
 		    Label shareQuestion = new Label("Wollen Sie diesen Kontakt teilen?");
-		    contactDeleteBox.add(shareQuestion);
+		    contactShareBox.add(shareQuestion);
 		    
 		    Button shareContactButton = new Button("Kontakt teilen") 
-		    shareContactButton.addClickHandler(new shareContactClickHandler());
-		    contactDeleteBox.add(shareContactButton);
+		    shareContactButton.addClickHandler(new ClickHandler() {
+			    public void onClick(ClickEvent event) {
+			    	
+			    	//TODO Übergabe-Art besprechen
+			    	ContactCollaborationForm.onload();
+			    	//Weitergabe an ContactCollaborationForm Pop-Up
+			    	
+			    	Window.alert("Teilen geklickt");
+			    }}
+		   );
+		    
+		    
+		    contactShareBox.add(shareContactButton);
 		    
 		    userInformationGrid.setWidget(4, 0, contactShareBox);	
 		    
@@ -252,7 +263,7 @@ public class ContactForm extends VerticalPanel {
 					    }}
 				   );
 				   
-				   //Arryname.indexOf(1)
+				   //Refresh?
 				   }
 				   
 			   for (int j = PropertyLabels.length; j > 0 ; j--) {
