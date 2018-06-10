@@ -6,6 +6,8 @@ package de.hdm.group11.jabics.shared.bo;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import com.google.gwt.view.client.ProvidesKey;
+
 /**
  * Diese Klasse implementiert Kontakte in Jabics. In einem Kontakt sind mehrere PValue Objekte gespeichert.
  * PValues can be added and removed. Contacts have a status wich are realized with an enum. 
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  * @author Kurrle 
  */
 
-public class Contact extends BusinessObject {
+public class Contact extends BusinessObject implements Comparable<Contact>{
 	
 	/**
 	 * Instanzenvariablen
@@ -99,5 +101,21 @@ public class Contact extends BusinessObject {
 	public void setShareStatus(BoStatus shareStatus) {
 		this.shareStatus = shareStatus;
 	}
+	/*
+	 * Relevante Methoden für die spätere Anzeige mittels selectionModels und ListDataProvider
+	 */
+	public int compareTo(Contact c) {
+		if (c.getId() == this.id) {
+			return 0;
+		} else return -1;
+	}
+	/**
+     * Der Key Provider für einen Contact
+     */
+    public static final ProvidesKey<Contact> KEY_PROVIDER = new ProvidesKey<Contact>() {
+      public Object getKey(Contact c) {
+        return (Integer)c.getId();
+      }
+    };
 	
 }
