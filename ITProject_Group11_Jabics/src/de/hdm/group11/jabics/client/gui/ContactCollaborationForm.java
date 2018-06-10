@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.client.gui;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.*;
@@ -30,7 +31,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	
 	Button shareContact = new Button("Kontakt freigeben");
 	Button exit = new Button("Abbrechen");
-	Button addButton = new Button("Nutzer hinzuf�gen");
+	Button addButton = new Button("Nutzer hinzufügen");
 	
 	
 	MultiWordSuggestOracle  oracle;
@@ -41,17 +42,36 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	User selectedUserAdd = null;
 	User selectedUserRemove = null;
 	
+	HashSet<PValue> finalPV = new HashSet<PValue>();
 	CellTable<PValue> selValues;
 	ListDataProvider<PValue> valueProvider;
 
-
+	AbsolutePanel ap;
 
 	
-	public void onLoad() {
-		//SuggestOracle oracle = 
+	public void onLoad(Contact c) {
+		//SuggestOracle oracle =
+		this.sharedContact = c;
+		shareContact.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				shareContact();
+			}
+		});
+		exit.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {/**
+			 * TODO: implement zurückkehren zur kontaktanzeige
+			 */}
+		});
 		retrieveUser();
 		createSuggestBox();
-		createPValueBox();
+		createPValueBox(sharedContact.getValues());
+		ap = new AbsolutePanel();
+		ap.setSize("500px", "400px");
+		ap.add(selUser, 0, 0);
+		ap.add(addButton, 200, 0);
+		ap.add(shareContact, 450, 350);
+		ap.add(exit, 20, 350);
+		ap.add(selValues, 250, 0);
 	}
 	
 	//selUser.getResources und getRowElement
@@ -62,6 +82,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		 */
 		ldp = new ListDataProvider<User>();
 		selUser = new CellTable<User>();
+		ldp.setList(allUser);
 		ldp.addDataDisplay(selUser);
 		TextCell s = new TextCell();
 		SingleSelectionModel<User> selectionModel  = new SingleSelectionModel<User>();
@@ -135,22 +156,22 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		//hier muss noch die Suggestbox in die form eingefügt werden.
 	}
 	
-	public void createPValueBox() {
-		PValue selectedPV;
+	public void createPValueBox(ArrayList<PValue> pv) { 
 		selValues = new CellTable<PValue>();
 		valueProvider = new ListDataProvider<PValue>();
+		valueProvider.setList(pv);
 		valueProvider.addDataDisplay(selValues);
 		// Es kann sein, dass hier noch kexprovider benötigt werden
 		MultiSelectionModel<PValue> selectionModel  = new MultiSelectionModel<PValue>();
 		
-		/* wird wahrscheinlich auch nicht gebraucht
+		// Bei Auswahl ausgewählte PValues inf finalPV speichern
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			         public void onSelectionChange(SelectionChangeEvent event) {
-			            // TODO
-			        	 selectedPV = selectionModel.getSelectedObjects();
+			        	 finalPV = (HashSet<PValue>) selectionModel.getSelectedSet();
+			        	 
+			        	 Window.alert("Auswahl geändert");
 			         }
 			      });
-		*/
 		selValues.setSelectionModel(selectionModel);
 		
 		/* Wenn funktional kann dieser code gelöscht werden
@@ -190,10 +211,22 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		selValues.setColumnWidth(propertyvalue, 50, Unit.EM);
 	}
 	
-	public void shareContacts() {
-		for (User u: ldp.getList()) {
-			editorService.addCollaboration(sharedContact, u, new AddCollaborationCallback());
+	/**
+	 * Führt den RPC zur freigabe einens Kontakts mit den ausgewählten Parametern durch
+	 */
+	public void shareContact() {
+		if (!finalUser.isEmpty()) {
+			/*
+			 * oder aber: for (User u: ldp.getList()) {
+			 */
+			for (User u : finalUser) {
+				for(PValue pv: finalPV) {
+					editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
+				}
+				editorService.addCollaboration(sharedContact, u, new AddContactCollaborationCallback());
+			}
 		}
+		
 	}
 	
 	private void retrieveUser() {
@@ -203,7 +236,19 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		this.allUser = user;
 	}
 	
-	private class AddCollaborationCallback implements AsyncCallback<Void>{
+	private class AddPVCollaborationCallback implements AsyncCallback<Void>{
+		public void onFailure(Throwable arg0) {
+			Window.alert("PV konnte nicht geteilt werden");
+		}
+		
+		public void onSuccess(Void v) {
+			Window.alert("PV erfolgreich geteilt!");
+			/**
+			 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
+			 */
+		}
+	}
+	private class AddContactCollaborationCallback implements AsyncCallback<Void>{
 		public void onFailure(Throwable arg0) {
 			Window.alert("Kontakt konnte nicht geteilt werden");
 		}

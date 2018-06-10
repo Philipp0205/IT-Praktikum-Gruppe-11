@@ -3,6 +3,7 @@ package de.hdm.group11.jabics.shared.bo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import com.google.gwt.view.client.ProvidesKey;
 
 /**
  * Diese Klasse realisiert die Eigenschaftsauspr�gungen eines Kontakts.
@@ -142,5 +143,13 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 			return 0;
 		} else return -1;
 	}
+	/**
+     * Der Key Provider für ein PValue
+     */
+    public static final ProvidesKey<PValue> KEY_PROVIDER = new ProvidesKey<PValue>() {
+      public Object getKey(PValue pv) {
+        return (Integer)pv.getId();
+      }
+    };
 
 }
