@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.client.gui;
 
 import java.text.DateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.google.gwt.user.cellview.client.Column;
@@ -9,6 +10,8 @@ import com.google.gwt.user.cellview.client.TextColumn;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.user.client.Window;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -59,8 +62,14 @@ public class ContactForm extends VerticalPanel {
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu Contacttree = null;
-
 	
+	//Widgets deren Inhalte variabel sind werden als Attribute angelegt.
+	
+	Button deleteContactButton = new Button("Kontakt löschen") ;
+	Grid contactGrid = new Grid();
+	ArrayList<PValue> checkedPV = new ArrayList<PValue>();
+	
+
 	public void onLoad() {
 		
 		super.onLoad();
@@ -76,9 +85,9 @@ public class ContactForm extends VerticalPanel {
 		Label contactName = new Label(contact.getName());
 		userInformationGrid.setWidget(1, 0, contactName);		
 
-		//GRID-ZEILE 3: Erstellen des 'Eigenschafts-Grids'
-		Grid propertyGrid = createPropertyGrid(contact);
-		userInformationGrid.setWidget(2, 0, propertyGrid);		
+		//GRID-ZEILE 3: Erstellen des 'Kontakt-Grids'
+		
+		userInformationGrid.setWidget(2, 0, contactGrid);		
 
 		//GRID-ZEILE 4: Optionen zum hinzuf�gen einer Eigenschaft
 		//Die gesamte Zeile (4) wird ein HorizontalPanel
@@ -98,13 +107,12 @@ public class ContactForm extends VerticalPanel {
 		    //hinzufügen von Zeile 4 zum Hauptgrid
 		    userInformationGrid.setWidget(3, 0, propertyAddBox);
 		
-		    
 		//GRID-ZEILE 5: 
 		    HorizontalPanel contactShareBox = new HorizontalPanel();
 		    Label shareQuestion = new Label("Wollen Sie diesen Kontakt teilen?");
 		    contactShareBox.add(shareQuestion);
 		    
-		    Button shareContactButton = new Button("Kontakt teilen") 
+		    Button shareContactButton = new Button("Kontakt teilen");
 		    shareContactButton.addClickHandler(new ClickHandler() {
 			    public void onClick(ClickEvent event) {
 			    	
@@ -116,18 +124,16 @@ public class ContactForm extends VerticalPanel {
 			    }}
 		   );
 		    
-		    
 		    contactShareBox.add(shareContactButton);
 		    
 		    userInformationGrid.setWidget(4, 0, contactShareBox);	
-		    
 		    
 		//GRID-ZEILE 6: 
 		    HorizontalPanel contactDeleteBox = new HorizontalPanel();
 		    Label deleteQuestion = new Label("Wollen Sie diesen Kontakt löschen?");
 		    contactDeleteBox.add(deleteQuestion);
 		    
-		    Button deleteContactButton = new Button("Kontakt löschen") 
+		    
 		    deleteContactButton.addClickHandler(new DeleteContactClickHandler());
 		    contactDeleteBox.add(deleteContactButton);
 		    
@@ -135,7 +141,6 @@ public class ContactForm extends VerticalPanel {
 }
 		
 
-	
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die Operationen Editieren, Löschen oder Teilen 
 	 * eines <code>Contact</code> Objekts implementiert.
@@ -155,7 +160,6 @@ public class ContactForm extends VerticalPanel {
 				}
 			}
 
-
 	private class deleteContactCallback implements AsyncCallback<Void> {
 
 		private Contact contact = null;
@@ -167,13 +171,12 @@ public class ContactForm extends VerticalPanel {
 		}
 		@Override
 		public void onSuccess(Void result) {
-			if(c != null) {
+			if(contact != null) {
 				//Contacttree.removeContact(contact);
 			}
 		}
 	}
-	
-	
+
 	private class DeletePValueClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
@@ -181,29 +184,10 @@ public class ContactForm extends VerticalPanel {
 			if(contactToDisplay == null) {
 				Window.alert("Kein Kontakt ausgewählt");
 			}else {
-			editorService.deletePValue(contactToDisplay, new deletePValueCallback(selectedPValue));
+			editorService.deletePValue(selectedPValue, new deletePValueCallback(selectedPValue));
 			}
 		}
 	}
-
-
-	private class deletePValueCallback implements AsyncCallback<Void> {
-
-			private PValue pvalue = null;
-
-			deletePValueCallback(PValue pv) {
-				pvalue = pv;
-			}
-			public void onFailure(Throwable caugth) {
-			}
-			@Override
-			public void onSuccess(Void result) {
-				if(c != null) {
-		//update Contact
-				}
-			}
-	}
-	
 
 	   void setSelected (Contact c, User u) {
 			if (c != null) {
@@ -220,106 +204,126 @@ public class ContactForm extends VerticalPanel {
 
 	   private class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>>{
 		   public void onFailure(Throwable caught) {
-			   
 			   Window.alert("Fehler in GetPValuesCallback");
 			   
 		   }
 		   public void onSuccess(ArrayList<PValue> result) {
-  			   
-			   	CheckBox[] CheckBox = 		new CheckBox[result.size()];
-				Label[] PropertyLabels = 	new Label[result.size()];
-				TextBox[] PValueTextBox = 	new TextBox[result.size()];
-				Button[] SaveButton = 		new Button[result.size()];
-				Button[] DeleteButton = 	new Button[result.size()];
-				
-				Grid contactGrid = new Grid(result.size(), 1);
 			   
+			   //Die ArrayList mit ausgewählten PValues wird zurückgesetzt
+			   checkedPV.clear();
+  			   
+			   	CheckBox[] checkBox = 		new CheckBox[result.size()];
+				Label[] propertyLabels = 	new Label[result.size()];
+				TextBox[] pValueTextBox = 	new TextBox[result.size()];
+				Button[] saveButton = 		new Button[result.size()];
+				Button[] deleteButton = 	new Button[result.size()];
+				
 			   for (int i = result.size(); i>0; i--) {
 				   
 				   int pointer = i;
 			   
-				   CheckBox[pointer] = new CheckBox();
-				   PropertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
-				   PValueTextBox[pointer] = new TextBox();
-				   PValueTextBox[pointer].setText(result.get(pointer).toString());
+				   checkBox[pointer] = new CheckBox();
+				   propertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
+				   pValueTextBox[pointer] = new TextBox();
+				   pValueTextBox[pointer].setText(result.get(pointer).toString());
+				   saveButton[pointer] = new Button("Save");
 				   
-				   SaveButton[pointer] = new Button("Save");
+				   checkBox[pointer].addClickHandler(new ClickHandler() {
+					      @Override
+					      public void onClick(ClickEvent event) {
+					        boolean checked = ((CheckBox) event.getSource()).getValue();
+					        if(checked == true) {
+					        	setSelectedPvalue(result.get(pointer));
+					        }
+					      }
+					    });
 				   
-				   SaveButton[pointer].addClickHandler(new ClickHandler() {
+				   saveButton[pointer].addClickHandler(new ClickHandler() {
 					   //TODO Bisher noch nicht funktional
-					    public PValue onClick(ClickEvent event) {
+					    public void onClick(ClickEvent event) {
 					    	
 					    	PValue currentPV = result.get(pointer);
 					    	int currentID = currentPV.getPropertyId();
-					    	String currentContent = PValueTextBox[pointer].getValue().toString();
+					    	PValue newPV = new PValue(result.get(pointer).getProperty());
 					    	
 					    	switch (currentPV.getPointer()){ 
 								case 1 : 
-									return PValueTextBox[pointer].getValue().parseInt();
+									newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); 
 								case 2: 
-									return PValueTextBox[pointer].getValue().toString(); 
+									newPV.setStringValue(pValueTextBox[pointer].getValue().toString());
 								case 3: 
-									DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-									Date date = format.parse(PValueTextBox[pointer].getValue().toString());
-									return format;
+									//Das Datum muss folgendermaßen eingegeben werden: 2015-08-04T10:11:30
+									newPV.setDateValue(LocalDateTime.parse(pValueTextBox[pointer].getValue()));
 								case 4:
-									return Float.toString(PValueTextBox[pointer].getValue().toString());
+									newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue()));
 								default: 
-									return null;
 					    		}	
+					    	editorService.updatePValue(newPV, new UpdatePValueCallback());
 					    		
-					    		
-					    	// TODO Dann RPC mit Speicherung des Rückgabewertes
-					    	
-					    	Window.alert("Wert" + PValueTextBox[pointer].getValue().toString() + "gespeichert");
+					    	Window.alert("Wert" + pValueTextBox[pointer].getValue().toString() + "gespeichert");
 					    }}
 				   );
 				   
-				   DeleteButton[pointer] = new Button("Delete");
+				   deleteButton[pointer] = new Button("Delete");
 				   
-				   DeleteButton[pointer].addClickHandler(new ClickHandler() {
+				   deleteButton[pointer].addClickHandler(new ClickHandler() {
 					    public void onClick(ClickEvent event) {
-					    	contactToDisplay.removePValue(result.get(pointer));
 					    	
-					    	Window.alert("Wert" + PValueTextBox[pointer].getValue().toString() + "gelöscht");
+					    	if(contactToDisplay == null) {
+								Window.alert("Kein Kontakt ausgewählt");
+							}else {
+							editorService.deletePValue(selectedPValue, new deletePValueCallback(selectedPValue));
+							}
 					    }}
 				   );
 				   
-				   //TODO Falsche Resize-Methode?
-				   contactGrid.resize();
-				   userInformationGrid.resize();
-				   
-				   
+				   contactGrid.resize(result.size(), 4);
 				   }
+			   for (int j = propertyLabels.length; j > 0 ; j--) {
 				   
-			   for (int j = PropertyLabels.length; j > 0 ; j--) {
-				   
-				   contactGrid.setWidget(j,0,CheckBox[j]);
-				   contactGrid.setWidget(j,1,PropertyLabels[j]);
-				   contactGrid.setWidget(j,2,PValueTextBox[j]);
-				   contactGrid.setWidget(j,3,SaveButton[j]);
-				   contactGrid.setWidget(j,4,DeleteButton[j]);
-				   
+				   contactGrid.setWidget(j,0,checkBox[j]);
+				   contactGrid.setWidget(j,1,propertyLabels[j]);
+				   contactGrid.setWidget(j,2,pValueTextBox[j]);
+				   contactGrid.setWidget(j,3,saveButton[j]);
+				   contactGrid.setWidget(j,4,deleteButton[j]);
 			   }
 			   }
 		   }
 	   
-	   
-	   //Wenn der DeletePValueButton gedrückt wird, wird das PValue Objekt daneben selected.
-	   void setSelected (PValue pv) {
-			if (pv != null) {
-				selectedPValue = pv;
-				idValueLabel.setText("Konto: " + Integer.toString(contactToDisplay.getId()));
-				editorService.getPValueOf(c, userToDisplay, callback);
-			} else {
-				contactToDisplay = null;
-				deleteContactButton.setEnabled(false);
-			}
-		
-	 }
+		private class deletePValueCallback implements AsyncCallback<Void> {
 
-	
-	
+			private PValue pvalue = null;
+
+			deletePValueCallback(PValue pv) {
+				pvalue = pv;
+			}
+			public void onFailure(Throwable caugth) {
+			}
+			@Override
+			public void onSuccess(Void result) {
+				if(pvalue != null) {
+		//update Contact
+				}
+			}
+	}
+	   
+		private class UpdatePValueCallback implements AsyncCallback<Void> {
+
+			public void onFailure(Throwable caugth) {
+				Window.alert("Die Änderung ist fehlgeschlagen.");
+			}
+			@Override
+			public void onSuccess(Void result) {
+				contactToDisplay.removePValue(result.get(pointer));
+		    //Contacttree muss aktualisiert werden . 	
+		    	Window.alert("Wert gelöscht");
+			}
+		}
+	   //Wenn die Checkboxen ausgewählt werden, werden PValues selected.
+	   void setSelectedPvalue (PValue pv) {
+			
+				checkedPV.add(pv);
+	 }
 	}
 
 
