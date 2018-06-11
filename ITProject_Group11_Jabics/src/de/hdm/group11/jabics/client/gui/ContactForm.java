@@ -149,7 +149,6 @@ public class ContactForm extends VerticalPanel {
 		    
 		    userInformationGrid.setWidget(5, 0, contactDeleteBox);	
 }
-		
 
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die Operationen Editieren, Löschen oder Teilen 
@@ -157,6 +156,35 @@ public class ContactForm extends VerticalPanel {
 	 * @author Brase
 	 * @author Ilg
 	 */
+	private class DeleteContactClickHandler implements ClickHandler {
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			if(contactToDisplay == null) {
+				Window.alert("Kein Kontakt ausgewählt");
+			}else {
+			editorService.deleteContact(contactToDisplay, new deleteContactCallback(contactToDisplay));
+			}
+		}
+	}
+
+	class deleteContactCallback implements AsyncCallback<Void> {
+
+		private Contact contact = null;
+
+		deleteContactCallback(Contact c) {
+			contact = c;
+		}
+		public void onFailure(Throwable caugth) {
+		}
+		@Override
+		public void onSuccess(Void result) {
+			if(contact != null) {
+		//Contacttree.removeContact(contact);
+			}
+		}
+	}
+
 	
 	private class AddPropertyClickHandler implements ClickHandler {
 		
@@ -199,34 +227,7 @@ public class ContactForm extends VerticalPanel {
 		}
  
 		
-	private class DeleteContactClickHandler implements ClickHandler {
-				@Override
-				public void onClick(ClickEvent event) {
-					
-					if(contactToDisplay == null) {
-						Window.alert("Kein Kontakt ausgewählt");
-					}else {
-					editorService.deleteContact(contactToDisplay, new deleteContactCallback(contactToDisplay));
-					}
-				}
-			}
 
-	 class deleteContactCallback implements AsyncCallback<Void> {
-
-		private Contact contact = null;
-		
-		deleteContactCallback(Contact c) {
-			contact = c;
-		}
-		public void onFailure(Throwable caugth) {
-		}
-		@Override
-		public void onSuccess(Void result) {
-			if(contact != null) {
-				//Contacttree.removeContact(contact);
-			}
-		}
-	}
 
 /**	private class DeletePValueClickHandler implements ClickHandler {
 		@Override

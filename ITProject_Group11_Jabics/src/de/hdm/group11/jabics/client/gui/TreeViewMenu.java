@@ -159,7 +159,8 @@ public class TreeViewMenu implements TreeViewModel {
 
 	private void setSelectedContact(Contact c) {
 		selectedContact	= c;
-		//ContactForm.setSelected(c);
+		// momentan aktiver User muss angegeben werden
+		ContactForm.setSelected(c, u);
 		
 		if (c != null) {
 			eService.getUserById(c.getOwner().getId(), new AsyncCallback<User>() {
