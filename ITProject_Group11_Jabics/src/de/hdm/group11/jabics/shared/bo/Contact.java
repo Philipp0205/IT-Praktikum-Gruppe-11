@@ -10,7 +10,9 @@ import com.google.gwt.view.client.ProvidesKey;
 
 /**
  * Diese Klasse implementiert Kontakte in Jabics. In einem Kontakt sind mehrere PValue Objekte gespeichert.
- * PValues can be added and removed. Contacts have a status wich are realized with an enum. 
+ * PValues können hinzugefügt oder gelöscht werden, jedoch benötigt jeder Kontakt mindestens einen Namen, der
+ * entweder über eine ArrayList<PValue>, in dem mindestens die PValues zu Name und Vorname vorhanden sind,
+ * gesetzt werden kann, oder direkt über einen String.
  * 
  * @author Anders
  * @author Kurrle 
@@ -21,9 +23,9 @@ public class Contact extends BusinessObject implements Comparable<Contact>{
 	/**
 	 * Instanzenvariablen
 	 */
-		ArrayList<PValue> values = new ArrayList<PValue>();
-		private String name;
-		private BoStatus shareStatus;
+	ArrayList<PValue> values = new ArrayList<PValue>();
+	private String name;
+	private BoStatus shareStatus;
 		
 		
 	public Contact(ArrayList<PValue> a, String name) { 

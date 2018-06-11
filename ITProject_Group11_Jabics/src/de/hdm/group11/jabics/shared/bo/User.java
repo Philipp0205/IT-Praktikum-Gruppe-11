@@ -1,7 +1,8 @@
 package de.hdm.group11.jabics.shared.bo;
 
-/** Representation of a User in the Software. Many Attributes are directly taken from google Account API.
- * 
+/** 
+ * Ein Nutzer ist in Jabocs ein Bediener der Software, der sich über Google eingeloggt hat.
+ * Viele Attribute werden direkt aus der Google Accounts API übernommen.
  *  @author Kurrle and Anders
  */
 
@@ -28,7 +29,7 @@ public class User {
 	}
 	
 	/*
-	 *  Getters and setters
+	 *  Getter und Setter
 	 */
 	public int getId() {
 		return id;

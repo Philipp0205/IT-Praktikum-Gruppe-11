@@ -2,8 +2,8 @@ package de.hdm.group11.jabics.shared.bo;
 
 
 /**
- * Diese Klasse definiert die abstrakte Version einer Eigenschaft, also wie diese heißt und welcher Datentyp diese repräsentiert.
- * Zusätzlich ist hier gespeichert, ob eine Eigenschaft zu den Standardeigenschaften von Kontakten in Jabics gehört.
+ * Diese Klasse definiert die abstrakte Version einer Eigenschaft, also wie diese heiï¿½t und welcher Datentyp diese reprï¿½sentiert.
+ * ZusÃ¤tzlich ist hier gespeichert, ob eine Eigenschaft zu den Standardeigenschaften von Kontakten in Jabics gehÃ¶rt.
  * Eine <code>Property</code> kann nur erstellt werden, wenn mindestens ein Name und ein Datentyp (von Enum Type) bekannt ist.
  * @author Anders
  */
@@ -21,7 +21,7 @@ public class Property extends BusinessObject {
 	
 	
 	/**
-	 * Getters und Setter.
+	 * Getter und Setter.
 	 */
 	public String getLabel() {
 		return label;
