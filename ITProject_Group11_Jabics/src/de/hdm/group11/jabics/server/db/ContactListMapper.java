@@ -82,6 +82,47 @@ public class ContactListMapper {
 		}
 		return contactListMapper;
 	}
+	
+	/** 
+	 * Mit dieser Methode werden alle <code>Contact</code> Objekte einer bestimmten Liste aus der Datenbank abgerufen.
+	 *
+	 * @param cl das <code>ContactList</code> Objekt aus welchem alle Kontakte ermittelt werden sollen.
+	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
+	 */
+	
+	public ArrayList<Contact> getContactsfromContactList(ContactList cl)  {   
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    	
+	    	//Erzeugen einer ArrayList
+        	ArrayList<Contact> al = new ArrayList();
+	    	
+	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
+	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+	    			+ " FROM contact"
+	    			+ " LEFT JOIN contactContactList ON contact.contactID = contactContactList.contactID"
+	    			+ " WHERE contactContactList.contactListId = " + cl.getId()) ;
+	   
+	    	if (rs.next()) {
+	    		//Befüllen des Kontaktlisten-Objekts
+	    		
+	    		while(rs.next()) {
+	    			Contact c = new Contact();
+	    			c.setId(rs.getInt("contactID"));
+	    			al.add(c);
+	    		}
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
 		
 	/** 
 	 * Diese Methode trägt ein <code>ContactList</code> Objekt in die Datenbank ein.
