@@ -31,6 +31,8 @@ import de.hdm.group11.jabics.shared.EditorService;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.Property;
+import de.hdm.group11.jabics.shared.bo.Type;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -62,12 +64,16 @@ public class ContactForm extends VerticalPanel {
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu Contacttree = null;
+	TextBox propertyValue = new TextBox();
+	
 	
 	//Widgets deren Inhalte variabel sind werden als Attribute angelegt.
 	
 	Button deleteContactButton = new Button("Kontakt löschen") ;
 	Grid contactGrid = new Grid();
 	ArrayList<PValue> checkedPV = new ArrayList<PValue>();
+	ListBox formattype = new ListBox();
+	TextBox createProperty = new TextBox();
 	
 
 	public void onLoad() {
@@ -93,11 +99,19 @@ public class ContactForm extends VerticalPanel {
 		//Die gesamte Zeile (4) wird ein HorizontalPanel
 			HorizontalPanel propertyAddBox = new HorizontalPanel();
 			//in diesem Horizontal Panel gibt es 4 Felder
-			// 1. eine Listbox zum Ausw�hlen des Eigenschafts-Typs (z.B. "Mail")
-			ListBox selectProperty = new ListBox();
-			propertyAddBox.add(selectProperty);
+			// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
+			//Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut deklariert
+			
+			// 1.1 eine Listbox zum Setzen des Formats
+			
+			formattype.addItem("Text");
+			formattype.addItem("Datum");
+			formattype.addItem("Kommazahl");
+			formattype.addItem("Zahl");
+			propertyAddBox.add(formattype);
 			// 2. ein Eingabefeld, um die Eigenschaftsauspr�gung festzulegen (z.B. "xyz@hdm...")
-			TextBox propertyValue = new TextBox();
+			//Das Eingabefeld muss außerhalb der Methode deklariert werden.
+			//Das Eingabefeld wird zum HorizontalPanel hinzugefügt.
 			propertyAddBox.add(propertyValue);
 			// 3. einen Button zum Hinzufügen
 		    Button addPropertyButton = new Button("Eigenschaft hinzufügen");
@@ -115,13 +129,9 @@ public class ContactForm extends VerticalPanel {
 		    Button shareContactButton = new Button("Kontakt teilen");
 		    shareContactButton.addClickHandler(new ClickHandler() {
 			    public void onClick(ClickEvent event) {
-			    	
-			    	//TODO Übergabe-Art besprechen
-			    	ContactCollaborationForm.onload();
-			    	//Weitergabe an ContactCollaborationForm Pop-Up
-			    	
-			    	Window.alert("Teilen geklickt");
-			    }}
+			    	ContactCollaborationForm.onLoad(contactToDisplay);
+			    	}
+			    }
 		   );
 		    
 		    contactShareBox.add(shareContactButton);
@@ -148,6 +158,47 @@ public class ContactForm extends VerticalPanel {
 	 * @author Ilg
 	 */
 	
+	private class AddPropertyClickHandler implements ClickHandler {
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			switch(formattype.getSelectedItemText()){
+    		case "Text": 
+				Property newText = new Property(createProperty.getText(), Type.STRING);
+				editorService.createPValue(newText, propertyValue.getText(), contactToDisplay, 
+						userToDisplay, new CreatePValueCallback());
+    		case "Datum": 
+    			Property newDate = new Property(createProperty.getText(), Type.DATE);
+    			editorService.createPValue(newDate, LocalDateTime.parse(propertyValue.getText()), contactToDisplay, 
+    					userToDisplay, new CreatePValueCallback());
+    		case "Kommazahl": 
+    			Property newFloat = new Property(createProperty.getText(), Type.FLOAT);
+    			editorService.createPValue(newFloat, Float.parseFloat(propertyValue.getText()), contactToDisplay, 
+    					userToDisplay, new CreatePValueCallback());
+    		case "Zahl": 
+    			Property newInt = new Property(createProperty.getText(), Type.INT);
+    			editorService.createPValue(newInt, Integer.parseInt(propertyValue.getText()), contactToDisplay, 
+    					userToDisplay, new CreatePValueCallback());
+		}
+	}
+	
+		public class CreatePValueCallback implements AsyncCallback<PValue> {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Das Anlegen der neuen Eigenschaft ist leider fehlgeschlagen.");
+			}
+
+			@Override
+			public void onSuccess(PValue result) {
+				if (result != null) {
+				//	contactTree.refresh();
+				}
+			}
+		}
+ 
+		
 	private class DeleteContactClickHandler implements ClickHandler {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -160,7 +211,7 @@ public class ContactForm extends VerticalPanel {
 				}
 			}
 
-	private class deleteContactCallback implements AsyncCallback<Void> {
+	 class deleteContactCallback implements AsyncCallback<Void> {
 
 		private Contact contact = null;
 		
@@ -177,7 +228,7 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 
-	private class DeletePValueClickHandler implements ClickHandler {
+/**	private class DeletePValueClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
 			
@@ -188,6 +239,8 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 	}
+
+*/
 
 	   void setSelected (Contact c, User u) {
 			if (c != null) {
@@ -202,7 +255,7 @@ public class ContactForm extends VerticalPanel {
 			}
 	   }
 
-	   private class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>>{
+	    class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>>{
 		   public void onFailure(Throwable caught) {
 			   Window.alert("Fehler in GetPValuesCallback");
 			   
@@ -290,7 +343,7 @@ public class ContactForm extends VerticalPanel {
 			   }
 		   }
 	   
-		private class deletePValueCallback implements AsyncCallback<Void> {
+		 class deletePValueCallback implements AsyncCallback<Void> {
 
 			private PValue pvalue = null;
 
@@ -324,7 +377,11 @@ public class ContactForm extends VerticalPanel {
 			
 				checkedPV.add(pv);
 	 }
+	
+	
 	}
+}
+
 
 
 
