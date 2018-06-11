@@ -28,37 +28,38 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	/**
 	 * Instanzenvariablen
 	 */
-	ContactMapper cMapper = ContactMapper.contactMapper();
-	UserMapper uMapper = UserMapper.userMapper();
-	PValueMapper pvMapper = PValueMapper.pValueMapper();
+	ContactMapper cMapper;
+	UserMapper uMapper;
+	PValueMapper pvMapper;
 	private static final long serialVersionUID = -4462530285584570547L;
 	
 	// Alternative Lösung die wir vorerst nicht beachten müssen
-	private EditorServiceImpl eService = null;
+	//private EditorServiceImpl eService = null;
 	// 
 	
 	
 	public ReportGeneratorServiceImpl() throws IllegalArgumentException {
 	  }
 	
-	// Vorerst ebenfalls nicht beachten.
-	@Override
+	/**
+	 * Diese Methode wird aufgerufen, wenn der ReportGeneratorImpl instantiiert werden soll
+	 */
 	public void init() throws IllegalArgumentException {
-	    /*
-	     * Ein ReportGeneratorServiceImpl-Objekt instantiiert für seinen Eigenbedarf eine
-	     * EditorServiceImpl-Instanz.
-	     */
-	
-	EditorServiceImpl e = new EditorServiceImpl();
-	e.init();
-	this.eService = e;	
-	//
-	  
+	    
+		cMapper = ContactMapper.contactMapper();
+		uMapper = UserMapper.userMapper();
+		pvMapper = PValueMapper.pValueMapper();
+
 	  }
 	
 	
 	/**
-	 * TODO: beschreibung
+	 * Diese Methode erstellt einen Report, der alle Kontakte im System wiedergibt.
+	 * Hierfür werden alle Kontakte eines Nutzers für alle Nutzer ausgegeben.
+	 * Der Report besteht aus einem Paragraphen am Anfang und einem Paragraphen am Ende und vielen 
+	 * <code>AllContactsOfUserReport</code> in einer ArrayList. 
+	 * 
+	 * @return: AllContactsInSystemReport 
 	 */
 	@Override
 	public AllContactsInSystemReport createAllContactsInSystemReport() {
@@ -72,19 +73,23 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	}	
 	
 	/**
-	 * TODO: beschreibung
+	 * Diese Methode erstellt einen Report, der alle Kontakte für den übergebenen Nutzer wiedergibt.
+	 * Es werden nur Kontakte wiedergegeben, die der Nutzer erstellt hat, von welchen er also der Eigentümer ist.
+	 * Der Report besteht aus einem Paragraphen am Anfang und einem Paragraphen am Ende und vielen 
+	 * <code>ContactReport</code> in einer ArrayList.
+	 * 
+	 * @return AllContactsOfUserReport mit allen Kontakten des übergebenen Nutzers
 	 */
-	@Override
 	public AllContactsOfUserReport createAllContactsOfUserReport(User u) {
 		
-		// Es wird ein leerer Report engelegt.
+		// Es wird ein leerer Report angelegt.
 		AllContactsOfUserReport result = new AllContactsOfUserReport();
-		// Headline und Foorline werden gesetzt.
+		// Headline und Footline werden gesetzt.
 		result.setHeadline(new Paragraph("Report aller Kontakte f�r " + u.getUsername()));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		
 		/**
-		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue von diesem 
+		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue von diesem erstellen 
 		 */
 		for (Contact c : cMapper.findAllContacts(u)) {
 			ArrayList<PropertyView> pval = new ArrayList<PropertyView>();
@@ -97,30 +102,24 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	}
 
 	/**
-	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus gefilterten ContactReport zur�ck.
+	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus gefilterten ContactReport zurück.
 	 * @param ArrayList mit Contact-Objekten "contacts"
 	 * @param Ein PValue-Objekt pv
 	 * 
-	 * @return
-	 */
-	@Override
-	
-	/**
-	 * public FilteredContactsOfUserReport createFilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv
-			) throws IllegalArgumentException {
+	 * @return FilteredContactsOfUserReport
 	 */
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, User u) throws IllegalArgumentException {
 		
 		/**
 		 *  Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt. 
-		 *  Aus dieser werden dann anschlie�end die entsprechenden Kontakte gefiltert.
+		 *  Aus dieser werden dann anschließend die entsprechenden Kontakte gefiltert.
 		 */
 		ArrayList<Contact> contacts = cMapper.findAllContacts(u);
 
 		// Zuerst wird ein leerer Report angelegt. 
 		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport(contacts, pv);
 		
-		// Jeder Report hat eine �berschrift sowe eine abschlie�ende Nachricht, welche hier headline und footline genannt werden.
+		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
 		result.setHeadline("Gefilterter Report f�r Nutzer " + u.getUsername());
 		result.setFootline("Ende des Reports.");
 		
@@ -132,41 +131,39 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			
 		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle passenden Report Objekte mit, welche dann den results mitgegeben werden.
 		/**
-		 * TODO: konkrete werte, nach denen gefiltert wurde, zum filtercriteria aray hinzuf�gen
+		 * TODO: zu einem späteren Zeitpunkt, wenn nach mehreren Punkten gefiltert werden kann, die breaks entfernen und immer das vorergebnis einspeisen!
 		 */
 		switch (pv.getProperty().getType())  {
-		case STRING: 
-			for (ContactReport i : this.filterContactsByString(contacts, pv)) {
-				filtercriteria[0] = "string";
-				result.addReport(i);
-		}
+		case STRING:
+			result.setSubReports(this.filterContactsByString(contacts, pv));
+			filtercriteria[0] = pv.getStringValue();
 		break;
+		
 		case INT: 
-			for (ContactReport i : this.filterContactsByInt(contacts, pv)) {
-				filtercriteria[1] = "int";
-				result.addReport(i);
-		}
+			result.setSubReports(this.filterContactsByInt(contacts, pv));
+			Integer integ = (Integer)pv.getIntValue();
+			filtercriteria[1] = integ.toString();
 		break; 
-		case FLOAT: 
-			for (ContactReport i : this.filterContactsByDate(contacts, pv)) {
-				filtercriteria[2] = "date";
-				result.addReport(i);
-		}
+		
+		case FLOAT:
+			result.setSubReports(this.filterContactsByDate(contacts, pv));
+			LocalDateTime dt = pv.getDateValue();
+			filtercriteria[2] = dt.toString();	
 		break;
+		
 		case DATE: 
-			for (ContactReport i : this.filterContactsByFloat(contacts, pv)) {
-				filtercriteria[2] = "float";
-				result.addReport(i);
-		}
+			result.setSubReports(this.filterContactsByFloat(contacts, pv));
+			Float fl = (Float)pv.getFloatValue();
+			filtercriteria[3] = fl.toString();
 		break;
-		default: System.out.println("Switch statement failed.");
+		default: System.out.println("Switch statement in FiltertContactReport failed.");
 		break;
 			
 		}
 		
 		/**
-		 * Filterkriterien, nach denen gefiltert wurde, setzen
-		 */
+		 * Nette idee, machen wir erstmal aber anders...
+		 *  Filterkriterien, nach denen gefiltert wurde, setzen
 		StringBuffer filt = new StringBuffer();
 		filt.append("Es wurde nach ");
 		for (String s : filtercriteria) {
@@ -174,18 +171,20 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 				filt.append(s + ", ");
 			}
 		}
-
-
 		filt.append(" gefiltert.");
 		result.setFiltercriteria(new Paragraph(filt.toString()));
+		*/
+		result.setFiltercriteria(new Paragraph(filtercriteria));
 		
 		return result;
 	}
 	
 	/**
-	 * @param contacts
-	 * @param pv
-	 * @return ArrayList mit Contact-Report-Objekten results
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem StringValue, das in einem PValue mitgegeben wird, 
+	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
+	 * @param ArrayList<Contact> contacts
+	 * @param PValue pv
+	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
 		
@@ -200,10 +199,17 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		}
 		return results; //? 
 	}
-		
+	
+	/**
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Int-Value, das in einem PValue mitgegeben wird, 
+	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
+	 * @param ArrayList<Contact> contacts
+	 * @param PValue pv
+	 * @return ArrayList mit Contact-Report-Objekten
+	 */
 	public ArrayList<ContactReport> filterContactsByInt(ArrayList<Contact> contacts, PValue pv) {
 		
-ArrayList<ContactReport> results = new ArrayList<ContactReport>();
+		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
 		for (Contact c : Filter.filterContactsByInt(contacts, pv.getIntValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
@@ -216,9 +222,16 @@ ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
 	}
 	
+	/**
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem LocalDateTime-Value, das in einem PValue mitgegeben wird, 
+	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
+	 * @param ArrayList<Contact> contacts
+	 * @param PValue pv
+	 * @return ArrayList mit Contact-Report-Objekten
+	 */
 	public ArrayList<ContactReport> filterContactsByDate(ArrayList<Contact> contacts, PValue pv) {
 		
-ArrayList<ContactReport> results = new ArrayList<ContactReport>();
+		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
 		for (Contact c : Filter.filterContactsByDate(contacts, pv.getDateValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
@@ -231,9 +244,16 @@ ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
 	}
 	
+	/**
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Float-Value, das in einem PValue mitgegeben wird, 
+	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
+	 * @param ArrayList<Contact> contacts
+	 * @param PValue pv
+	 * @return ArrayList mit Contact-Report-Objekten
+	 */
 	public ArrayList<ContactReport> filterContactsByFloat(ArrayList<Contact> contacts, PValue pv) {
 		
-ArrayList<ContactReport> results = new ArrayList<ContactReport>();
+		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
 		for (Contact c : Filter.filterContactsByFloat(contacts, pv.getFloatValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
@@ -260,8 +280,6 @@ ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 //					.filter(s -> s.startsWith(search))
 //					.collect(Collectors.toList());		
 //		} 
-//	} 
-		
-		
-	}
+//	} 	
+}
 

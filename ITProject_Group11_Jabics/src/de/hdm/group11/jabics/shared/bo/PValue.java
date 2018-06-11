@@ -30,8 +30,11 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	/**
 	 * Konstruktoren
 	 */
-	public PValue(Property p) {
+	public PValue() {
 		super();
+	}
+	public PValue(Property p) {
+		this();
 		this.property = p;
 	}
 	public PValue(Property p, int i) {

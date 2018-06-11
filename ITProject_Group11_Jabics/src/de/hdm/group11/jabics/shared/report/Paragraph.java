@@ -16,6 +16,10 @@ public class Paragraph {
 		super();
 		this.content = content;
 	}
+	public Paragraph(String[] filtercriteria) {
+		super();
+		this.filtercriteria = filtercriteria;
+	}
 	
 	
 	public String[] getFiltercriteria() {

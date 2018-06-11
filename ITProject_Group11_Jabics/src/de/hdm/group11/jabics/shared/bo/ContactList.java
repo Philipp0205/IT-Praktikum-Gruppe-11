@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Diese Klasse implementiert Kontaktlisten in Jabics. Kontaktlisten haben einen Namen und ein Feld aus Kontakten.
- * Diese k�nnen eine nicht definierte Menge an <code>Contact</code> Objekten speichern.
- * Kontakte k�nnen einer Liste mittels addContact() und removeContact() hinzugef�gt oder entfernt werden.
+ * Diese können eine nicht definierte Menge an <code>Contact</code> Objekten speichern.
+ * Kontakte können einer Liste mittels addContact() und removeContact() hinzugefügt oder entfernt werden.
  * @author Anders
  *
  */
@@ -18,7 +18,7 @@ public class ContactList extends BusinessObject {
 	    ArrayList<Contact> contacts = new ArrayList<Contact>();  
 	    
 	    /**
-	     * Constructor
+	     * Konstruktoren
 	     */
 	    public ContactList() {
 	      super();
@@ -35,7 +35,7 @@ public class ContactList extends BusinessObject {
 			
 			
 			/**
-			 * toString returns the list name
+			 * toString gibt den Listennamen zurück
 			 */
 			@Override 
 			public String toString() {
@@ -47,14 +47,14 @@ public class ContactList extends BusinessObject {
 			}
 
 			/** 
-			 * This method adds one Contact to the ContactList
+			 * Fügt einen Kontakt zur Liste hinzu
 			 */
 			public void addContact(Contact c) {				
 				contacts.add(c);
 			}
 			
 			/** 
-			 * This method adds all Contacts in @param conts to the Contact Array in an Object
+			 * Fügt alle Kontakte in einer ArrayList<Contact> zur Liste hinzu
 			 */
 			
 			public void addContacts(ArrayList<Contact> conts) {
@@ -62,14 +62,14 @@ public class ContactList extends BusinessObject {
 			}
 			
 			/**
-			 * Removes a specified contact from the List
+			 * Entfernen eines Kontakts aus der Liste
 			 */
 			public void removeContact(Contact c) {
 				this.contacts.remove(c);
 			}
 			
 			/**
-			 * Getters and Setters. Setting DateUpdated to current time whenever substantial information in the Object is changed.
+			 * Getters und Setter. DateUpdated wird wann immer sinvoll auf "jetzt" gesetzt.
 			 */
 			public ArrayList<Contact> getContacts() {
 				return contacts;

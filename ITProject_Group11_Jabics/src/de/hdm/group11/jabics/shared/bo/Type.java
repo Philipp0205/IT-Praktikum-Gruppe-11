@@ -1,10 +1,8 @@
-/**
- * 
- */
+
 package de.hdm.group11.jabics.shared.bo;
 
 /**
- * Enum that realises options for data types in PropertyValues
+ * Enum, das die verschiedenen Datentypen, die ein PropertyValue bzw. eine Property haben kann, angibt.
  * @author Anders
  *
  */

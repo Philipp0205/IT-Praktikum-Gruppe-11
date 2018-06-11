@@ -6,10 +6,10 @@ import java.time.Month;
 
 
 /**
- * This is the Base Class for all Business Objects in Jabics.
+ * Dies ist die Basisklasse für alle Kontakte, Listen und Property(values) in Jabics
+ * Hier sind Erstelldaten und Änderungsdaten gespeichert, sowie der Ersteller eines Objektes.
  * @author Anders
  * 
- * TODO add date Updated to every set method! 
  */
 
 public abstract class BusinessObject {
