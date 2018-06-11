@@ -14,10 +14,13 @@ public class User {
 	public User() {
 		super();	
 	}
-	
 	public User(String name) {
-		super();
+		this();
 		this.username= name;
+	}
+	public User(String name, String email) {
+		this(name);
+		this.email = email;
 	}
 
 	public String toString() {

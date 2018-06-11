@@ -1,5 +1,5 @@
 /**
- * Die Klasse EditorServiceImpl impelemtiert die Applikationslogik für den Editor von Jabics.
+ * Die Klasse EditorServiceImpl implementiert die Applikationslogik für den Editor von Jabics.
  * Sie stellt die Logik zur Verfügung, die bei einem RPC aufgerufen wird und gibt die angefragten Objekte zurück.
  * 
  * @author Anders
@@ -27,12 +27,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	PValue pv1, pv2, pv3, pv4, pv5, pv6, pv7;
 	Contact c1, c2, c3;
 	ContactList cl;
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
-
+	/**
+	 * Die benötigten Mapper-Instanzen zur DB
+	 */
 	ContactMapper cMapper = ContactMapper.contactMapper();
 	ContactListMapper clMapper = ContactListMapper.contactListMapper();
 	PValueMapper pvMapper = PValueMapper.pValueMapper();
@@ -44,21 +44,31 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 	}
 	
-	public User createUser(String name) { 
-		User newUser = new User(name);
+	/**
+	 * Diese Methode erstelle einen Nutzer, indem ihr ein String mit dem Namen und der email des Nutzers übergeben wird.
+	 */
+	public User createUser(String name, String email) { 
+		User newUser = new User(name, email);
 		return uMapper.insertUser(newUser);
 	}
 	
+	/**
+	 * Diese Methode erstellt einen neuen Kontakt aus einem Array aus PValues und dem Nutzer,
+	 * der den Kontakt erstellt.
+	 */
 	public Contact createContact(ArrayList<PValue> cArray, User u) { 
-		Contact newContact = new Contact(cArray);
-		cMapper.insertContact(newContact);
+		Contact newContact = cMapper.insertContact(new Contact(cArray));
 		cMapper.insertCollaboration(u, newContact, true);
 		return newContact;
 	}
 	
-	public ContactList createContactList(ArrayList<Contact> cArray, User u) { 
-		ContactList newContactList = new ContactList(cArray);
-		clMapper.insertContactList(newContactList);
+	/**
+	 * Diese Methode erstellt eine neue KontaktListe aus einem Array aus Kontakten und dem Nutzer,
+	 * der die KontaktListe erstellt. Zudem wird der Name der Liste als String benötigt
+	 * @return die erstellte ContactList
+	 */
+	public ContactList createContactList(String name, ArrayList<Contact> cArray, User u) { 
+		ContactList newContactList = clMapper.insertContactList(new ContactList(cArray, name));
 		clMapper.insertCollaboration(u, newContactList, true);
 		return newContactList;
 	}
@@ -80,7 +90,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newPValue = pvMapper.insertPValue(newPValue, cnew);
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
-		return pvMapper.findPValueById(newPValue.getId()); 
+		return newPValue; 
 		
 	}
 	
@@ -102,7 +112,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newPValue = pvMapper.insertPValue(newPValue, cnew);
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
-		return pvMapper.findPValueById(newPValue.getId());
+		return newPValue; 
 	}
 	
 	/**
@@ -123,7 +133,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newPValue = pvMapper.insertPValue(newPValue, cnew);
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
-		return pvMapper.findPValueById(newPValue.getId());
+		return newPValue; 
 	}
 	
 	/**
@@ -144,16 +154,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newPValue = pvMapper.insertPValue(newPValue, cnew);
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
-		return pvMapper.findPValueById(newPValue.getId());
+		return newPValue; 
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see de.hdm.group11.jabics.shared.EditorService#createProperty(java.lang.String, de.hdm.group11.jabics.shared.bo.Type)
+	/**
+	 * Diese Methode erstellt eine Property, basierend auf einem Namen für die Property und den Datentyp
+	 * als Instanz des Enums Type, und gibt diese zurück
 	 */
 	public Property createProperty(String label, Type type) {
-		Property newProperty = new Property(label, type);
-		return pMapper.insertProperty(newProperty);
+		return pMapper.insertProperty(new Property(label, type));
 	}
 	
 	/*

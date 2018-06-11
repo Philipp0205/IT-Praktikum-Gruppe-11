@@ -7,11 +7,11 @@ import de.hdm.group11.jabics.shared.bo.*;
 
 public interface EditorService {
 	
-	public User createUser(String name) throws IllegalArgumentException;
+	public User createUser(String name, String email) throws IllegalArgumentException;
 	
 	public Contact createContact(ArrayList<PValue> cArray, User u);
 	
-	public ContactList createContactList(ArrayList<Contact> cArray, User u);
+	public ContactList createContactList(String name, ArrayList<Contact> cArray, User u);
 	
 	public PValue createPValue(Property p, String s, Contact c, User u);
 	

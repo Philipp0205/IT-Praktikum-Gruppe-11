@@ -231,17 +231,15 @@ public class PValueMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
+	    	
 	    	//Erzeugen eines PValue-Objektes
-	    	PValue pv = null;
+	    	PValue pv = new PValue();
 
 	    	// Füllen des Statements
 	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE pValueID = " + id );
 	   
 	    	if (rs.next()) {
 	    		//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
-	    		PValue pv = new PValue();
-	 	   		
 	    		pv.setId(rs.getInt("pValueID"));
 	    		pv.setStringValue(rs.getString("stringValue"));
 	    		pv.setIntValue(rs.getInt("intValue"));
