@@ -62,7 +62,7 @@ public class ContactForm extends VerticalPanel {
 	User userToDisplay = null;
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
-	TreeViewMenu Contacttree = null;
+	TreeViewMenu contacttree = null;
 	TextBox propertyValue = new TextBox();
 	
 	
@@ -128,7 +128,8 @@ public class ContactForm extends VerticalPanel {
 		    Button shareContactButton = new Button("Kontakt teilen");
 		    shareContactButton.addClickHandler(new ClickHandler() {
 			    public void onClick(ClickEvent event) {
-			    	ContactCollaborationForm.onLoad(contactToDisplay);
+			    	ContactCollaborationForm cc = new ContactCollaborationForm();
+			    	cc.onLoad(contactToDisplay);
 			    	}
 			    }
 		   );
@@ -209,25 +210,45 @@ public class ContactForm extends VerticalPanel {
 			switch(formattype.getSelectedItemText()){
     		case "Text": 
 				
-				editorService.createProperty(createProperty.getText(), Type.STRING);
+				editorService.createProperty(createProperty.getText(), Type.STRING, new CreatePropertyCallback());
+				
+				public class CreatePropertyCallback implements AsyncCallback<PValue> {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Das Anlegen der neuen Eigenschaft ist leider fehlgeschlagen.");
+					}
+
+					@Override
+					public void onSuccess(PValue result) {
+						
+					}
+				}
+				
 				editorService.createPValue(newText, propertyValue.getText(), contactToDisplay, 
 						userToDisplay, new CreatePValueCallback());
     		case "Datum": 
-    			editorService.createProperty(createProperty.getText(), Type.DATE);
+    			editorService.createProperty(createProperty.getText(), Type.DATE, new CreatePropertyCallback());
     			editorService.createPValue(newDate, LocalDateTime.parse(propertyValue.getText()), contactToDisplay, 
     					userToDisplay, new CreatePValueCallback());
     		case "Kommazahl": 
-    			editorService.createProperty(createProperty.getText(), Type.FLOAT);
+    			editorService.createProperty(createProperty.getText(), Type.FLOAT, new CreatePropertyCallback());
     			editorService.createPValue(newFloat, Float.parseFloat(propertyValue.getText()), contactToDisplay, 
     					userToDisplay, new CreatePValueCallback());
     		case "Zahl": 
-    			editorService.createProperty(createProperty.getText(), Type.INT);
+    			editorService.createProperty(createProperty.getText(), Type.INT, new CreatePropertyCallback());
     			editorService.createPValue(newInt, Integer.parseInt(propertyValue.getText()), contactToDisplay, 
     					userToDisplay, new CreatePValueCallback());
 		}
 	}
 		//TODO Erst Property erstellen dann PValue: Überlegen ob erstellend er PValue in der
 		//OnSuccess der Property sinnvoll ist.
+		
+		/** 
+		 * Diese Callback-Klasse veranlasst die Erstellung eines neuen <code>Property</code> Objekts auf dem 
+		 * Server.
+		 */
+		
 		
 		/** 
 		 * Diese Callback-Klasse aktualisiert die Ansicht nach erfolgreichem Erstellen
