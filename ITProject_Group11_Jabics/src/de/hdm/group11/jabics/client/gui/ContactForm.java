@@ -92,7 +92,6 @@ public class ContactForm extends VerticalPanel {
 		userInformationGrid.setWidget(1, 0, contactName);		
 
 		//GRID-ZEILE 3: Einfügen des 'Kontakt-Grids'
-		
 		userInformationGrid.setWidget(2, 0, contactGrid);		
 
 		//GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
@@ -104,14 +103,13 @@ public class ContactForm extends VerticalPanel {
 			//(Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut deklariert.)
 			
 			// 1.1 eine Listbox zum Setzen des Formats
-			
 			formattype.addItem("Text");
 			formattype.addItem("Datum");
 			formattype.addItem("Kommazahl");
 			formattype.addItem("Zahl");
 			propertyAddBox.add(formattype);
 			
-			// 2. ein Eingabefeld, um die Eigenschaftsauspr�gung festzulegen (z.B. "xyz@hdm...")
+			// 2. ein Eingabefeld, um die konkrete Eigenschaftsausprägung anzugeben (z.B. "blond")
 			propertyAddBox.add(pValueName);
 			
 			// 3. einen Button zum Hinzufügen
@@ -123,33 +121,22 @@ public class ContactForm extends VerticalPanel {
 		    userInformationGrid.setWidget(3, 0, propertyAddBox);
 		
 		//GRID-ZEILE 5: 
-		    HorizontalPanel contactShareBox = new HorizontalPanel();
-		    Label shareQuestion = new Label("Wollen Sie diesen Kontakt teilen?");
-		    contactShareBox.add(shareQuestion);
+		    
 		    
 		    Button shareContactButton = new Button("Kontakt teilen");
 		    shareContactButton.addClickHandler(new ClickHandler() {
 			    public void onClick(ClickEvent event) {
 			    	ContactCollaborationForm cc = new ContactCollaborationForm();
+			    	//Weiterleitung zur ContactCollaborationForm
 			    	cc.onLoad(contactToDisplay);
 			    	}
 			    }
 		   );
 		    
-		    contactShareBox.add(shareContactButton);
-		    
-		    userInformationGrid.setWidget(4, 0, contactShareBox);	
-		    
-		//GRID-ZEILE 6: 
-		    HorizontalPanel contactDeleteBox = new HorizontalPanel();
-		    Label deleteQuestion = new Label("Wollen Sie diesen Kontakt löschen?");
-		    contactDeleteBox.add(deleteQuestion);
-		    
-		    
+		    userInformationGrid.setWidget(4, 0, shareContactButton);	
+		//GRID-ZEILE 5.1: 
 		    deleteContactButton.addClickHandler(new DeleteContactClickHandler());
-		    contactDeleteBox.add(deleteContactButton);
-		    
-		    userInformationGrid.setWidget(5, 0, contactDeleteBox);	
+		    userInformationGrid.setWidget(4, 1, deleteContactButton);	
 }
 
 	/**
@@ -321,9 +308,11 @@ public class ContactForm extends VerticalPanel {
 				Button[] saveButton = 		new Button[result.size()];
 				Button[] deleteButton = 	new Button[result.size()];
 				
+				
 			   for (int i = result.size(); i>0; i--) {
 				   
 				   int pointer = i;
+				   PValue currentPV = result.get(pointer);
 				   
 				   propertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
 				   pValueTextBox[pointer] = new TextBox();
@@ -334,7 +323,7 @@ public class ContactForm extends VerticalPanel {
 					   //TODO Bisher noch nicht funktional
 					    public void onClick(ClickEvent event) {
 					    	
-					    	PValue currentPV = result.get(pointer);
+					    	
 					    	int currentID = currentPV.getPropertyId();
 					    	PValue newPV = new PValue(result.get(pointer).getProperty());
 					    	
@@ -364,7 +353,7 @@ public class ContactForm extends VerticalPanel {
 					    	if(contactToDisplay == null) {
 								Window.alert("Kein Kontakt ausgewählt");
 							}else {
-							editorService.deletePValue(selectedPValue, new deletePValueCallback(selectedPValue));
+							editorService.deletePValue(currentPV, new deletePValueCallback(currentPV));
 							}
 					    }}
 				   );
@@ -413,8 +402,8 @@ public class ContactForm extends VerticalPanel {
 			}
 			@Override
 			public void onSuccess(Void result) {
-				contactToDisplay.removePValue(result.get(pointer));
 		    //Contacttree muss aktualisiert werden . 	
+			//Conacttree.refresh();
 		    	Window.alert("Wert geändert");
 			}
 		}
