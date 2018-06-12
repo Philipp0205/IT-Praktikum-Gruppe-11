@@ -3,7 +3,7 @@ package de.hdm.group11.jabics.shared.report;
 import java.util.ArrayList;
 
 /**
- * A simple report which extends the super class Report. 
+ * Ein simpler Report, welcher die Superklasse Report erweitert.
  * @author Anders and Kurrle
  *
  */
