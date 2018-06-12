@@ -221,7 +221,7 @@ public class TreeViewMenu implements TreeViewModel {
 	  * Weiter zu den Kontakten
 	  */	 
 	 public void addContactOfList(ContactList cl, Contact c) {
-		 // wenn es noch keinen Kontaktlisten Provider f�r den Kontakt gitb, dann wurde der Baum noch nicht ge�ffnet und es passiert nichts.
+		 // wenn es noch keinen Kontaktlisten Provider für den Kontakt git, dann wurde der Baum noch nicht geöffnet und es passiert nichts.
 		 if (!contactDataProviders.containsKey(cl)) {
 			 return;
 		 }
