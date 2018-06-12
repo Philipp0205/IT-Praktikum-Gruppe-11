@@ -55,7 +55,8 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			createContactBox();
 			ap = new AbsolutePanel();
 			ap.setSize("500px", "400px");
-			ap.add(selUser, 0, 0);
+			ap.add(sug, 20, 10);
+			ap.add(selUser, 0, 50);
 			ap.add(addButton, 200, 0);
 			ap.add(shareContactList, 450, 350);
 			ap.add(exit, 20, 350);

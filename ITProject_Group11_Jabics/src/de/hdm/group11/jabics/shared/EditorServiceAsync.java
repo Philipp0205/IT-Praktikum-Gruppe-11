@@ -30,6 +30,8 @@ public interface EditorServiceAsync {
 	
 	void getContactsOf(JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 	
+	void getAllSharedContactsOf(JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
+	
 	void getUserById(int id, AsyncCallback<JabicsUser> callback);
 	
 	void addContactToList(Contact c, ContactList cl, AsyncCallback<ContactList> callback);
