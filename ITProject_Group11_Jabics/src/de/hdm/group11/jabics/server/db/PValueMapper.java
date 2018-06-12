@@ -15,7 +15,7 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  * @author Brase
@@ -352,7 +352,7 @@ public class PValueMapper {
 	 * @param pv das <code>PValue</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
-	public ArrayList<User> findCollaborators(PValue pv){
+	public ArrayList<JabicsUser> findCollaborators(PValue pv){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -361,7 +361,7 @@ public class PValueMapper {
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-	    	ArrayList<User> al = new ArrayList<User>();
+	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 	    	// Auswählen der <code>User</code> Objekte mit einer bestimmten ID aus der Teilhaberschaftstabelle.
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID, Username FROM pValueCollaboration " + "WHERE pValueID" 
@@ -369,7 +369,7 @@ public class PValueMapper {
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und Hinzufügen zur ArrayList.
-	    		User u = new User(rs.getString("email"));
+	    		JabicsUser u = new JabicsUser(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
@@ -390,7 +390,7 @@ public class PValueMapper {
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>PValue</code> Objekt.
 	 */
-	public PValue insertCollaboration(User u, PValue pv, boolean IsOwner){
+	public PValue insertCollaboration(JabicsUser u, PValue pv, boolean IsOwner){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -416,7 +416,7 @@ public class PValueMapper {
 	 * @param pv das ausgewählte <code>PValue</code> Objekt.
 	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>PValue</code> Objekt verlieren soll.
 	 */
-	public void deleteCollaboration(PValue pv, User u){
+	public void deleteCollaboration(PValue pv, JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    

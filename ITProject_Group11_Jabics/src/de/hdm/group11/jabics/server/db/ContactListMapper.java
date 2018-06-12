@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  * @author Brase
@@ -296,7 +296,7 @@ public class ContactListMapper {
 	 * @param u der Teilhaber, dessen <code>ContactList</code> Objekte zurückgegeben werden sollen.
 	 * @return Die ArrayList, die mit den <code>ContactList</code> Objekten befüllt ist.
 	 */
-	public ArrayList<ContactList> findContactListOfUser(User u)  {   
+	public ArrayList<ContactList> findContactListOfUser(JabicsUser u)  {   
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
@@ -347,7 +347,7 @@ public class ContactListMapper {
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>ContactList</code> Objekt
 	 */
-	public ContactList insertCollaboration(User u, ContactList cl, boolean IsOwner){
+	public ContactList insertCollaboration(JabicsUser u, ContactList cl, boolean IsOwner){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -374,7 +374,7 @@ public class ContactListMapper {
 	 * @param cl die ausgewählte Kontaktliste.
 	 * @param u der Nutzer der die Teilhaberschaft zu der Kontaktliste verlieren soll.
 	 */
-	public void deleteCollaboration(ContactList cl, User u){
+	public void deleteCollaboration(ContactList cl, JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -396,7 +396,7 @@ public class ContactListMapper {
 	 * @param cl das <code>ContactList</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
-	public ArrayList<User> findCollaborators(ContactList cl){
+	public ArrayList<JabicsUser> findCollaborators(ContactList cl){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -405,14 +405,14 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-	    	ArrayList<User> al = new ArrayList();
+	    	ArrayList<JabicsUser> al = new ArrayList();
 	    
 	    	// Auswählen von Tupeln mit einer bestimmten User-Id. 
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() + " ORDER BY systemUserID");
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und hinzufügen zur Arraylist.
-	    		User u = new User(rs.getString("email"));
+	    		JabicsUser u = new JabicsUser(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	        }

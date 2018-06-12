@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.ContactList;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class ContactListForm extends VerticalPanel {
 	/**
@@ -27,7 +27,7 @@ public class ContactListForm extends VerticalPanel {
 	
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 	
-	User userToDisplay = null;
+	JabicsUser userToDisplay = null;
 	ContactList listToDisplay = null;
 	
 	

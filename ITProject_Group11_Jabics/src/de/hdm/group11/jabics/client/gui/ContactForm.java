@@ -32,7 +32,7 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.Type;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  * 
@@ -59,7 +59,7 @@ public class ContactForm extends VerticalPanel {
 
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 	
-	User userToDisplay = null;
+	JabicsUser userToDisplay = null;
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu Contacttree = null;
@@ -272,7 +272,7 @@ public class ContactForm extends VerticalPanel {
 		 * @param c der Kontakt welcher angezeigt werden soll.
 		 */
 
-	   void setSelected (Contact c, User u) {
+	   void setSelected (Contact c, JabicsUser u) {
 			if (c != null) {
 				contactToDisplay = c;
 				userToDisplay = u;

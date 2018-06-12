@@ -20,7 +20,7 @@ public abstract class BusinessObject {
 	}
 
 	int id;
-	User owner;
+	JabicsUser owner;
 	//Date dateCreated;
 	//Date dateUpdated;
 	
@@ -61,10 +61,10 @@ public abstract class BusinessObject {
 		 */
 		//this.dateCreated = LocalDateTime.now();
 	}
-	public User getOwner() {
+	public JabicsUser getOwner() {
 		return this.owner;
 	}
-	public void setOwner(User owner) {
+	public void setOwner(JabicsUser owner) {
 		this.owner = owner;
 	}
 	public LocalDateTime getDateCreated() {

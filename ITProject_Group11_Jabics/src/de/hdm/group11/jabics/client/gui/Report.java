@@ -19,7 +19,7 @@ import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.server.EditorServiceImpl;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
 
@@ -82,7 +82,7 @@ public class Report implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				PValue pvalue = new PValue(null);
-				User u = null;
+				JabicsUser u = null;
 				
 				
 				if (stringBox.getText().isEmpty() == false) {
