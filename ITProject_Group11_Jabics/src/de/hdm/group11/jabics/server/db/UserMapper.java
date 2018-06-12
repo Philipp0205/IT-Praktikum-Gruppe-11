@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -81,7 +80,7 @@ public class UserMapper {
 	}
 	
 	 /** 
-	 * Diese Methode trägt ein <code>User</code> Objekt in die Datenbank ein.
+	 * Diese Methode trï¿½gt ein <code>User</code> Objekt in die Datenbank ein.
 	 * @param u das <code>User</code> Objekt, dass in die Datenbank eingetragen werden soll.
 	 * @return Das als Parameter Ã¼bergebene- <code>User</code> Objekt.
 	 */
@@ -106,7 +105,7 @@ public class UserMapper {
 	}
 		
 	/**
-	 * Diese Methode lÃöscht ein <code>User</code> Objekt aus der Datenbank.
+	 * Diese Methode lï¿½ï¿½scht ein <code>User</code> Objekt aus der Datenbank.
 	 * 
 	 * @param u das <code>User</code> Objekt, dass gelÃ¶scht werden soll.
 	 */
@@ -142,7 +141,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 	   
 			//Erzeugen einer ArrayList
-			ArrayList<User> al = new ArrayList();
+			ArrayList<User> al = new ArrayList<User>();
 	    
 			// AuswÃ¤hlen der <code>User</code> Objekte geordnet nach ihrer E-Mail Adresse.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser ORDER BY email");

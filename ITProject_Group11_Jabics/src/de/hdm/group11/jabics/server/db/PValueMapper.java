@@ -5,16 +5,12 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.User;
 
 /**
@@ -181,7 +177,7 @@ public class PValueMapper {
 	    	Statement stmt = con.createStatement();
 
 	    	//Erzeugen einer ArrayList
-		    ArrayList<PValue> al = new ArrayList();
+		    ArrayList<PValue> al = new ArrayList<PValue>();
 
 	 	   	// Füllen des Statements
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
@@ -199,16 +195,20 @@ public class PValueMapper {
 	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		al.add(pv);
 	 	    }
 	 	   	return al;
@@ -249,16 +249,20 @@ public class PValueMapper {
 	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    	}
 	    	return pv;
 	    }
@@ -288,8 +292,6 @@ public class PValueMapper {
 	    	 */
 	    	switch (pv.getProperty().getType()) {
 	    		case STRING: {
-	    			String value = pv.getStringValue();
-	   	
 	    			String columnname = "stringValue";
 	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" 
 	    			+ pv.getStringValue() + " WHERE pValueID = " + pv.getId() +")");

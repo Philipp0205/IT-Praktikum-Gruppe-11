@@ -9,7 +9,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.User;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 
@@ -171,7 +170,7 @@ public class ContactMapper{
 			Statement stmt = con.createStatement();
 	   
 			//Erzeugen einer ArrayList
-			ArrayList<Contact> al = new ArrayList();
+			ArrayList<Contact> al = new ArrayList<Contact>();
 	    
 			// Join zwischen Contact und ContactCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
 			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
@@ -189,11 +188,17 @@ public class ContactMapper{
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 				al.add(c);
 			}
 			return al;
@@ -227,11 +232,17 @@ public class ContactMapper{
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    	}
 	    	return c;
 	    }
@@ -240,6 +251,65 @@ public class ContactMapper{
 	    	return null;
 	    }
 	}
+	
+	/** 
+	 * Mit dieser Methode werden alle <code>Contact</code> Objekte einer bestimmten Liste aus der Datenbank abgerufen.
+	 *
+	 * @param cl das <code>ContactList</code> Objekt aus welchem alle Kontakte ermittelt werden sollen.
+	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
+	 */
+	
+	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {   
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    	
+	    	//Erzeugen einer ArrayList
+        	ArrayList<Contact> al = new ArrayList<Contact>();
+	    	
+	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
+	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+	    			+ " FROM contact"
+	    			+ " LEFT JOIN contactContactList ON contact.contactID = contactContactList.contactID"
+	    			+ " WHERE contactContactList.contactListId = " + cl.getId()) ;
+	   
+	    	if (rs.next()) {
+	    		//Befüllen des Kontaktlisten-Objekts
+	    		while (rs.next()) {
+					
+					//Instanzierung eines Kontaktobjekts.
+					Contact c = new Contact();
+		      
+					//Befüllen des Kontakt-Objekts und hinzuf�gen in die ArrayList.
+					c.setId(rs.getInt("contactID"));
+		    		Date dateU = rs.getDate("dateUpdated");
+		    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+		    		Date dateC = rs.getDate("dateCreated");
+		    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+					al.add(c);
+				}
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
+		
 	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code> Objekten die eine Teilhaberschaft 

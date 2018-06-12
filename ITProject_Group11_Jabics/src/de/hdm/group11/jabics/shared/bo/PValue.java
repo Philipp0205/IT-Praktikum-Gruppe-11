@@ -1,6 +1,5 @@
 package de.hdm.group11.jabics.shared.bo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import com.google.gwt.view.client.ProvidesKey;

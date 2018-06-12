@@ -84,47 +84,6 @@ public class ContactListMapper {
 	}
 	
 	/** 
-	 * Mit dieser Methode werden alle <code>Contact</code> Objekte einer bestimmten Liste aus der Datenbank abgerufen.
-	 *
-	 * @param cl das <code>ContactList</code> Objekt aus welchem alle Kontakte ermittelt werden sollen.
-	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
-	 */
-	
-	public ArrayList<Contact> getContactsfromContactList(ContactList cl)  {   
-		// Erzeugen der Datenbankverbindung
-	    Connection con = DBConnection.connection();
-
-	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	    	
-	    	//Erzeugen einer ArrayList
-        	ArrayList<Contact> al = new ArrayList();
-	    	
-	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
-	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
-	    			+ " FROM contact"
-	    			+ " LEFT JOIN contactContactList ON contact.contactID = contactContactList.contactID"
-	    			+ " WHERE contactContactList.contactListId = " + cl.getId()) ;
-	   
-	    	if (rs.next()) {
-	    		//Befüllen des Kontaktlisten-Objekts
-	    		
-	    		while(rs.next()) {
-	    			Contact c = new Contact();
-	    			c.setId(rs.getInt("contactID"));
-	    			al.add(c);
-	    		}
-	    	}
-	    	return al;
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return null;
-	    }
-	}
-		
-	/** 
 	 * Diese Methode trägt ein <code>ContactList</code> Objekt in die Datenbank ein.
 	 *
 	 * @param cl das <code>ContactList</code> Objekt, dass in die Datenbank eingetragen werden soll.
@@ -277,11 +236,17 @@ public class ContactListMapper {
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		cl.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    	}
 	    	return cl;
 	    }
@@ -305,7 +270,7 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-			ArrayList<ContactList> al = new ArrayList();
+			ArrayList<ContactList> al = new ArrayList<ContactList>();
 	    	
 	    	//Erzeugen eines Kontaktlisten-Objektes
 	    	ContactList cl = new ContactList();
@@ -323,11 +288,17 @@ public class ContactListMapper {
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		cl.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		al.add(cl);
 	    	}
 	    	return al;
@@ -405,7 +376,7 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-	    	ArrayList<User> al = new ArrayList();
+	    	ArrayList<User> al = new ArrayList<User>();
 	    
 	    	// Auswählen von Tupeln mit einer bestimmten User-Id. 
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() + " ORDER BY systemUserID");
