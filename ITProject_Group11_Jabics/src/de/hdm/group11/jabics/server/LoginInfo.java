@@ -2,22 +2,53 @@ package de.hdm.group11.jabics.server;
 
 import java.io.Serializable;
 
+import de.hdm.group11.jabics.server.db.ContactMapper;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
+
 /**
  *  Objekte dieser Klasse werden die Login-Info vom User service enthalten. 
- *  LoginInfo implementiert serializable, da ein eine Rückgabe einer RPC-Methode ist. 
+ *  LoginInfo implementiert serializable, da ein eine Rï¿½ckgabe einer RPC-Methode ist. 
  * @author P
  *
  */
 
 public class LoginInfo implements Serializable  {
 	
+	/*
+	 * Singelton
+	 */
+	private static LoginInfo loginInfo = null;
+	
+	public static LoginInfo getloginInfo() {
+		if (loginInfo == null) {
+			loginInfo = new LoginInfo();
+		}
+		return loginInfo;
+	}
+	
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private boolean loggedIn = false;
 	  private String loginUrl;
 	  private String logoutUrl;
 	  private String emailAddress;
 	  private String nickname;
+	  
+	  private JabicsUser currentUser;
+	  
+	  
+	  public JabicsUser getCurrentUser() {
+		return currentUser;
+	}
 
-	  public boolean isLoggedIn() {
+	public void setCurrentUser(JabicsUser currentUser) {
+		this.currentUser = currentUser;
+	}
+
+	public boolean isLoggedIn() {
 	    return loggedIn;
 	  }
 

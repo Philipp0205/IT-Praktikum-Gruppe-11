@@ -49,11 +49,11 @@ public class Jabics implements EntryPoint {
 	
 	public void onModuleLoad() {
 		MainView mainView = new MainView();
-		// Content is die ID des Body-Elements von Stockwatcher 
+		// Content is die ID des Body-Elements von Jabics 
 		RootPanel.get("content").add(mainView);
 		
 		
-		// Login-Status �ber�fen
+		// Login-Status 
 	    LoginServiceAsync loginService = GWT.create(LoginService.class);
 	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 	      public void onFailure(Throwable error) {
