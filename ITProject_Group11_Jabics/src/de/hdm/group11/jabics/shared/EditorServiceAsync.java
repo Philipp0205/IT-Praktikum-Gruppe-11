@@ -10,11 +10,11 @@ import de.hdm.group11.jabics.shared.bo.*;
 
 public interface EditorServiceAsync {
 
-	void createUser(String name, AsyncCallback<User> callback) throws IllegalArgumentException;
+	void createUser(String name, String email, AsyncCallback<User> callback) throws IllegalArgumentException;
 	
 	void createContact(ArrayList<PValue> cArray, User u, AsyncCallback<Contact> callback);
 	
-	void createContactList(ArrayList<Contact> cArray, User u, AsyncCallback<ContactList> callback);
+	void createContactList(String name, ArrayList<Contact> cArray, User u, AsyncCallback<ContactList> callback);
 	
 	void createPValue(Property p, String s, Contact c, User u, AsyncCallback<PValue> callback);
 	

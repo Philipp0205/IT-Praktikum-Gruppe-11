@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.report.ContactReport;
-import de.hdm.group11.jabics.shared.report.PropertyView;
 
 public class Filter {
 	
@@ -14,10 +12,10 @@ public class Filter {
 			
 			ArrayList<Contact> result = new ArrayList<Contact>();
 			
-			for (Contact c : contacts ) {
+			for (Contact c : contacts) {
 				ArrayList<PValue> pvalues = c.getValues();
 				for (PValue p : pvalues) {
-					if (p.getStringValue() == pv) {
+					if (p.getStringValue() == pv || p.getStringValue().contains(pv) || p.getProperty().getLabel().contains(pv)){
 						result.add(c);			
 					} 
 				} 	
@@ -32,7 +30,8 @@ public class Filter {
 		for (Contact c : contacts ) {
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
-				if (p.getIntValue() == pv) {
+				Integer integ = (Integer)pv;
+				if (p.getIntValue() == pv || p.getStringValue().contains(integ.toString()) || p.getProperty().getLabel().contains(integ.toString())) {
 					result.add(c);			
 				} 
 			} 	
