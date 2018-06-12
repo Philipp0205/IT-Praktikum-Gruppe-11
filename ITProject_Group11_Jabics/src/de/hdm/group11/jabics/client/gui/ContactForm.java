@@ -16,7 +16,6 @@ import com.google.gwt.user.client.Window;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -88,7 +87,7 @@ public class ContactForm extends VerticalPanel {
 		userInformationGrid.setWidget(0, 0, formName);
 		
 		//GRID-ZEILE 2: Holen des Kontakt-Namens
-		Label contactName = new Label(contact.getName());
+		Label contactName = new Label(contactToDisplay.getName());
 		userInformationGrid.setWidget(1, 0, contactName);		
 
 		//GRID-ZEILE 3: Erstellen des 'Kontakt-Grids'
@@ -266,7 +265,6 @@ public class ContactForm extends VerticalPanel {
 			   //Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			   checkedPV.clear();
   			   
-			   	CheckBox[] checkBox = 		new CheckBox[result.size()];
 				Label[] propertyLabels = 	new Label[result.size()];
 				TextBox[] pValueTextBox = 	new TextBox[result.size()];
 				Button[] saveButton = 		new Button[result.size()];
@@ -275,22 +273,11 @@ public class ContactForm extends VerticalPanel {
 			   for (int i = result.size(); i>0; i--) {
 				   
 				   int pointer = i;
-			   
-				   checkBox[pointer] = new CheckBox();
+				   
 				   propertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
 				   pValueTextBox[pointer] = new TextBox();
 				   pValueTextBox[pointer].setText(result.get(pointer).toString());
 				   saveButton[pointer] = new Button("Save");
-				   
-				   checkBox[pointer].addClickHandler(new ClickHandler() {
-					      @Override
-					      public void onClick(ClickEvent event) {
-					        boolean checked = ((CheckBox) event.getSource()).getValue();
-					        if(checked == true) {
-					        	setSelectedPvalue(result.get(pointer));
-					        }
-					      }
-					    });
 				   
 				   saveButton[pointer].addClickHandler(new ClickHandler() {
 					   //TODO Bisher noch nicht funktional
@@ -335,11 +322,10 @@ public class ContactForm extends VerticalPanel {
 				   }
 			   for (int j = propertyLabels.length; j > 0 ; j--) {
 				   
-				   contactGrid.setWidget(j,0,checkBox[j]);
-				   contactGrid.setWidget(j,1,propertyLabels[j]);
-				   contactGrid.setWidget(j,2,pValueTextBox[j]);
-				   contactGrid.setWidget(j,3,saveButton[j]);
-				   contactGrid.setWidget(j,4,deleteButton[j]);
+				   contactGrid.setWidget(j,0,propertyLabels[j]);
+				   contactGrid.setWidget(j,1,pValueTextBox[j]);
+				   contactGrid.setWidget(j,2,saveButton[j]);
+				   contactGrid.setWidget(j,3,deleteButton[j]);
 			   }
 			   }
 		   }
@@ -373,11 +359,6 @@ public class ContactForm extends VerticalPanel {
 		    	Window.alert("Wert gelöscht");
 			}
 		}
-	   //Wenn die Checkboxen ausgewählt werden, werden PValues selected.
-	   void setSelectedPvalue (PValue pv) {
-			
-				checkedPV.add(pv);
-	 }
 	
 	
 	}

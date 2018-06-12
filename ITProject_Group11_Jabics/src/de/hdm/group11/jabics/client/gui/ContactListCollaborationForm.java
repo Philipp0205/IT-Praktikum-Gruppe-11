@@ -211,7 +211,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		}
 		private class AddContactListCollaborationCallback implements AsyncCallback<Void>{
 			public void onFailure(Throwable arg0) {
-				Window.alert("Kontaktlsite konnte nicht geteilt werden");
+				Window.alert("Kontaktliste konnte nicht geteilt werden");
 			}
 			
 			public void onSuccess(Void v) {
