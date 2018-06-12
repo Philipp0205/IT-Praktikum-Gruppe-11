@@ -226,7 +226,7 @@ public class ContactForm extends VerticalPanel {
 
 			@Override
 			public void onSuccess(Property result) {
-				editorService.createPValue(result, propertyName.getText(), contactToDisplay, 
+				editorService.createPValue(result, pValueName.getText(), contactToDisplay, 
 						userToDisplay, new CreatePValueCallback());
 			}
 		}
