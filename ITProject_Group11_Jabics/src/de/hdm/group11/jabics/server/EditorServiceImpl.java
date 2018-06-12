@@ -195,15 +195,38 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	
 	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
 	public ArrayList<Contact> getContactsOf(JabicsUser u) { 
-		//ArrayList<Contact> cons = cMapper.findAllContact(u);
-		//sind die Kontakte die der mapper zurückgibt auf den Nutzer "zugeschnitten?" also enthalten nur pvalues die der nutzer sehen darf
-		/*for (Contact c : cons) {
-			pvMapper.
-		}*/
+		ArrayList<Contact> cons = cMapper.findAllContacts(u);
+		for (Contact c : cons) {
+			ArrayList<PValue> pvtemp = pvMapper.findPValueForContact(c);
+			StringBuffer sBuffer = new StringBuffer();
+			for (PValue p : pvtemp) {
+				if (p.getProperty().getLabel() == "name") {
+					sBuffer.append(p.getStringValue());					
+					} else {
+						System.out.println("getContactsOf: No name in Array.");
+					}
+			}
+			for (PValue p2: pvtemp) {
+				if (p2.getProperty().getLabel() == "lastname") {
+					sBuffer.append(" " + p2.getStringValue());				
+				} else {
+					System.out.println("getContactsOf: No lastname in Array");
+				}
+			}
+			c.setName(sBuffer.toString());
+		}
 		//return cons;
 		
 		//temporary: kann gelöscht werden sobal fertig
 		return cl.getContacts();
+	}
+	
+	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u){
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		for (Contact c : getContactsOf(u)) {
+			if(!c.getOwner().equals(u)) result.add(c);
+		}
+		return result;
 	}
 	
 	// is this method really needed?

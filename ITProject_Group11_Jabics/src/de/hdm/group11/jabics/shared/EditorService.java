@@ -27,6 +27,8 @@ public interface EditorService {
 	
 	public ArrayList<Contact> getContactsOf(JabicsUser u);
 	
+	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u);
+	
 	public JabicsUser getUserById(int id);
 	
 	public ContactList addContactToList(Contact c, ContactList cl);
