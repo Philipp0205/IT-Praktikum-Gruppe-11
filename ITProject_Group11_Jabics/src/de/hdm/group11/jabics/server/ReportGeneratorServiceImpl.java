@@ -66,7 +66,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		AllContactsInSystemReport result = new AllContactsInSystemReport();
 		result.setHeadline(new Paragraph("Report aller Kontakte im System"));
 		result.setFootline(new Paragraph("Ende des Reports"));
-		for (User u: uMapper.findAllUser()) {
+		for (JabicsUser u: uMapper.findAllUser()) {
 			result.addReport(createAllContactsOfUserReport(u));
 		}
 		return result;
@@ -80,7 +80,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 * 
 	 * @return AllContactsOfUserReport mit allen Kontakten des übergebenen Nutzers
 	 */
-	public AllContactsOfUserReport createAllContactsOfUserReport(User u) {
+	public AllContactsOfUserReport createAllContactsOfUserReport(JabicsUser u) {
 		
 		// Es wird ein leerer Report angelegt.
 		AllContactsOfUserReport result = new AllContactsOfUserReport();
@@ -108,7 +108,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 * 
 	 * @return FilteredContactsOfUserReport
 	 */
-	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, User u) throws IllegalArgumentException {
+	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u) throws IllegalArgumentException {
 		
 		/**
 		 *  Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt. 

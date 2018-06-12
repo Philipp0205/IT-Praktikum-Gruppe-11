@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  * @author Brase
@@ -84,7 +84,7 @@ public class UserMapper {
 	 * @param u das <code>User</code> Objekt, dass in die Datenbank eingetragen werden soll.
 	 * @return Das als Parameter übergebene- <code>User</code> Objekt.
 	 */
-	public User insertUser(User u){
+	public JabicsUser insertUser(JabicsUser u){
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -109,7 +109,7 @@ public class UserMapper {
 	 * 
 	 * @param u das <code>User</code> Objekt, dass gelöscht werden soll.
 	 */
-	public void deleteUser(User u){
+	public void deleteUser(JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 		    
@@ -132,7 +132,7 @@ public class UserMapper {
 	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
 	 */
-	public ArrayList<User> findAllUser(){
+	public ArrayList<JabicsUser> findAllUser(){
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 	    
@@ -141,7 +141,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 	   
 			//Erzeugen einer ArrayList
-			ArrayList<User> al = new ArrayList<User>();
+			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 			// Auswählen der <code>User</code> Objekte geordnet nach ihrer E-Mail Adresse.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser ORDER BY email");
@@ -149,7 +149,7 @@ public class UserMapper {
 			while (rs.next()) {
 	      
 				//Erstellen eines User-Objekts
-				User u = new User();
+				JabicsUser u = new JabicsUser();
 				
 				//Befüllen des Kontakt-Objekts und Einfügen in die Arraylist.
 				u.setId(rs.getInt("systemUserID"));
@@ -170,7 +170,7 @@ public class UserMapper {
 	 * @param id  die id nach der gesucht werden soll.
 	 * @return das gesuchte  <code>User</code> Objekt.
 	 */
-	public User findUserById(int id)  {
+	public JabicsUser findUserById(int id)  {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
@@ -182,7 +182,7 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + "WHERE systemUserID=" + id);
 		   
 			if (rs.next()) {
-				User u = new User();
+				JabicsUser u = new JabicsUser();
 				
 				//Befüllen des Kontakt-Objekts
 				u.setId(rs.getInt("systemUserID"));

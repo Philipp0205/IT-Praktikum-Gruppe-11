@@ -9,7 +9,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 
 /**
@@ -161,7 +161,7 @@ public class ContactMapper{
 	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
 	 */
-	public ArrayList<Contact> findAllContacts(User u){
+	public ArrayList<Contact> findAllContacts(JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 	    
@@ -317,7 +317,7 @@ public class ContactMapper{
 	 * @param c das <code>Contact</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
-	public ArrayList<User> findCollaborators(Contact c){
+	public ArrayList<JabicsUser> findCollaborators(Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	   
@@ -326,7 +326,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-	    	ArrayList<User> al = new ArrayList<User>();
+	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 	    	// Auswählen von Usern mit einer Bestimmten ID in der contactCollaboration Tabelle.
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID = " + c.getId() 
@@ -334,7 +334,7 @@ public class ContactMapper{
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und hinzufügen in die ArrayList.
-	    		User u = new User(rs.getString("email"));
+	    		JabicsUser u = new JabicsUser(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
@@ -355,7 +355,7 @@ public class ContactMapper{
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>Contact</code> Objekt
 	 */
-	public Contact insertCollaboration(User u, Contact c, boolean IsOwner){
+	public Contact insertCollaboration(JabicsUser u, Contact c, boolean IsOwner){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -383,7 +383,7 @@ public class ContactMapper{
 	 * @param c der ausgewählte Kontakt.
 	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>Contact</code> Objekt verlieren soll.
 	 */
-	public void deleteCollaboration(Contact c, User u){
+	public void deleteCollaboration(Contact c, JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
