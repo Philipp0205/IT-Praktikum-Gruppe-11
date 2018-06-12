@@ -62,8 +62,9 @@ public class ContactForm extends VerticalPanel {
 	JabicsUser userToDisplay = null;
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
-	TreeViewMenu Contacttree = null;
-	TextBox propertyValue = new TextBox();
+	TreeViewMenu contacttree = null;
+	TextBox propertyName = new TextBox();
+	TextBox pValueName = new TextBox();
 	
 	
 	//Widgets deren Inhalte variabel sind werden als Attribute angelegt.
@@ -72,7 +73,7 @@ public class ContactForm extends VerticalPanel {
 	Grid contactGrid = new Grid();
 	ArrayList<PValue> checkedPV = new ArrayList<PValue>();
 	ListBox formattype = new ListBox();
-	TextBox createProperty = new TextBox();
+	
 	
 
 	public void onLoad() {
@@ -90,28 +91,27 @@ public class ContactForm extends VerticalPanel {
 		Label contactName = new Label(contactToDisplay.getName());
 		userInformationGrid.setWidget(1, 0, contactName);		
 
-		//GRID-ZEILE 3: Erstellen des 'Kontakt-Grids'
-		
+		//GRID-ZEILE 3: Einfügen des 'Kontakt-Grids'
 		userInformationGrid.setWidget(2, 0, contactGrid);		
 
-		//GRID-ZEILE 4: Optionen zum hinzuf�gen einer Eigenschaft
+		//GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 		//Die gesamte Zeile (4) wird ein HorizontalPanel
 			HorizontalPanel propertyAddBox = new HorizontalPanel();
 			//in diesem Horizontal Panel gibt es 4 Felder
 			// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
-			//Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut deklariert
+			propertyAddBox.add(propertyName);
+			//(Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut deklariert.)
 			
 			// 1.1 eine Listbox zum Setzen des Formats
-			
 			formattype.addItem("Text");
 			formattype.addItem("Datum");
 			formattype.addItem("Kommazahl");
 			formattype.addItem("Zahl");
 			propertyAddBox.add(formattype);
-			// 2. ein Eingabefeld, um die Eigenschaftsauspr�gung festzulegen (z.B. "xyz@hdm...")
-			//Das Eingabefeld muss außerhalb der Methode deklariert werden.
-			//Das Eingabefeld wird zum HorizontalPanel hinzugefügt.
-			propertyAddBox.add(propertyValue);
+			
+			// 2. ein Eingabefeld, um die konkrete Eigenschaftsausprägung anzugeben (z.B. "blond")
+			propertyAddBox.add(pValueName);
+			
 			// 3. einen Button zum Hinzufügen
 		    Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		    addPropertyButton.addClickHandler(new AddPropertyClickHandler());
@@ -121,32 +121,22 @@ public class ContactForm extends VerticalPanel {
 		    userInformationGrid.setWidget(3, 0, propertyAddBox);
 		
 		//GRID-ZEILE 5: 
-		    HorizontalPanel contactShareBox = new HorizontalPanel();
-		    Label shareQuestion = new Label("Wollen Sie diesen Kontakt teilen?");
-		    contactShareBox.add(shareQuestion);
+		    
 		    
 		    Button shareContactButton = new Button("Kontakt teilen");
 		    shareContactButton.addClickHandler(new ClickHandler() {
 			    public void onClick(ClickEvent event) {
-			    	ContactCollaborationForm.onLoad(contactToDisplay);
+			    	ContactCollaborationForm cc = new ContactCollaborationForm();
+			    	//Weiterleitung zur ContactCollaborationForm
+			    	cc.onLoad(contactToDisplay);
 			    	}
 			    }
 		   );
 		    
-		    contactShareBox.add(shareContactButton);
-		    
-		    userInformationGrid.setWidget(4, 0, contactShareBox);	
-		    
-		//GRID-ZEILE 6: 
-		    HorizontalPanel contactDeleteBox = new HorizontalPanel();
-		    Label deleteQuestion = new Label("Wollen Sie diesen Kontakt löschen?");
-		    contactDeleteBox.add(deleteQuestion);
-		    
-		    
+		    userInformationGrid.setWidget(4, 0, shareContactButton);	
+		//GRID-ZEILE 5.1: 
 		    deleteContactButton.addClickHandler(new DeleteContactClickHandler());
-		    contactDeleteBox.add(deleteContactButton);
-		    
-		    userInformationGrid.setWidget(5, 0, contactDeleteBox);	
+		    userInformationGrid.setWidget(4, 1, deleteContactButton);	
 }
 
 	/**
@@ -209,25 +199,37 @@ public class ContactForm extends VerticalPanel {
 			switch(formattype.getSelectedItemText()){
     		case "Text": 
 				
-				editorService.createProperty(createProperty.getText(), Type.STRING);
-				editorService.createPValue(newText, propertyValue.getText(), contactToDisplay, 
-						userToDisplay, new CreatePValueCallback());
+				editorService.createProperty(propertyName.getText(), Type.STRING, new CreatePropertyCallback());
+				
     		case "Datum": 
-    			editorService.createProperty(createProperty.getText(), Type.DATE);
-    			editorService.createPValue(newDate, LocalDateTime.parse(propertyValue.getText()), contactToDisplay, 
-    					userToDisplay, new CreatePValueCallback());
+    			editorService.createProperty(propertyName.getText(), Type.DATE, new CreatePropertyCallback());
+    			
     		case "Kommazahl": 
-    			editorService.createProperty(createProperty.getText(), Type.FLOAT);
-    			editorService.createPValue(newFloat, Float.parseFloat(propertyValue.getText()), contactToDisplay, 
-    					userToDisplay, new CreatePValueCallback());
+    			editorService.createProperty(propertyName.getText(), Type.FLOAT, new CreatePropertyCallback());
+    			
     		case "Zahl": 
-    			editorService.createProperty(createProperty.getText(), Type.INT);
-    			editorService.createPValue(newInt, Integer.parseInt(propertyValue.getText()), contactToDisplay, 
-    					userToDisplay, new CreatePValueCallback());
+    			editorService.createProperty(propertyName.getText(), Type.INT, new CreatePropertyCallback());
 		}
 	}
 		//TODO Erst Property erstellen dann PValue: Überlegen ob erstellend er PValue in der
 		//OnSuccess der Property sinnvoll ist.
+		
+		/** 
+		 * Diese Callback-Klasse veranlasst die Erstellung eines neuen <code>Property</code> Objekts auf dem 
+		 * Server.
+		 */
+		public class CreatePropertyCallback implements AsyncCallback<Property> {
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Das Anlegen der neuen Eigenschaft ist leider fehlgeschlagen.");
+			}
+
+			@Override
+			public void onSuccess(Property result) {
+				editorService.createPValue(result, pValueName.getText(), contactToDisplay, 
+						userToDisplay, new CreatePValueCallback());
+			}
+		}
 		
 		/** 
 		 * Diese Callback-Klasse aktualisiert die Ansicht nach erfolgreichem Erstellen
@@ -237,7 +239,7 @@ public class ContactForm extends VerticalPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Das Anlegen der neuen Eigenschaft ist leider fehlgeschlagen.");
+				Window.alert("Das Anlegen der neuen Eigenschaftsausprägung ist leider fehlgeschlagen.");
 			}
 
 			@Override
@@ -306,9 +308,14 @@ public class ContactForm extends VerticalPanel {
 				Button[] saveButton = 		new Button[result.size()];
 				Button[] deleteButton = 	new Button[result.size()];
 				
+				
 			   for (int i = result.size(); i>0; i--) {
 				   
 				   int pointer = i;
+
+				   PValue currentPV = result.get(pointer);
+
+
 				   
 				   propertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
 				   pValueTextBox[pointer] = new TextBox();
@@ -319,7 +326,7 @@ public class ContactForm extends VerticalPanel {
 					   //TODO Bisher noch nicht funktional
 					    public void onClick(ClickEvent event) {
 					    	
-					    	PValue currentPV = result.get(pointer);
+					    	
 					    	int currentID = currentPV.getPropertyId();
 					    	PValue newPV = new PValue(result.get(pointer).getProperty());
 					    	
@@ -349,7 +356,7 @@ public class ContactForm extends VerticalPanel {
 					    	if(contactToDisplay == null) {
 								Window.alert("Kein Kontakt ausgewählt");
 							}else {
-							editorService.deletePValue(selectedPValue, new deletePValueCallback(selectedPValue));
+							editorService.deletePValue(currentPV, new deletePValueCallback(currentPV));
 							}
 					    }}
 				   );
@@ -398,8 +405,8 @@ public class ContactForm extends VerticalPanel {
 			}
 			@Override
 			public void onSuccess(Void result) {
-				contactToDisplay.removePValue(result.get(pointer));
 		    //Contacttree muss aktualisiert werden . 	
+			//Conacttree.refresh();
 		    	Window.alert("Wert geändert");
 			}
 		}
