@@ -1,7 +1,6 @@
 package de.hdm.group11.jabics.shared.bo;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 
 
 
@@ -20,10 +19,7 @@ public abstract class BusinessObject {
 	}
 
 	int id;
-	User owner;
-	//Date dateCreated;
-	//Date dateUpdated;
-	
+	JabicsUser owner;
 	LocalDateTime dateCreated;
 	LocalDateTime dateUpdated;
 	private long serialVersionUID = 1L;
@@ -61,21 +57,17 @@ public abstract class BusinessObject {
 		 */
 		//this.dateCreated = LocalDateTime.now();
 	}
-	public User getOwner() {
+	public JabicsUser getOwner() {
 		return this.owner;
 	}
-	public void setOwner(User owner) {
+	public void setOwner(JabicsUser owner) {
 		this.owner = owner;
 	}
 	public LocalDateTime getDateCreated() {
 		return dateCreated;
 	}
-	public void setDateCreated(int year, int month, int dayOfMonth) {
-		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
-	}
-	// overload method if date is given in the datatype "month". 
-	public void setDateCreated(int year, Month month, int dayOfMonth) {
-		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
+	public void setDateCreated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
+		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
 	}
 	public void setDateCreated(LocalDateTime dateCreated) {
 		this.dateCreated = dateCreated;
@@ -86,8 +78,8 @@ public abstract class BusinessObject {
 	public void setDateUpdated(LocalDateTime dateUpdated) {
 		this.dateUpdated = dateUpdated;
 	}
-	public void setDateUpdated(int year, int month, int dayOfMonth) {
-		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
+	public void setDateUpdated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
+		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
 	}
 	public long getSerialVersionUID() {
 		return serialVersionUID;

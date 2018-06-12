@@ -5,17 +5,13 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  * @author Brase
@@ -181,7 +177,7 @@ public class PValueMapper {
 	    	Statement stmt = con.createStatement();
 
 	    	//Erzeugen einer ArrayList
-		    ArrayList<PValue> al = new ArrayList();
+		    ArrayList<PValue> al = new ArrayList<PValue>();
 
 	 	   	// Füllen des Statements
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
@@ -199,16 +195,20 @@ public class PValueMapper {
 	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		al.add(pv);
 	 	    }
 	 	   	return al;
@@ -249,16 +249,20 @@ public class PValueMapper {
 	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
 	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    	}
 	    	return pv;
 	    }
@@ -288,8 +292,6 @@ public class PValueMapper {
 	    	 */
 	    	switch (pv.getProperty().getType()) {
 	    		case STRING: {
-	    			String value = pv.getStringValue();
-	   	
 	    			String columnname = "stringValue";
 	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" 
 	    			+ pv.getStringValue() + " WHERE pValueID = " + pv.getId() +")");
@@ -352,7 +354,7 @@ public class PValueMapper {
 	 * @param pv das <code>PValue</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
-	public ArrayList<User> findCollaborators(PValue pv){
+	public ArrayList<JabicsUser> findCollaborators(PValue pv){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -361,7 +363,7 @@ public class PValueMapper {
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-	    	ArrayList<User> al = new ArrayList<User>();
+	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 	    	// Auswählen der <code>User</code> Objekte mit einer bestimmten ID aus der Teilhaberschaftstabelle.
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID, Username FROM pValueCollaboration " + "WHERE pValueID" 
@@ -369,7 +371,7 @@ public class PValueMapper {
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und Hinzufügen zur ArrayList.
-	    		User u = new User(rs.getString("email"));
+	    		JabicsUser u = new JabicsUser(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
@@ -390,7 +392,7 @@ public class PValueMapper {
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>PValue</code> Objekt.
 	 */
-	public PValue insertCollaboration(User u, PValue pv, boolean IsOwner){
+	public PValue insertCollaboration(JabicsUser u, PValue pv, boolean IsOwner){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -416,7 +418,7 @@ public class PValueMapper {
 	 * @param pv das ausgewählte <code>PValue</code> Objekt.
 	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>PValue</code> Objekt verlieren soll.
 	 */
-	public void deleteCollaboration(PValue pv, User u){
+	public void deleteCollaboration(PValue pv, JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    

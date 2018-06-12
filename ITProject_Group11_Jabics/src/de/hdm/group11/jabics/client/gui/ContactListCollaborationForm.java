@@ -25,8 +25,8 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 		
 		ContactList sharedContactList;
-		ArrayList<User> allUser = new ArrayList<User>();
-		ArrayList<User> finalUser = new ArrayList<User>();
+		ArrayList<JabicsUser> allUser = new ArrayList<JabicsUser>();
+		ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
 		
 		Button shareContactList = new Button("Kontaktliste freigeben");
 		Button exit = new Button("Abbrechen");
@@ -36,10 +36,10 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		MultiWordSuggestOracle  oracle;
 		SuggestBox sug; // = new SuggestBox();
 		
-		CellTable<User> selUser;
-		ListDataProvider<User> ldp;
-		User selectedUserAdd = null;
-		User selectedUserRemove = null;
+		CellTable<JabicsUser> selUser;
+		ListDataProvider<JabicsUser> ldp;
+		JabicsUser selectedUserAdd = null;
+		JabicsUser selectedUserRemove = null;
 		
 		HashSet<Contact> finalC = new HashSet<Contact>();
 		CellTable<Contact> selValues;
@@ -68,11 +68,11 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			/**
 			 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 			 */
-			ldp = new ListDataProvider<User>();
-			selUser = new CellTable<User>();
+			ldp = new ListDataProvider<JabicsUser>();
+			selUser = new CellTable<JabicsUser>();
 			ldp.addDataDisplay(selUser);
 			TextCell s = new TextCell();
-			SingleSelectionModel<User> selectionModel  = new SingleSelectionModel<User>();
+			SingleSelectionModel<JabicsUser> selectionModel  = new SingleSelectionModel<JabicsUser>();
 			
 			selectionModel.addSelectionChangeHandler(
 				      new SelectionChangeEvent.Handler() {
@@ -101,8 +101,8 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 					}	
 				}
 			});
-			TextColumn<User> username = new TextColumn<User>() {
-				public String getValue(User u) {
+			TextColumn<JabicsUser> username = new TextColumn<JabicsUser>() {
+				public String getValue(JabicsUser u) {
 					return u.getUsername();
 				}
 			};
@@ -113,7 +113,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			 */
 			oracle = new MultiWordSuggestOracle();
 			sug = new SuggestBox(oracle);
-			for (User u : allUser) {
+			for (JabicsUser u : allUser) {
 				try {
 				oracle.add(u.getUsername() + " " + u.getEmail());
 				} catch (NullPointerException e){
@@ -131,7 +131,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			 */
 			sug.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel){
-					for (User u : allUser) {
+					for (JabicsUser u : allUser) {
 						if (sug.getValue().contains(u.getUsername()) && sug.getValue().contains(u.getEmail())){
 								selectedUserAdd = u;
 								}
@@ -180,7 +180,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		public void shareContact() {
 			if (!finalUser.isEmpty()) {
 				/*oder aber: for (User u: ldp.getList()) {*/
-				for (User u : finalUser) {
+				for (JabicsUser u : finalUser) {
 					for(Contact c: finalC) {
 						editorService.addCollaboration(c, u, new AddContactCollaborationCallback());
 					}
@@ -193,7 +193,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		private void retrieveUser() {
 			editorService.getAllUsers(new GetAllUsersCallback());
 		}
-		public void setAllUser(ArrayList<User> user) {
+		public void setAllUser(ArrayList<JabicsUser> user) {
 			this.allUser = user;
 		}
 		
@@ -222,13 +222,13 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			}
 		}
 		
-		private class GetAllUsersCallback implements AsyncCallback<ArrayList<User>>{
+		private class GetAllUsersCallback implements AsyncCallback<ArrayList<JabicsUser>>{
 			
 			public void onFailure(Throwable arg0) {
 				Window.alert("Nutzer konnten nicht geladen werden");
 			}
 			
-			public void onSuccess(ArrayList<User> user) {
+			public void onSuccess(ArrayList<JabicsUser> user) {
 
 				setAllUser(user);
 			}

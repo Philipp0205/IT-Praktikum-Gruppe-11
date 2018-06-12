@@ -6,20 +6,20 @@ package de.hdm.group11.jabics.shared.bo;
  *  @author Kurrle and Anders
  */
 
-public class User {
+public class JabicsUser {
 	
 	private int id; 
 	private String username;
 	private String email;  
 	
-	public User() {
+	public JabicsUser() {
 		super();	
 	}
-	public User(String name) {
+	public JabicsUser(String name) {
 		this();
 		this.username= name;
 	}
-	public User(String name, String email) {
+	public JabicsUser(String name, String email) {
 		this(name);
 		this.email = email;
 	}

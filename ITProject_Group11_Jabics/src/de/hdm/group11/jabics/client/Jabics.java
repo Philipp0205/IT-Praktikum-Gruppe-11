@@ -12,7 +12,7 @@ import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.LoginService;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class Jabics implements EntryPoint {
 	/**
@@ -32,13 +32,13 @@ public class Jabics implements EntryPoint {
 	 *  NEU: 
 	 */
 	UserMapper uMapper = UserMapper.userMapper();
-	private User currentUser = null;
+	private JabicsUser currentUser = null;
 	
-	public User getCurrentUser() {
+	public JabicsUser getCurrentUser() {
 		return currentUser;
 	}
 
-	public void setCurrentUser(User currentUser) {
+	public void setCurrentUser(JabicsUser currentUser) {
 		this.currentUser = currentUser;
 	}
 	

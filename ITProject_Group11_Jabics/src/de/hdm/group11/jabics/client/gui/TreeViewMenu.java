@@ -17,7 +17,7 @@ import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -42,7 +42,7 @@ public class TreeViewMenu implements TreeViewModel {
 	private ArrayList<ContactList> cLists = new ArrayList<ContactList>();
 	// User?
 	private EditorServiceAsync eService = null;
-	private User user = new User();
+	private JabicsUser user = new JabicsUser();
 	
 	/*
 	 * Der DataProvider ist daf�r zust�ndig, die Anzeige zu aktualisieren, immer wenn etwas ge�ndert wird. 
@@ -163,7 +163,7 @@ public class TreeViewMenu implements TreeViewModel {
 		ContactForm.setSelected(c, u);
 		
 		if (c != null) {
-			eService.getUserById(c.getOwner().getId(), new AsyncCallback<User>() {
+			eService.getUserById(c.getOwner().getId(), new AsyncCallback<JabicsUser>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -172,7 +172,7 @@ public class TreeViewMenu implements TreeViewModel {
 				}
 
 				@Override
-				public void onSuccess(User result) {
+				public void onSuccess(JabicsUser result) {
 					//Muss das result nicht ein Kontakt sein?
 					selectedContact = c;
 					//contactForm.setSelected(c);				
@@ -315,7 +315,7 @@ public class TreeViewMenu implements TreeViewModel {
 			final ListDataProvider<Contact> contactProvider = new ListDataProvider<Contact>();
 			contactDataProviders.put((ContactList) value, contactProvider);
 			
-			eService.getContactsOf((User) value, new AsyncCallback<ArrayList<Contact>>() {
+			eService.getContactsOf((JabicsUser) value, new AsyncCallback<ArrayList<Contact>>() {
 				
 
 				@Override

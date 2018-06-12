@@ -7,33 +7,33 @@ import de.hdm.group11.jabics.shared.bo.*;
 
 public interface EditorService {
 	
-	public User createUser(String name, String email) throws IllegalArgumentException;
+	public JabicsUser createUser(String name, String email) throws IllegalArgumentException;
 	
-	public Contact createContact(ArrayList<PValue> cArray, User u);
+	public Contact createContact(ArrayList<PValue> cArray, JabicsUser u);
 	
-	public ContactList createContactList(String name, ArrayList<Contact> cArray, User u);
+	public ContactList createContactList(String name, ArrayList<Contact> cArray, JabicsUser u);
 	
-	public PValue createPValue(Property p, String s, Contact c, User u);
+	public PValue createPValue(Property p, String s, Contact c, JabicsUser u);
 	
-	public PValue createPValue(Property p, int i, Contact c, User u);
+	public PValue createPValue(Property p, int i, Contact c, JabicsUser u);
 	
-	public PValue createPValue(Property p, LocalDateTime dt, Contact c, User u);
+	public PValue createPValue(Property p, LocalDateTime dt, Contact c, JabicsUser u);
 	
-	public PValue createPValue(Property p, float i, Contact c, User u);
+	public PValue createPValue(Property p, float i, Contact c, JabicsUser u);
 	
 	public Property createProperty(String label, Type type);
 	
-	public ArrayList<ContactList> getListsOf(User u);
+	public ArrayList<ContactList> getListsOf(JabicsUser u);
 	
-	public ArrayList<Contact> getContactsOf(User u);
+	public ArrayList<Contact> getContactsOf(JabicsUser u);
 	
-	public User getUserById(int id);
+	public JabicsUser getUserById(int id);
 	
 	public ContactList addContactToList(Contact c, ContactList cl);
 	
-	public Contact addValueToContact(PValue pv, Contact c, User u);
+	public Contact addValueToContact(PValue pv, Contact c, JabicsUser u);
 	
-	public ArrayList<Contact> searchForContactByExpression(String s, User u);
+	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u);
 	
 	public ContactList removeContactFromList(Contact c, ContactList cl);
 	
@@ -51,17 +51,17 @@ public interface EditorService {
 	
 	public void updateContactList(ContactList cl);
 		
-	public void addCollaboration(ContactList cl, User u);
+	public void addCollaboration(ContactList cl, JabicsUser u);
 	
-	public void addCollaboration(Contact c, User u);
+	public void addCollaboration(Contact c, JabicsUser u);
 	
-	public void addCollaboration(PValue pv, User u);
+	public void addCollaboration(PValue pv, JabicsUser u);
 	
-	public void deleteCollaboration(PValue pv, User u);
+	public void deleteCollaboration(PValue pv, JabicsUser u);
 	
-	public void deleteCollaboration(ContactList cl, User u);
+	public void deleteCollaboration(ContactList cl, JabicsUser u);
 	
-	public ArrayList<PValue> getPValueOf(Contact c , User u);
+	public ArrayList<PValue> getPValueOf(Contact c , JabicsUser u);
 	
 	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl);
 	
@@ -71,15 +71,15 @@ public interface EditorService {
 	
 	public ArrayList<Contact> searchInList(float f, ContactList cl );
 	
-	public ArrayList<Contact> searchInList(User u, ContactList cl);
+	public ArrayList<Contact> searchInList(JabicsUser u, ContactList cl);
 
-	public ArrayList<User> getCollaborators(Contact c);
+	public ArrayList<JabicsUser> getCollaborators(Contact c);
 	
-	public ArrayList<User> getCollaborators(ContactList cl);
+	public ArrayList<JabicsUser> getCollaborators(ContactList cl);
 	
-	public ArrayList<User> getCollaborators(PValue pv);
+	public ArrayList<JabicsUser> getCollaborators(PValue pv);
 	
-	public ArrayList<User> getAllUsers();
+	public ArrayList<JabicsUser> getAllUsers();
 	
 	public void initialise();
 

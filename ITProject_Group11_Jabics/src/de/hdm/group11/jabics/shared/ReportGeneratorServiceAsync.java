@@ -9,11 +9,11 @@ import de.hdm.group11.jabics.shared.report.*;
 
 public interface ReportGeneratorServiceAsync {
 	
-	void createAllContactsOfUserReport(User u, AsyncCallback<AllContactsOfUserReport> callback);
+	void createAllContactsOfUserReport(JabicsUser u, AsyncCallback<AllContactsOfUserReport> callback);
 	
 	void createAllContactsInSystemReport(AsyncCallback<AllContactsInSystemReport> callback);
 
-	void createFilteredContactsOfUserReport(PValue pv, User u,
+	void createFilteredContactsOfUserReport(PValue pv, JabicsUser u,
 			AsyncCallback<FilteredContactsOfUserReport> callback);
 	
 	void init(AsyncCallback<Void> callback);

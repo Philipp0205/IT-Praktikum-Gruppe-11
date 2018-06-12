@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 
 /**
- * Realization of a composite reports. Can consist of multiple simple or composite reports. 
+ * Implementierung von zusammengesetzen Reports, diser kann aus mehren simplen oder zusammengesetzen
+ * Reports bestehen.
  * @author Kurrle and Anders
+ * 
  */
 
 public class CompositeReport<T> extends Report implements Serializable {

@@ -3,7 +3,7 @@ package de.hdm.group11.jabics.shared.report;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  * Report is the basic class of all reports. Reports have methods and attributes which are inherited from all other reports.
@@ -18,7 +18,7 @@ public abstract class Report implements Serializable {
 	static final long serialVersionUID = 1L;
 	
 	LocalDateTime creationDate;
-	User creator;
+	JabicsUser creator;
 	
 	public Report() {
 		this.creationDate = LocalDateTime.now();
@@ -39,10 +39,10 @@ public abstract class Report implements Serializable {
 //		this.creationDate = LocalDateTime.now();
 //	}
 	
-	public User getCreator() {
+	public JabicsUser getCreator() {
 		return creator;
 	}
-	public void setCreator(User creator) {
+	public void setCreator(JabicsUser creator) {
 		this.creator = creator;
 	}
 	public static long getSerialversionuid() {

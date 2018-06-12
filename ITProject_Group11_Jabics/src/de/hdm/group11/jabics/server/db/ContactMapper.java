@@ -9,8 +9,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.User;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 
 /**
@@ -162,7 +161,7 @@ public class ContactMapper{
 	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des <code>User</code> Objekts.
 	 */
-	public ArrayList<Contact> findAllContacts(User u){
+	public ArrayList<Contact> findAllContacts(JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 	    
@@ -171,7 +170,7 @@ public class ContactMapper{
 			Statement stmt = con.createStatement();
 	   
 			//Erzeugen einer ArrayList
-			ArrayList<Contact> al = new ArrayList();
+			ArrayList<Contact> al = new ArrayList<Contact>();
 	    
 			// Join zwischen Contact und ContactCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
 			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
@@ -189,11 +188,17 @@ public class ContactMapper{
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 				al.add(c);
 			}
 			return al;
@@ -227,11 +232,17 @@ public class ContactMapper{
 	    		Date dateU = rs.getDate("dateUpdated");
 	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    		Date dateC = rs.getDate("dateCreated");
 	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
 	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    	}
 	    	return c;
 	    }
@@ -241,13 +252,72 @@ public class ContactMapper{
 	    }
 	}
 	
+	/** 
+	 * Mit dieser Methode werden alle <code>Contact</code> Objekte einer bestimmten Liste aus der Datenbank abgerufen.
+	 *
+	 * @param cl das <code>ContactList</code> Objekt aus welchem alle Kontakte ermittelt werden sollen.
+	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
+	 */
+	
+	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {   
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    	
+	    	//Erzeugen einer ArrayList
+        	ArrayList<Contact> al = new ArrayList<Contact>();
+	    	
+	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
+	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+	    			+ " FROM contact"
+	    			+ " LEFT JOIN contactContactList ON contact.contactID = contactContactList.contactID"
+	    			+ " WHERE contactContactList.contactListId = " + cl.getId()) ;
+	   
+	    	if (rs.next()) {
+	    		//Befüllen des Kontaktlisten-Objekts
+	    		while (rs.next()) {
+					
+					//Instanzierung eines Kontaktobjekts.
+					Contact c = new Contact();
+		      
+					//Befüllen des Kontakt-Objekts und hinzuf�gen in die ArrayList.
+					c.setId(rs.getInt("contactID"));
+		    		Date dateU = rs.getDate("dateUpdated");
+		    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+		    		Date dateC = rs.getDate("dateCreated");
+		    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+					al.add(c);
+				}
+	    	}
+	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
+		
+	
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code> Objekten die eine Teilhaberschaft 
 	 * an einem bestimmten Kontakt besitzen.
 	 * @param c das <code>Contact</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
-	public ArrayList<User> findCollaborators(Contact c){
+	public ArrayList<JabicsUser> findCollaborators(Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	   
@@ -256,7 +326,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 	   
 	    	//Erzeugen einer ArrayList
-	    	ArrayList<User> al = new ArrayList<User>();
+	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 	    	// Auswählen von Usern mit einer Bestimmten ID in der contactCollaboration Tabelle.
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID = " + c.getId() 
@@ -264,7 +334,7 @@ public class ContactMapper{
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und hinzufügen in die ArrayList.
-	    		User u = new User(rs.getString("email"));
+	    		JabicsUser u = new JabicsUser(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
@@ -285,7 +355,7 @@ public class ContactMapper{
 	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>Contact</code> Objekt
 	 */
-	public Contact insertCollaboration(User u, Contact c, boolean IsOwner){
+	public Contact insertCollaboration(JabicsUser u, Contact c, boolean IsOwner){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
@@ -313,7 +383,7 @@ public class ContactMapper{
 	 * @param c der ausgewählte Kontakt.
 	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>Contact</code> Objekt verlieren soll.
 	 */
-	public void deleteCollaboration(Contact c, User u){
+	public void deleteCollaboration(Contact c, JabicsUser u){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    

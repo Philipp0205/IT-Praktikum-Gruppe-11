@@ -35,7 +35,7 @@ public interface ReportGeneratorService extends RemoteService {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	AllContactsOfUserReport createAllContactsOfUserReport(User u) throws IllegalArgumentException;
+	AllContactsOfUserReport createAllContactsOfUserReport(JabicsUser u) throws IllegalArgumentException;
 	
 	/** 
 	 *  Diese Methode erstelle einen FilteredContactsOfUserReport.
@@ -46,7 +46,7 @@ public interface ReportGeneratorService extends RemoteService {
 	 * @return Das gefilterte Reportobjekt.
 	 * @throws IllegalArgumentException
 	 */
-	FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, User u) throws IllegalArgumentException;
+	FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u) throws IllegalArgumentException;
 	
 	public void init() throws IllegalArgumentException;
 	
