@@ -155,6 +155,12 @@ public class ContactForm extends VerticalPanel {
 	 * @author Brase
 	 * @author Ilg
 	 */
+	
+	/** 
+	 * Diese Klasse realisiert einen Clickhandler für den DeleteContactButton.
+	 * Beim aktivieren des Buttons <code>deleteContactButton</code> wird 
+	 * auf dem Server die Methode <code>deleteContact</code> aufgerufen.
+	 */
 	private class DeleteContactClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
@@ -166,7 +172,11 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 	}
-
+	
+	/** 
+	 * Diese Callback-Klasse speichert den übergebenen Kontakt mit einem Konstruktor.
+	 * Nach erfolgreichem Methodenablauf aktualisiert sich die Ansicht.
+	 */
 	class deleteContactCallback implements AsyncCallback<Void> {
 
 		private Contact contact = null;
@@ -184,7 +194,13 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 
-	
+	/** 
+	 * Diese Klasse realisiert einen Clickhandler für den addPropertyButton.
+	 * Beim aktivieren des Buttons <code>addPropertyButton</code> wird 
+	 * zunächst ein Eigenschaftsobjekt erstellt, welchem die vom Nutzer 
+	 * angegebenen Attribute zugewiesen werden. Anschließend wird
+	 * auf dem Server die Methode <code>createPValue()</code> aufgerufen.
+	 */
 	private class AddPropertyClickHandler implements ClickHandler {
 		
 		@Override
@@ -192,24 +208,31 @@ public class ContactForm extends VerticalPanel {
 			
 			switch(formattype.getSelectedItemText()){
     		case "Text": 
-				Property newText = new Property(createProperty.getText(), Type.STRING);
+				
+				editorService.createProperty(createProperty.getText(), Type.STRING);
 				editorService.createPValue(newText, propertyValue.getText(), contactToDisplay, 
 						userToDisplay, new CreatePValueCallback());
     		case "Datum": 
-    			Property newDate = new Property(createProperty.getText(), Type.DATE);
+    			editorService.createProperty(createProperty.getText(), Type.DATE);
     			editorService.createPValue(newDate, LocalDateTime.parse(propertyValue.getText()), contactToDisplay, 
     					userToDisplay, new CreatePValueCallback());
     		case "Kommazahl": 
-    			Property newFloat = new Property(createProperty.getText(), Type.FLOAT);
+    			editorService.createProperty(createProperty.getText(), Type.FLOAT);
     			editorService.createPValue(newFloat, Float.parseFloat(propertyValue.getText()), contactToDisplay, 
     					userToDisplay, new CreatePValueCallback());
     		case "Zahl": 
-    			Property newInt = new Property(createProperty.getText(), Type.INT);
+    			editorService.createProperty(createProperty.getText(), Type.INT);
     			editorService.createPValue(newInt, Integer.parseInt(propertyValue.getText()), contactToDisplay, 
     					userToDisplay, new CreatePValueCallback());
 		}
 	}
-	
+		//TODO Erst Property erstellen dann PValue: Überlegen ob erstellend er PValue in der
+		//OnSuccess der Property sinnvoll ist.
+		
+		/** 
+		 * Diese Callback-Klasse aktualisiert die Ansicht nach erfolgreichem Erstellen
+		 * einer Eigenschaftsausprägung..
+		 */
 		public class CreatePValueCallback implements AsyncCallback<PValue> {
 
 			@Override
@@ -241,6 +264,13 @@ public class ContactForm extends VerticalPanel {
 	}
 
 */
+		/** 
+		 * Diese Methode wird im TreeViewMenu aufgerufen und übergibt der ContactForm
+		 * den anzuzeigenden Kontakt.
+		 * 
+		 * @param u das <code>User</code> Objekt, zu welchem der Kontkt gehört.
+		 * @param c der Kontakt welcher angezeigt werden soll.
+		 */
 
 	   void setSelected (Contact c, User u) {
 			if (c != null) {
@@ -254,7 +284,13 @@ public class ContactForm extends VerticalPanel {
 				deleteContactButton.setEnabled(false);
 			}
 	   }
-
+	   
+	   /** 
+		 * Diese Callback-Klasse erstellt ein sich dynamisch anpassendes Grid. 
+		 * Labels, Textboxen, Buttons und Checkboxen, sowie deren Clickhandler
+		 * werden dynamisch für jede Eigenschaftsausprägung
+		 * eines <code>Contact</code> Objekts erstellt. 
+		 */
 	    class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>>{
 		   public void onFailure(Throwable caught) {
 			   Window.alert("Fehler in GetPValuesCallback");
@@ -330,6 +366,10 @@ public class ContactForm extends VerticalPanel {
 			   }
 		   }
 	   
+	    /** 
+		 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer Eigenschafts-
+		 * ausprägung.
+		 */
 		 class deletePValueCallback implements AsyncCallback<Void> {
 
 			private PValue pvalue = null;
@@ -342,11 +382,15 @@ public class ContactForm extends VerticalPanel {
 			@Override
 			public void onSuccess(Void result) {
 				if(pvalue != null) {
-		//update Contact
+		//update Contact bzw. Contacttree
 				}
 			}
 	}
 	   
+		 	/** 
+			 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer Eigenschafts-
+			 * ausprägung.
+			 */
 		private class UpdatePValueCallback implements AsyncCallback<Void> {
 
 			public void onFailure(Throwable caugth) {
@@ -356,7 +400,7 @@ public class ContactForm extends VerticalPanel {
 			public void onSuccess(Void result) {
 				contactToDisplay.removePValue(result.get(pointer));
 		    //Contacttree muss aktualisiert werden . 	
-		    	Window.alert("Wert gelöscht");
+		    	Window.alert("Wert geändert");
 			}
 		}
 	
