@@ -20,7 +20,7 @@ public class DBConnection {
 	private static Connection con = null;
 	//private static String googleUrl = "";
 	
-	public static Connection connection() { //wozu der  throws ClassNotFoundException {
+	public static Connection connection() {
 		
 		try {
 			/** 

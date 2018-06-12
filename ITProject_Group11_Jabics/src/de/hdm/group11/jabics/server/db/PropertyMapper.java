@@ -1,9 +1,11 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.ZoneId;
 
 import de.hdm.group11.jabics.shared.bo.Property;
 
@@ -141,16 +143,34 @@ public class PropertyMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
-	    	//Erzeugen eines Property-Objektes
-	    	Property p = null;
 	    	
 	    	// Auswählen der Eigenschaften mit einer bestimmten id. 
 	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Property " + "WHERE PropertyID = " + id );
 	   
+	    	//Erzeugen eines Property-Objektes
+	    	Property p = new Property();
+	    	
 	    	if (rs.next()) {	
 	    		//Befüllen des Property-Objekts
-	    		p.setId(rs.getInt("propertyID"));	
+	    		p.setId(rs.getInt("propertyID"));
+	    		p.setStandard(rs.getBoolean("isStandard"));
+	    		p.setLabel(rs.getString("name"));
+	    		p.setType(rs.getString("type"));		
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		p.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		Date dateC = rs.getDate("dateCreated");
+	    		p.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		
 	    	}
 	    	return p;
 	    }

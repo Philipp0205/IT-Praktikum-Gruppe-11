@@ -19,6 +19,11 @@ public class Property extends BusinessObject {
 		this.type = type;
 	}
 	
+	//Leerer Konstruktor
+	public Property() { 
+		super();
+	}
+	
 	
 	/**
 	 * Getter und Setter.
@@ -34,6 +39,9 @@ public class Property extends BusinessObject {
 	}
 	public void setType(Type type) {
 		this.type = type;
+	}
+	public void setType(String type) {
+		this.type = Type.valueOf(type.toUpperCase());
 	}
 	public boolean isStandard() {
 		return isStandard;
