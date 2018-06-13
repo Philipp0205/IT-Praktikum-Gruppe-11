@@ -1,12 +1,10 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -112,8 +110,7 @@ private String convertdate(LocalDateTime ldt){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	    try {convertdate(c.getDateCreated());
-		
+	    try {
 		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
 				+ "(" + "'" + convertdate(c.getDateCreated()) + "', " + "'" +
 				convertdate(c.getDateUpdated()) + "')"  );
