@@ -27,25 +27,29 @@ public class Contact extends BusinessObject implements Comparable<Contact>{
 	private String name;
 	private BoStatus shareStatus;
 		
+	public Contact(ArrayList<PValue> a, JabicsUser u) { 
+		this(a);
+		this.owner = u;
+	}
 		
 	public Contact(ArrayList<PValue> a, String name) { 
-		this();
-		this.values = a;
+		this(a);
 		this.name = name;
 	}
 	
 	public Contact(ArrayList<PValue> a) { 
 		this();
-		StringBuffer sBuffer = new StringBuffer("bName");
+		this.values = a;
+		StringBuffer sBuffer = new StringBuffer("Vorname");
 		for (PValue p : a) {
-			if (p.getProperty().getLabel() == "name") {
+			if (p.getProperty().getLabel() == "Name") {
 				sBuffer.append(p.getStringValue());					
 				} else {
 					System.out.println("Constructor in Contact: No name in Array.");
 				}
 		}
 		for (PValue p2: a) {
-			if (p2.getProperty().getLabel() == "lastname") {
+			if (p2.getProperty().getLabel() == "Nachname") {
 				sBuffer.append(p2.getStringValue());				
 			} else {
 				System.out.println("No lastname in Array");

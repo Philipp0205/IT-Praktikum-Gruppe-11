@@ -39,19 +39,19 @@ public interface EditorService {
 	
 	public ContactList removeContactFromList(Contact c, ContactList cl);
 	
-	public void deleteContact(Contact c);
+	public void deleteContact(Contact c, JabicsUser u);
 	
-	public void deleteContactList(ContactList cl);
+	public void deleteContactList(ContactList cl, JabicsUser u);
 	
 	public void deleteProperty(Property p);
 	
 	public void deletePValue(PValue pv);
 	
-	public void updatePValue(PValue pv);
+	public PValue updatePValue(PValue pv);
 	
-	public void updateContact(Contact c);
+	public Contact updateContact(Contact c);
 	
-	public void updateContactList(ContactList cl);
+	public ContactList updateContactList(ContactList cl);
 		
 	public void addCollaboration(ContactList cl, JabicsUser u);
 	
@@ -64,6 +64,8 @@ public interface EditorService {
 	public void deleteCollaboration(ContactList cl, JabicsUser u);
 	
 	public ArrayList<PValue> getPValueOf(Contact c , JabicsUser u);
+	
+	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u);
 	
 	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl);
 	

@@ -32,27 +32,28 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	public PValue() {
 		super();
 	}
-	public PValue(Property p) {
+	public PValue(Property p, JabicsUser u) {
 		this();
 		this.property = p;
+		this.owner = u;
 	}
-	public PValue(Property p, int i) {
-		this(p);
+	public PValue(Property p, int i, JabicsUser u) {
+		this(p, u);
 		this.intValue = i;
 		this.pointer = 1;
 	}
-	public PValue(Property p, String s) {
-		this(p);
+	public PValue(Property p, String s, JabicsUser u) {
+		this(p, u);
 		this.stringValue = s;
 		this.pointer = 2;
 	}
-	public PValue(Property p, LocalDateTime date) {
-		this(p);
+	public PValue(Property p, LocalDateTime date, JabicsUser u) {
+		this(p, u);
 		this.dateValue = date;
 		this.pointer = 3;
 	}
-	public PValue(Property p, float f) {
-		this(p);
+	public PValue(Property p, float f, JabicsUser u) {
+		this(p, u);
 		this.floatValue = f;
 		this.pointer = 4;
 	}

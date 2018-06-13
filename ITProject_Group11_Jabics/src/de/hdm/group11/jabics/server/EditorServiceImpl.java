@@ -57,7 +57,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * der den Kontakt erstellt.
 	 */
 	public Contact createContact(ArrayList<PValue> cArray, JabicsUser u) { 
-		Contact newContact = cMapper.insertContact(new Contact(cArray));
+		Contact newContact = new Contact(cArray, u);
+		cMapper.insertContact(newContact);
 		cMapper.insertCollaboration(u, newContact, true);
 		return newContact;
 	}
@@ -68,7 +69,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return die erstellte ContactList
 	 */
 	public ContactList createContactList(String name, ArrayList<Contact> cArray, JabicsUser u) { 
-		ContactList newContactList = clMapper.insertContactList(new ContactList(cArray, name));
+		ContactList newContactList = clMapper.insertContactList(new ContactList(cArray, name, u));
 		clMapper.insertCollaboration(u, newContactList, true);
 		return newContactList;
 	}
@@ -77,7 +78,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erstellen eines neuen <code>PValue</code> Objekts, das einen String speichert.
 	 */
 	public PValue createPValue(Property p, String s, Contact c, JabicsUser u) {
-		PValue newPValue = new PValue(p, s);
+		PValue newPValue = new PValue(p, s, u);
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
@@ -99,7 +100,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, int i, Contact c, JabicsUser u) {
-		PValue newPValue = new PValue(p, i);
+		PValue newPValue = new PValue(p, i, u);
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
@@ -120,7 +121,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, LocalDateTime dt, Contact c, JabicsUser u) {
-		PValue newPValue = new PValue(p, dt);
+		PValue newPValue = new PValue(p, dt, u);
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
@@ -141,7 +142,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, float f, Contact c, JabicsUser u) {
-		PValue newPValue = new PValue(p, f);
+		PValue newPValue = new PValue(p, f, u);
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
@@ -169,8 +170,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Gibt alle Kontaktlisten eines Nutzers zurück.
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
-		//return clMapper.findAllContactList(u);
-		
+		/*
+		ArrayList<ContactList> res = new ArrayList<ContactList>();
+		for (ContactList cl: clMapper.findAllContactList(u){
+			cl.setOwner(uMapper.findOwnerForContactList(cl));
+			res.add(cl);
+		}
+		return res; */
 		
 		// temporär: kann gelöscht werden
 		ArrayList<ContactList> cl = new ArrayList<ContactList>();
@@ -179,12 +185,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
-		//dies ist der richtige Code, nicht löschen!!!
-//		ArrayList<Contact> result = new ArrayList<Contact>();
-//		for (Contact c : clMapper.findContactsFromContactList(cl)) {
-//			if(cMapper.findCollaborators(c).contains(u)) result.add(c);
-//		}
-//		return result;
+		/* dies ist der richtige Code, nicht löschen!!!
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		for (Contact c : clMapper.findContactsFromContactList(cl)) {
+			if(cMapper.findCollaborators(c).contains(u)) result.add(c);
+		}
+		for (Contact cres : result) {
+			cres.setOwner(uMapper.findOwnerForContact(cres));
+		}
+		return result;
+		*/
 		
 		// temporär: kann gelöscht werden sobald funktional
 		ArrayList<Contact> cltemp = new ArrayList<Contact>();
@@ -214,6 +224,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 			}
 			c.setName(sBuffer.toString());
+			c.setOwner(uMapper.findOwnerForContact(c));
 		}
 		//return cons;
 		
@@ -237,12 +248,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	
 	/**
 	 * This Method inserts a specified <code>Contact</code> into a list
-	 * @param c Contact
-	 * @param cl ContactList
+	 * @param Contact c 
+	 * @param ContactList cl 
 	 * @return updated contact list
 	 */
 	public ContactList addContactToList(Contact c, ContactList cl) {
 		cl.addContact(c);
+		clMapper.insertContactIntoContactList(cl, c);
 		return clMapper.updateContactList(cl);
 		
 	}
@@ -252,7 +264,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * erstmal noch drinlassen. Jan
 	 */
 	public Contact addValueToContact(PValue pv, Contact c, JabicsUser u) {
-		c.addPValue(pv);
+		if(cMapper.findCollaborators(c).contains(u)) {
+			c.addPValue(pv);
+			//pvMapper.insertPValue():
+		}
 		return cMapper.updateContact(c);
 	}
 	
@@ -263,7 +278,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u){
 		//neue Kontaktliste, um bereits implementierte Methode verwenden zu können
-		ContactList cl = new ContactList(cMapper.findAllContacts(u));
+		ContactList cl = new ContactList(getContactsOf(u));
 		return this.searchExpressionInList(s, cl);
 	}
 	/**
@@ -277,29 +292,38 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	/**
-	 * Löscht einen <code>Contact</code> aus der Datenbank. Löscht den Contact für alle Nutzer permanent. Kann nicht rückgüngig gemacht werden.
+	 * Löscht einen <code>Contact</code> aus der Datenbank. Löscht den Contact für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.
 	 * @param Contact, der gelöscht werden soll
 	 */
-	public void deleteContact(Contact c){
-		for (PValue pv : c.getValues()) {
-			pvMapper.deletePValue(pv);
+	public void deleteContact(Contact c, JabicsUser ju){
+		if(cMapper.findContactById(c.getId()).getOwner().getId() == ju.getId()) {
+			ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
+			for (JabicsUser u : users) {
+				cMapper.deleteCollaboration(c, u);
+			}
+			for (PValue pv : c.getValues()) {
+				pvMapper.deletePValue(pv);
+			}
+			cMapper.deleteContact(c);
 		}
-		cMapper.deleteContact(c);
+		
 	}
 	
 	/**
 	 * Eine <code>ContactList</code> aus der DB löschen. Löscht die Liste für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.
 	 * @param cl ContactList, die gelöscht werden soll
 	 */
-	public void deleteContactList(ContactList cl){
-		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
-		for (JabicsUser u : users) {
-			clMapper.deleteCollaboration(cl, u);
+	public void deleteContactList(ContactList cl, JabicsUser ju){
+		if(clMapper.findContactListById(cl.getId()).getOwner().getId() == ju.getId()) {
+			ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
+			for (JabicsUser u : users) {
+				clMapper.deleteCollaboration(cl, u);
+			}
+			for (Contact c: cl.getContacts()) {
+				clMapper.deleteContactfromContactList(cl, c);
+			}
+			clMapper.deleteContactList(cl);
 		}
-		for (Contact c: cl.getContacts()) {
-			clMapper.deleteContactfromContactList(cl, c);
-		}
-		clMapper.deleteContactList(cl);
 	}
 	/**
 	 * Eine Property aus der Datenbank löschen. Es wird überprüft, ob die Eigenschaft gelöscht werden darf.
@@ -322,16 +346,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Ein <code>PValue</code> aktualisieren, sodass es in der Datenbank konsitent gespeichert wird.
 	 * @param Ein PropertyValue, das aktualisiert werden soll
 	 */
-	public void updatePValue(PValue pv) {
+	public PValue updatePValue(PValue pv) {
 		
 		PValue pvtemp = pvMapper.findPValueById(pv.getId());
 		if(pv != pvtemp) {
 			 pv.setDateUpdated(LocalDateTime.now());
-			 pvMapper.updatePValue(pv);
-		}
+			 return pvMapper.updatePValue(pv);
+		}else return pvMapper.findPValueById(pv.getId());
 	}
 	
-	public void updateContactList(ContactList cl){
+	public ContactList updateContactList(ContactList cl){
 		ContactList cltemp = clMapper.findContactListById(cl.getId());
 		if(cl != cltemp) {
 			cl.setDateUpdated(LocalDateTime.now());
@@ -351,8 +375,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 				if (bol == false) clMapper.deleteContactfromContactList(cl, ctemp);
 			}
-			clMapper.updateContactList(cl);
-		}
+			return clMapper.updateContactList(cl);
+		}else return clMapper.findContactListById(cl.getId());
 			/**
 			 * TODO Nachdenken, ob wir nur Änderungen überprüfen und nur diese an die DB weitergeben oder das ganze ding in die DB geben
 			 */
@@ -362,7 +386,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Diese Methode überprüft, ob der Contact in dieser Form in der DB vorhanden ist,
 	 * wenn nicht wird alles auf Konsitenz geprüft und fehlende Inhalte werden upgedated
 	 */
-	public void updateContact(Contact c){
+	public Contact updateContact(Contact c){
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
@@ -379,8 +403,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					pvMapper.insertCollaboration(u, pv, true);
 				}
 			}
-			cMapper.updateContact(c);
-		}
+			return cMapper.updateContact(c);
+		}else return cMapper.findContactById(c.getId());
 	}
 	
 	/**
@@ -565,34 +589,34 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		p6 = new Property("Irgendwas1", Type.INT);
 		p7 = new Property("Irgendwas2", Type.FLOAT);
 		ArrayList<PValue> val = new ArrayList<PValue>();
-		val.add(new PValue( p1, "Max"));
-		val.add(new PValue( p2, "Mustermann"));
-		val.add(new PValue( p3, "eineStraße"));
-		val.add(new PValue( p4, 63));
-		val.add(new PValue( p5, LocalDateTime.of(2000, 5, 1, 20, 10)));
-		val.add(new PValue( p7, 188.5f));
+		val.add(new PValue( p1, "Max", u));
+		val.add(new PValue( p2, "Mustermann",u));
+		val.add(new PValue( p3, "eineStraße",u));
+		val.add(new PValue( p4, 63,u));
+		val.add(new PValue( p5, LocalDateTime.of(2000, 5, 1, 20, 10),u));
+		val.add(new PValue( p7, 188.5f,u));
 		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
 		ArrayList<PValue> val2 = new ArrayList<PValue>();
-		val2.add(new PValue( p1, "Alex"));
-		val2.add(new PValue( p2, "Muster123"));
-		val2.add(new PValue( p3, "eineStraße1234"));
-		val2.add(new PValue( p4, 4));
-		val2.add(new PValue( p5, LocalDateTime.of(1993, 2, 1, 10, 34)));
-		val2.add(new PValue( p7, 167.2f));
+		val2.add(new PValue( p1, "Alex",u));
+		val2.add(new PValue( p2, "Muster123",u));
+		val2.add(new PValue( p3, "eineStraße1234",u));
+		val2.add(new PValue( p4, 4,u));
+		val2.add(new PValue( p5, LocalDateTime.of(1993, 2, 1, 10, 34),u));
+		val2.add(new PValue( p7, 167.2f,u));
 		c2 = new Contact(val2);
 		ArrayList<PValue> val3 = new ArrayList<PValue>();
-		val3.add(new PValue( p1, "Udo"));
-		val3.add(new PValue( p2, "Mildenberger"));
-		val3.add(new PValue( p3, "Nobelstraße"));
-		val3.add(new PValue( p4, 8));
-		val3.add(new PValue( p5, LocalDateTime.of(2015, 2, 1, 3, 15)));
-		val3.add(new PValue( p7, 7.2f));
+		val3.add(new PValue( p1, "Udo",u));
+		val3.add(new PValue( p2, "Mildenberger",u));
+		val3.add(new PValue( p3, "Nobelstraße",u));
+		val3.add(new PValue( p4, 8,u));
+		val3.add(new PValue( p5, LocalDateTime.of(2015, 2, 1, 3, 15),u));
+		val3.add(new PValue( p7, 7.2f,u));
 		c3 = new Contact(val3);
 		ArrayList<Contact> contacts = new ArrayList<Contact>();
 		contacts.add(c1);
 		contacts.add(c2);
 		contacts.add(c3);
-		cl = new ContactList(contacts, "MeineListe");
+		cl = new ContactList(contacts, "MeineListe",u);
 	}
 
 
