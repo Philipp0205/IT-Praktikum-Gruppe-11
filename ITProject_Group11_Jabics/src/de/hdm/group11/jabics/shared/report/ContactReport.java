@@ -54,7 +54,9 @@ public class ContactReport extends Report  {
 	/**
 	 * Getters and setters
 	 */
-	
+	public ArrayList<PropertyView> getContent() {
+		return this.content;
+	}
 	public void setContent(ArrayList<PropertyView> content) {
 		this.content = content;
 	}

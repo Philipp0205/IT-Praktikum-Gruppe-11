@@ -120,7 +120,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport(contacts, pv);
 		
 		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
-		result.setHeadline("Gefilterter Report f�r Nutzer " + u.getUsername());
+		result.setHeadline("Gefilterter Report für Nutzer " + u.getUsername());
 		result.setFootline("Ende des Reports.");
 		
 		// Erstellungsdatum des Reports auf "jetzt" stellen. 
@@ -161,19 +161,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			
 		}
 		
-		/**
-		 * Nette idee, machen wir erstmal aber anders...
-		 *  Filterkriterien, nach denen gefiltert wurde, setzen
-		StringBuffer filt = new StringBuffer();
-		filt.append("Es wurde nach ");
-		for (String s : filtercriteria) {
-			if (s != null) {
-				filt.append(s + ", ");
-			}
-		}
-		filt.append(" gefiltert.");
-		result.setFiltercriteria(new Paragraph(filt.toString()));
-		*/
+		
 		result.setFiltercriteria(new Paragraph(filtercriteria));
 		
 		return result;

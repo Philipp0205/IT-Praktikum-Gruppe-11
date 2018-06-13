@@ -10,6 +10,10 @@ public class AllContactsInSystemReport extends CompositeReport{
 		subReports.add(cr);
 	}
 	
+	public ArrayList<AllContactsOfUserReport> getSubReports(){
+		return this.subReports;
+	}
+	
 	public void removeReport(AllContactsOfUserReport cr) {
 		subReports.remove(cr);
 	}
