@@ -116,7 +116,7 @@ private String convertdate(LocalDateTime ldt){
 		
 		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
 				+ "(" + "'" + convertdate(c.getDateCreated()) + "', " + "'" +
-				convertdate(c.getDateCreated()) + "')"  );
+				convertdate(c.getDateUpdated()) + "')"  );
 		
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
@@ -153,7 +153,8 @@ private String convertdate(LocalDateTime ldt){
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = " + c.getDateUpdated() + "WHERE contactID= " + c.getId() + ")"  );
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + convertdate(c.getDateUpdated()) +
+	    			"' WHERE contactID = " + c.getId()   );
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -209,26 +210,13 @@ private String convertdate(LocalDateTime ldt){
 			+ " WHERE contactCollaboration.systemUserID = " + u.getId());
 			
 			while (rs.next()) {
-				
 				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
 	      
-				//Befüllen des Kontakt-Objekts und hinzuf�gen in die ArrayList.
+				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
 				al.add(c);
 			}
 			return al;
@@ -259,20 +247,8 @@ private String convertdate(LocalDateTime ldt){
 	    	if (rs.next()) {
 		    	//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+				c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
 	    	}
 	    	return c;
 	    }
