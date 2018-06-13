@@ -89,11 +89,11 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen des Users in die Datenbank.
+			// Join zwischen SystemUserID und ContactCollaboration zum Herausfinden der Userinformationen. 
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.dateCreated, systemUser.dateUpdated"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + cid );
+					+ " WHERE systemUser.systemUserID = " + cid + "AND isOwner = 1" );
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -114,11 +114,11 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen des Users in die Datenbank.
+			// Join zwischen SystemUserID und ContactListCollaboration zum Herausfinden der Userinformationen. 
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + clid );
+					+ " WHERE systemUser.systemUserID = " + clid + "AND isOwner = 1");
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -139,11 +139,11 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen des Users in die Datenbank.
+			// Join zwischen SystemUserID und PValueCollaboration zum Herausfinden der Userinformationen. 
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + pvid );
+					+ " WHERE systemUser.systemUserID = " + pvid + "AND isOwner = 1");
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
