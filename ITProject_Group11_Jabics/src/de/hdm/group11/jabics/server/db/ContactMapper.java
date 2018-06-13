@@ -84,6 +84,13 @@ public class ContactMapper{
 		return contactMapper;
 	}
 	
+	/** 
+	 * Diese Methode convertiert ein Datumsobjekt in ein von der Datenbank lesbares Stringobjekt. 
+	 * 
+	 * @param c das <code>Contact</code> Objekt, dass in die Datenbank eingetragen werden soll.
+	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
+	 */
+	
 private String convertdate(LocalDateTime ldt){
 		
 		String convDate = new String();
@@ -105,14 +112,24 @@ private String convertdate(LocalDateTime ldt){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 	    
-	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-			convertdate(c.getDateCreated());
-			
-			stmt.executeUpdate("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
-					+ "(" + "'" + convertdate(c.getDateCreated()) + "', " + "'" +
-					convertdate(c.getDateCreated()) + "')"  );
+	    try {convertdate(c.getDateCreated());
+		
+		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
+				+ "(" + "'" + convertdate(c.getDateCreated()) + "', " + "'" +
+				convertdate(c.getDateCreated()) + "')"  );
+		
+		// Erzeugen eines ungefüllten SQL-Statements
+		Statement stmt = con.createStatement();
+		
+		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
+		
+		ResultSet rs = stmt.getGeneratedKeys();
+		if(rs.next()) {
+			c.setId(rs.getInt(1));
+		}
+		
+		System.out.println(c.getId());
+		
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
