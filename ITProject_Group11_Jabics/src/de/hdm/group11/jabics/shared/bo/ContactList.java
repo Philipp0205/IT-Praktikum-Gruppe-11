@@ -27,9 +27,13 @@ public class ContactList extends BusinessObject {
 	        this();
 	    	this.contacts = al;
 	    }
+	    public ContactList(ArrayList<Contact> al, JabicsUser u) {
+	        this(al);
+	        this.owner = u;
+	    }
 			
-		public ContactList(ArrayList<Contact> al, String ln) {
-			this(al);
+		public ContactList(ArrayList<Contact> al, String ln, JabicsUser u) {
+			this(al, u);
 			this.listName = ln;
 		}
 			
@@ -47,10 +51,13 @@ public class ContactList extends BusinessObject {
 			}
 
 			/** 
-			 * Fügt einen Kontakt zur Liste hinzu
+			 * Fügt einen Kontakt zur Liste hinzu und aktualisiert das Änderungsdatum.
+			 * 
+			 * @param <code>Contact</code>
 			 */
 			public void addContact(Contact c) {				
 				contacts.add(c);
+				this.setDateUpdated(LocalDateTime.now());
 			}
 			
 			/** 

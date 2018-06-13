@@ -59,7 +59,7 @@ public class ContactForm extends VerticalPanel {
 
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 	
-	JabicsUser userToDisplay = null;
+	JabicsUser u = null;
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu contacttree = null;
@@ -161,7 +161,7 @@ public class ContactForm extends VerticalPanel {
 			if(contactToDisplay == null) {
 				Window.alert("Kein Kontakt ausgewählt");
 			}else {
-			editorService.deleteContact(contactToDisplay, new deleteContactCallback(contactToDisplay));
+			editorService.deleteContact(contactToDisplay, u, new deleteContactCallback(contactToDisplay));
 			}
 		}
 	}
@@ -230,7 +230,7 @@ public class ContactForm extends VerticalPanel {
 			@Override
 			public void onSuccess(Property result) {
 				editorService.createPValue(result, pValueName.getText(), contactToDisplay, 
-						userToDisplay, new CreatePValueCallback());
+						u, new CreatePValueCallback());
 			}
 		}
 		
@@ -280,11 +280,11 @@ public class ContactForm extends VerticalPanel {
 	   void setSelected (Contact c, JabicsUser u) {
 			if (c != null) {
 				contactToDisplay = c;
-				userToDisplay = u;
+				u = u;
 				deleteContactButton.setEnabled(true);
 				contactName.setText(contactToDisplay.getName());
 				
-				editorService.getPValueOf(c, userToDisplay, new GetPValuesCallback());
+				editorService.getPValueOf(c, u, new GetPValuesCallback());
 			} else {
 				contactToDisplay = null;
 				deleteContactButton.setEnabled(false);

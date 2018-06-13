@@ -243,9 +243,6 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		
 		public void onSuccess(Void v) {
 			Window.alert("PV erfolgreich geteilt!");
-			/**
-			 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
-			 */
 		}
 	}
 	private class AddContactCollaborationCallback implements AsyncCallback<Void>{
@@ -256,7 +253,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erolgreich geteilt!");
 			/**
-			 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
+			 * TODO: nach erfolgreichem teilen zurückkehren zur Anzeige des kontakts.
 			 */
 		}
 	}
