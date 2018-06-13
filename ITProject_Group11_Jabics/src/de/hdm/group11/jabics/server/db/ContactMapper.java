@@ -279,35 +279,23 @@ private String convertdate(LocalDateTime ldt){
 	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
 	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
 	    			+ " FROM contact"
-	    			+ " LEFT JOIN contactContactList ON contact.contactID = contactContactList.contactID"
-	    			+ " WHERE contactContactList.contactListId = " + cl.getId()) ;
+	    			+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
+	    			+ " WHERE contactContactLists.contactListID = " + cl.getId()) ;
 	   
-	    	if (rs.next()) {
+	    	
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		while (rs.next()) {
 					
 					//Instanzierung eines Kontaktobjekts.
 					Contact c = new Contact();
 		      
-					//Befüllen des Kontakt-Objekts und hinzuf�gen in die ArrayList.
+					//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 					c.setId(rs.getInt("contactID"));
-		    		Date dateU = rs.getDate("dateUpdated");
-		    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-		    		Date dateC = rs.getDate("dateCreated");
-		    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+					c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+		    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
 					al.add(c);
 				}
-	    	}
+	    	
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -335,8 +323,10 @@ private String convertdate(LocalDateTime ldt){
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 	    	// Auswählen von Usern mit einer Bestimmten ID in der contactCollaboration Tabelle.
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID = " + c.getId() 
-	    	+ " ORDER BY systemUserID");
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+					+ " FROM systemUser"
+					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
+					+ " WHERE contactCollaboration.contactID = " + c.getId()  );
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und hinzufügen in die ArrayList.
@@ -370,7 +360,7 @@ private String convertdate(LocalDateTime ldt){
 	    	Statement stmt = con.createStatement();
 
 	    	// Einfügen der Teilhaberschaft in die contactCollaboration-Tabelle.
-	    	stmt.executeUpdate("INSERT INTO contactCollaboration (cCollaborationID, isOwner, contactID, systemUserID) VALUES " 
+	    	stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " 
 	    	+ "(" + IsOwner + ", "
 	    	+ c.getId() + ", "
 	    	+ u.getId() + ")");
