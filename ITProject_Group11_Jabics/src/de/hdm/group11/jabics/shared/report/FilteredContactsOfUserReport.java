@@ -7,7 +7,7 @@ import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 
 /**
- * Ein komplexer Report, welcher anhand einer oder mehrere Kriteren die Kontakte gefiltet zurück gibt.
+ * Ein komplexer Report, welcher anhand einer oder mehrere Kriteren die Kontakte gefiltet zurï¿½ck gibt.
  * 
  * @author Kurrle
  */
