@@ -63,8 +63,7 @@ public class ContactForm extends VerticalPanel {
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu contacttree = null;
-	TextBox propertyName = new TextBox();
-	TextBox pValueName = new TextBox();
+
 	
 	
 	//Widgets deren Inhalte variabel sind werden als Attribute angelegt.
@@ -73,6 +72,9 @@ public class ContactForm extends VerticalPanel {
 	Grid contactGrid = new Grid();
 	ArrayList<PValue> checkedPV = new ArrayList<PValue>();
 	ListBox formattype = new ListBox();
+	TextBox propertyName = new TextBox();
+	TextBox pValueName = new TextBox();
+	Label contactName = new Label();
 	
 	
 
@@ -88,7 +90,8 @@ public class ContactForm extends VerticalPanel {
 		userInformationGrid.setWidget(0, 0, formName);
 		
 		//GRID-ZEILE 2: Holen des Kontakt-Namens
-		Label contactName = new Label(contactToDisplay.getName());
+		
+		
 		userInformationGrid.setWidget(1, 0, contactName);		
 
 		//GRID-ZEILE 3: Einfügen des 'Kontakt-Grids'
@@ -279,11 +282,13 @@ public class ContactForm extends VerticalPanel {
 				contactToDisplay = c;
 				userToDisplay = u;
 				deleteContactButton.setEnabled(true);
+				contactName.setText(contactToDisplay.getName());
 				
 				editorService.getPValueOf(c, userToDisplay, new GetPValuesCallback());
 			} else {
 				contactToDisplay = null;
 				deleteContactButton.setEnabled(false);
+				shareContactButton.
 			}
 	   }
 	   
@@ -315,8 +320,6 @@ public class ContactForm extends VerticalPanel {
 
 				   PValue currentPV = result.get(pointer);
 
-
-				   
 				   propertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
 				   pValueTextBox[pointer] = new TextBox();
 				   pValueTextBox[pointer].setText(result.get(pointer).toString());

@@ -79,6 +79,82 @@ public class UserMapper {
 		return userMapper;
 	}
 	
+	public JabicsUser getUserByContactId(int cid) {
+		
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+		JabicsUser u = new JabicsUser();
+		
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Einfügen des Users in die Datenbank.
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.dateCreated, systemUser.dateUpdated"
+					+ " FROM systemUser"
+					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
+					+ " WHERE systemUser.systemUserID = " + cid );
+			
+			u.setId(rs.getInt("systemUserID"));
+			u.setEmail(rs.getString("email"));
+		}
+		catch (SQLException e) {
+		    System.err.print(e);  
+		}
+		return u;
+	}
+	
+	public JabicsUser getUserByContactListId(int clid) {
+		
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+		JabicsUser u = new JabicsUser();
+		
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Einfügen des Users in die Datenbank.
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+					+ " FROM systemUser"
+					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
+					+ " WHERE systemUser.systemUserID = " + clid );
+			
+			u.setId(rs.getInt("systemUserID"));
+			u.setEmail(rs.getString("email"));
+		}
+		catch (SQLException e) {
+		    System.err.print(e);  
+		}
+		return u;
+	}
+	
+	public JabicsUser getUserByPValueId(int pvid) {
+		
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+		JabicsUser u = new JabicsUser();
+		
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Einfügen des Users in die Datenbank.
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+					+ " FROM systemUser"
+					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
+					+ " WHERE systemUser.systemUserID = " + pvid );
+			
+			u.setId(rs.getInt("systemUserID"));
+			u.setEmail(rs.getString("email"));
+		}
+		catch (SQLException e) {
+		    System.err.print(e);  
+		}
+		return u;
+	}
+	
+	
 	 /** 
 	 * Diese Methode tr�gt ein <code>User</code> Objekt in die Datenbank ein.
 	 * @param u das <code>User</code> Objekt, dass in die Datenbank eingetragen werden soll.

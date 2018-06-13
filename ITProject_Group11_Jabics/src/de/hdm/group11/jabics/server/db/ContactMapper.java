@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
@@ -83,6 +84,17 @@ public class ContactMapper{
 		return contactMapper;
 	}
 	
+private String convertdate(LocalDateTime ldt){
+		
+		String convDate = new String();
+		
+		convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
+				+"-"+ ldt.getDayOfMonth()+" "+ ldt.getHour()
+				+":"+ ldt.getMinute()+":"+ldt.getSecond());
+		
+		return convDate;
+	}
+	
 	/** 
 	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
 	 * 
@@ -96,10 +108,11 @@ public class ContactMapper{
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-	   
-			// Einfügen eines <code>Contact</code> Objekts in die Datenbank.
-			stmt.executeUpdate("INSERT INTO contact (contactID, dateCreated, dateUpdated,) VALUES " 
-			+ "(" + c.getId() + ", "  + c.getDateCreated() + ", " + c.getDateUpdated() + ", "  + ")"  );
+			convertdate(c.getDateCreated());
+			
+			stmt.executeUpdate("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
+					+ "(" + "'" + convertdate(c.getDateCreated()) + "', " + "'" +
+					convertdate(c.getDateCreated()) + "')"  );
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
