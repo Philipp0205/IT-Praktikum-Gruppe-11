@@ -46,16 +46,20 @@ public void onLoad() {
 		Label listName = new Label(listToDisplay.getName());
 		contactListGrid.setWidget(1, 0, listName);		
 
-		HorizontalPanel listAddBox = new HorizontalPanel();
-	    Button addListButton = new Button("Neue Liste");
-	    addListButton.addClickHandler(new AddListClickHandler());
-	    listAddBox.add(addListButton);
-	    contactListGrid.setWidget(2, 0, listAddBox);
+		/**
+		 * 2 Vertical Panels: 
+		 * 
+		 * Die erste bietet die Optionen auf Listenebene an (Liste teilen, Liste löschen)
+		 * Die zweite bietet die Optionen innerhalb der Liste an (Kontakt hinzufügen, Kontakt entfernen)
+		 */
+		
+		//Beginn Reihe 1
+		VerticalPanel listEdit = new VerticalPanel();
 		
 	    HorizontalPanel listShareBox = new HorizontalPanel();
 	    Label shareQuestion = new Label("Wollen Sie diese Liste teilen?");
 	    listShareBox.add(shareQuestion);
-		    
+
 	    Button shareListButton = new Button("Liste teilen");
 	    shareListButton.addClickHandler(new ClickHandler() {
 		    public void onClick(ClickEvent event) {
@@ -64,16 +68,57 @@ public void onLoad() {
 		    }
 	    );
 	    listShareBox.add(shareListButton);
-	    contactListGrid.setWidget(3, 0, listShareBox);	
 	    
 	    HorizontalPanel listDeleteBox = new HorizontalPanel();
 	    Label deleteQuestion = new Label("Wollen Sie diese Liste löschen?");
 	    listDeleteBox.add(deleteQuestion);
-	    
+
 	    Button deleteListButton = new Button("Liste löschen");
-	    deleteListButton.addClickHandler(new DeleteListClickHandler());
+	    deleteListButton.addClickHandler(new ClickHandler() {
+		    public void onClick(ClickEvent event) {
+		    	// TODO entsprechende Methode aus ContactCollabForm
+		    	}
+		    }
+	    );
 	    listDeleteBox.add(deleteListButton);
-	    contactListGrid.setWidget(4, 0, listDeleteBox);	
+	    
+	    listEdit.add(listShareBox);
+	    listEdit.add(listDeleteBox);
+	    contactListGrid.setWidget(2, 0, listEdit);
+	    
+	    
+		//Beginn Reihe 2
+		VerticalPanel conEdit = new VerticalPanel();
+		
+	    HorizontalPanel listAddBox = new HorizontalPanel();
+	    Label addQuestion = new Label("Wollen Sie diese Liste teilen?");
+	    listAddBox.add(addQuestion);
+
+	    Button addConButton = new Button("Liste teilen");
+	    addConButton.addClickHandler(new ClickHandler() {
+		    public void onClick(ClickEvent event) {
+		    	// TODO entsprechende Methode aus ContactCollabForm
+		    	}
+		    }
+	    );
+	    listAddBox.add(addConButton);
+	    
+	    HorizontalPanel listRmvBox = new HorizontalPanel();
+	    Label rmvQuestion = new Label("Wollen Sie diese Liste löschen?");
+	    listRmvBox.add(rmvQuestion);
+
+	    Button deleteRmvButton = new Button("Liste löschen");
+	    deleteRmvButton.addClickHandler(new ClickHandler() {
+		    public void onClick(ClickEvent event) {
+		    	// TODO entsprechende Methode aus ContactCollabForm
+		    	}
+		    }
+	    );
+	    listRmvBox.add(deleteRmvButton);
+	    
+	    conEdit.add(listAddBox);
+	    conEdit.add(listRmvBox);
+	    contactListGrid.setWidget(3, 0, conEdit);
 }
 
 	/**
