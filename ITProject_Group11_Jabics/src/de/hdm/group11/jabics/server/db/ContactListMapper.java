@@ -1,11 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -94,13 +92,19 @@ public class ContactListMapper {
 	    Connection con = DBConnection.connection();
 	   
 	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	 
-	    	// Befüllen der Kontaktlistentabelle.
-	    	stmt.executeUpdate("INSERT INTO contactList (contactlistID, listname, dateCreated, dateUpdated) VALUES "
-	    	+ cl.getId() + ", " + cl.getListName()  + ", " + cl.getDateCreated() + ", " + cl.getDateUpdated());
-	    	
+	    	String query = ("INSERT INTO contactList ( listname, dateCreated, dateUpdated) VALUES "
+	    	+ cl.getListName()  + ", " + cl.getDateCreated() + ", " + cl.getDateUpdated());
+
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+			if(rs.next()) {
+				cl.setId(rs.getInt(1));
+			}
+			
 	    	return cl;
 	    }
 	    catch (SQLException e) {
@@ -233,20 +237,8 @@ public class ContactListMapper {
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		cl.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		cl.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
 	    	}
 	    	return cl;
 	    }
@@ -285,20 +277,8 @@ public class ContactListMapper {
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		cl.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		cl.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		cl.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
 	    		al.add(cl);
 	    	}
 	    	return al;

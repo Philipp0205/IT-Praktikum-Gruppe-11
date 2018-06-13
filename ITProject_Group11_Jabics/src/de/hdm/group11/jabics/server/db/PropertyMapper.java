@@ -1,11 +1,10 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.ZoneId;
+
 
 import de.hdm.group11.jabics.shared.bo.Property;
 
@@ -90,18 +89,23 @@ public class PropertyMapper {
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	   
 	    	// Einfügen der neuen Eigenschaft in die Datenbank.
-	    	stmt.executeUpdate("INSERT INTO property (propertyID, dateCreated, dateUpdated, isStandard, type, name ) VALUES " 
-	    	+ "(" + p.getId() + ", " 
-	    	+ p.getDateCreated() + ", " 
+	    	String query = ("INSERT INTO property ( dateCreated, dateUpdated, isStandard, type, name) VALUES " 
+	    	+ "(" + p.getDateCreated() + ", " 
 	    	+ p.getDateUpdated() + ", " 
 	    	+ p.isStandard() + ", " 
 	    	+ p.getType() + ", " 
 	    	+ p.getLabel() + ")"); 
-
+	    	
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    				
+	    	stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
+	    				
+	    	ResultSet rs = stmt.getGeneratedKeys();
+	    	if(rs.next()) {
+	    		p.setId(rs.getInt(1));
+	    	}
 	    	return p;
 	    }
 	    catch (SQLException e) {
@@ -156,20 +160,8 @@ public class PropertyMapper {
 	    		p.setStandard(rs.getBoolean("isStandard"));
 	    		p.setLabel(rs.getString("name"));
 	    		p.setType(rs.getString("type"));		
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		p.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		p.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		p.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		p.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
 	    		
 	    	}
 	    	return p;

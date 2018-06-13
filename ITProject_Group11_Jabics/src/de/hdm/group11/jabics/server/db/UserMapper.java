@@ -79,7 +79,7 @@ public class UserMapper {
 		return userMapper;
 	}
 	
-	public JabicsUser getUserByContactId(int cid) {
+	public JabicsUser findUserByContactId(int cid) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -104,7 +104,7 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser getUserByContactListId(int clid) {
+	public JabicsUser findUserByContactListId(int clid) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -129,7 +129,7 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser getUserByPValueId(int pvid) {
+	public JabicsUser findUserByPValueId(int pvid) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -166,12 +166,19 @@ public class UserMapper {
 		Connection con = DBConnection.connection();
 		    
 		try {
+			// Einfügen des Users in die Datenbank.
+			String query = ("INSERT INTO systemUser (email) VALUES " + "("  + u.getEmail() + ")"  );
+			
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-
-			// Einfügen des Users in die Datenbank.
-			stmt.executeUpdate("INSERT INTO systemUser (systemUserID, email) VALUES " + "(" + u.getId() + "," + u.getEmail() + ")"  );
-
+			
+			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+			if(rs.next()) {
+				u.setId(rs.getInt(1));
+			}
+		
 			return u;
 		}
 		catch (SQLException e) {
@@ -194,7 +201,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 			   
 			// Löschen des Users.
-			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID=" + u.getId()); 
+			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId()); 
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
