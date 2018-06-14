@@ -93,7 +93,7 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + cid + "AND isOwner = 1" );
+					+ " WHERE contactCollaboration.contactID = " + cid + "AND isOwner = 1" );
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -118,7 +118,7 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + clid + "AND isOwner = 1");
+					+ " WHERE contactlistCollaboration.contactListID = " + clid + "AND isOwner = 1");
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -143,7 +143,7 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + pvid + "AND isOwner = 1");
+					+ " WHERE pValueCollaboration.pValueID = " + pvid + "AND isOwner = 1");
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
