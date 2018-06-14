@@ -372,9 +372,10 @@ private String convertdatevalue(LocalDateTime ldt){
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 	    	// Auswählen der <code>User</code> Objekte mit einer bestimmten ID aus der Teilhaberschaftstabelle.
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID, Username FROM pValueCollaboration " + "WHERE pValueID" 
-	    	+ pv.getId() );
-
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+					+ " FROM systemUser"
+					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
+					+ " WHERE pValueCollaboration.pValueID = " + pv.getId()  );
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und Hinzufügen zur ArrayList.
 	    		JabicsUser u = new JabicsUser(rs.getString("email"));
@@ -407,9 +408,8 @@ private String convertdatevalue(LocalDateTime ldt){
 	    	Statement stmt = con.createStatement();
 	   
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (pvCollaborationID, IsOwner, pValueID, systemUserID) VALUES " 
-	    	+ "(" + pv.getId() + ", " + IsOwner + ", " + pv.getProperty().getId() + ", " + u.getId() +   ")"  );
-
+	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " 
+	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() +   ")"  );
 	    	return pv;
 	    }
 	    catch (SQLException e) {
@@ -433,8 +433,7 @@ private String convertdatevalue(LocalDateTime ldt){
 	    	Statement stmt = con.createStatement();
 	    	
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("DELETE FROM pvCollaborationID WHERE systemUserID= " + u.getId()
-	    	+ "AND pvCollaborationID= " + pv.getId() ); 
+	    	stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID= " + u.getId() + " AND pValueID= " + pv.getId()); 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e); 
