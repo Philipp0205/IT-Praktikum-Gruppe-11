@@ -84,26 +84,7 @@ public class PValueMapper {
 		return pValueMapper;
 	}
 	
-private String convertdate(LocalDateTime ldt){
-		
-		String convDate = new String();
-		
-		convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
-				+"-"+ ldt.getDayOfMonth()+" "+ ldt.getHour()
-				+":"+ ldt.getMinute()+":"+ldt.getSecond());
-		
-		return convDate;
-	}
-
-private String convertdatevalue(LocalDateTime ldt){
-	
-	String convDate = new String();
-	
-	convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
-			+"-"+ ldt.getDayOfMonth() );
-	
-	return convDate;
-}
+	ServiceClass service = new ServiceClass();
 	
 	/** 
 	 * Diese Methode trägt eine Eigenschaftsausprägung in die Datenbank ein.
@@ -131,7 +112,7 @@ private String convertdatevalue(LocalDateTime ldt){
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
-					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "' , '"  + value + "' , "  + " null, "  
+					+ "('" + service.convertdate(c.getDateCreated()) + "' , '" + service.convertdate(c.getDateUpdated()) + "' , '"  + value + "' , "  + " null, "  
 					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
 					break;
 				}
@@ -141,7 +122,7 @@ private String convertdatevalue(LocalDateTime ldt){
     	
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "', "  + "null, " + value  
+					+ "('" + service.convertdate(c.getDateCreated()) + "' , '" + service.convertdate(c.getDateUpdated()) + "', "  + "null, " + value  
 					+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
 					break;
 				}
@@ -155,8 +136,8 @@ private String convertdatevalue(LocalDateTime ldt){
 					 */
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + convertdate(c.getDateCreated()) + "' ,'" + convertdate(c.getDateUpdated()) + "', "  + "null, " + "null, " 
-					+ "null, " + "'" + convertdatevalue(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
+					+ "('" + service.convertdate(c.getDateCreated()) + "' ,'" + service.convertdate(c.getDateUpdated()) + "', "  + "null, " + "null, " 
+					+ "null, " + "'" + service.convertdatevalue(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
 					break;
 				}
 				case FLOAT: {
@@ -165,7 +146,7 @@ private String convertdatevalue(LocalDateTime ldt){
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "', " +  "null, " +  "null, " + value 
+					+ "('" + service.convertdate(c.getDateCreated()) + "' , '" + service.convertdate(c.getDateUpdated()) + "', " +  "null, " +  "null, " + value 
 					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
 					break;
 				}
@@ -295,20 +276,20 @@ private String convertdatevalue(LocalDateTime ldt){
 	    		case STRING: {
 	    			
 	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = '" 
-	    			+ convertdate(pv.getDateUpdated()) + "'"
+	    			+ service.convertdate(pv.getDateUpdated()) + "'"
 	    			+  " WHERE pValueID = '" + pv.getId() + "';");
 	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + service.convertdate(pv.getDateUpdated())
 	    			+ "'," + columnname + "= '"
 	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
 	    			break;
 	    		}
 	    		case DATE: {
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + service.convertdate(pv.getDateUpdated())
 	    			+ "'," + columnname + "= '"
 	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;
@@ -316,7 +297,7 @@ private String convertdatevalue(LocalDateTime ldt){
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + service.convertdate(pv.getDateUpdated())
 	    			+ "'," + columnname + "= '"
 	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;
