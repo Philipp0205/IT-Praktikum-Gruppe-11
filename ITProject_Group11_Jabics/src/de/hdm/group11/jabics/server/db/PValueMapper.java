@@ -250,7 +250,7 @@ private String convertdatevalue(LocalDateTime ldt){
 	    	PValue pv = new PValue();
 
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE pValueID = " + id );
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue " + "WHERE pValueID = " + id );
 	   
 	    	if (rs.next()) {
 	    		//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
@@ -259,24 +259,10 @@ private String convertdatevalue(LocalDateTime ldt){
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-				Date dateV = rs.getDate("dateValue");
-	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		//Muss noch implementiert werden.
+	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate()); 
 	    	}
 	    	return pv;
 	    }
@@ -304,33 +290,39 @@ private String convertdatevalue(LocalDateTime ldt){
 	    	 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 	    	 * und trägt den Wert in die Datenbank ein
 	    	 */
+	    	
 	    	switch (pv.getProperty().getType()) {
 	    		case STRING: {
-	    			String columnname = "stringValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" 
-	    			+ pv.getStringValue() + " WHERE pValueID = " + pv.getId() +")");
+	    			
+	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = '" 
+	    			+ convertdate(pv.getDateUpdated()) + "'"
+	    			+  " WHERE pValueID = '" + pv.getId() + "';");
+	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
-	    			+ pv.getIntValue() + " WHERE pValueID = " + pv.getId() +")");  
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			+ "'," + columnname + "= '"
+	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
+	    			break;
 	    		}
 	    		case DATE: {
-	    			//Cast von LocalDateTime zu Date.
-	    			LocalDateTime locald = pv.getDateValue();
-	    			Date date = (Date) Date.from(locald.atZone(ZoneId.systemDefault()).toInstant());
-	    			
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
-	    			+ date + " WHERE pValueID = " + pv.getId() +")"); 
+	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			+ "'," + columnname + "= '"
+	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			break;
 	    		}
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
-	    			+ pv.getFloatValue() + " WHERE pValueID = " + pv.getId() +")"); 
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			+ "'," + columnname + "= '"
+	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			break;
 	    		}
 	    	}	
+	    	
 		    return pv;
 	    }
 	    catch (SQLException e) {
