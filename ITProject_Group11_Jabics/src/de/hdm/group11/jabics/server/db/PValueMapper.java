@@ -94,6 +94,16 @@ private String convertdate(LocalDateTime ldt){
 		
 		return convDate;
 	}
+
+private String convertdatevalue(LocalDateTime ldt){
+	
+	String convDate = new String();
+	
+	convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
+			+"-"+ ldt.getDayOfMonth() );
+	
+	return convDate;
+}
 	
 	/** 
 	 * Diese Methode trägt eine Eigenschaftsausprägung in die Datenbank ein.
@@ -107,14 +117,14 @@ private String convertdate(LocalDateTime ldt){
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-				// Erzeugen eines ungefüllten SQL-Statements
-				Statement stmt = con.createStatement();
-				
-				/**
-				 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
-				 * und trägt den Wert in die Datenbank ein
-				 */
-				switch (pv.getProperty().getType()) {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+			
+			/**
+			 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
+			 * und trägt den Wert in die Datenbank ein
+			 */
+			switch (pv.getProperty().getType()) {
 				case STRING: {
 					String value = pv.getStringValue();
 		
@@ -123,18 +133,20 @@ private String convertdate(LocalDateTime ldt){
 					+ "dateValue, propertyID, contactID) VALUES " 
 					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "' , '"  + value + "' , "  + " null, "  
 					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
+					break;
 				}
 				case INT: {
 					int value = pv.getIntValue();
+					System.out.println(pv.getIntValue());
     	
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
 					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "', "  + "null, " + value  
 					+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
+					break;
 				}
 				case DATE: {
-					//Cast von LocalDateTime zu Date.
-	    			String value = convertdate(pv.getDateValue());
+					
 					/**
 					 *  Befüllen des Statements.
 					 * (Die Tabelle hat folgende Spalten:
@@ -142,28 +154,31 @@ private String convertdate(LocalDateTime ldt){
 					 *     dateCreated|dateUpdated|stringValue|intValue|floatValue|pValueID|dateValue|propertyID|contactID)
 					 */
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
+					+ " dateValue, propertyID, contactID) VALUES " 
 					+ "('" + convertdate(c.getDateCreated()) + "' ,'" + convertdate(c.getDateUpdated()) + "', "  + "null, " + "null, " 
-					+ ", " + pv.getId() + ", '" + value + "', " + pv.getProperty().getId() + ", " + c.getId() + ")"  );
+					+ "null, " + "'" + convertdatevalue(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
+					break;
 				}
 				case FLOAT: {
 					Float value = pv.getFloatValue();
 		
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-					+ "(" + convertdate(c.getDateCreated()) + " ," + convertdate(c.getDateUpdated()) + ", " +  "null, " +  "null, " + value 
-					+ ", " + pv.getId() + ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
+					+ " dateValue, propertyID, contactID) VALUES " 
+					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "', " +  "null, " +  "null, " + value 
+					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
+					break;
 				}
    			}
-				/**
-				 * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
-				 * 
-				 */
-				insertCollaboration(pv.getOwner(), pv, true);
-			
-			//Rückgabe des PValue
-			return pv;
+
+			/**
+			 * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
+			 * 
+			 */
+			//insertCollaboration(pv.getOwner(), pv, true);
+		
+		//Rückgabe des PValue
+		return pv;
 		}
 	    catch (SQLException e) {
 	    	System.err.print(e);
