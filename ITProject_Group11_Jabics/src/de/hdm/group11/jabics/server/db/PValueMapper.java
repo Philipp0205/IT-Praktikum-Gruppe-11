@@ -94,6 +94,16 @@ private String convertdate(LocalDateTime ldt){
 		
 		return convDate;
 	}
+
+private String convertdatevalue(LocalDateTime ldt){
+	
+	String convDate = new String();
+	
+	convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
+			+"-"+ ldt.getDayOfMonth() );
+	
+	return convDate;
+}
 	
 	/** 
 	 * Diese Methode trägt eine Eigenschaftsausprägung in die Datenbank ein.
@@ -107,14 +117,14 @@ private String convertdate(LocalDateTime ldt){
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-				// Erzeugen eines ungefüllten SQL-Statements
-				Statement stmt = con.createStatement();
-				
-				/**
-				 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
-				 * und trägt den Wert in die Datenbank ein
-				 */
-				switch (pv.getProperty().getType()) {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+			
+			/**
+			 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
+			 * und trägt den Wert in die Datenbank ein
+			 */
+			switch (pv.getProperty().getType()) {
 				case STRING: {
 					String value = pv.getStringValue();
 		
@@ -123,18 +133,20 @@ private String convertdate(LocalDateTime ldt){
 					+ "dateValue, propertyID, contactID) VALUES " 
 					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "' , '"  + value + "' , "  + " null, "  
 					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
+					break;
 				}
 				case INT: {
 					int value = pv.getIntValue();
+					System.out.println(pv.getIntValue());
     	
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
 					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "', "  + "null, " + value  
 					+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
+					break;
 				}
 				case DATE: {
-					//Cast von LocalDateTime zu Date.
-	    			String value = convertdate(pv.getDateValue());
+					
 					/**
 					 *  Befüllen des Statements.
 					 * (Die Tabelle hat folgende Spalten:
@@ -142,28 +154,31 @@ private String convertdate(LocalDateTime ldt){
 					 *     dateCreated|dateUpdated|stringValue|intValue|floatValue|pValueID|dateValue|propertyID|contactID)
 					 */
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
+					+ " dateValue, propertyID, contactID) VALUES " 
 					+ "('" + convertdate(c.getDateCreated()) + "' ,'" + convertdate(c.getDateUpdated()) + "', "  + "null, " + "null, " 
-					+ ", " + pv.getId() + ", '" + value + "', " + pv.getProperty().getId() + ", " + c.getId() + ")"  );
+					+ "null, " + "'" + convertdatevalue(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
+					break;
 				}
 				case FLOAT: {
 					Float value = pv.getFloatValue();
 		
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-					+ "(" + convertdate(c.getDateCreated()) + " ," + convertdate(c.getDateUpdated()) + ", " +  "null, " +  "null, " + value 
-					+ ", " + pv.getId() + ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
+					+ " dateValue, propertyID, contactID) VALUES " 
+					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "', " +  "null, " +  "null, " + value 
+					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
+					break;
 				}
    			}
-				/**
-				 * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
-				 * 
-				 */
-				insertCollaboration(pv.getOwner(), pv, true);
-			
-			//Rückgabe des PValue
-			return pv;
+
+			/**
+			 * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
+			 * 
+			 */
+			//insertCollaboration(pv.getOwner(), pv, true);
+		
+		//Rückgabe des PValue
+		return pv;
 		}
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -191,6 +206,7 @@ private String convertdate(LocalDateTime ldt){
 
 	 	   	// Füllen des Statements
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
+	 	   	System.out.println(c.getId());
 
 	 	   	while (rs.next()) {
 	 	   	//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
@@ -201,24 +217,12 @@ private String convertdate(LocalDateTime ldt){
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-				Date dateV = rs.getDate("dateValue");
-	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		Date date =rs.getDate("dateValue");
+	    		//Muss noch in der Apl realisiert werden
+	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate());
+	    		
 	    		al.add(pv);
 	 	    }
 	 	   	return al;
@@ -246,7 +250,7 @@ private String convertdate(LocalDateTime ldt){
 	    	PValue pv = new PValue();
 
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM PValue " + "WHERE pValueID = " + id );
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue " + "WHERE pValueID = " + id );
 	   
 	    	if (rs.next()) {
 	    		//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
@@ -255,24 +259,10 @@ private String convertdate(LocalDateTime ldt){
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-				Date dateV = rs.getDate("dateValue");
-	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		//Muss noch implementiert werden.
+	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate()); 
 	    	}
 	    	return pv;
 	    }
@@ -300,33 +290,39 @@ private String convertdate(LocalDateTime ldt){
 	    	 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 	    	 * und trägt den Wert in die Datenbank ein
 	    	 */
+	    	
 	    	switch (pv.getProperty().getType()) {
 	    		case STRING: {
-	    			String columnname = "stringValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "=" 
-	    			+ pv.getStringValue() + " WHERE pValueID = " + pv.getId() +")");
+	    			
+	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = '" 
+	    			+ convertdate(pv.getDateUpdated()) + "'"
+	    			+  " WHERE pValueID = '" + pv.getId() + "';");
+	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
-	    			+ pv.getIntValue() + " WHERE pValueID = " + pv.getId() +")");  
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			+ "'," + columnname + "= '"
+	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
+	    			break;
 	    		}
 	    		case DATE: {
-	    			//Cast von LocalDateTime zu Date.
-	    			LocalDateTime locald = pv.getDateValue();
-	    			Date date = (Date) Date.from(locald.atZone(ZoneId.systemDefault()).toInstant());
-	    			
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
-	    			+ date + " WHERE pValueID = " + pv.getId() +")"); 
+	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			+ "'," + columnname + "= '"
+	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			break;
 	    		}
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
-	    			stmt.executeUpdate("UPDATE contact SET dateUpdated =" + pv.getDateUpdated() + "," + columnname + "="
-	    			+ pv.getFloatValue() + " WHERE pValueID = " + pv.getId() +")"); 
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + convertdate(pv.getDateUpdated())
+	    			+ "'," + columnname + "= '"
+	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			break;
 	    		}
 	    	}	
+	    	
 		    return pv;
 	    }
 	    catch (SQLException e) {
@@ -376,9 +372,10 @@ private String convertdate(LocalDateTime ldt){
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 	    	// Auswählen der <code>User</code> Objekte mit einer bestimmten ID aus der Teilhaberschaftstabelle.
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID, Username FROM pValueCollaboration " + "WHERE pValueID" 
-	    	+ pv.getId() );
-
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+					+ " FROM systemUser"
+					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
+					+ " WHERE pValueCollaboration.pValueID = " + pv.getId()  );
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und Hinzufügen zur ArrayList.
 	    		JabicsUser u = new JabicsUser(rs.getString("email"));
@@ -411,9 +408,8 @@ private String convertdate(LocalDateTime ldt){
 	    	Statement stmt = con.createStatement();
 	   
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (pvCollaborationID, IsOwner, pValueID, systemUserID) VALUES " 
-	    	+ "(" + pv.getId() + ", " + IsOwner + ", " + pv.getProperty().getId() + ", " + u.getId() +   ")"  );
-
+	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " 
+	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() +   ")"  );
 	    	return pv;
 	    }
 	    catch (SQLException e) {
@@ -437,8 +433,7 @@ private String convertdate(LocalDateTime ldt){
 	    	Statement stmt = con.createStatement();
 	    	
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("DELETE FROM pvCollaborationID WHERE systemUserID= " + u.getId()
-	    	+ "AND pvCollaborationID= " + pv.getId() ); 
+	    	stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID= " + u.getId() + " AND pValueID= " + pv.getId()); 
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e); 
