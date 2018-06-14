@@ -82,23 +82,9 @@ public class ContactMapper{
 		return contactMapper;
 	}
 	
-	/** 
-	 * Diese Methode convertiert ein Datumsobjekt in ein von der Datenbank lesbares Stringobjekt. 
-	 * 
-	 * @param c das <code>Contact</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
-	 */
 	
-private String convertdate(LocalDateTime ldt){
-		
-		String convDate = new String();
-		
-		convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
-				+"-"+ ldt.getDayOfMonth()+" "+ ldt.getHour()
-				+":"+ ldt.getMinute()+":"+ldt.getSecond());
-		
-		return convDate;
-	}
+	
+	ServiceClass service = new ServiceClass();
 	
 	/** 
 	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
@@ -112,8 +98,8 @@ private String convertdate(LocalDateTime ldt){
 	    
 	    try {
 		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
-				+ "(" + "'" + convertdate(c.getDateCreated()) + "', " + "'" +
-				convertdate(c.getDateUpdated()) + "')"  );
+				+ "(" + "'" + service.convertdate(c.getDateCreated()) + "', " + "'" +
+				service.convertdate(c.getDateUpdated()) + "')"  );
 		
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
@@ -150,7 +136,7 @@ private String convertdate(LocalDateTime ldt){
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + convertdate(c.getDateUpdated()) +
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + service.convertdate(c.getDateUpdated()) +
 	    			"' WHERE contactID = " + c.getId()   );
 	    }
 	    catch (SQLException e) {
