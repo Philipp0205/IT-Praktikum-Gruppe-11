@@ -84,6 +84,17 @@ public class PValueMapper {
 		return pValueMapper;
 	}
 	
+private String convertdate(LocalDateTime ldt){
+		
+		String convDate = new String();
+		
+		convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
+				+"-"+ ldt.getDayOfMonth()+" "+ ldt.getHour()
+				+":"+ ldt.getMinute()+":"+ldt.getSecond());
+		
+		return convDate;
+	}
+	
 	/** 
 	 * Diese Methode trägt eine Eigenschaftsausprägung in die Datenbank ein.
 	 * 
@@ -104,48 +115,47 @@ public class PValueMapper {
 				 * und trägt den Wert in die Datenbank ein
 				 */
 				switch (pv.getProperty().getType()) {
-					case STRING: {
-						String value = pv.getStringValue();
-   		
-						// Füllen des Statements
-						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + " ," + c.getDateUpdated() + " , "  + value + " null, "  
-						+ ", " + " null, " + pv.getId() + ", " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
-					}
-					case INT: {
-						int value = pv.getIntValue();
-	    	
-						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + ", " + c.getDateUpdated() + ", "  + "null, " + value  
-						+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
-					}
-					case DATE: {
-						//Cast von LocalDateTime zu Date.
-		    			LocalDateTime locald = pv.getDateValue();
-		    			Date value = (Date) Date.from(locald.atZone(ZoneId.systemDefault()).toInstant());
-						/**
-						 *  Befüllen des Statements.
-						 * (Die Tabelle hat folgende Spalten:
-						 * 
-						 *     dateCreated|dateUpdated|stringValue|intValue|floatValue|pValueID|dateValue|propertyID|contactID)
-						 */
-						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + ", " + c.getDateUpdated() + ", "  + "null, " + "null, " 
-						+ ", " + pv.getId() + ", " + value + ", " + pv.getProperty().getId() + ", " + c.getId() + ")"  );
-					}
-					case FLOAT: {
-						Float value = pv.getFloatValue();
-			
-						// Füllen des Statements
-						stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-						+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-						+ "(" + c.getDateCreated() + ", " + c.getDateUpdated() + ", " +  "null, " +  "null, " + value 
-						+ ", " + pv.getId() + ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
-					}
-	   			}
+				case STRING: {
+					String value = pv.getStringValue();
+		
+					// Füllen des Statements
+					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					+ "dateValue, propertyID, contactID) VALUES " 
+					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "' , '"  + value + "' , "  + " null, "  
+					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
+				}
+				case INT: {
+					int value = pv.getIntValue();
+    	
+					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
+					+ "('" + convertdate(c.getDateCreated()) + "' , '" + convertdate(c.getDateUpdated()) + "', "  + "null, " + value  
+					+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
+				}
+				case DATE: {
+					//Cast von LocalDateTime zu Date.
+	    			String value = convertdate(pv.getDateValue());
+					/**
+					 *  Befüllen des Statements.
+					 * (Die Tabelle hat folgende Spalten:
+					 * 
+					 *     dateCreated|dateUpdated|stringValue|intValue|floatValue|pValueID|dateValue|propertyID|contactID)
+					 */
+					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
+					+ "('" + convertdate(c.getDateCreated()) + "' ,'" + convertdate(c.getDateUpdated()) + "', "  + "null, " + "null, " 
+					+ ", " + pv.getId() + ", '" + value + "', " + pv.getProperty().getId() + ", " + c.getId() + ")"  );
+				}
+				case FLOAT: {
+					Float value = pv.getFloatValue();
+		
+					// Füllen des Statements
+					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
+					+ "(" + convertdate(c.getDateCreated()) + " ," + convertdate(c.getDateUpdated()) + ", " +  "null, " +  "null, " + value 
+					+ ", " + pv.getId() + ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
+				}
+   			}
 				/**
 				 * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
 				 * 
