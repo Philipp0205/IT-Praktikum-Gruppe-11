@@ -206,6 +206,7 @@ private String convertdatevalue(LocalDateTime ldt){
 
 	 	   	// Füllen des Statements
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
+	 	   	System.out.println(c.getId());
 
 	 	   	while (rs.next()) {
 	 	   	//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
@@ -216,24 +217,12 @@ private String convertdatevalue(LocalDateTime ldt){
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-				Date dateV = rs.getDate("dateValue");
-	    		pv.setDateValue(dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateV.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear() );
-	    		Date dateU = rs.getDate("dateUpdated");
-	    		pv.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
-	    		Date dateC = rs.getDate("dateCreated");
-	    		pv.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
-	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
-	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		Date date =rs.getDate("dateValue");
+	    		//Muss noch in der Apl realisiert werden
+	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate());
+	    		
 	    		al.add(pv);
 	 	    }
 	 	   	return al;
