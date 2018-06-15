@@ -1,12 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.shared.bo.*;
 
 /**
  * @author Brase
@@ -79,7 +76,7 @@ public class UserMapper {
 		return userMapper;
 	}
 	
-	public JabicsUser findUserByContactId(int cid) {
+	public JabicsUser findUserByContact(Contact c) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -93,7 +90,7 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
-					+ " WHERE contactCollaboration.contactID = " + cid + " AND isOwner = 1" );
+					+ " WHERE contactCollaboration.contactID = " + c.getId() + " AND isOwner = 1" );
 			
 			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
@@ -106,7 +103,7 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser findUserByContactListId(int clid) {
+	public JabicsUser findUserByContactList(ContactList cl) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -121,7 +118,7 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
-					+ " WHERE contactlistCollaboration.contactListID = " + clid + " AND isOwner = 1");
+					+ " WHERE contactlistCollaboration.contactListID = " + cl.getId() + " AND isOwner = 1");
 			
 			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
@@ -134,7 +131,7 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser findUserByPValueId(int pvid) {
+	public JabicsUser findUserByPValue(PValue pv) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -148,7 +145,7 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
-					+ " WHERE pValueCollaboration.pValueID = " + pvid + " AND isOwner = 1");
+					+ " WHERE pValueCollaboration.pValueID = " + pv.getId() + " AND isOwner = 1");
 			
 			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
