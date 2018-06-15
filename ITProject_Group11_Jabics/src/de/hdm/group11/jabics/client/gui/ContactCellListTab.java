@@ -5,41 +5,60 @@ import java.util.ArrayList;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.server.db.ContactMapper;
+import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
+import de.hdm.group11.jabics.shared.bo.ContactList;
 
 public class ContactCellListTab  {
-	
-	private static class ContactCell extends AbstractCell<Contact> {
 
-		@Override
-		public void render(Contact c, Object key, SafeHtmlBuilder sb) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	
 	
 	ContactMapper cMapper = ContactMapper.contactMapper();
+	private EditorServiceAsync eService = null;
 	LoginInfo loginfo = new LoginInfo();
-	private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
+	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
+	ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 	
-	public void onLoad() {
-		
-	  /*
-       * Define a key provider for a Contact. We use the unique ID 
-       * as the key, which allows to maintain selection even if the
-       * name changes.
-       */
+	// ursprünglich onLoad();
+	public Widget createTab() {
+	
+		/*
+		 * Der ListDataProvider wird mit den Kontakten befüllt.
+		 */
+		eService.getContactsOf(loginfo.getCurrentUser(), new AsyncCallback<ArrayList<Contact>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// Nix.
+				
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Contact> contacts) {
+				for (Contact c : contacts) {
+					contactsProvider.getList().add(c);
+				}
+				
+			}
+					
+		});
+	
+	
+	/*
+	 * Der Key provider für einen Kontakt sorgt dafür, dass die Auswahl in der CellList gleich bleibt
+	 * auch wenn das Objekt sich ändert. 
+	 */	
       ProvidesKey<Contact> keyProvider = new ProvidesKey<Contact>() {
          public Object getKey(Contact c) {
-            // Always do a null check.
+            // Zurückgeben das unique Key von dem Objekt.
             return (c == null) ? null : c.getId();
          }
       };
@@ -48,11 +67,10 @@ public class ContactCellListTab  {
       CellList<Contact> cellList = new CellList<Contact>(new ContactCell(),      
       keyProvider);
       
-      // Push data into the CellList.
-      cellList.setRowCount(allcontacts.size(), true);
-      cellList.setRowData(0, allcontacts);
-      
-      // Add a selection model using the same keyProvider.
+      /*
+       * Das SelectionModel implementiert die Selektion einer Zeile in der CellList. 
+       * Das SelectionModel wird mit dem keyProvider initalisiert aus oben genannten gründen.
+       */
       SelectionModel<Contact> selectionModel = new SingleSelectionModel<Contact>(keyProvider);
       cellList.setSelectionModel(selectionModel);
            
@@ -62,6 +80,8 @@ public class ContactCellListTab  {
        * Sara would not be selected.
        */
       cellList.redraw();
+      
+      return cellList;
       
 	}
 	

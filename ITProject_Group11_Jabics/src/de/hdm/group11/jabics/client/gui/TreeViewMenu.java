@@ -21,32 +21,23 @@ import com.google.gwt.view.client.TreeViewModel;
 
 public class TreeViewMenu  {
 	
-	
-	
 	public Widget onLoad() {
 		
 		//StackLayoutpanel wird erstellt.
 		StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
-		stackPanel.setPixelSize(200, 400);
+		
+		ContactCellListTab contactsTab = new ContactCellListTab();
+		ContactListTreeTab contactListTab = new ContactListTreeTab();
+		
+		stackPanel.add(new HTML("Meine Listen"), new HTML("Meine Listen"), 4);
+		stackPanel.add(contactListTab.createTab(), new HTML("Meine Listen"), 4);
+		stackPanel.add(contactsTab.createTab(), new HTML("Meine Kontakte"), 4);
+		stackPanel.add(new HTML("Meine geteilten Kontakte"), new HTML("Meine geteilten Kontakte"), 4);
 		
 	    stackPanel.ensureDebugId("cwStackLayoutPanel");
 	    return stackPanel;
 	}
 	
-	public Widget createContactListTab() {
-		TreeViewModel model = new ContactListTreeTab();
-		
-		//?
-		CellTree contactlistTree = new CellTree(model, null);
-		
-		return contactlistTree;
-	}
-	
-	public Widget createAllContactsOfUserTab() { 
-		CellList contactsCellList = new ContactCellListTab();
-		
-		return contactsCellList;
-	}
 	
 
 	

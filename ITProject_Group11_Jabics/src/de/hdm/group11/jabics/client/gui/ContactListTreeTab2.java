@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -26,7 +24,7 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 
 
-public class ContactListTreeTab implements TreeViewModel {
+public class ContactListTreeTab2 implements TreeViewModel {
 	
 	private ContactForm cView; 
 	private ContactListForm clView;
@@ -55,7 +53,7 @@ public class ContactListTreeTab implements TreeViewModel {
 
 	
 	
-	public ContactListTreeTab() {
+	public ContactListTreeTab2() {
 
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time." 
@@ -348,14 +346,6 @@ public class ContactListTreeTab implements TreeViewModel {
 	public boolean isLeaf(Object value) {
 		// value is of type Account
 		return (value instanceof Contact);
-	}
-	
-	public Widget createTab() {
-		TreeViewModel model = new ContactListTreeTab();
-		
-		CellTree tree = new CellTree(model, "Item 1");
-		
-		return tree;
 	}
 	
 
