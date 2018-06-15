@@ -22,6 +22,8 @@ import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
+import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
+import de.hdm.group11.jabics.shared.report.ReportWriter;
 
 public class Report implements EntryPoint {
 	
@@ -45,9 +47,7 @@ public class Report implements EntryPoint {
 			reportGenerator = ClientsideSettings.getReportGeneratorService();
 		}
 		
-		EditorServiceImpl eService = new EditorServiceImpl();
-		
-		/*
+		/**
 		 * Das GUI soll folgendermaßen aussehen: 
 		 * Oben gibt es eine Navigation mit 4 Feldern für ints, strings, floars und Dates
 		 * zusätzlich gibt es einen "Suchen" Button zum starten der Suche.
@@ -71,7 +71,7 @@ public class Report implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				reportGenerator.createAllContactsInSystemReport(new createAllContactsInSystemReportCallback() );
+				reportGenerator.createAllContactsInSystemReport(new CreateAllContactsInSystemReportCallback() );
 				
 			}
 			
@@ -81,14 +81,14 @@ public class Report implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				PValue pvalue = new PValue(null);
+				PValue pvalue = new PValue();
 				JabicsUser u = null;
 				
 				
 				if (stringBox.getText().isEmpty() == false) {
 					pvalue.setStringValue(stringBox.getText());
 					//TODO hier currentUser einfügen
-					reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new createFilteredContactsOfUserReportCallback() );
+					reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new CreateFilteredContactsOfUserReportCallback() );
 				} else if (intBox.getText().isEmpty() == false) {
 					if (StringUtils.isNumericSpace(stringBox.getText()) == true ) {
 						pvalue.setIntValue(Integer.parseInt(stringBox.getText()));
@@ -111,7 +111,7 @@ public class Report implements EntryPoint {
 		
 	}
 	
-	private class createAllContactsInSystemReportCallback implements AsyncCallback<AllContactsInSystemReport> {
+	private class CreateAllContactsInSystemReportCallback implements AsyncCallback<AllContactsInSystemReport> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -123,18 +123,17 @@ public class Report implements EntryPoint {
 		@Override
 		public void onSuccess(AllContactsInSystemReport report) {
 			if (report != null) { 
-				/**
-				 * ReportWriter writer = new ReportWriter();
-				 * writer.process(report);
-				 * RootPanel.get("content").clear();
-				 * RootPanel.get("content").add(new HTML(writer.getReportText()));
-				 */
+				
+				HTMLReportWriter writer = new HTMLReportWriter();
+				writer.process(report);
+				RootPanel.get("content").clear();
+				RootPanel.get("content").add(new HTML(writer.getReportText()));
 			}
 			
 		}	
 		
 	}
-	private class createFilteredContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
+	private class CreateFilteredContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -145,16 +144,33 @@ public class Report implements EntryPoint {
 		@Override
 		public void onSuccess(FilteredContactsOfUserReport report) {
 			if (report != null) { 
-				/**
-				 * ReportWriter writer = new ReportWriter();
-				 * writer.process(report);
-				 * RootPanel.get("content").clear();
-				 * RootPanel.get("content").add(new HTML(writer.getReportText()));
-				 */
-			
+				
+				HTMLReportWriter writer = new HTMLReportWriter();
+				writer.process(report);
+				RootPanel.get("content").clear();
+				RootPanel.get("content").add(new HTML(writer.getReportText()));
+			}
 		}
 		
-	}	
+	}
+	
+	private class CreateAllContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
 
-}
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
+			
+		}
+
+		@Override
+		public void onSuccess(FilteredContactsOfUserReport report) {
+			if (report != null) { 
+				
+				HTMLReportWriter writer = new HTMLReportWriter();
+				writer.process(report);
+				RootPanel.get("content").clear();
+				RootPanel.get("content").add(new HTML(writer.getReportText()));
+			}
+		}
+	}
 }
