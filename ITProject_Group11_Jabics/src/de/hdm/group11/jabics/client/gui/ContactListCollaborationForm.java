@@ -22,6 +22,7 @@
 
 public class ContactListCollaborationForm extends HorizontalPanel{
 
+		Editor e;
 		EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 		
 		ContactList sharedContactList;
@@ -53,6 +54,17 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			retrieveUser();
 			createSuggestBox();
 			createContactBox();
+			shareContactList.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent ev) {
+					shareContactList();
+					e.returnToContactListForm(sharedContactList);
+				}
+			});
+			exit.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent ev) {
+					e.returnToContactListForm(sharedContactList);
+				 }
+			});
 			ap = new AbsolutePanel();
 			ap.setSize("500px", "400px");
 			ap.add(sug, 20, 10);
@@ -178,7 +190,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			selValues.setColumnWidth(contact, 50, Unit.EM);
 		}
 		
-		public void shareContact() {
+		public void shareContactList() {
 			if (!finalUser.isEmpty()) {
 				/*oder aber: for (User u: ldp.getList()) {*/
 				for (JabicsUser u : finalUser) {
@@ -197,7 +209,12 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		public void setAllUser(ArrayList<JabicsUser> user) {
 			this.allUser = user;
 		}
-		
+		public void setEditor(Editor e) {
+			this.e = e;
+		}
+		public void setList(ContactList cl) {
+			this.sharedContactList = cl;
+		}
 		private class AddContactCollaborationCallback implements AsyncCallback<Void>{
 			public void onFailure(Throwable arg0) {
 				Window.alert("Kontakt konnte nicht geteilt werden");

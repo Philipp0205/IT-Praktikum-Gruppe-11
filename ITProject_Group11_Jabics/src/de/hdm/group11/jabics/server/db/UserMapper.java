@@ -79,7 +79,7 @@ public class UserMapper {
 		return userMapper;
 	}
 	
-	public JabicsUser findUserByContactId(int cid) {
+	public JabicsUser getUserByContactId(int cid) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -89,11 +89,11 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und ContactCollaboration zum Herausfinden der Userinformationen. 
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+			// Einfügen des Users in die Datenbank.
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.dateCreated, systemUser.dateUpdated"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
-					+ " WHERE contactCollaboration.contactID = " + cid + " AND isOwner = 1" );
+					+ " WHERE systemUser.systemUserID = " + cid );
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -104,7 +104,7 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser findUserByContactListId(int clid) {
+	public JabicsUser getUserByContactListId(int clid) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -114,11 +114,11 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und ContactListCollaboration zum Herausfinden der Userinformationen. 
+			// Einfügen des Users in die Datenbank.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
-					+ " WHERE contactlistCollaboration.contactListID = " + clid + " AND isOwner = 1");
+					+ " WHERE systemUser.systemUserID = " + clid );
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -129,7 +129,7 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser findUserByPValueId(int pvid) {
+	public JabicsUser getUserByPValueId(int pvid){
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -139,11 +139,11 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und PValueCollaboration zum Herausfinden der Userinformationen. 
+			// Einfügen des Users in die Datenbank.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
-					+ " WHERE pValueCollaboration.pValueID = " + pvid + " AND isOwner = 1");
+					+ " WHERE systemUser.systemUserID = " + pvid );
 			
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -166,19 +166,12 @@ public class UserMapper {
 		Connection con = DBConnection.connection();
 		    
 		try {
-			// Einfügen des Users in die Datenbank.
-			String query = ("INSERT INTO systemUser (email) VALUES " + "("  + u.getEmail() + ")"  );
-			
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-			
-			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
-			
-			ResultSet rs = stmt.getGeneratedKeys();
-			if(rs.next()) {
-				u.setId(rs.getInt(1));
-			}
-		
+
+			// Einfügen des Users in die Datenbank.
+			stmt.executeUpdate("INSERT INTO systemUser (systemUserID, email) VALUES " + "(" + u.getId() + "," + u.getEmail() + ")"  );
+
 			return u;
 		}
 		catch (SQLException e) {
@@ -201,7 +194,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 			   
 			// Löschen des Users.
-			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId()); 
+			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID=" + u.getId()); 
 		}
 		catch (SQLException e) {
 		    System.err.print(e);

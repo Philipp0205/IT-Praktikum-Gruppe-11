@@ -27,7 +27,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	PValue pv1, pv2, pv3, pv4, pv5, pv6, pv7;
 	Contact c1, c2, c3;
 	ContactList cl;
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -224,7 +224,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 			}
 			c.setName(sBuffer.toString());
-			c.setOwner(uMapper.findOwnerForContact(c));
+			c.setOwner(uMapper.findUserByContact(c));
 		}
 		//return cons;
 		

@@ -1,10 +1,12 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -18,7 +20,6 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
  * 
  * @author Brase
  * @author Stahl
- *
  */
 public class ContactMapper{
 
@@ -82,9 +83,16 @@ public class ContactMapper{
 		return contactMapper;
 	}
 	
-	
-	
-	ServiceClass service = new ServiceClass();
+private String convertdate(LocalDateTime ldt){
+		
+		String convDate = new String();
+		
+		convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
+				+"-"+ ldt.getDayOfMonth()+" "+ ldt.getHour()
+				+":"+ ldt.getMinute()+":"+ldt.getSecond());
+		
+		return convDate;
+	}
 	
 	/** 
 	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
@@ -97,22 +105,13 @@ public class ContactMapper{
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
-				+ "(" + "'" + service.convertdate(c.getDateCreated()) + "', " + "'" +
-				service.convertdate(c.getDateUpdated()) + "')"  );
-		
-		// Erzeugen eines ungefüllten SQL-Statements
-		Statement stmt = con.createStatement();
-		
-		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
-		
-		ResultSet rs = stmt.getGeneratedKeys();
-		if(rs.next()) {
-			c.setId(rs.getInt(1));
-		}
-		
-		System.out.println(c.getId());
-		
+	    	// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+			convertdate(c.getDateCreated());
+			
+			stmt.executeUpdate("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
+					+ "(" + "'" + convertdate(c.getDateCreated()) + "', " + "'" +
+					convertdate(c.getDateCreated()) + "')"  );
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -136,8 +135,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + service.convertdate(c.getDateUpdated()) +
-	    			"' WHERE contactID = " + c.getId()   );
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = " + c.getDateUpdated() + "WHERE contactID= " + c.getId() + ")"  );
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -193,13 +191,26 @@ public class ContactMapper{
 			+ " WHERE contactCollaboration.systemUserID = " + u.getId());
 			
 			while (rs.next()) {
+				
 				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
 	      
-				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
+				//Befüllen des Kontakt-Objekts und hinzuf�gen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-	    		c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		Date dateC = rs.getDate("dateCreated");
+	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 				al.add(c);
 			}
 			return al;
@@ -230,8 +241,20 @@ public class ContactMapper{
 	    	if (rs.next()) {
 		    	//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-				c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		Date dateU = rs.getDate("dateUpdated");
+	    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+	    		Date dateC = rs.getDate("dateCreated");
+	    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+	    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+	    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 	    	}
 	    	return c;
 	    }
@@ -262,23 +285,35 @@ public class ContactMapper{
 	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
 	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
 	    			+ " FROM contact"
-	    			+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
-	    			+ " WHERE contactContactLists.contactListID = " + cl.getId()) ;
+	    			+ " LEFT JOIN contactContactList ON contact.contactID = contactContactList.contactID"
+	    			+ " WHERE contactContactList.contactListId = " + cl.getId()) ;
 	   
-	    	
+	    	if (rs.next()) {
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		while (rs.next()) {
 					
 					//Instanzierung eines Kontaktobjekts.
 					Contact c = new Contact();
 		      
-					//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
+					//Befüllen des Kontakt-Objekts und hinzuf�gen in die ArrayList.
 					c.setId(rs.getInt("contactID"));
-					c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-		    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+		    		Date dateU = rs.getDate("dateUpdated");
+		    		c.setDateUpdated(dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
+		    		Date dateC = rs.getDate("dateCreated");
+		    		c.setDateCreated(dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getDayOfMonth(), 
+		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMonthValue(), 
+		    				dateC.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getYear(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getHour(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getMinute(),
+		    				dateU.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().getSecond());
 					al.add(c);
 				}
-	    	
+	    	}
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -306,10 +341,8 @@ public class ContactMapper{
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 	    	// Auswählen von Usern mit einer Bestimmten ID in der contactCollaboration Tabelle.
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
-					+ " FROM systemUser"
-					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
-					+ " WHERE contactCollaboration.contactID = " + c.getId()  );
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactCollaboration " + "WHERE contactID = " + c.getId() 
+	    	+ " ORDER BY systemUserID");
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und hinzufügen in die ArrayList.
@@ -343,7 +376,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 
 	    	// Einfügen der Teilhaberschaft in die contactCollaboration-Tabelle.
-	    	stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " 
+	    	stmt.executeUpdate("INSERT INTO contactCollaboration (cCollaborationID, isOwner, contactID, systemUserID) VALUES " 
 	    	+ "(" + IsOwner + ", "
 	    	+ c.getId() + ", "
 	    	+ u.getId() + ")");

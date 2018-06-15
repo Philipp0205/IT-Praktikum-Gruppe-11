@@ -38,8 +38,6 @@ public class Report implements EntryPoint {
 	TextBox floatBox = new TextBox();
 	TextBox dateBox = new TextBox();
 	
-	
-
 	@Override
 	public void onModuleLoad() {
 		
