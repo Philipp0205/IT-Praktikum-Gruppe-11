@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.client.gui;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -224,8 +225,22 @@ public class ContactForm extends VerticalPanel {
 
 			@Override
 			public void onSuccess(Property result) {
-				editorService.createPValue(result, pValueName.getText(), contactToDisplay, 
-						u, new CreatePValueCallback());
+				switch(formattype.getSelectedItemText()) {
+				case "Text": 
+					editorService.createPValue(result, pValueName.getText(), contactToDisplay, 
+							u, new CreatePValueCallback());
+	    		case "Datum": 
+	    			LocalDate ld = LocalDate.parse(pValueName.getText());
+	    			//Datum muss im folgenden Format eingegeben werden: 2018-06-15;
+	    			editorService.createPValue(result, ld, contactToDisplay, u, new CreatePValueCallback());
+	    		case "Kommazahl": 
+	    			editorService.createPValue(result, Float.valueOf(pValueName.getText()) , contactToDisplay, 
+							u, new CreatePValueCallback());
+	    		case "Zahl": 
+	    			editorService.createPValue(result, Integer.valueOf(pValueName.getText()) , contactToDisplay, 
+							u, new CreatePValueCallback());
+				}
+				
 			}
 		}
 		
