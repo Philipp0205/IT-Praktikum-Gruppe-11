@@ -130,8 +130,8 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 		   
 	    	//Update des Namens der Kontaktliste und des letzten Updates
-	    	stmt.executeUpdate("UPDATE contactList SET listname = " + cl.getListName() + ", dateUpdate = " + ServiceClass.convertdate(cl.getDateUpdated()) 
-	    	+ "WHERE contactlistID = " + cl.getId()); 
+	    	stmt.executeUpdate("UPDATE contactList SET listname = '" + cl.getListName() + "', dateUpdate = '" + ServiceClass.convertdate(cl.getDateUpdated()) 
+	    	+ "' WHERE contactlistID = " + cl.getId()); 
 	   
 	  	  	return cl;
 	    }
@@ -183,7 +183,7 @@ public class ContactListMapper {
 	    	Statement stmt2 = con.createStatement();
 		   
 	    	//Update des letzten Updates der Kontaktliste.
-	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = " + ServiceClass.convertdate(cl.getDateUpdated()) + "  WHERE contactlistID = " + cl.getId()); 
+	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = '" + ServiceClass.convertdate(cl.getDateUpdated()) + "'  WHERE contactlistID = " + cl.getId()); 
 		   
 	    	return cl;
 	    }  

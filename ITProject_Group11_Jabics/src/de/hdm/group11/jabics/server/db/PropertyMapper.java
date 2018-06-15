@@ -91,11 +91,11 @@ public class PropertyMapper {
 	    try {
 	    	// Einfügen der neuen Eigenschaft in die Datenbank.
 	    	String query = ("INSERT INTO property ( dateCreated, dateUpdated, isStandard, type, name) VALUES " 
-	    	+ "('" + ServiceClass.convertdate(p.getDateCreated()) + "' , " 
-	    	+ ServiceClass.convertdate(p.getDateUpdated()) + ", " 
-	    	+ p.isStandard() + ", " 
-	    	+ p.getTypeInString() + ", " 
-	    	+ p.getLabel() + ")"); 
+	    	+ "('" + ServiceClass.convertdate(p.getDateCreated()) + "' , '" 
+	    	+ ServiceClass.convertdate(p.getDateUpdated()) + "' , " 
+	    	+ p.isStandard() + ", '" 
+	    	+ p.getTypeInString() + "' , '" 
+	    	+ p.getLabel() + "' ) "); 
 	    	
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
