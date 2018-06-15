@@ -1,14 +1,25 @@
 package de.hdm.group11.jabics.server.db;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+/**
+ * @author Brase
+ * @author Stahl
+ * 
+ * 
+ * Diese Service-Klasse realisiert Methoden für das Konvertieren von Datumsformaten wie sql Date oder LocalDateTime 
+ * in von der Datenbank lesbare String Objekte.  
+ *
+ */
 
 public class ServiceClass {
 	
 	/** 
 	 * Diese Methode convertiert ein Datumsobjekt in ein von der Datenbank lesbares Stringobjekt. 
 	 * 
-	 * @param c das <code>Contact</code> Objekt, dass in die Datenbank eingetragen werden soll.
-	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
+	 * @param ldt das <code>LocalDateTime</code> Objekt, dass konvertiert werden soll.
+	 * @return das String Objekt in der korrekten SQL-Syntax.
 	 */
 
 	public String convertdate(LocalDateTime ldt){
@@ -21,6 +32,13 @@ public class ServiceClass {
 		
 		return convDate;
 	}
+	
+	/** 
+	 * Diese Methode convertiert ein Datumsobjekt in ein von der Datenbank lesbares Stringobjekt. 
+	 * 
+	 * @param ldt das <code>LocalDate</code> Objekt, dass konvertiert werden soll.
+	 * @return das String Objekt in der korrekten SQL-Syntax.
+	 */
 
 public String convertdatevalue(LocalDateTime ldt){
 	
