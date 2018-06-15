@@ -95,8 +95,10 @@ public class UserMapper {
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
 					+ " WHERE contactCollaboration.contactID = " + cid + " AND isOwner = 1" );
 			
+			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			}
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -108,6 +110,7 @@ public class UserMapper {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		
 		JabicsUser u = new JabicsUser();
 		
 		try {
@@ -120,8 +123,10 @@ public class UserMapper {
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
 					+ " WHERE contactlistCollaboration.contactListID = " + clid + " AND isOwner = 1");
 			
+			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			}
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -145,8 +150,10 @@ public class UserMapper {
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
 					+ " WHERE pValueCollaboration.pValueID = " + pvid + " AND isOwner = 1");
 			
+			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			}
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -167,7 +174,7 @@ public class UserMapper {
 		    
 		try {
 			// Einfügen des Users in die Datenbank.
-			String query = ("INSERT INTO systemUser (email) VALUES " + "("  + u.getEmail() + ")"  );
+			String query = ("INSERT INTO systemUser (email) VALUES " + "('"  + u.getEmail() + "')"  );
 			
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -262,7 +269,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 		   
 			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
-			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + "WHERE systemUserID=" + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE systemUserID = " + id);
 		   
 			if (rs.next()) {
 				JabicsUser u = new JabicsUser();

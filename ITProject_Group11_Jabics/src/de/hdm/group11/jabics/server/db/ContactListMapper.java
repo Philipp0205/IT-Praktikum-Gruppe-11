@@ -93,7 +93,7 @@ public class ContactListMapper {
 	   
 	    try {
 	    	String query = ("INSERT INTO contactList ( listname, dateCreated, dateUpdated) VALUES "
-	    	+ cl.getListName()  + ", " + cl.getDateCreated() + ", " + cl.getDateUpdated());
+	    	+ cl.getListName()  + ", " + ServiceClass.convertdate(cl.getDateCreated()) + ", " + ServiceClass.convertdate(cl.getDateUpdated()));
 
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -130,7 +130,7 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 		   
 	    	//Update des Namens der Kontaktliste und des letzten Updates
-	    	stmt.executeUpdate("UPDATE contactList SET listname = " + cl.getListName() + ", dateUpdate = " + cl.getDateUpdated() 
+	    	stmt.executeUpdate("UPDATE contactList SET listname = " + cl.getListName() + ", dateUpdate = " + ServiceClass.convertdate(cl.getDateUpdated()) 
 	    	+ "WHERE contactlistID = " + cl.getId()); 
 	   
 	  	  	return cl;
@@ -183,7 +183,7 @@ public class ContactListMapper {
 	    	Statement stmt2 = con.createStatement();
 		   
 	    	//Update des letzten Updates der Kontaktliste.
-	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = " + cl.getDateUpdated() + "  WHERE contactlistID = " + cl.getId()); 
+	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = " + ServiceClass.convertdate(cl.getDateUpdated()) + "  WHERE contactlistID = " + cl.getId()); 
 		   
 	    	return cl;
 	    }  
@@ -359,7 +359,10 @@ public class ContactListMapper {
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 	    	// Auswählen von Tupeln mit einer bestimmten User-Id. 
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUserID FROM contactlistCollaboration " + "WHERE contactListID = " + cl.getId() + " ORDER BY systemUserID");
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.mail "
+	    			+ " FROM systemUser " 
+	    			+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
+	    			+ " WHERE contactListID = " + cl.getId());
 
 	    	while (rs.next()) {
 	    		//Befüllen des User-Objekts und hinzufügen zur Arraylist.

@@ -21,18 +21,14 @@ public class ServiceClass {
 	 * @param ldt das <code>LocalDateTime</code> Objekt, dass konvertiert werden soll.
 	 * @return das String Objekt in der korrekten SQL-Syntax.
 	 */
-
-	public String convertdate(LocalDateTime ldt){
-		
+	public static String convertdate(LocalDateTime ldt){
 		String convDate = new String();
-		
 		convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
 				+"-"+ ldt.getDayOfMonth()+" "+ ldt.getHour()
 				+":"+ ldt.getMinute()+":"+ldt.getSecond());
-		
 		return convDate;
 	}
-	
+
 	/** 
 	 * Diese Methode convertiert ein Datumsobjekt in ein von der Datenbank lesbares Stringobjekt. 
 	 * 
@@ -40,14 +36,12 @@ public class ServiceClass {
 	 * @return das String Objekt in der korrekten SQL-Syntax.
 	 */
 
-public String convertdatevalue(LocalDateTime ldt){
+public static String convertdatevalue(LocalDateTime ldt){
 	
 	String convDate = new String();
 	
 	convDate = (""+ldt.getYear() +"-"+ ldt.getMonthValue()
 			+"-"+ ldt.getDayOfMonth() );
-	
-	return convDate;
-}
-
+	  return convDate;
+	}
 }
