@@ -1,12 +1,13 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
  * Diese Klasse realisiert die Eigenschaftsauspr�gungen eines Kontakts.
- * Diese k�nnen entweder im Datentyp int, String, float oder LocalDateTime angelegt sein.
+ * Diese k�nnen entweder im Datentyp int, String, float oder LocalDate angelegt sein.
  * Der int pointer repr�sentiert die Information, welcher Datentyp in PValue gespeichert ist.
  * 1 bedeutet int, 2 String, 3 Date und 4 float.
  * Zus�tzlich ist in jedem PValue Objekt ein Property Objekt gespeichert,
@@ -20,7 +21,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	
 	private int intValue; 
 	private String stringValue; 
-	private LocalDateTime dateValue;
+	private LocalDate dateValue;
 	private float floatValue; 
 	private Property property;
 	private int propertyId;
@@ -47,7 +48,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 		this.stringValue = s;
 		this.pointer = 2;
 	}
-	public PValue(Property p, LocalDateTime date, JabicsUser u) {
+	public PValue(Property p, LocalDate date, JabicsUser u) {
 		this(p, u);
 		this.dateValue = date;
 		this.pointer = 3;
@@ -94,21 +95,21 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 		this.pointer = 2; 
 
 	}
-	public LocalDateTime getDateValue() {
+	public LocalDate getDateValue() {
 		return dateValue;
 	}
 	public void setDateValue(int year, int month, int dayOfMonth) {
-		this.dateValue = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
+		this.dateValue = LocalDate.of(year, month, dayOfMonth);
 		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
 	}
 	// overload method if date is given in the datatype "month". 
 	public void setDateValue(int year, Month month, int dayOfMonth) {
-		this.dateValue = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
+		this.dateValue = LocalDate.of(year, month, dayOfMonth);
 		this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
 	}
-	public void setDateValue(LocalDateTime t) {
+	public void setDateValue(LocalDate t) {
 		this.dateValue = t;
 		this.pointer = 3; 
 	}
