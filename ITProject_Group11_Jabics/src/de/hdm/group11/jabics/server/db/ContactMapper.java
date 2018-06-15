@@ -82,10 +82,6 @@ public class ContactMapper{
 		return contactMapper;
 	}
 	
-	
-	
-	ServiceClass service = new ServiceClass();
-	
 	/** 
 	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
 	 * 
@@ -98,8 +94,8 @@ public class ContactMapper{
 	    
 	    try {
 		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
-				+ "(" + "'" + service.convertdate(c.getDateCreated()) + "', " + "'" +
-				service.convertdate(c.getDateUpdated()) + "')"  );
+				+ "(" + "'" + ServiceClass.convertdate(c.getDateCreated()) + "', " + "'" +
+				ServiceClass.convertdate(c.getDateUpdated()) + "')"  );
 		
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
@@ -136,7 +132,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + service.convertdate(c.getDateUpdated()) +
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + ServiceClass.convertdate(c.getDateUpdated()) +
 	    			"' WHERE contactID = " + c.getId()   );
 	    }
 	    catch (SQLException e) {
