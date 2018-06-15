@@ -28,11 +28,7 @@ import de.hdm.group11.jabics.client.Jabics;
 import de.hdm.group11.jabics.server.EditorServiceImpl;
 import de.hdm.group11.jabics.shared.EditorService;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
-import de.hdm.group11.jabics.shared.bo.Contact;
-import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.bo.Type;
-import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.shared.bo.*;
 
 /**
  * 
@@ -43,7 +39,6 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * @author Ilg
  *
  */
-
 public class ContactForm extends VerticalPanel {
 	/**
 	 * Struktur von
@@ -238,7 +233,7 @@ public class ContactForm extends VerticalPanel {
 		 * Diese Callback-Klasse aktualisiert die Ansicht nach erfolgreichem Erstellen
 		 * einer Eigenschaftsausprägung..
 		 */
-		public class CreatePValueCallback implements AsyncCallback<PValue> {
+		private class CreatePValueCallback implements AsyncCallback<PValue> {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -279,8 +274,8 @@ public class ContactForm extends VerticalPanel {
 
 	   void setSelected (Contact c, JabicsUser u) {
 			if (c != null) {
-				contactToDisplay = c;
-				u = u;
+				this.contactToDisplay = c;
+				this.u = u;
 				deleteContactButton.setEnabled(true);
 				contactName.setText(contactToDisplay.getName());
 				
@@ -401,13 +396,13 @@ public class ContactForm extends VerticalPanel {
 			 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer Eigenschafts-
 			 * ausprägung.
 			 */
-		private class UpdatePValueCallback implements AsyncCallback<Void> {
+		private class UpdatePValueCallback implements AsyncCallback<PValue> {
 
 			public void onFailure(Throwable caugth) {
 				Window.alert("Die Änderung ist fehlgeschlagen.");
 			}
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(PValue result) {
 		    //Contacttree muss aktualisiert werden . 	
 			//Conacttree.refresh();
 		    	Window.alert("Wert geändert");
