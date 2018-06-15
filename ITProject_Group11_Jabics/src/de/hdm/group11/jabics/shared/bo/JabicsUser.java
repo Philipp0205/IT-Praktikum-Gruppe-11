@@ -10,7 +10,8 @@ package de.hdm.group11.jabics.shared.bo;
 public class JabicsUser {
 	
 	private int id; 
-	private String email;  
+	private String email;
+	private String username;
 	
 	public JabicsUser() {
 		super();	
@@ -18,6 +19,10 @@ public class JabicsUser {
 	public JabicsUser(String email) {
 		this();
 		this.email = email;
+	}
+	public JabicsUser(String email, String user) {
+		this(email);
+		this.username = user;
 	}
 	public String toString() {
 		return this.email;
@@ -31,6 +36,12 @@ public class JabicsUser {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getUsername() {
+		return this.username;
+	}
+	public void setUsername(String user) {
+		this.username = user;
 	}
 	public String getEmail() {
 		return email;

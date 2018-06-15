@@ -1,11 +1,8 @@
 package de.hdm.group11.jabics.server;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 
 import com.google.gwt.user.server.rpc.*;
 import de.hdm.group11.jabics.server.db.ContactMapper;
@@ -147,7 +144,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		case FLOAT:
 			result.setSubReports(this.filterContactsByDate(contacts, pv));
-			LocalDateTime dt = pv.getDateValue();
+			LocalDate dt = pv.getDateValue();
 			filtercriteria[2] = dt.toString();	
 		break;
 		

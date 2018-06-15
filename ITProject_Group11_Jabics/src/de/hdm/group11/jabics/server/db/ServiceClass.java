@@ -36,7 +36,7 @@ public class ServiceClass {
 	 * @return das String Objekt in der korrekten SQL-Syntax.
 	 */
 
-public static String convertdatevalue(LocalDateTime ldt){
+public static String convertdatevalue(LocalDate ldt){
 	
 	String convDate = new String();
 	
