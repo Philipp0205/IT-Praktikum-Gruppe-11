@@ -37,6 +37,9 @@ public class Property extends BusinessObject {
 	public Type getType() {
 		return type;
 	}
+	public String getTypeInString(){ 
+		return type.toString().toLowerCase();
+	}
 	public void setType(Type type) {
 		this.type = type;
 	}
