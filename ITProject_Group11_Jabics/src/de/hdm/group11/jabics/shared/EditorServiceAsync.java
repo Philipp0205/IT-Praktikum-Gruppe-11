@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public interface EditorServiceAsync {
 	
 	void createPValue(Property p, int i, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
 
-	void createPValue(Property p, LocalDateTime dt, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
+	void createPValue(Property p, LocalDate dt, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
 	
 	void createPValue(Property p, float f, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
 	
