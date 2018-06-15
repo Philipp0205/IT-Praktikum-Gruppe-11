@@ -22,6 +22,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactForm.GetPValuesCallback;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
@@ -38,7 +39,7 @@ public class ContactListForm extends VerticalPanel {
 	 * @author Brase
 	 * @author Ilg
 	 */
-
+	
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	Editor e;
@@ -49,6 +50,8 @@ public class ContactListForm extends VerticalPanel {
 	
 	VerticalPanel listEdit, conEdit;
 	HorizontalPanel listShareBox, listDeleteBox, listAddBox, listRmvBox;
+	
+	Button deleteListButton, shareListButton;
 		
 		
 		
@@ -85,10 +88,10 @@ public class ContactListForm extends VerticalPanel {
 		Label shareQuestion = new Label("Wollen Sie diese Liste teilen?");
 		listShareBox.add(shareQuestion);
 
-		Button shareListButton = new Button("Liste teilen");
+		shareListButton = new Button("Liste teilen");
 		shareListButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				e.shareList(currentList);
+				e.showContactListCollab(currentList);
 			}
 		});
 		listShareBox.add(shareListButton);
@@ -97,7 +100,7 @@ public class ContactListForm extends VerticalPanel {
 		Label deleteQuestion = new Label("Wollen Sie diese Liste löschen?");
 		listDeleteBox.add(deleteQuestion);
 
-		Button deleteListButton = new Button("Liste löschen");
+		deleteListButton = new Button("Liste löschen");
 		deleteListButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				editorService.deleteContactList(currentList, u, new DeleteContactListCallback());
@@ -144,6 +147,16 @@ public class ContactListForm extends VerticalPanel {
 	
 	public void setCurrentList(ContactList cl) {
 		this.currentList = cl;
+		if (cl != null) {
+			this.currentList = cl;
+			//this.u = u;
+			deleteListButton.setEnabled(true);
+			shareListButton.setEnabled(true);
+		} else {
+			this.currentList = null;
+			deleteListButton.setEnabled(false);
+			shareListButton.setEnabled(false);
+		}
 	}
 	
 	/**
@@ -208,7 +221,6 @@ public class ContactListForm extends VerticalPanel {
 		
 		contactListGrid.setWidget(3, 0, selValues);
 		contactListGrid.setWidget(4, 0, add);
-		
 	}
 	
 	/**
@@ -275,6 +287,9 @@ public class ContactListForm extends VerticalPanel {
 		contactListGrid.setWidget(4, 0, remove);
 	}
 
+	public void setEditor(Editor e) {
+		this.e = e;
+	}
 	/**
 	 * Clickhandler und Asynchrone Methodenaufrufe für das Löschen eines
 	 * <code>ContactList</code> Objekts.

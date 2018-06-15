@@ -29,30 +29,28 @@ public class BOEditor extends Composite {
 			
 			RootPanel.get("Navigator").add(Box);
 			
-			for (int i = 0; i < ary.length ; i++ ) {
-			      showProp(ary[i]);
-			    }
-			
-			
-			final Button addProp = new Button("Eigenschaft hinzufügen");
+			for (PValue pv : ary) {
+			      showProp(pv);
+			}
+
+			final Button addProp = new Button("Eigenschaft hinzufï¿½gen");
 			Box.add(addProp);
-			final Button delCon = new Button("Kontakt löschen");
+			final Button delCon = new Button("Kontakt lï¿½schen");
 			Box.add(delCon);
 			
 			/*
-			 * RPC zu Kontakt löschen
+			 * RPC zu Kontakt lï¿½schen
 			 */
 			
 		}
 		
 		
-		private void showProp(Property prop) {
+		private void showProp(PValue prop){
 			
 			/**
-			 *  Für jedes Wertepaar (Eigenschaft & Eigenschaftsausprägung) erstellt die Methode
+			 *  Fï¿½r jedes Wertepaar (Eigenschaft & Eigenschaftsausprï¿½gung) erstellt die Methode
 			 *  ein neues Element bestehend aus einem HorizontalPanel mit Text- und Input-Feld
 			 */
-			
 			private String label = prop.label;
 			private Type value = prop.type;
 			
@@ -72,7 +70,6 @@ public class BOEditor extends Composite {
 			/*
 			 * Switchmethode noch zu implementieren
 			 */
-			
 			nextProperty.add(editBtn);
 			nextProperty.add(saveBtn);
 			
@@ -81,8 +78,8 @@ public class BOEditor extends Composite {
 		private void delProp(Property prop) {
 			
 			/**
-			 *  Aufruf der Löschmethode für Eigenschaften eines Kontaktes
-			 *  TODO Ersetzen von void durch Rückgabewert ob Funktion erfolgreich
+			 *  Aufruf der Lï¿½schmethode fï¿½r Eigenschaften eines Kontaktes
+			 *  TODO Ersetzen von void durch Rï¿½ckgabewert ob Funktion erfolgreich
 			 */
 			
 			deleteProperty(prop);

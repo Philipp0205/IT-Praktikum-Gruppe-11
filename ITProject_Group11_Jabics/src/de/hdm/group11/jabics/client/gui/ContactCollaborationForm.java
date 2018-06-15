@@ -23,6 +23,7 @@ import com.google.gwt.dom.client.Style.Unit;
 
 public class ContactCollaborationForm extends HorizontalPanel{
 	
+	Editor e;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 	
 	Contact sharedContact;
@@ -53,14 +54,15 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		//SuggestOracle oracle =
 		this.sharedContact = c;
 		shareContact.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
+			public void onClick(ClickEvent ev) {
 				shareContact();
+				e.returnToContactForm(sharedContact);
 			}
 		});
 		exit.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {/**
-			 * TODO: implement zurückkehren zur kontaktanzeige
-			 */}
+			public void onClick(ClickEvent ev) {
+				e.returnToContactForm(sharedContact);
+			 }
 		});
 		retrieveUser();
 		createSuggestBox();
@@ -156,6 +158,10 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		//hier muss noch die Suggestbox in die form eingefügt werden.
 	}
 	
+	public void setEditor(Editor e) {
+		this.e = e;
+	}
+	
 	public void createPValueBox(ArrayList<PValue> pv) { 
 		selValues = new CellTable<PValue>();
 		valueProvider = new ListDataProvider<PValue>();
@@ -228,6 +234,9 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		}
 		
 	}
+	public void setContact(Contact c) {
+		this.sharedContact = c;
+	}
 	
 	private void retrieveUser() {
 		editorService.getAllUsers(new GetAllUsersCallback());
@@ -252,9 +261,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erolgreich geteilt!");
-			/**
-			 * TODO: nach erfolgreichem teilen zurückkehren zur Anzeige des kontakts.
-			 */
+			//e.returnToContact();
 		}
 	}
 	
