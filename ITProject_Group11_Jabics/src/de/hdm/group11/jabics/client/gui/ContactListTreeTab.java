@@ -34,6 +34,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	private Contact selectedContact;
 	private ContactList selectedContactList;
 	
+	private ContactForm contactform;
+	private ContactListForm contactListForm;
+	
 	private ArrayList<ContactList> cLists = new ArrayList<ContactList>();
 	// User?
 	private EditorServiceAsync eService = null;
@@ -162,7 +165,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	private void setSelectedContact(Contact c) {
 		selectedContact	= c;
 		// momentan aktiver User muss angegeben werden
-		ContactForm.setSelected(c, u);
+		contactform.setCurrentContact(c);
 		
 		if (c != null) {
 			eService.getUserById(c.getOwner().getId(), new AsyncCallback<JabicsUser>() {
@@ -204,7 +207,7 @@ public class ContactListTreeTab implements TreeViewModel {
 		 List<ContactList> contactlists = contactListDataProviders.getList();
 		 int i = 0;
 			for (ContactList cl2 : contactlists) {
-				if (cl2.getId() == cl2.getId()) {
+				if (cl2.getId() == cl.getId()) {
 					contactlists.set(i, cl);
 					break;
 				} else {
@@ -243,37 +246,34 @@ public class ContactListTreeTab implements TreeViewModel {
 		 selectionModel.setSelected(cl, true);
 	 }
 	 
-	 /* TODO
-	  * Ein altes Kontakt-Objekt wird durch einen neues ersetzt, die ID bleibt gleich! 
+	 /* 
+	  * Ein altes Kontakt-Objekt wird durch einen neues mit der selbe Id ersetzt, die ID bleibt gleich! 
+	  * Dies ist sinnvoll, wenn sich die Eigenschafte eines Kontakts ge#ndert haben und im Baum
+	  * noch ein veraltetets Kontaktobjekt enthalten ist.
 	  */
 	 public void updateContact(Contact c) {
-		 //eService.getContactById(c.getOwnerID(), new UpdateContactCallback(a));
+		 eService.getContactListById(c.getOwner().getId(), new UpdateAccountCallback(c));
 	 }
 	 
-	 private class UpdateContactCallback implements AsyncCallback<ContactList> {
+	 private class UpdateAccountCallback implements AsyncCallback<ContactList> {
 		 
 		 Contact contact = null;
-		 
-		 UpdateContactCallback(Contact c) {
-			 contact = c;
-		 }
 
 		@Override
 		public void onFailure(Throwable caught) {
-			//nix. 
+			// Nix.
+			
 		}
 
 		@Override
 		public void onSuccess(ContactList cl) {
 			List<Contact> contacts = contactDataProviders.get(cl).getList();
-			
-			for (int i = 0; i<contacts.size(); i++) {
-				if(contact.getId() == contacts.get(i).getId()) {
+			for (int i=0; i < contacts.size(); i++) {
+				if (contact.getId() == contacts.get(i).getId()) {
 					contacts.set(i, contact);
 					break;
 				}
 			}
-
 			
 		}
 		 
@@ -308,7 +308,7 @@ public class ContactListTreeTab implements TreeViewModel {
 				
 			});
 			
-		// Return a node info that pairs the data with a cell.	
+			// Return a node info that pairs the data with a cell.	
 			return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
 			
 		}
