@@ -1,7 +1,6 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import com.google.appengine.api.utils.SystemProperty;
 
 /**
@@ -37,7 +36,7 @@ public class DBConnection {
 		 * Der DriverManager baut mit den angegebenen Verbindungsinformationen die Verbindung zur Datenbank auf. 
 		 * Diese Verbinfung wird in der Variable  "con" gespeichert.  
 		 */
-			con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576","s242770_2739576","itPROJEKT2018");
+			con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?verifyServerCertificate=false&useSSL=true","s242770_2739576","itPROJEKT2018");
 		
 			
 			System.out.println("Connected to DB");	

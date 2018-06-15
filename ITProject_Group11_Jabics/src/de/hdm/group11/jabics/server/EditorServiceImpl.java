@@ -8,6 +8,7 @@
 
 package de.hdm.group11.jabics.server;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -120,7 +121,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erstellt ein PValue mit einem Datums Wert und fügt diesen mitsamt collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
-	public PValue createPValue(Property p, LocalDateTime dt, Contact c, JabicsUser u) {
+	public PValue createPValue(Property p, LocalDate dt, Contact c, JabicsUser u) {
 		PValue newPValue = new PValue(p, dt, u);
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.

@@ -1,12 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 
-import de.hdm.group11.jabics.shared.bo.Property;
+import de.hdm.group11.jabics.shared.bo.*;
 
 /**
  * @author Brase
@@ -91,11 +88,11 @@ public class PropertyMapper {
 	    try {
 	    	// Einfügen der neuen Eigenschaft in die Datenbank.
 	    	String query = ("INSERT INTO property ( dateCreated, dateUpdated, isStandard, type, name) VALUES " 
-	    	+ "(" + p.getDateCreated() + ", " 
-	    	+ p.getDateUpdated() + ", " 
-	    	+ p.isStandard() + ", " 
-	    	+ p.getType() + ", " 
-	    	+ p.getLabel() + ")"); 
+	    	+ "('" + ServiceClass.convertdate(p.getDateCreated()) + "' , '" 
+	    	+ ServiceClass.convertdate(p.getDateUpdated()) + "' , " 
+	    	+ p.isStandard() + ", '" 
+	    	+ p.getTypeInString() + "' , '" 
+	    	+ p.getLabel() + "' ) "); 
 	    	
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();

@@ -1,12 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.shared.bo.*;
 
 /**
  * @author Brase
@@ -79,7 +76,7 @@ public class UserMapper {
 		return userMapper;
 	}
 	
-	public JabicsUser getUserByContactId(int cid) {
+	public JabicsUser findUserByContact(Contact c) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -89,14 +86,16 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen des Users in die Datenbank.
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.dateCreated, systemUser.dateUpdated"
+			// Join zwischen SystemUserID und ContactCollaboration zum Herausfinden der Userinformationen. 
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + cid );
+					+ " WHERE contactCollaboration.contactID = " + c.getId() + " AND isOwner = 1" );
 			
+			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			}
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -104,24 +103,27 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser getUserByContactListId(int clid) {
+	public JabicsUser findUserByContactList(ContactList cl) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		
 		JabicsUser u = new JabicsUser();
 		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen des Users in die Datenbank.
+			// Join zwischen SystemUserID und ContactListCollaboration zum Herausfinden der Userinformationen. 
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + clid );
+					+ " WHERE contactlistCollaboration.contactListID = " + cl.getId() + " AND isOwner = 1");
 			
+			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			}
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -129,7 +131,7 @@ public class UserMapper {
 		return u;
 	}
 	
-	public JabicsUser getUserByPValueId(int pvid){
+	public JabicsUser findUserByPValue(PValue pv) {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -139,14 +141,16 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen des Users in die Datenbank.
+			// Join zwischen SystemUserID und PValueCollaboration zum Herausfinden der Userinformationen. 
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
-					+ " WHERE systemUser.systemUserID = " + pvid );
+					+ " WHERE pValueCollaboration.pValueID = " + pv.getId() + " AND isOwner = 1");
 			
+			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			}
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -166,12 +170,19 @@ public class UserMapper {
 		Connection con = DBConnection.connection();
 		    
 		try {
+			// Einfügen des Users in die Datenbank.
+			String query = ("INSERT INTO systemUser (email) VALUES " + "('"  + u.getEmail() + "')"  );
+			
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-
-			// Einfügen des Users in die Datenbank.
-			stmt.executeUpdate("INSERT INTO systemUser (systemUserID, email) VALUES " + "(" + u.getId() + "," + u.getEmail() + ")"  );
-
+			
+			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
+			
+			ResultSet rs = stmt.getGeneratedKeys();
+			if(rs.next()) {
+				u.setId(rs.getInt(1));
+			}
+		
 			return u;
 		}
 		catch (SQLException e) {
@@ -194,7 +205,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 			   
 			// Löschen des Users.
-			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID=" + u.getId()); 
+			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId()); 
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
@@ -255,7 +266,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 		   
 			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
-			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + "WHERE systemUserID=" + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE systemUserID = " + id);
 		   
 			if (rs.next()) {
 				JabicsUser u = new JabicsUser();
