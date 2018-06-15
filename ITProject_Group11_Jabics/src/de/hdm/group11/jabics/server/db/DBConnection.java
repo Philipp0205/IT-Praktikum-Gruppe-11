@@ -37,7 +37,9 @@ public class DBConnection {
 		 * Diese Verbinfung wird in der Variable  "con" gespeichert.  
 		 */
 			con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?verifyServerCertificate=false&useSSL=true","s242770_2739576","itPROJEKT2018");
-		
+		/** Bin mir nicht sicher ob die klappt:
+		 * con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics?user=root&password=ThieskesOberesDrittel!");
+		 */
 			
 			System.out.println("Connected to DB");	
 		} 
