@@ -23,6 +23,10 @@ public class HTMLReportWriter extends ReportWriter {
 	public void resetReportText() {
 		this.reportText = "";
 	}
+	
+	public String getReportText() {
+		return this.reportText;
+	}
 
 	/**
 	 * Konvertieren eines <code>Paragraph</code> in HTML.
