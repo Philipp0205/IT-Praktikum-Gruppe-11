@@ -1,7 +1,6 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import com.google.appengine.api.utils.SystemProperty;
 
 /**
