@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.group11.jabics.client.gui.Editor;
 import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.LoginService;
@@ -48,9 +49,7 @@ public class Jabics implements EntryPoint {
 	 */
 	
 	public void onModuleLoad() {
-		MainView mainView = new MainView();
-		// Content is die ID des Body-Elements von Jabics 
-		RootPanel.get("content").add(mainView);
+		Editor e = new Editor();
 		
 		
 		// Login-Status 
@@ -64,7 +63,7 @@ public class Jabics implements EntryPoint {
 	    	
 	        loginInfo = result;
 	        if(loginInfo.isLoggedIn()) {
-	          //loadJabics();
+	          e.onModuleLoad();
 	        } else {        	
 	          loadLogin();
 	        }
@@ -79,7 +78,7 @@ public class Jabics implements EntryPoint {
 	    signInLink.setHref(loginInfo.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
-	    RootPanel.get("stockList").add(loginPanel);
+	    RootPanel.get("content").add(loginPanel);
 	    
 	  }
 	

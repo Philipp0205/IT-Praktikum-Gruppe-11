@@ -68,16 +68,15 @@ public class ContactCellListTab  {
 		});
       
       // Create a CellList using the keyProvider.
-      CellList<Contact> cellList = new CellList<Contact>(new ContactCell(),      
-      keyProvider);
+      CellList<Contact> cellList = new CellList<Contact>(new ContactCell());
       
       /*
        * Das SelectionModel implementiert die Selektion einer Zeile in der CellList. 
        * Das SelectionModel wird mit dem keyProvider initalisiert aus oben genannten gründen.
        */
       
-     // SelectionModel<Contact> selectionModel = new SingleSelectionModel<Contact>(keyProvider);
-     //cellList.setSelectionModel(selectionModel);
+     SelectionModel<Contact> selectionModel = new SingleSelectionModel<Contact>(keyProvider);
+     cellList.setSelectionModel(selectionModel);
            
       /*
        * Redraw the CellList. Sarah/Sara will still be selected because we

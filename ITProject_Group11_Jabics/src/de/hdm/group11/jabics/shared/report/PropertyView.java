@@ -1,13 +1,13 @@
 package de.hdm.group11.jabics.shared.report;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
 
 /*
- * Die Klasse PropertyView implementiert eine generische Sicht auf ein PValue Objekt, das für die Anzeige einer
- * Eigenschaftsausprägung in einem Report geeignet ist. Ein PropertyView enthält einen String für den Namen 
- * der Eigenschaft und einen String für den Wert der Ausprägung.
+ * Die Klasse PropertyView implementiert eine generische Sicht auf ein PValue Objekt, das fï¿½r die Anzeige einer
+ * Eigenschaftsausprï¿½gung in einem Report geeignet ist. Ein PropertyView enthï¿½lt einen String fï¿½r den Namen 
+ * der Eigenschaft und einen String fï¿½r den Wert der Ausprï¿½gung.
  */
 public class PropertyView {
 
@@ -29,7 +29,7 @@ public class PropertyView {
 					 break;
 			 case 2: this.pvalue = pv.getStringValue();
 			 		 break;
-			 case 3: LocalDateTime dt = pv.getDateValue();
+			 case 3: LocalDate dt = pv.getDateValue();
 			         this.pvalue = dt.toString();
 			         break;
 			 case 4: Float f = pv.getFloatValue();

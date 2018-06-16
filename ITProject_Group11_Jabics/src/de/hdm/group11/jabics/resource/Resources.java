@@ -5,8 +5,10 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface Resources extends ClientBundle  {
 	
-	 @Source("logo.png")
+	 @Source("LogoSmall.png")
 	  ImageResource logo();
-	
+	 
+	 @Source("Save.png")
+	  ImageResource save();
 
 }

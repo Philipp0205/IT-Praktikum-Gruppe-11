@@ -1,6 +1,6 @@
 package de.hdm.group11.jabics.shared;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -17,7 +17,7 @@ public interface EditorService {
 	
 	public PValue createPValue(Property p, int i, Contact c, JabicsUser u);
 	
-	public PValue createPValue(Property p, LocalDateTime dt, Contact c, JabicsUser u);
+	public PValue createPValue(Property p, LocalDate dt, Contact c, JabicsUser u);
 	
 	public PValue createPValue(Property p, float i, Contact c, JabicsUser u);
 	

@@ -1,7 +1,7 @@
 package de.hdm.group11.jabics.server;
 
 import java.util.ArrayList;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.PValue;
@@ -39,7 +39,7 @@ public class Filter {
 		return result;
 	}
 	
-	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, LocalDateTime pv) {
+	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, LocalDate pv) {
 			
 			ArrayList<Contact> result = new ArrayList<Contact>();
 			

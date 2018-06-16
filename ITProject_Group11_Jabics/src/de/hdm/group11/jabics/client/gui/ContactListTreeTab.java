@@ -252,7 +252,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	  * noch ein veraltetets Kontaktobjekt enthalten ist.
 	  */
 	 public void updateContact(Contact c) {
-		 eService.getContactListById(c.getOwner().getId(), new UpdateAccountCallback(c));
+		 //eService.getContactListById(c.getOwner().getId(), new UpdateAccountCallback(c));
 	 }
 	 
 	 private class UpdateAccountCallback implements AsyncCallback<ContactList> {

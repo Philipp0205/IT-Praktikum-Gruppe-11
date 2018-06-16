@@ -3,6 +3,9 @@ package de.hdm.group11.jabics.shared.bo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
+import java.util.TimeZone;
+
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
@@ -15,6 +18,7 @@ import com.google.gwt.view.client.ProvidesKey;
  * 
  * @author Kurrle und Anders
  */
+
 public class PValue extends BusinessObject implements Comparable<PValue>{
 
 
@@ -111,6 +115,10 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	}
 	public void setDateValue(LocalDate t) {
 		this.dateValue = t;
+		this.pointer = 3; 
+	}
+	public void setDateValue(LocalDateTime t) {
+		this.dateValue = t.toLocalDate();
 		this.pointer = 3; 
 	}
 	public float getFloatValue() {

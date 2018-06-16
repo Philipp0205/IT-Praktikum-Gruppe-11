@@ -1,7 +1,6 @@
 package de.hdm.group11.jabics.shared;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;

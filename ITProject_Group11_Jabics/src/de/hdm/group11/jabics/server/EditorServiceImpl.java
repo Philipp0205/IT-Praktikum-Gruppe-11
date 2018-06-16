@@ -594,7 +594,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val.add(new PValue( p2, "Mustermann",u));
 		val.add(new PValue( p3, "eineStraße",u));
 		val.add(new PValue( p4, 63,u));
-		val.add(new PValue( p5, LocalDateTime.of(2000, 5, 1, 20, 10),u));
+		val.add(new PValue( p5, LocalDate.of(2000, 5, 1),u));
 		val.add(new PValue( p7, 188.5f,u));
 		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
 		ArrayList<PValue> val2 = new ArrayList<PValue>();
@@ -602,7 +602,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val2.add(new PValue( p2, "Muster123",u));
 		val2.add(new PValue( p3, "eineStraße1234",u));
 		val2.add(new PValue( p4, 4,u));
-		val2.add(new PValue( p5, LocalDateTime.of(1993, 2, 1, 10, 34),u));
+		val2.add(new PValue( p5, LocalDate.of(1993, 2, 1),u));
 		val2.add(new PValue( p7, 167.2f,u));
 		c2 = new Contact(val2);
 		ArrayList<PValue> val3 = new ArrayList<PValue>();
@@ -610,7 +610,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val3.add(new PValue( p2, "Mildenberger",u));
 		val3.add(new PValue( p3, "Nobelstraße",u));
 		val3.add(new PValue( p4, 8,u));
-		val3.add(new PValue( p5, LocalDateTime.of(2015, 2, 1, 3, 15),u));
+		val3.add(new PValue( p5, LocalDate.of(2015, 2, 1),u));
 		val3.add(new PValue( p7, 7.2f,u));
 		c3 = new Contact(val3);
 		ArrayList<Contact> contacts = new ArrayList<Contact>();

@@ -1,18 +1,11 @@
 package de.hdm.group11.jabics.client.gui;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.cellview.client.TextColumn;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.AttachEvent;
-import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.user.client.Window;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,9 +18,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
-import de.hdm.group11.jabics.client.Jabics;
-import de.hdm.group11.jabics.server.EditorServiceImpl;
-import de.hdm.group11.jabics.shared.EditorService;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.*;
 
@@ -137,7 +127,7 @@ public class ContactForm extends VerticalPanel {
 	public void setEditor(Editor e) {
 		this.e = e;
 	}
-	
+
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die
 	 * Operationen Editieren, Löschen oder Teilen eines <code>Contact</code> Objekts
@@ -201,17 +191,17 @@ public class ContactForm extends VerticalPanel {
 
 			switch (formattype.getSelectedItemText()) {
 			case "Text":
-
 				editorService.createProperty(propertyName.getText(), Type.STRING, new CreatePropertyCallback());
-
+				break;
 			case "Datum":
 				editorService.createProperty(propertyName.getText(), Type.DATE, new CreatePropertyCallback());
-
+				break;
 			case "Kommazahl":
 				editorService.createProperty(propertyName.getText(), Type.FLOAT, new CreatePropertyCallback());
-
+				break;
 			case "Zahl":
 				editorService.createProperty(propertyName.getText(), Type.INT, new CreatePropertyCallback());
+				break;
 			}
 		}
 	}
@@ -231,7 +221,25 @@ public class ContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Property result) {
-			editorService.createPValue(result, pValueName.getText(), contactToDisplay, u, new CreatePValueCallback());
+			switch (formattype.getSelectedItemText()) {
+			case "Text":
+				editorService.createPValue(result, pValueName.getText(), contactToDisplay, u,
+						new CreatePValueCallback());
+				break;
+			case "Datum":
+				LocalDate ld = LocalDate.parse(pValueName.getText());
+				// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
+				editorService.createPValue(result, ld, contactToDisplay, u, new CreatePValueCallback());
+				break;
+			case "Kommazahl":
+				editorService.createPValue(result, Float.valueOf(pValueName.getText()), contactToDisplay, u,
+						new CreatePValueCallback());
+				break;
+			case "Zahl":
+				editorService.createPValue(result, Integer.valueOf(pValueName.getText()), contactToDisplay, u,
+						new CreatePValueCallback());
+				break;
+			}
 		}
 	}
 
@@ -325,18 +333,18 @@ public class ContactForm extends VerticalPanel {
 					public void onClick(ClickEvent event) {
 
 						int currentID = currentPV.getPropertyId();
-						PValue newPV = new PValue(result.get(pointer).getProperty());
+						PValue newPV = new PValue(result.get(pointer).getProperty(), u);
 
 						switch (currentPV.getPointer()) {
 						case 1:
-							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue()));
+							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); break;
 						case 2:
-							newPV.setStringValue(pValueTextBox[pointer].getValue().toString());
+							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
 						case 3:
 							// Das Datum muss folgendermaßen eingegeben werden: 2015-08-04T10:11:30
-							newPV.setDateValue(LocalDateTime.parse(pValueTextBox[pointer].getValue()));
+							newPV.setDateValue(LocalDateTime.parse(pValueTextBox[pointer].getValue())); break;
 						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue()));
+							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
 						default:
 						}
 						editorService.updatePValue(newPV, new UpdatePValueCallback());

@@ -90,7 +90,7 @@ public class Editor implements EntryPoint {
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */
-		widgetPanel.add(treeViewMenu);
+		//widgetPanel.add(treeViewMenu);
 		
 		RootPanel.get("details").add(mainPanel);
 		
@@ -103,7 +103,7 @@ public class Editor implements EntryPoint {
 			cForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu);
+		//widgetPanel.add(treeViewMenu);
 		//cForm.clear();
 		cForm.setCurrentContact(c);
 		widgetPanel.add(cForm);
@@ -115,7 +115,7 @@ public class Editor implements EntryPoint {
 			clForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu);
+		//widgetPanel.add(treeViewMenu);
 		//clForm.clear();
 		clForm.setCurrentList(cl);
 		widgetPanel.add(clForm);
@@ -126,7 +126,7 @@ public class Editor implements EntryPoint {
 			ccForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu);
+		//widgetPanel.add(treeViewMenu);
 		//ccForm.clear();
 		ccForm.setContact(c);
 		widgetPanel.add(ccForm);
@@ -138,7 +138,7 @@ public class Editor implements EntryPoint {
 			clcForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu);
+		//widgetPanel.add(treeViewMenu);
 		//clcForm.clear();
 		clcForm.setList(cl);
 		widgetPanel.add(clcForm);

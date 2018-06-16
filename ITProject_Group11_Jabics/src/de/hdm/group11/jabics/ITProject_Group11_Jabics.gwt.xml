@@ -20,7 +20,7 @@
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='de.hdm.group11.jabics.client.ITProject_Group11_Jabics'/>
+  <entry-point class='de.hdm.group11.jabics.client.Jabics'/>
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
@@ -29,3 +29,4 @@
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>
 </module>
+
