@@ -7,14 +7,12 @@ import java.util.Map;
 
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
-import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
 import com.google.gwt.view.client.TreeViewModel.NodeInfo;
 
 import de.hdm.group11.jabics.server.LoginInfo;
@@ -23,28 +21,18 @@ import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.client.gui.Editor;
 
 
 
 public class ContactListTreeTab implements TreeViewModel {
 	
-	private ContactForm cView; 
-	private ContactListForm clView;
-	
 	private Contact selectedContact;
 	private ContactList selectedContactList;
-	
-	private ContactForm contactform;
-	private ContactListForm contactListForm;
-	
-	private ArrayList<ContactList> cLists = new ArrayList<ContactList>();
-	// User?
 	private EditorServiceAsync eService = null;
-	//private JabicsUser user = new JabicsUser();
-	
 	//Instanziierung des Singelton-Objektes
 	private LoginInfo loginfo = LoginInfo.getloginInfo();
-	private Editor edtior = null;
+	Editor editor;
 	
 	
 
@@ -56,10 +44,6 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * In diesem Fall werden werden Kontaktlisten bereitgestellt. 
 	 */
 	private ListDataProvider<ContactList> contactListDataProviders =  new ListDataProvider<ContactList>();
-	private EditorServiceAsync eServiceAsync = null;
-	
-
-	
 	
 	public ContactListTreeTab() {
 
@@ -138,27 +122,10 @@ public class ContactListTreeTab implements TreeViewModel {
 					
 	}
 	
-	public ContactForm getContactForm() {
-		return cView;
-	}
-
-	public void setContactForm(ContactForm cView) {
-		this.cView = cView;
-	}
-
-	public ContactListForm getContactListForm() {
-		return clView;
-	}
-
-	public void setContactListForm(ContactListForm clView) {
-		this.clView = clView;
-	}
 
 	private void setSelectedContactList(ContactList cl) {
 		selectedContactList = cl;	
-		//clView.setSelected(cl);
 		editor.showContactList(cl);
-		
 	}
 	
 	public ContactList getSelectedContactList() {
@@ -168,7 +135,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	private void setSelectedContact(Contact c) {
 		selectedContact	= c;
 		// momentan aktiver User muss angegeben werden
-		contactform.setCurrentContact(c);
+		editor.showContact(c);;
 		
 		
 		
@@ -263,7 +230,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 }
 	 
 	 /*
-	  *  Sollte so nicht funktionieren.
+	  *  Funktioniert so noch nicht.
 	  */
 	 private class UpdateContactCallback implements AsyncCallback<ContactList> {
 		 

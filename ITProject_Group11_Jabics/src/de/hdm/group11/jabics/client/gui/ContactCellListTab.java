@@ -24,13 +24,11 @@ public class ContactCellListTab  {
 	private Contact selectedContact;
 
 	
-	ContactMapper cMapper = ContactMapper.contactMapper();
 	private EditorServiceAsync eService = null;
 	LoginInfo loginfo = new LoginInfo();
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
 	ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
-	
-	private ContactForm cView; 
+	Editor editor;
 	
 	public ContactCellListTab() {
 		
@@ -69,14 +67,7 @@ public class ContactCellListTab  {
       
       // Create a CellList using the keyProvider.
       CellList<Contact> cellList = new CellList<Contact>(new ContactCell());
-      
-      /*
-       * Das SelectionModel implementiert die Selektion einer Zeile in der CellList. 
-       * Das SelectionModel wird mit dem keyProvider initalisiert aus oben genannten gründen.
-       */
-      
-     SelectionModel<Contact> selectionModel = new SingleSelectionModel<Contact>(keyProvider);
-     cellList.setSelectionModel(selectionModel);
+     
            
       /*
        * Redraw the CellList. Sarah/Sara will still be selected because we
@@ -108,32 +99,23 @@ public class ContactCellListTab  {
 	private SingleSelectionModel<BusinessObject> selectionModel = null;
 	
 	
-	
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler{
 
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
-			
+			this.setSelectedContact((Contact)selection);
+				
+		}
 
+		private void setSelectedContact(Contact c) {
+			selectedContact = c;
+			editor.showContact(c);
 			
 		}
 		
 	}
 	
-	
-	public Contact getSelectedContact() {
-		return selectedContact;
-	}
-	
-	
-	public ContactForm getContactForm() {
-		return cView;
-	}
-
-	public void setContactForm(ContactForm cView) {
-		this.cView = cView;
-	}
 	
 	public void addContact(Contact c) {
 		contactsProvider.getList().add(c);
@@ -159,7 +141,9 @@ public class ContactCellListTab  {
 			contactsProvider.refresh();
 	}
 	
-	
+	/*
+	 * Funktioniert so noch nicht.
+	 */
 	private class UpdateContactCallback implements AsyncCallback<Contact> {
 		 
 		 Contact contact = null;
