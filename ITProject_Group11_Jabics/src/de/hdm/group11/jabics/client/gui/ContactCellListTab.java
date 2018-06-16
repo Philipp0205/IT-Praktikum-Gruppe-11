@@ -140,6 +140,11 @@ public class ContactCellListTab  {
 		selectionModel.setSelected(c, true);
 	}
 	
+	
+	public void removeContact(Contact c) {
+		contactsProvider.getList().remove(c);
+	}
+	
 	public void updateContact(Contact c) {
 		List<Contact> contacts = contactsProvider.getList();
 		int i = 0;
@@ -154,39 +159,35 @@ public class ContactCellListTab  {
 			contactsProvider.refresh();
 	}
 	
-	public void removeContact(Contact c) {
-		contactsProvider.getList().remove(c);
-	}
 	
-	
-//	private class UpdateContactCallback implements AsyncCallback<Contact> {
-//		 
-//		 Contact contact = null;
-//		 
-//		 UpdateContactCallback(Contact c) {
-//			 contact = c;
-//		 }
-//
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			//nix. 
-//		}
-//
-//		@Override
-//		public void onSuccess(Contact c) {
-//			List<Contact> contacts = contactsProvider.get
-//			
-//			for (int i = 0; i<contacts.size(); i++) {
-//				if(contact.getId() == contacts.get(i).getId()) {
-//					contacts.set(i, contact);
-//					break;
-//				}
-//			}
-//
-//			
-//		}
-//		 
-//	 }
+	private class UpdateContactCallback implements AsyncCallback<Contact> {
+		 
+		 Contact contact = null;
+		 
+		 UpdateContactCallback(Contact c) {
+			 contact = c;
+		 }
+
+		@Override
+		public void onFailure(Throwable caught) {
+			//nix. 
+		}
+
+		@Override
+		public void onSuccess(Contact c) {
+			List<Contact> contacts = contactsProvider.getList();
+			
+			for (int i = 0; i<contacts.size(); i++) {
+				if(contact.getId() == contacts.get(i).getId()) {
+					contacts.set(i, contact);
+					break;
+				}
+			}
+
+			
+		}
+		 
+	 }
 	
 	
 	

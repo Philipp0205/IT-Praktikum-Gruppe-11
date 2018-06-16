@@ -44,6 +44,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	
 	//Instanziierung des Singelton-Objektes
 	private LoginInfo loginfo = LoginInfo.getloginInfo();
+	private Editor edtior = null;
+	
+	
 
 	
 	/*
@@ -52,7 +55,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * 
 	 * In diesem Fall werden werden Kontaktlisten bereitgestellt. 
 	 */
-	private ListDataProvider<ContactList> contactListDataProviders = null;
+	private ListDataProvider<ContactList> contactListDataProviders =  new ListDataProvider<ContactList>();
 	private EditorServiceAsync eServiceAsync = null;
 	
 
@@ -135,7 +138,6 @@ public class ContactListTreeTab implements TreeViewModel {
 					
 	}
 	
-
 	public ContactForm getContactForm() {
 		return cView;
 	}
@@ -155,6 +157,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	private void setSelectedContactList(ContactList cl) {
 		selectedContactList = cl;	
 		//clView.setSelected(cl);
+		editor.showContactList(cl);
 		
 	}
 	
@@ -166,6 +169,8 @@ public class ContactListTreeTab implements TreeViewModel {
 		selectedContact	= c;
 		// momentan aktiver User muss angegeben werden
 		contactform.setCurrentContact(c);
+		
+		
 		
 		if (c != null) {
 			eService.getUserById(c.getOwner().getId(), new AsyncCallback<JabicsUser>() {
@@ -250,14 +255,23 @@ public class ContactListTreeTab implements TreeViewModel {
 	  * Ein altes Kontakt-Objekt wird durch einen neues mit der selbe Id ersetzt, die ID bleibt gleich! 
 	  * Dies ist sinnvoll, wenn sich die Eigenschafte eines Kontakts ge#ndert haben und im Baum
 	  * noch ein veraltetets Kontaktobjekt enthalten ist.
+	  * 
+	  * Diese Methode funktioniert nocht nicht 
 	  */
 	 public void updateContact(Contact c) {
 		 //eService.getContactListById(c.getOwner().getId(), new UpdateAccountCallback(c));
 	 }
 	 
-	 private class UpdateAccountCallback implements AsyncCallback<ContactList> {
+	 /*
+	  *  Sollte so nicht funktionieren.
+	  */
+	 private class UpdateContactCallback implements AsyncCallback<ContactList> {
 		 
 		 Contact contact = null;
+		 
+		 UpdateContactCallback(Contact c) {
+			 contact = c;
+		 }
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -308,8 +322,8 @@ public class ContactListTreeTab implements TreeViewModel {
 				
 			});
 			
-			// Return a node info that pairs the data with a cell.	
-			return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
+		// Return a node info that pairs the data with a cell.	
+		return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
 			
 		}
 		
