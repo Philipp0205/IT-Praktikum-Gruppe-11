@@ -95,6 +95,7 @@ public class UserMapper {
 			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			u.setUsername(rs.getString("name"));
 			}
 		}
 		catch (SQLException e) {
@@ -115,7 +116,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 
 			// Join zwischen SystemUserID und ContactListCollaboration zum Herausfinden der Userinformationen. 
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
 					+ " WHERE contactlistCollaboration.contactListID = " + cl.getId() + " AND isOwner = 1");
@@ -123,6 +124,7 @@ public class UserMapper {
 			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			u.setUsername(rs.getString("name"));
 			}
 		}
 		catch (SQLException e) {
@@ -142,7 +144,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 
 			// Join zwischen SystemUserID und PValueCollaboration zum Herausfinden der Userinformationen. 
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
 					+ " WHERE pValueCollaboration.pValueID = " + pv.getId() + " AND isOwner = 1");
@@ -150,6 +152,7 @@ public class UserMapper {
 			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
+			u.setUsername(rs.getString("name"));
 			}
 		}
 		catch (SQLException e) {
@@ -171,7 +174,7 @@ public class UserMapper {
 		    
 		try {
 			// Einfügen des Users in die Datenbank.
-			String query = ("INSERT INTO systemUser (email) VALUES " + "('"  + u.getEmail() + "')"  );
+			String query = ("INSERT INTO systemUser (email, name) VALUES " + "('"  + u.getEmail() + "','" + u.getUsername() + "')"  );
 			
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -241,6 +244,7 @@ public class UserMapper {
 				//Befüllen des Kontakt-Objekts und Einfügen in die Arraylist.
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
+				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
 			return al;
@@ -274,6 +278,7 @@ public class UserMapper {
 				//Befüllen des Kontakt-Objekts
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
+				u.setUsername(rs.getString("name"));
 		        
 		        return u;
 			}else
