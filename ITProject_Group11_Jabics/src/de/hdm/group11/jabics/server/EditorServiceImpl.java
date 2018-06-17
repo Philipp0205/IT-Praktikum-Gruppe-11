@@ -8,8 +8,7 @@
 
 package de.hdm.group11.jabics.server;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.server.db.*;
@@ -131,7 +130,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erstellt ein PValue mit einem Datums Wert und fügt diesen mitsamt collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
-	public PValue createPValue(Property p, LocalDate dt, Contact c, JabicsUser u) {
+	public PValue createPValue(Property p, Date dt, Contact c, JabicsUser u) {
 		PValue newPValue = new PValue(p, dt, u);
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
@@ -622,7 +621,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val.add(new PValue( p2, "Mustermann",u));
 		val.add(new PValue( p3, "eineStraße",u));
 		val.add(new PValue( p4, 63,u));
-		val.add(new PValue( p5, LocalDate.of(2000, 5, 1),u));
+		val.add(new PValue( p5, new Date(1,2,3),u));
 		val.add(new PValue( p7, 188.5f,u));
 		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
 		ArrayList<PValue> val2 = new ArrayList<PValue>();
@@ -630,7 +629,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val2.add(new PValue( p2, "Muster123",u));
 		val2.add(new PValue( p3, "eineStraße1234",u));
 		val2.add(new PValue( p4, 4,u));
-		val2.add(new PValue( p5, LocalDate.of(1993, 2, 1),u));
+		val2.add(new PValue( p5, new Date(1,2,3),u));
 		val2.add(new PValue( p7, 167.2f,u));
 		c2 = new Contact(val2);
 		ArrayList<PValue> val3 = new ArrayList<PValue>();
@@ -638,7 +637,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val3.add(new PValue( p2, "Mildenberger",u));
 		val3.add(new PValue( p3, "Nobelstraße",u));
 		val3.add(new PValue( p4, 8,u));
-		val3.add(new PValue( p5, LocalDate.of(2015, 2, 1),u));
+		val3.add(new PValue( p5, new Date(1,2,3),u));
 		val3.add(new PValue( p7, 7.2f,u));
 		c3 = new Contact(val3);
 		ArrayList<Contact> contacts = new ArrayList<Contact>();

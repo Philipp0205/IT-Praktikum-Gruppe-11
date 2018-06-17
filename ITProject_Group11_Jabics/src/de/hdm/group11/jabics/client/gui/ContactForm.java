@@ -1,7 +1,6 @@
 package de.hdm.group11.jabics.client.gui;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -127,6 +126,9 @@ public class ContactForm extends VerticalPanel {
 	public void setEditor(Editor e) {
 		this.e = e;
 	}
+	public void setUser(JabicsUser u) {
+		this.u = u;
+	}
 
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die
@@ -227,7 +229,8 @@ public class ContactForm extends VerticalPanel {
 						new CreatePValueCallback());
 				break;
 			case "Datum":
-				LocalDate ld = LocalDate.parse(pValueName.getText());
+				Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
+				Date ld = new Date(01,01,01);
 				// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
 				editorService.createPValue(result, ld, contactToDisplay, u, new CreatePValueCallback());
 				break;
@@ -341,8 +344,8 @@ public class ContactForm extends VerticalPanel {
 						case 2:
 							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
 						case 3:
-							// Das Datum muss folgendermaßen eingegeben werden: 2015-08-04T10:11:30
-							newPV.setDateValue(LocalDateTime.parse(pValueTextBox[pointer].getValue())); break;
+							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
+							newPV.setDateValue(new Date(01,01,01)); break;
 						case 4:
 							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
 						default:

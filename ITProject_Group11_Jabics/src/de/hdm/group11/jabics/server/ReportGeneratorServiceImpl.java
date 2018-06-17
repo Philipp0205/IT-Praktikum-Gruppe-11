@@ -1,8 +1,7 @@
 package de.hdm.group11.jabics.server;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.server.rpc.*;
 import de.hdm.group11.jabics.server.db.ContactMapper;
@@ -63,6 +62,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		AllContactsInSystemReport result = new AllContactsInSystemReport();
 		result.setHeadline(new Paragraph("Report aller Kontakte im System"));
 		result.setFootline(new Paragraph("Ende des Reports"));
+		result.setCreationDate(new Date());
 		for (JabicsUser u: uMapper.findAllUser()) {
 			result.addReport(createAllContactsOfUserReport(u));
 		}
@@ -84,7 +84,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		// Headline und Footline werden gesetzt.
 		result.setHeadline(new Paragraph("Report aller Kontakte f�r " + u.getUsername()));
 		result.setFootline(new Paragraph("Ende des Reports"));
-		
+		result.setCreationDate(new Date());
 		/**
 		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue von diesem erstellen 
 		 */
@@ -121,7 +121,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		result.setFootline("Ende des Reports.");
 		
 		// Erstellungsdatum des Reports auf "jetzt" stellen. 
-		result.setCreationDate(LocalDateTime.now());
+		result.setCreationDate(new Date());
 		
 		
 		String[] filtercriteria = new String[4];
@@ -144,7 +144,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		case FLOAT:
 			result.setSubReports(this.filterContactsByDate(contacts, pv));
-			LocalDate dt = pv.getDateValue();
+			Date dt = pv.getDateValue();
 			filtercriteria[2] = dt.toString();	
 		break;
 		

@@ -290,6 +290,9 @@ public class ContactListForm extends VerticalPanel {
 	public void setEditor(Editor e) {
 		this.e = e;
 	}
+	public void setUser(JabicsUser u) {
+		this.u = u;
+	}
 	/**
 	 * Clickhandler und Asynchrone Methodenaufrufe für das Löschen eines
 	 * <code>ContactList</code> Objekts.
