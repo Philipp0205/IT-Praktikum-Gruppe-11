@@ -87,22 +87,24 @@ public class PropertyMapper {
 	    
 	    try {
 	    	// Einfügen der neuen Eigenschaft in die Datenbank.
-	    	String query = ("INSERT INTO property ( dateCreated, dateUpdated, isStandard, type, name) VALUES " 
-	    	+ "('" + p.getDateCreated() + "' , '" 
-	    	+ p.getDateUpdated() + "' , " 
-	    	+ p.isStandard() + ", '" 
+	    	String query = ("INSERT INTO property (isStandard, type, name) VALUES " 
+	    	+ "('" + p.isStandard() + ", '" 
 	    	+ p.getTypeInString() + "' , '" 
 	    	+ p.getLabel() + "' ) "); 
-	    	
 	    	// Erzeugen eines ungefüllten SQL-Statements
-	    	Statement stmt = con.createStatement();
-	    				
-	    	stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
-	    				
+	    	Statement stmt = con.createStatement();	
+			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
 	    	ResultSet rs = stmt.getGeneratedKeys();
+			Statement stmt2 =  con.createStatement();
+			ResultSet rs2 = stmt2.executeQuery("SELECT * FROM property WHERE propertyID = " + rs.getInt(1));
+			
 	    	if(rs.next()) {
 	    		p.setId(rs.getInt(1));
 	    	}
+	    	if(rs2.next()) {
+				p.setDateCreated(rs2.getTimestamp("dateCreated"));
+				p.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+			}
 	    	return p;
 	    }
 	    catch (SQLException e) {
