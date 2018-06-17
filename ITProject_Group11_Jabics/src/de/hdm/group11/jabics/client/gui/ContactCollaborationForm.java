@@ -40,6 +40,8 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	
 	CellTable<JabicsUser> selUser;
 	ListDataProvider<JabicsUser> ldp;
+	SingleSelectionModel<JabicsUser> selectionModel;
+	MultiSelectionModel<PValue> multiSelectionModel;
 	JabicsUser selectedUserAdd = null;
 	JabicsUser selectedUserRemove = null;
 	
@@ -87,7 +89,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		ldp.setList(allUser);
 		ldp.addDataDisplay(selUser);
 		TextCell s = new TextCell();
-		SingleSelectionModel<JabicsUser> selectionModel  = new SingleSelectionModel<JabicsUser>();
+		selectionModel  = new SingleSelectionModel<JabicsUser>();
 		
 		selectionModel.addSelectionChangeHandler(
 			      new SelectionChangeEvent.Handler() {
@@ -168,17 +170,17 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		valueProvider.setList(pv);
 		valueProvider.addDataDisplay(selValues);
 		// Es kann sein, dass hier noch kexprovider benötigt werden
-		MultiSelectionModel<PValue> selectionModel  = new MultiSelectionModel<PValue>();
+		multiSelectionModel  = new MultiSelectionModel<PValue>();
 		
 		// Bei Auswahl ausgewählte PValues inf finalPV speichern
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		multiSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			         public void onSelectionChange(SelectionChangeEvent event) {
-			        	 finalPV = (HashSet<PValue>) selectionModel.getSelectedSet();
+			        	 finalPV = (HashSet<PValue>) multiSelectionModel.getSelectedSet();
 			        	 
 			        	 Window.alert("Auswahl geändert");
 			         }
 			      });
-		selValues.setSelectionModel(selectionModel);
+		selValues.setSelectionModel(multiSelectionModel);
 		
 		/* Wenn funktional kann dieser code gelöscht werden
 		CheckboxCell check = new CheckboxCell(true, false) {
@@ -195,7 +197,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		
 		Column<PValue, Boolean> checkbox = new Column<PValue, Boolean>(new CheckboxCell(true, false)){
 			public Boolean getValue(PValue object) {
-		        return selectionModel.isSelected(object);
+		        return multiSelectionModel.isSelected(object);
 		      }
 		};
 		Column<PValue, String> property = new Column<PValue, String>(new TextCell()) {

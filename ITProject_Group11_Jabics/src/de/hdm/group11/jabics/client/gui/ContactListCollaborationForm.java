@@ -39,6 +39,8 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		
 		CellTable<JabicsUser> selUser;
 		ListDataProvider<JabicsUser> ldp;
+		SingleSelectionModel<JabicsUser> selectionModel;
+		MultiSelectionModel<Contact> multiSelectionModel;
 		JabicsUser selectedUserAdd = null;
 		JabicsUser selectedUserRemove = null;
 		
@@ -85,7 +87,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			selUser = new CellTable<JabicsUser>();
 			ldp.addDataDisplay(selUser);
 			TextCell s = new TextCell();
-			SingleSelectionModel<JabicsUser> selectionModel  = new SingleSelectionModel<JabicsUser>();
+			selectionModel  = new SingleSelectionModel<JabicsUser>();
 			
 			selectionModel.addSelectionChangeHandler(
 				      new SelectionChangeEvent.Handler() {
@@ -162,20 +164,20 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			valueProvider = new ListDataProvider<Contact>();
 			valueProvider.addDataDisplay(selValues);
 			// Es kann sein, dass hier noch kexprovider benötigt werden
-			MultiSelectionModel<Contact> selectionModel  = new MultiSelectionModel<Contact>();
+			multiSelectionModel  = new MultiSelectionModel<Contact>();
 			
 			selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 		         public void onSelectionChange(SelectionChangeEvent event) {
-		        	 finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
+		        	 finalC = (HashSet<Contact>) multiSelectionModel.getSelectedSet();
 		        	 Window.alert("Auswahl geändert");
 		         }
 		      });
 			
-			selValues.setSelectionModel(selectionModel);
+			selValues.setSelectionModel(multiSelectionModel);
 			
 			Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)){
 				public Boolean getValue(Contact object) {
-			        return selectionModel.isSelected(object);
+			        return multiSelectionModel.isSelected(object);
 			      }
 			};
 			Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {

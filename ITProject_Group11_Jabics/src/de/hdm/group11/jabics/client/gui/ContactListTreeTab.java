@@ -16,14 +16,11 @@ import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.NodeInfo;
 
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
-import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.client.gui.Editor;
-
-
 
 public class ContactListTreeTab implements TreeViewModel {
 	
@@ -34,9 +31,6 @@ public class ContactListTreeTab implements TreeViewModel {
 	//private LoginInfo loginfo = LoginInfo.getloginInfo();
 	JabicsUser jabicsUser = new JabicsUser();
 	Editor editor;
-	
-	
-
 	
 	/*
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer wenn etwas geändert wird. 
@@ -99,9 +93,9 @@ public class ContactListTreeTab implements TreeViewModel {
 		
 	};
 	
-	private BusinessObjectKeyProvider boKeyProvider = null;
+	private BusinessObjectKeyProvider boKeyProvider;
 	
-	private SingleSelectionModel<BusinessObject> selectionModel = null;
+	private SingleSelectionModel<BusinessObject> selectionModel;
 	
 	/**
 	 * Implementation der GWT Klasse SelectionsChangeEvent. Diese Methode regelt, was passiert, wenn ein Objekt
@@ -146,7 +140,6 @@ public class ContactListTreeTab implements TreeViewModel {
 				@Override
 				public void onFailure(Throwable caught) {
 					// nix.
-					
 				}
 
 				@Override
@@ -221,13 +214,13 @@ public class ContactListTreeTab implements TreeViewModel {
 	 
 	 /* 
 	  * Ein altes Kontakt-Objekt wird durch einen neues mit der selbe Id ersetzt, die ID bleibt gleich! 
-	  * Dies ist sinnvoll, wenn sich die Eigenschafte eines Kontakts ge#ndert haben und im Baum
+	  * Dies ist sinnvoll, wenn sich die Eigenschafte eines Kontakts geändert haben und im Baum
 	  * noch ein veraltetets Kontaktobjekt enthalten ist.
 	  * 
 	  * Diese Methode funktioniert nocht nicht 
 	  */
 	 public void updateContact(Contact c) {
-		 //eService.getContactListById(c.getOwner().getId(), new UpdateAccountCallback(c));
+		 //eService.getContactById(c.getOwner().getId(), new UpdateAccountCallback(c));
 	 }
 	 
 	 /*
