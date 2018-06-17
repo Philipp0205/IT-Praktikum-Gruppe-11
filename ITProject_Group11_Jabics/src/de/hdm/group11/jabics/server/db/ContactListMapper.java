@@ -89,17 +89,20 @@ public class ContactListMapper {
 	    Connection con = DBConnection.connection();
 	   
 	    try {
-	    	String query = ("INSERT INTO contactList (listname) VALUES ('"
-	    	+ cl.getListName() + "')");
-
+	    	String query = ("INSERT INTO contactList (listname) VALUES ('" + cl.getListName() + "')");
 			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-			
+			Statement stmt = con.createStatement();	
 			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
-			
 			ResultSet rs = stmt.getGeneratedKeys();
+			Statement stmt2 =  con.createStatement();
+			ResultSet rs2 = stmt2.executeQuery("SELECT * FROM contactList WHERE contactListID = " + rs.getInt(1));
+
 			if(rs.next()) {
 				cl.setId(rs.getInt(1));
+			}
+			if(rs2.next()) {
+				cl.setDateCreated(rs2.getTimestamp("dateCreated"));
+				cl.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 			}
 	    	return cl;
 	    }
@@ -126,8 +129,7 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 		   
 	    	//Update des Namens der Kontaktliste und des letzten Updates
-	    	stmt.executeUpdate("UPDATE contactList SET listname = '" + cl.getListName() + "', dateUpdate = '" + cl.getDateUpdated()
-	    	+ "' WHERE contactlistID = " + cl.getId()); 
+	    	stmt.executeUpdate("UPDATE contactList SET listname = '" + cl.getListName()	+ "' WHERE contactlistID = " + cl.getId()); 
 	   
 	  	  	return cl;
 	    }
@@ -179,7 +181,7 @@ public class ContactListMapper {
 	    	Statement stmt2 = con.createStatement();
 		   
 	    	//Update des letzten Updates der Kontaktliste.
-	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = '" + cl.getDateUpdated() + "'  WHERE contactlistID = " + cl.getId()); 
+	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactlistID = " + cl.getId()); 
 		   
 	    	return cl;
 	    }  
@@ -202,7 +204,13 @@ public class ContactListMapper {
 		   Statement stmt = con.createStatement();
 		   
 		   // Löschen des Kontakts aus der Liste.
-		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID= " + cl.getId() + " AND contactListID = " + cl.getId()); 
+		   stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID= " + cl.getId() + " AND contactListID = " + cl.getId());
+		   
+		   // Erzeugen eines zweiten ungefüllten SQL-Statements
+		   Statement stmt2 = con.createStatement();
+		   
+		   //Update des letzten Updates der Kontaktliste.
+		   stmt2.executeUpdate("UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactlistID = " + cl.getId()); 
 	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
