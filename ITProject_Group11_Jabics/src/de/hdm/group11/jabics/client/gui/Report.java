@@ -1,29 +1,27 @@
 package de.hdm.group11.jabics.client.gui;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
-import de.hdm.group11.jabics.server.EditorServiceImpl;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
 import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
-import de.hdm.group11.jabics.shared.report.ReportWriter;
 
 public class Report implements EntryPoint {
 	
@@ -99,7 +97,8 @@ public class Report implements EntryPoint {
 						pvalue.setFloatValue(Float.parseFloat(floatBox.getText()));
 					}
 				} else if (dateBox.getText().isEmpty() == false) {
-					pvalue.setDateValue(LocalDateTime.parse(dateBox.getText()));
+					Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
+					pvalue.setDateValue(new Date(01,01,01));
 				}
 				else System.out.println("Es konnte keine Suche durchgeführt werden.");
 		
@@ -115,9 +114,7 @@ public class Report implements EntryPoint {
 		public void onFailure(Throwable caught) {
 			// Fehler werden gelogt.
 			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
-			
 		}
-
 		@Override
 		public void onSuccess(AllContactsInSystemReport report) {
 			if (report != null) { 
@@ -127,18 +124,15 @@ public class Report implements EntryPoint {
 				RootPanel.get("content").clear();
 				RootPanel.get("content").add(new HTML(writer.getReportText()));
 			}
-			
 		}	
-		
 	}
+	
 	private class CreateFilteredContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
-			
+			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");	
 		}
-
 		@Override
 		public void onSuccess(FilteredContactsOfUserReport report) {
 			if (report != null) { 
@@ -148,8 +142,7 @@ public class Report implements EntryPoint {
 				RootPanel.get("content").clear();
 				RootPanel.get("content").add(new HTML(writer.getReportText()));
 			}
-		}
-		
+		}	
 	}
 	
 	private class CreateAllContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
@@ -157,9 +150,7 @@ public class Report implements EntryPoint {
 		@Override
 		public void onFailure(Throwable caught) {
 			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
-			
 		}
-
 		@Override
 		public void onSuccess(FilteredContactsOfUserReport report) {
 			if (report != null) { 

@@ -1,15 +1,12 @@
 package de.hdm.group11.jabics.client.gui;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.TreeViewModel;
+
+import de.hdm.group11.jabics.shared.bo.Contact;
+import de.hdm.group11.jabics.shared.bo.ContactList;
 
 /**
  * Diese Klasse repräsentiert die Baum-Ansicht der Kontaktlisten und Listen.
@@ -20,14 +17,17 @@ import com.google.gwt.view.client.TreeViewModel;
  */
 
 public class TreeViewMenu  {
+	ContactListTreeTab contactListTab;
+	ContactCellListTab contactsTab;
+	StackLayoutPanel stackPanel;
 	
 	public Widget onLoad() {
 		
 		//StackLayoutpanel wird erstellt.
-		StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
+		stackPanel = new StackLayoutPanel(Unit.EM);
 		
-		ContactCellListTab contactsTab = new ContactCellListTab();
-		ContactListTreeTab contactListTab = new ContactListTreeTab();
+		contactsTab = new ContactCellListTab();
+		contactListTab = new ContactListTreeTab();
 		
 		stackPanel.add(new HTML("Meine Listen"), new HTML("Meine Listen"), 4);
 		stackPanel.add(contactListTab.createTab(), new HTML("Meine Listen"), 4);
@@ -38,15 +38,16 @@ public class TreeViewMenu  {
 	    return stackPanel;
 	}
 	
-	
-
-	
-
-	
-	
-	
-	
-	
-	
-
+	public void addContactList(ContactList cl) {
+		contactListTab.addContactList(cl);
+	}
+	public void addContactToList(ContactList cl, Contact c) {
+		contactListTab.addContactOfList(cl, c);
+	}
+	public void addContact(Contact c) {
+		contactsTab.addContact(c);
+	}
+	public StackLayoutPanel getStackLayoutPanel() {
+		return this.stackPanel;
+	}
 }

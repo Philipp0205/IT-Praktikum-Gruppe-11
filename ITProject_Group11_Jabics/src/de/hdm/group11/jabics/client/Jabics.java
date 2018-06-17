@@ -90,15 +90,14 @@ public class Jabics implements EntryPoint {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			
 		} 
-		
 	}
 	
 	
 
 	private void loadJabics() {
 		Editor e = new Editor();
+		e.setLoginInfo(logon);
 		e.onModuleLoad();
 	}
 	

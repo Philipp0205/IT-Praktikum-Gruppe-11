@@ -1,6 +1,6 @@
 package de.hdm.group11.jabics.shared;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,7 +20,7 @@ public interface EditorServiceAsync {
 	
 	void createPValue(Property p, int i, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
 
-	void createPValue(Property p, LocalDate dt, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
+	void createPValue(Property p, Date dt, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
 	
 	void createPValue(Property p, float f, Contact c, JabicsUser u, AsyncCallback<PValue> callback);
 	

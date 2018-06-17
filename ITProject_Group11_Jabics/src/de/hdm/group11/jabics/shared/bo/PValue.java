@@ -1,6 +1,6 @@
 package de.hdm.group11.jabics.shared.bo;
 
-import java.sql.*;
+import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
 
