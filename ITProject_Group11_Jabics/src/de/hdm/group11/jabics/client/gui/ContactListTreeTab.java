@@ -15,8 +15,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.NodeInfo;
 
-import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;

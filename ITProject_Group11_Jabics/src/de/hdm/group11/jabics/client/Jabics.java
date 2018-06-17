@@ -2,6 +2,7 @@ package de.hdm.group11.jabics.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
@@ -9,9 +10,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.gui.Editor;
-import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginService;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
@@ -33,8 +34,13 @@ public class Jabics implements EntryPoint {
 	LoginServiceAsync loginSevice;
 	ReportGeneratorServiceAsync reportGenerator;
 	
+	LoginInfo logon;
 	
 	JabicsUser currentUser;
+	
+	public void setLoginInfo(LoginInfo logon) {
+		this.logon = logon;
+	}
 	
 	public void onModuleLoad() {
 		
@@ -43,14 +49,14 @@ public class Jabics implements EntryPoint {
 		 */
 	    loginSevice = ClientsideSettings.getLoginService();
 		eService = ClientsideSettings.getEditorService();
-		reportGenerator = ClientsideSettings.getReportGeneratorService();	
+		reportGenerator = ClientsideSettings.getReportGeneratorService();
+		loadLogin();
+		loginSevice.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 
 	}
 	
-	public class loginServiceCallback implements AsyncCallback<JabicsUser> {
+	private class loginServiceCallback implements AsyncCallback<LoginInfo> {
 		
-		
-
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
@@ -58,18 +64,18 @@ public class Jabics implements EntryPoint {
 		}
 
 		@Override
-		public void onSuccess(JabicsUser jabicsuser) {
-			currentUser = jabicsuser; 
+		public void onSuccess(LoginInfo logon) {
+			currentUser = logon.getCurrentUser(); 
+			setLoginInfo(logon);
 			
 			if(currentUser.getIsLoggedIn()) {
-				eService.setJabicsUser(jabicsuser, new SetJabicsUserCallback() );
-				
+				eService.setJabicsUser(logon.getCurrentUser(), new SetJabicsUserCallback() );
+				loadJabics();
 			}
-			
-		}
-		
-		
-		
+			else {
+				Window.alert("User not logged in");
+			}
+		}	
 	}
 	
 	private class SetJabicsUserCallback implements AsyncCallback<JabicsUser> {
@@ -102,7 +108,7 @@ public class Jabics implements EntryPoint {
 	    // Assemble login panel.
 		this.checkForNewUser();
 
-	    signInLink.setHref(currentUser.getLoginUrl());
+	    signInLink.setHref(logon.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("content").add(loginPanel);

@@ -23,7 +23,7 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
  */
 
 
-public class Editor implements EntryPoint {
+public class Editor implements EntryPoint{
 	
 	/**
 	 * Im folgenden Interface werden die Items, öffnen und schlie0en, hinzugefügt.

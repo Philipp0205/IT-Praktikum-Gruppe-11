@@ -12,9 +12,9 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.server.db.ContactMapper;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;

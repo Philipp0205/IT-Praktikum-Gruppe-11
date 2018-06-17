@@ -5,10 +5,10 @@
 -->
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN"
   "http://gwtproject.org/doctype/2.7.0/gwt-module.dtd">
-<module rename-to='itproject_group11_jabics'>
+<module rename-to='itproject_group11_jabics_report'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
-  <inherits name="com.google.gwt.logging.Logging"/>
+
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
@@ -20,7 +20,7 @@
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='de.hdm.group11.jabics.client.Jabics'/>
+  <entry-point class='de.hdm.group11.jabics.client.gui.Report'/>
 
   <!-- Specify the paths for translatable code                    -->
   <source path='de.hdm.group11.jabics.client.client'/>
@@ -29,4 +29,3 @@
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>
 </module>
-
