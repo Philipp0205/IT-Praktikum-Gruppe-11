@@ -54,6 +54,10 @@ public class ContactListForm extends VerticalPanel {
 	MultiSelectionModel<Contact> selectionModel;
 	
 	Button deleteListButton, shareListButton;
+	
+	MultiSelectionModel<Contact> selectionModel1  = new MultiSelectionModel<Contact>();
+	
+	MultiSelectionModel<Contact> selectionModel2  = new MultiSelectionModel<Contact>();
 		
 		
 		
@@ -175,23 +179,25 @@ public class ContactListForm extends VerticalPanel {
 		valueProvider.addDataDisplay(selValues);
 		 //finalC;
 		// Es kann sein, dass hier noch kexprovider benötigt werden
+
 		selectionModel  = new MultiSelectionModel<Contact>();
+
 		
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		selectionModel1.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 	         public void onSelectionChange(SelectionChangeEvent event) {
 	        	 /**
 	        	  *  TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button add abgedeckt!
 	        	  */
-	        	 HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
+	        	 HashSet<Contact> finalC = (HashSet<Contact>) selectionModel1.getSelectedSet();
 	        	 Window.alert("Auswahl geändert");
 	         }
 	    });
 		
-		selValues.setSelectionModel(selectionModel);
+		selValues.setSelectionModel(selectionModel1);
 		
 		Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)){
 			public Boolean getValue(Contact object) {
-		        return selectionModel.isSelected(object);
+		        return selectionModel1.isSelected(object);
 		      }
 		};
 		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
@@ -208,7 +214,7 @@ public class ContactListForm extends VerticalPanel {
 		Button add = new Button("Ausgewählte Kontakte hinzufügen");
 		add.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
-				for(Contact c : selectionModel.getSelectedSet()) {
+				for(Contact c : selectionModel1.getSelectedSet()) {
 					/*
 					 * TODO hier gibt es zwei möglichkeiten der Implementierung: nummer 2 ist auskommatiert, noch entscheiden welhes besser ist!
 					 */
@@ -239,23 +245,23 @@ public class ContactListForm extends VerticalPanel {
 		valueProvider.addDataDisplay(selValues);
 		 //finalC;
 		// Es kann sein, dass hier noch kexprovider benötigt werden
-		MultiSelectionModel<Contact> selectionModel  = new MultiSelectionModel<Contact>();
+
 		
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		selectionModel2.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 	         public void onSelectionChange(SelectionChangeEvent event) {
 	        	 /**
 	        	  *  TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button add abgedeckt!
 	        	  */
-	        	 HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
+	        	 HashSet<Contact> finalC = (HashSet<Contact>) selectionModel2.getSelectedSet();
 	        	 Window.alert("Auswahl geändert");
 	         }
 	    });
 		
-		selValues.setSelectionModel(selectionModel);
+		selValues.setSelectionModel(selectionModel2);
 		
 		Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)){
 			public Boolean getValue(Contact object) {
-		        return selectionModel.isSelected(object);
+		        return selectionModel2.isSelected(object);
 		      }
 		};
 		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
@@ -275,7 +281,7 @@ public class ContactListForm extends VerticalPanel {
 				/*
 				 * TODO hier gibt es zwei möglichkeiten der Implementierung nummer 2 ist auskommatiert, noch entscheiden welhes besser ist!
 				 */
-				for(Contact c : selectionModel.getSelectedSet()) {
+				for(Contact c : selectionModel2.getSelectedSet()) {
 					editorService.removeContactFromList(c, currentList, new AddContactToListCallback());
 					/*
 					currentList.removeContact(c);

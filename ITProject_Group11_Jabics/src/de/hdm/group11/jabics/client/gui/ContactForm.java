@@ -325,6 +325,11 @@ public class ContactForm extends VerticalPanel {
 	 * Textboxen, Buttons und Checkboxen, sowie deren Clickhandler werden dynamisch
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
+	
+	int pointer1;
+	PValue currentPV;
+	TextBox[] pValueTextBox;
+	
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert("Fehler in GetPValuesCallback");
@@ -337,49 +342,50 @@ public class ContactForm extends VerticalPanel {
 			checkedPV.clear();
 
 			Label[] propertyLabels = new Label[result.size()];
-			TextBox[] pValueTextBox = new TextBox[result.size()];
+			pValueTextBox = new TextBox[result.size()];
 			Button[] saveButton = new Button[result.size()];
 			Button[] deleteButton = new Button[result.size()];
 
 			for (int i = result.size(); i > 0; i--) {
 
-				int pointer = i;
-				
-				PValue currentPV = result.get(i);
+				pointer1 = i;
 
-				propertyLabels[i] = new Label(result.get(i).getProperty().toString());
-				pValueTextBox[i] = new TextBox();
-				pValueTextBox[i].setText(result.get(i).toString());
-				saveButton[i] = new Button("Save");
+				currentPV = result.get(pointer1);
 
-				saveButton[i].addClickHandler(new ClickHandler() {
+				propertyLabels[pointer1] = new Label(result.get(pointer1).getProperty().toString());
+				pValueTextBox[pointer1] = new TextBox();
+				pValueTextBox[pointer1].setText(result.get(pointer1).toString());
+				saveButton[pointer1] = new Button("Save");
+
+				saveButton[pointer1].addClickHandler(new ClickHandler() {
+
 					// TODO Bisher noch nicht funktional
 					public void onClick(ClickEvent event) {
 
 						int currentID = currentPV.getPropertyId();
-						PValue newPV = new PValue(result.get(pointer).getProperty(), u);
+						PValue newPV = new PValue(result.get(pointer1).getProperty(), u);
 
 						switch (currentPV.getPointer()) {
 						case 1:
-							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); break;
+							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer1].getValue())); break;
 						case 2:
-							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
+							newPV.setStringValue(pValueTextBox[pointer1].getValue().toString()); break;
 						case 3:
 							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
 							newPV.setDateValue(new Date(01,01,01)); break;
 						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
+							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer1].getValue())); break;
 						default:
 						}
 						editorService.updatePValue(newPV, new UpdatePValueCallback());
 
-						Window.alert("Wert" + pValueTextBox[pointer].getValue().toString() + "gespeichert");
+						Window.alert("Wert" + pValueTextBox[pointer1].getValue().toString() + "gespeichert");
 					}
 				});
 
-				deleteButton[i] = new Button("Delete");
+				deleteButton[pointer1] = new Button("Delete");
 
-				deleteButton[i].addClickHandler(new ClickHandler() {
+				deleteButton[pointer1].addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 
 						if (contactToDisplay == null) {
