@@ -289,7 +289,7 @@ public class UserMapper {
 		    return null;
 		}
 	}	
-}
+
 
 /**
  * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank nach seiner E-Mail-Adresse.
