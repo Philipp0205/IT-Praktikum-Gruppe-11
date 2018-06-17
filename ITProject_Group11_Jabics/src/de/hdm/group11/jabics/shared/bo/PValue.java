@@ -1,8 +1,6 @@
 package de.hdm.group11.jabics.shared.bo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.sql.*;
 
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -23,8 +21,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	
 	private int intValue; 
 	private String stringValue; 
-	private LocalDate dateValue;
-	private String dateValue2;
+	private Date dateValue;
 	private float floatValue; 
 	private Property property;
 	private int propertyId;
@@ -51,7 +48,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 		this.stringValue = s;
 		this.pointer = 2;
 	}
-	public PValue(Property p, LocalDate date, JabicsUser u) {
+	public PValue(Property p, Date date, JabicsUser u) {
 		this(p, u);
 		this.dateValue = date;
 		this.pointer = 3;
@@ -98,27 +95,11 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 		this.pointer = 2; 
 
 	}
-	public LocalDate getDateValue() {
+	public Date getDateValue() {
 		return dateValue;
 	}
-	public void setDateValue(int year, int month, int dayOfMonth) {
-		this.dateValue = LocalDate.of(year, month, dayOfMonth);
-		//this.dateUpdated = LocalDateTime.now();
-		this.pointer = 3; 
-	}
-	// overload method if date is given in the datatype "month". 
-	public void setDateValue(int year, Month month, int dayOfMonth) {
-		this.dateValue = LocalDate.of(year, month, dayOfMonth);
-		//this.dateUpdated = LocalDateTime.now();
-		this.pointer = 3; 
-	}
-	public void setDateValue(LocalDate t) {
-		this.dateValue = t;
-		this.pointer = 3; 
-	}
-	public void setDateValue(LocalDateTime t) {
-		this.dateValue = t.toLocalDate();
-		this.pointer = 3; 
+	public void setDateValue(Date dateValue) {
+		this.dateValue = dateValue;
 	}
 	public float getFloatValue() {
 		return floatValue;

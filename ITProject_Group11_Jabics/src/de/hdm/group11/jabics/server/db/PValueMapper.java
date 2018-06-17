@@ -1,8 +1,6 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -104,7 +102,7 @@ public class PValueMapper {
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' , '" + ServiceClass.convertdate(c.getDateUpdated()) + "' , '"  + value + "' , "  + " null, "  
+					+ "('" + c.getDateCreated() + "' , '" + c.getDateUpdated() + "' , '"  + value + "' , "  + " null, "  
 					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
 					break;
 				}
@@ -114,7 +112,7 @@ public class PValueMapper {
     	
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' , '" + ServiceClass.convertdate(c.getDateUpdated()) + "', "  + "null, " + value  
+					+ "('" + c.getDateCreated() + "' , '" + c.getDateUpdated() + "', "  + "null, " + value  
 					+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
 					break;
 				}
@@ -128,8 +126,8 @@ public class PValueMapper {
 					 */
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' ,'" + ServiceClass.convertdate(c.getDateUpdated()) + "', "  + "null, " + "null, " 
-					+ "null, " + "'" + ServiceClass.convertdatevalue(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
+					+ "('" + c.getDateCreated() + "' ,'" + c.getDateUpdated() + "', "  + "null, " + "null, " 
+					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
 					break;
 				}
 				case FLOAT: {
@@ -138,7 +136,7 @@ public class PValueMapper {
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' , '" + ServiceClass.convertdate(c.getDateUpdated()) + "', " +  "null, " +  "null, " + value 
+					+ "('" + c.getDateCreated() + "' , '" + c.getDateUpdated() + "', " +  "null, " +  "null, " + value 
 					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
 					break;
 				}
@@ -190,11 +188,10 @@ public class PValueMapper {
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
-	    		Date date =rs.getDate("dateValue");
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		//Muss noch in der Apl realisiert werden
-	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate());
+	    		pv.setDateValue(rs.getDate("dateValue"));
 	    		
 	    		al.add(pv);
 	 	    }
@@ -232,10 +229,10 @@ public class PValueMapper {
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		//Muss noch implementiert werden.
-	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate()); 
+	    		pv.setDateValue(rs.getDate("dateValue")); 
 	    	}
 	    	return pv;
 	    }
@@ -268,20 +265,20 @@ public class PValueMapper {
 	    		case STRING: {
 	    			
 	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = '" 
-	    			+ ServiceClass.convertdate(pv.getDateUpdated()) + "'"
+	    			+ pv.getDateUpdated() + "'"
 	    			+  " WHERE pValueID = '" + pv.getId() + "';");
 	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + ServiceClass.convertdate(pv.getDateUpdated())
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + pv.getDateUpdated()
 	    			+ "'," + columnname + "= '"
 	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
 	    			break;
 	    		}
 	    		case DATE: {
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + ServiceClass.convertdate(pv.getDateUpdated())
+	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + pv.getDateUpdated()
 	    			+ "'," + columnname + "= '"
 	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;
@@ -289,7 +286,7 @@ public class PValueMapper {
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + ServiceClass.convertdate(pv.getDateUpdated())
+	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + pv.getDateUpdated()
 	    			+ "'," + columnname + "= '"
 	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;

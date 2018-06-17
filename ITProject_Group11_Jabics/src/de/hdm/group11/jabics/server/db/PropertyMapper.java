@@ -88,8 +88,8 @@ public class PropertyMapper {
 	    try {
 	    	// Einfügen der neuen Eigenschaft in die Datenbank.
 	    	String query = ("INSERT INTO property ( dateCreated, dateUpdated, isStandard, type, name) VALUES " 
-	    	+ "('" + ServiceClass.convertdate(p.getDateCreated()) + "' , '" 
-	    	+ ServiceClass.convertdate(p.getDateUpdated()) + "' , " 
+	    	+ "('" + p.getDateCreated() + "' , '" 
+	    	+ p.getDateUpdated() + "' , " 
 	    	+ p.isStandard() + ", '" 
 	    	+ p.getTypeInString() + "' , '" 
 	    	+ p.getLabel() + "' ) "); 
@@ -157,8 +157,8 @@ public class PropertyMapper {
 	    		p.setStandard(rs.getBoolean("isStandard"));
 	    		p.setLabel(rs.getString("name"));
 	    		p.setType(rs.getString("type"));		
-	    		p.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		p.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		p.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		
 	    	}
 	    	return p;
