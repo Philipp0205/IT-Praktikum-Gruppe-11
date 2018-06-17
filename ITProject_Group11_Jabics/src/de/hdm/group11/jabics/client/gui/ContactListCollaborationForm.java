@@ -29,44 +29,49 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 		ArrayList<JabicsUser> allUser = new ArrayList<JabicsUser>();
 		ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
 		
-		Button shareContactList = new Button("Kontaktliste freigeben");
-		Button exit = new Button("Abbrechen");
-		Button addButton = new Button("Nutzer hinzufügen");
+		Button shareContactList, exit, addButton, removeButton;
 		
+		JabicsUser selectedUserAdd, selectedUserRemove;
 		
 		MultiWordSuggestOracle  oracle;
 		SuggestBox sug; // = new SuggestBox();
 		
+		TextColumn<JabicsUser> username;
 		CellTable<JabicsUser> selUser;
 		ListDataProvider<JabicsUser> ldp;
 		SingleSelectionModel<JabicsUser> selectionModel;
-		MultiSelectionModel<Contact> multiSelectionModel;
-		JabicsUser selectedUserAdd = null;
-		JabicsUser selectedUserRemove = null;
 		
 		HashSet<Contact> finalC = new HashSet<Contact>();
+		MultiSelectionModel<Contact> multiSelectionModel;
 		CellTable<Contact> selValues;
 		ListDataProvider<Contact> valueProvider;
-
+		
+		Column<Contact, Boolean> checkbox;
+		Column<Contact, String> contact;
+		
 		AbsolutePanel ap;
-
 		
 		public void onLoad() {
 			//SuggestOracle oracle = 
 			retrieveUser();
 			createSuggestBox();
 			createContactBox();
+			
+			shareContactList = new Button("Kontaktliste freigeben");
 			shareContactList.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent ev) {
 					shareContactList();
 					e.returnToContactListForm(sharedContactList);
 				}
 			});
+			
+			exit = new Button("Abbrechen");
 			exit.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent ev) {
 					e.returnToContactListForm(sharedContactList);
 				 }
 			});
+			
 			ap = new AbsolutePanel();
 			ap.setSize("500px", "400px");
 			ap.add(sug, 20, 10);
@@ -86,7 +91,6 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			ldp = new ListDataProvider<JabicsUser>();
 			selUser = new CellTable<JabicsUser>();
 			ldp.addDataDisplay(selUser);
-			TextCell s = new TextCell();
 			selectionModel  = new SingleSelectionModel<JabicsUser>();
 			
 			selectionModel.addSelectionChangeHandler(
@@ -97,6 +101,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 				      });
 			selUser.setSelectionModel(selectionModel);
 			
+			addButton = new Button("Nutzer hinzufügen");
 			addButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent e) {
 					if (selectedUserAdd != null) finalUser.add(selectedUserAdd);
@@ -106,7 +111,7 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 				}
 			});
 			
-			Button removeButton = new Button();
+			removeButton = new Button("Entfernen");
 			removeButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent e) {
 					if(selectedUserRemove != null) {
@@ -116,7 +121,8 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 					}	
 				}
 			});
-			TextColumn<JabicsUser> username = new TextColumn<JabicsUser>() {
+			
+			username = new TextColumn<JabicsUser>() {
 				public String getValue(JabicsUser u) {
 					return u.getUsername();
 				}
@@ -175,12 +181,12 @@ public class ContactListCollaborationForm extends HorizontalPanel{
 			
 			selValues.setSelectionModel(multiSelectionModel);
 			
-			Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)){
+			checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)){
 				public Boolean getValue(Contact object) {
 			        return multiSelectionModel.isSelected(object);
 			      }
 			};
-			Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
+			contact = new Column<Contact, String>(new TextCell()) {
 				public String getValue(Contact object) {
 			        return object.toString();
 			      }
