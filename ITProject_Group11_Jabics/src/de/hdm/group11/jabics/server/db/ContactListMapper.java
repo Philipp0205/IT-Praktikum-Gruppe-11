@@ -1,9 +1,6 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -92,8 +89,8 @@ public class ContactListMapper {
 	    Connection con = DBConnection.connection();
 	   
 	    try {
-	    	String query = ("INSERT INTO contactList ( listname, dateCreated, dateUpdated) VALUES "
-	    	+ cl.getListName()  + ", " + ServiceClass.convertdate(cl.getDateCreated()) + ", " + ServiceClass.convertdate(cl.getDateUpdated()));
+	    	String query = ("INSERT INTO contactList (listname) VALUES ('"
+	    	+ cl.getListName() + "')");
 
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -104,7 +101,6 @@ public class ContactListMapper {
 			if(rs.next()) {
 				cl.setId(rs.getInt(1));
 			}
-			
 	    	return cl;
 	    }
 	    catch (SQLException e) {
@@ -130,7 +126,7 @@ public class ContactListMapper {
 	    	Statement stmt = con.createStatement();
 		   
 	    	//Update des Namens der Kontaktliste und des letzten Updates
-	    	stmt.executeUpdate("UPDATE contactList SET listname = '" + cl.getListName() + "', dateUpdate = '" + ServiceClass.convertdate(cl.getDateUpdated()) 
+	    	stmt.executeUpdate("UPDATE contactList SET listname = '" + cl.getListName() + "', dateUpdate = '" + cl.getDateUpdated()
 	    	+ "' WHERE contactlistID = " + cl.getId()); 
 	   
 	  	  	return cl;
@@ -183,7 +179,7 @@ public class ContactListMapper {
 	    	Statement stmt2 = con.createStatement();
 		   
 	    	//Update des letzten Updates der Kontaktliste.
-	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = '" + ServiceClass.convertdate(cl.getDateUpdated()) + "'  WHERE contactlistID = " + cl.getId()); 
+	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = '" + cl.getDateUpdated() + "'  WHERE contactlistID = " + cl.getId()); 
 		   
 	    	return cl;
 	    }  
@@ -237,8 +233,8 @@ public class ContactListMapper {
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
-	    		cl.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		cl.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    	}
 	    	return cl;
 	    }
@@ -277,8 +273,8 @@ public class ContactListMapper {
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
-	    		cl.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		cl.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		al.add(cl);
 	    	}
 	    	return al;

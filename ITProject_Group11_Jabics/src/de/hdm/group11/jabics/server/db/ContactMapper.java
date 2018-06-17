@@ -89,8 +89,8 @@ public class ContactMapper{
 	    
 	    try {
 		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
-				+ "(" + "'" + ServiceClass.convertdate(c.getDateCreated()) + "', " + "'" +
-				ServiceClass.convertdate(c.getDateUpdated()) + "')"  );
+				+ "(" + "'" + c.getDateCreated() + "', " + "'" +
+				c.getDateUpdated() + "')"  );
 		
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
@@ -127,7 +127,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + ServiceClass.convertdate(c.getDateUpdated()) +
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + c.getDateUpdated() +
 	    			"' WHERE contactID = " + c.getId()   );
 	    }
 	    catch (SQLException e) {
@@ -189,8 +189,8 @@ public class ContactMapper{
 	      
 				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-	    		c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		c.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(c);
 			}
 			return al;
@@ -221,8 +221,8 @@ public class ContactMapper{
 	    	if (rs.next()) {
 		    	//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-				c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+				c.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    	}
 	    	return c;
 	    }
@@ -265,8 +265,8 @@ public class ContactMapper{
 		      
 					//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 					c.setId(rs.getInt("contactID"));
-					c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-		    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+					c.setDateCreated(rs.getTimestamp("dateCreated"));
+		    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 					al.add(c);
 				}
 	    	
