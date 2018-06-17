@@ -1,4 +1,4 @@
-package de.hdm.group11.jabics.server;
+package de.hdm.group11.jabics.shared;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  *  Objekte dieser Klasse werden die Login-Info vom User service enthalten. 
- *  LoginInfo implementiert serializable, da ein eine R�ckgabe einer RPC-Methode ist. 
+ *  LoginInfo implementiert serializable, da ein eine Rückgabe einer RPC-Methode ist. 
  * @author P
  *
  */
@@ -33,10 +33,6 @@ public class LoginInfo implements Serializable  {
 	
 	  private String loginUrl;
 	  private String logoutUrl;
-	  private String emailAddress;
-	  private String nickname;
-	  
-	  JabicsUser user;
 	  
 	  private JabicsUser currentUser;
 	  
@@ -50,11 +46,11 @@ public class LoginInfo implements Serializable  {
 	}
 
 	public boolean isLoggedIn() {
-	    return user.getIsLoggedIn();
+	    return currentUser.getIsLoggedIn();
 	  }
 
 	  public void setLoggedIn(boolean loggedIn) {
-	    this.user.setLoggedIn(loggedIn);
+	    this.currentUser.setLoggedIn(loggedIn);
 	  }
 
 	  public String getLoginUrl() {
@@ -74,19 +70,19 @@ public class LoginInfo implements Serializable  {
 	  }
 
 	  public String getEmailAddress() {
-	    return emailAddress;
+	    return this.currentUser.getEmail();
 	  }
 
 	  public void setEmailAddress(String emailAddress) {
-	    this.emailAddress = emailAddress;
+	    this.currentUser.setEmail(emailAddress);
 	  }
 
 	  public String getNickname() {
-	    return nickname;
+	    return this.currentUser.getUsername();
 	  }
 
 	  public void setNickname(String nickname) {
-	    this.nickname = nickname;
+	    this.currentUser.setUsername(nickname);
 	  }
 
 }
