@@ -88,7 +88,7 @@ public class ContactForm extends VerticalPanel {
 		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 		// Die gesamte Zeile (4) wird ein HorizontalPanel
 		HorizontalPanel propertyAddBox = new HorizontalPanel();
-		// in diesem Horizontal Panel gibt es 4 Felder
+		// in diesem Horizontal Panel gibt es 4 Felder 
 		// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
 		propertyAddBox.add(propertyName);
 		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
