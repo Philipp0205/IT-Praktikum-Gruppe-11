@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 eclipse.preferences.version=1
 launchConfigExternalUrlPrefix=
 warSrcDir=war
 warSrcDirIsOutput=true
+=======
+eclipse.preferences.version=1
+warSrcDirIsOutput=true
+>>>>>>> Testing
