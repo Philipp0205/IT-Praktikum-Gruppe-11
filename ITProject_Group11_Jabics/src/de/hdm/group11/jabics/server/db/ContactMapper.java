@@ -88,22 +88,21 @@ public class ContactMapper{
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
-				+ "(" + "'" + c.getDateCreated() + "', " + "'" +
-				c.getDateUpdated() + "')"  );
-		
+		String query = ("INSERT INTO contact () VALUES ()"  );
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
-		
 		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
-		
 		ResultSet rs = stmt.getGeneratedKeys();
+		Statement stmt2 =  con.createStatement();
+		ResultSet rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
+		
 		if(rs.next()) {
 			c.setId(rs.getInt(1));
 		}
-		
-		System.out.println(c.getId());
-		
+		if(rs2.next()) {
+			c.setDateCreated(rs2.getTimestamp("dateCreated"));
+			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+		}
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
