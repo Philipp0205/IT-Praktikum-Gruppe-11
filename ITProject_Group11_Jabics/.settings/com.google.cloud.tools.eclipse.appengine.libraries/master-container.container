@@ -1,0 +1,91 @@
+{
+  "description": "Google Cloud Platform Libraries",
+  "path": "com.google.cloud.tools.eclipse.appengine.libraries/master-container",
+  "entries": [
+    {
+      "accessRules": [
+        {
+          "ruleKind": "FORBIDDEN",
+          "pattern": "com/google/appengine/repackaged/**"
+        },
+        {
+          "ruleKind": "FORBIDDEN",
+          "pattern": "com/google/appengine/labs/repackaged/**"
+        },
+        {
+          "ruleKind": "ACCESSIBLE",
+          "pattern": "com/google/apphosting/api/**"
+        },
+        {
+          "ruleKind": "FORBIDDEN",
+          "pattern": "com/google/apphosting/**"
+        }
+      ],
+      "sourceAttachmentPath": "",
+      "path": "com/google/appengine/appengine-api-1.0-sdk/1.9.63/appengine-api-1.0-sdk-1.9.63.jar",
+      "attributes": [
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.repository",
+          "value": "central"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.groupid",
+          "value": "com.google.appengine"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.artifactId",
+          "value": "appengine-api-1.0-sdk"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.type",
+          "value": "jar"
+        },
+        {
+          "name": "com.google.cloud.tools.eclipse.appengine.libraries.version",
+          "value": "1.9.63"
+        },
+        {
+          "name": "org.eclipse.jst.component.dependency",
+          "value": "/WEB-INF/lib"
+        },
+        {
+          "name": "javadoc_location",
+          "value": "https://cloud.google.com/appengine/docs/java/javadoc/"
+        }
+      ]
+    }
+  ],
+  "libraryFiles": [
+    {
+      "filters": [
+        {
+          "pattern": "com/google/appengine/repackaged/**",
+          "exclude": true
+        },
+        {
+          "pattern": "com/google/appengine/labs/repackaged/**",
+          "exclude": true
+        },
+        {
+          "pattern": "com/google/apphosting/api/**",
+          "exclude": false
+        },
+        {
+          "pattern": "com/google/apphosting/**",
+          "exclude": true
+        }
+      ],
+      "mavenCoordinates": {
+        "repository": "central",
+        "groupId": "com.google.appengine",
+        "artifactId": "appengine-api-1.0-sdk",
+        "version": "1.9.63",
+        "type": "jar"
+      },
+      "javadocUri": "https://cloud.google.com/appengine/docs/java/javadoc/",
+      "export": true,
+      "fixedVersion": true,
+      "pinned": false
+    }
+  ]
+}

@@ -5,7 +5,7 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
+  <!-- Servlets temporarily not configurable, as code is missing
   <servlet>
     <servlet-name>greetServlet</servlet-name>
     <servlet-class>de.hdm.group11.jabics.server.GreetingServiceImpl</servlet-class>
@@ -16,9 +16,22 @@
     <url-pattern>/itproject_group11_jabics/greet</url-pattern>
   </servlet-mapping>
   
+  -->
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>ITProject_Group11_Jabics.html</welcome-file>
   </welcome-file-list>
+  
+   <!-- Servlets NICHT LÖSCHEN -->
+  <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>de.hdm.group11.jabics.server.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/stockwatcher/login</url-pattern>
+  </servlet-mapping>
 
 </web-app>
