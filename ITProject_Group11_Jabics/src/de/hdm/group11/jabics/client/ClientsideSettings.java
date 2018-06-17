@@ -37,6 +37,8 @@ public class ClientsideSettings {
 	 */
 	private static ReportGeneratorServiceAsync reportGeneratorService = null;
 	
+	private static LoginServiceAsync loginServiceAsync = null;
+	
 	/**
 	 * TODO: add description
 	 * @param u
@@ -108,6 +110,13 @@ public class ClientsideSettings {
 		}
 		
 		return reportGeneratorService;
+	}
+	
+	public static LoginServiceAsync getLoginService() { 
+		if (loginServiceAsync == null) {
+			loginServiceAsync = GWT.create(LoginService.class);
+		}
+		return loginServiceAsync;
 	}
 	
 }

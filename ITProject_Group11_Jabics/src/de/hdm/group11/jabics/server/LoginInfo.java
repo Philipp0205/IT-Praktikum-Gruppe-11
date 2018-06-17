@@ -26,16 +26,17 @@ public class LoginInfo implements Serializable  {
 		return loginInfo;
 	}
 	
-	 /**
+	 /*
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private boolean loggedIn = false;
 	  private String loginUrl;
 	  private String logoutUrl;
 	  private String emailAddress;
 	  private String nickname;
+	  
+	  JabicsUser user;
 	  
 	  private JabicsUser currentUser;
 	  
@@ -49,11 +50,11 @@ public class LoginInfo implements Serializable  {
 	}
 
 	public boolean isLoggedIn() {
-	    return loggedIn;
+	    return user.getIsLoggedIn();
 	  }
 
 	  public void setLoggedIn(boolean loggedIn) {
-	    this.loggedIn = loggedIn;
+	    this.user.setLoggedIn(loggedIn);
 	  }
 
 	  public String getLoginUrl() {

@@ -85,6 +85,8 @@ public interface EditorService {
 	
 	public ArrayList<JabicsUser> getAllUsers();
 	
+	public JabicsUser setJabicsUser(JabicsUser u) throws IllegalArgumentException;
+	
 	public void initialise();
 
 }

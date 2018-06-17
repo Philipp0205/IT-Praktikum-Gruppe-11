@@ -11,8 +11,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.group11.jabics.client.gui.Editor;
 import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.server.db.UserMapper;
+import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginService;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
+import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class Jabics implements EntryPoint {
@@ -23,59 +25,84 @@ public class Jabics implements EntryPoint {
 	
 	// Objekte die sp�ter f�r den Login gebraucht werden
 	
-	// Login noch auskommentieren
-	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
-	private Label loginLabel = new Label("Bitte melden sie sich mit ihren Google-Account an um Jabics nutzen zu k�nnen.");
+	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an um Jabics nutzen zu k�nnen.");
 	private Anchor signInLink = new Anchor("Anmelden.");
 	
-	/**
-	 *  NEU: 
-	 */
-	UserMapper uMapper = UserMapper.userMapper();
-	private JabicsUser currentUser = null;
+	EditorServiceAsync eService;
+	LoginServiceAsync loginSevice;
+	ReportGeneratorServiceAsync reportGenerator;
 	
-	public JabicsUser getCurrentUser() {
-		return currentUser;
-	}
-
-	public void setCurrentUser(JabicsUser currentUser) {
-		this.currentUser = currentUser;
-	}
 	
-
-	/*
-	 *
-	 */
+	JabicsUser currentUser;
 	
 	public void onModuleLoad() {
-		Editor e = new Editor();
 		
-		
-		// Login-Status 
-	    LoginServiceAsync loginService = GWT.create(LoginService.class);
-	    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
-	      public void onFailure(Throwable error) {
-	    	  System.out.println("loginService.loging failed.");
-	      }
+		/*
+		 * Zunächst wird eine Editor-Instanz hinzugefügt.
+		 */
+	    loginSevice = ClientsideSettings.getLoginService();
+		eService = ClientsideSettings.getEditorService();
+		reportGenerator = ClientsideSettings.getReportGeneratorService();	
 
-	      public void onSuccess(LoginInfo result) {
-	    	
-	        loginInfo = result;
-	        if(loginInfo.isLoggedIn()) {
-	          e.onModuleLoad();
-	        } else {        	
-	          loadLogin();
-	        }
-	      }
-	    });	
+	}
+	
+	public class loginServiceCallback implements AsyncCallback<JabicsUser> {
+		
+		
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(JabicsUser jabicsuser) {
+			currentUser = jabicsuser; 
+			
+			if(currentUser.getIsLoggedIn()) {
+				eService.setJabicsUser(jabicsuser, new SetJabicsUserCallback() );
+				
+			}
+			
+		}
+		
+		
+		
+	}
+	
+	private class SetJabicsUserCallback implements AsyncCallback<JabicsUser> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(JabicsUser u) {
+				try {
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			
+		} 
+		
+	}
+	
+	
+
+	private void loadJabics() {
+		Editor e = new Editor();
+		e.onModuleLoad();
 	}
 	
 	private void loadLogin() {
 	    // Assemble login panel.
 		this.checkForNewUser();
 
-	    signInLink.setHref(loginInfo.getLoginUrl());
+	    signInLink.setHref(currentUser.getLoginUrl());
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
 	    RootPanel.get("content").add(loginPanel);
@@ -84,10 +111,7 @@ public class Jabics implements EntryPoint {
 	
 	private void checkForNewUser() { 
 		if (this.currentUser == null) {
-			
-			currentUser.setEmail(this.loginInfo.getEmailAddress());
-			currentUser.setUsername(this.loginInfo.getNickname());
-      	  	uMapper.insertUser(currentUser);
+			JabicsUser.getJabicsUser();
 		} else
 			return;
 	}

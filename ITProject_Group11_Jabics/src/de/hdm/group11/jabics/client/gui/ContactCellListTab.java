@@ -18,6 +18,7 @@ import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class ContactCellListTab  {
 	
@@ -25,7 +26,8 @@ public class ContactCellListTab  {
 
 	
 	private EditorServiceAsync eService = null;
-	LoginInfo loginfo = new LoginInfo();
+	//LoginInfo loginfo = new LoginInfo();
+	JabicsUser user = new JabicsUser();
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
 	ListDataProvider<Contact> contactsProvider = new ListDataProvider<Contact>();
 	Editor editor;
@@ -47,7 +49,7 @@ public class ContactCellListTab  {
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		eService.getContactsOf(loginfo.getCurrentUser(), new AsyncCallback<ArrayList<Contact>>() {
+		eService.getContactsOf(JabicsUser.getJabicsUser(), new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

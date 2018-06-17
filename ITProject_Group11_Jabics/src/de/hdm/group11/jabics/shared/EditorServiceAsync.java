@@ -89,4 +89,6 @@ public interface EditorServiceAsync {
 	void getAllUsers(AsyncCallback<ArrayList<JabicsUser>> callback);
 	
 	void initialise(AsyncCallback<Void> callback);
+	
+	JabicsUser setJabicsUser(JabicsUser u, AsyncCallback<JabicsUser> callback) throws IllegalArgumentException;
 }

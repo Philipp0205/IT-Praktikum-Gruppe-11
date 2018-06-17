@@ -40,6 +40,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	PropertyMapper pMapper = PropertyMapper.propertyMapper();
 	UserMapper uMapper = UserMapper.userMapper();
 	
+	// Momentaner User
+	JabicsUser jabicsUser = new JabicsUser();
+	
 	
 	public EditorServiceImpl() {
 		
@@ -564,6 +567,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<JabicsUser> getAllUsers(){
 		return uMapper.findAllUser();
+	}
+	
+	public JabicsUser setJabicsUser(JabicsUser u) { 
+		this.jabicsUser = u;
+		
+		return jabicsUser;
 	}
 	
 	
