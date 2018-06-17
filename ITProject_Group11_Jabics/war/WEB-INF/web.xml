@@ -24,14 +24,37 @@
   </welcome-file-list>
   
    <!-- Servlets NICHT LÖSCHEN -->
+  	
   <servlet>
     <servlet-name>loginService</servlet-name>
     <servlet-class>de.hdm.group11.jabics.server.LoginServiceImpl</servlet-class>
   </servlet>
+  
+   <servlet>
+    <servlet-name>editorService</servlet-name>
+    <servlet-class>de.hdm.group11.jabics.server.EditorServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>reportGeneratorService</servlet-name>
+    <servlet-class>de.hdm.group11.jabics.server.ReportGeneratorServiceImpl</servlet-class>
+  </servlet>
+  
 
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
-    <url-pattern>/stockwatcher/login</url-pattern>
+    <url-pattern>/jabics/login</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>editorService</servlet-name>
+    <url-pattern>/jabics/editor</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>reportGeneratorService</servlet-name>
+    <url-pattern>/jabics/report</url-pattern>
+  </servlet-mapping>
+  
 
 </web-app>
