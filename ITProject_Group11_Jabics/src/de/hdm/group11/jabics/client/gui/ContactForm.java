@@ -322,43 +322,41 @@ public class ContactForm extends VerticalPanel {
 
 			for (int i = result.size(); i > 0; i--) {
 
-				int pointer = i;
+				PValue currentPV = result.get(i);
 
-				PValue currentPV = result.get(pointer);
+				propertyLabels[i] = new Label(result.get(i).getProperty().toString());
+				pValueTextBox[i] = new TextBox();
+				pValueTextBox[i].setText(result.get(i).toString());
+				saveButton[i] = new Button("Save");
 
-				propertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
-				pValueTextBox[pointer] = new TextBox();
-				pValueTextBox[pointer].setText(result.get(pointer).toString());
-				saveButton[pointer] = new Button("Save");
-
-				saveButton[pointer].addClickHandler(new ClickHandler() {
+				saveButton[i].addClickHandler(new ClickHandler() {
 					// TODO Bisher noch nicht funktional
 					public void onClick(ClickEvent event) {
 
 						int currentID = currentPV.getPropertyId();
-						PValue newPV = new PValue(result.get(pointer).getProperty(), u);
+						PValue newPV = new PValue(result.get(i).getProperty(), u);
 
 						switch (currentPV.getPointer()) {
 						case 1:
-							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); break;
+							newPV.setIntValue(Integer.parseInt(pValueTextBox[i].getValue())); break;
 						case 2:
-							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
+							newPV.setStringValue(pValueTextBox[i].getValue().toString()); break;
 						case 3:
 							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
 							newPV.setDateValue(new Date(01,01,01)); break;
 						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
+							newPV.setFloatValue(Float.parseFloat(pValueTextBox[i].getValue())); break;
 						default:
 						}
 						editorService.updatePValue(newPV, new UpdatePValueCallback());
 
-						Window.alert("Wert" + pValueTextBox[pointer].getValue().toString() + "gespeichert");
+						Window.alert("Wert" + pValueTextBox[i].getValue().toString() + "gespeichert");
 					}
 				});
 
-				deleteButton[pointer] = new Button("Delete");
+				deleteButton[i] = new Button("Delete");
 
-				deleteButton[pointer].addClickHandler(new ClickHandler() {
+				deleteButton[i].addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 
 						if (contactToDisplay == null) {

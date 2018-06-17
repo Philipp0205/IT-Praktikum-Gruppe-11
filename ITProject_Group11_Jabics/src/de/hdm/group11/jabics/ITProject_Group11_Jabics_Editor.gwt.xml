@@ -23,8 +23,8 @@
   <entry-point class='de.hdm.group11.jabics.client.gui.Editor'/>
 
   <!-- Specify the paths for translatable code                    -->
-  <source path='de.hdm.group11.jabics.client.client'/>
-  <source path='de.hdm.group11.jabics.client.shared'/>
+  <source path='client'/>
+  <source path='shared'/>
 
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>
