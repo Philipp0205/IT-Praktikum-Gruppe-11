@@ -1,7 +1,7 @@
 package de.hdm.group11.jabics.shared.report;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
@@ -17,28 +17,23 @@ public abstract class Report implements Serializable {
 	
 	static final long serialVersionUID = 1L;
 	
-	LocalDateTime creationDate;
+	Date creationDate;
 	JabicsUser creator;
 	
 	public Report() {
-		this.creationDate = LocalDateTime.now();
+		this.creationDate = new Date();
 	}
 	
 	
 	/*
 	 * Getters and Setters
 	 */
-	public LocalDateTime getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
-	public void setCreationDate(LocalDateTime creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	
-//	public void setCreationDateNow() {
-//		this.creationDate = LocalDateTime.now();
-//	}
-	
 	public JabicsUser getCreator() {
 		return creator;
 	}

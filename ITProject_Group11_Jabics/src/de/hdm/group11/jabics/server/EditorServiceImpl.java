@@ -8,8 +8,7 @@
 
 package de.hdm.group11.jabics.server;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.server.db.*;
@@ -86,8 +85,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
-		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		
+		Contact cnew = cMapper.findContactById(c.getId());	
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -109,7 +112,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
 		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -124,13 +130,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erstellt ein PValue mit einem Datums Wert und fügt diesen mitsamt collaboration in die DB ein.
 	 * @return das neu erstellte PValue Objekt
 	 */
-	public PValue createPValue(Property p, LocalDate dt, Contact c, JabicsUser u) {
+	public PValue createPValue(Property p, Date dt, Contact c, JabicsUser u) {
 		PValue newPValue = new PValue(p, dt, u);
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
 		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -151,7 +160,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
 		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -354,7 +366,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 		PValue pvtemp = pvMapper.findPValueById(pv.getId());
 		if(pv != pvtemp) {
-			 pv.setDateUpdated(LocalDateTime.now());
+			
+			 //pv.setDateUpdated(LocalDateTime.now());
+			 
 			 return pvMapper.updatePValue(pv);
 		}else return pvMapper.findPValueById(pv.getId());
 	}
@@ -362,7 +376,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ContactList updateContactList(ContactList cl){
 		ContactList cltemp = clMapper.findContactListById(cl.getId());
 		if(cl != cltemp) {
-			cl.setDateUpdated(LocalDateTime.now());
+			
+			//cl.setDateUpdated(LocalDateTime.now());
+			
 			//Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist, wenn ja, einfügen
 			for (Contact c : cl.getContacts()) {
 				boolean bol = false;
@@ -398,7 +414,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * .equals in Contact noch schreiben?
 		 */
 		if(c.equals(ctemp) == false) {
-			c.setDateUpdated(LocalDateTime.now());
+			
+			//c.setDateUpdated(LocalDateTime.now());
+			
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				if(pvMapper.findPValueById(pv.getId()) != pv) {
@@ -603,7 +621,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val.add(new PValue( p2, "Mustermann",u));
 		val.add(new PValue( p3, "eineStraße",u));
 		val.add(new PValue( p4, 63,u));
-		val.add(new PValue( p5, LocalDate.of(2000, 5, 1),u));
+		val.add(new PValue( p5, new Date(1,2,3),u));
 		val.add(new PValue( p7, 188.5f,u));
 		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
 		ArrayList<PValue> val2 = new ArrayList<PValue>();
@@ -611,7 +629,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val2.add(new PValue( p2, "Muster123",u));
 		val2.add(new PValue( p3, "eineStraße1234",u));
 		val2.add(new PValue( p4, 4,u));
-		val2.add(new PValue( p5, LocalDate.of(1993, 2, 1),u));
+		val2.add(new PValue( p5, new Date(1,2,3),u));
 		val2.add(new PValue( p7, 167.2f,u));
 		c2 = new Contact(val2);
 		ArrayList<PValue> val3 = new ArrayList<PValue>();
@@ -619,7 +637,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		val3.add(new PValue( p2, "Mildenberger",u));
 		val3.add(new PValue( p3, "Nobelstraße",u));
 		val3.add(new PValue( p4, 8,u));
-		val3.add(new PValue( p5, LocalDate.of(2015, 2, 1),u));
+		val3.add(new PValue( p5, new Date(1,2,3),u));
 		val3.add(new PValue( p7, 7.2f,u));
 		c3 = new Contact(val3);
 		ArrayList<Contact> contacts = new ArrayList<Contact>();

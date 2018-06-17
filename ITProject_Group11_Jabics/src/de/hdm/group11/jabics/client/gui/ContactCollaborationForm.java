@@ -30,16 +30,17 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	ArrayList<JabicsUser> allUser = new ArrayList<JabicsUser>();
 	ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
 	
-	Button shareContact = new Button("Kontakt freigeben");
-	Button exit = new Button("Abbrechen");
-	Button addButton = new Button("Nutzer hinzufügen");
-	
+	Button exit, addButton, removeButton, shareContact;
 	
 	MultiWordSuggestOracle  oracle;
 	SuggestBox sug; // = new SuggestBox();
 	
+	TextColumn<JabicsUser> username;
+	
 	CellTable<JabicsUser> selUser;
 	ListDataProvider<JabicsUser> ldp;
+	SingleSelectionModel<JabicsUser> selectionModel;
+	MultiSelectionModel<PValue> multiSelectionModel;
 	JabicsUser selectedUserAdd = null;
 	JabicsUser selectedUserRemove = null;
 	
@@ -47,18 +48,26 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	CellTable<PValue> selValues;
 	ListDataProvider<PValue> valueProvider;
 
+	Column<PValue, Boolean> checkbox;
+	Column<PValue, String> property;
+	Column<PValue, String> propertyvalue;
+	
 	AbsolutePanel ap;
 
 	
 	public void onLoad(Contact c) {
 		//SuggestOracle oracle =
 		this.sharedContact = c;
+		
+		shareContact = new Button("Kontakt freigeben");
 		shareContact.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				shareContact();
 				e.returnToContactForm(sharedContact);
 			}
 		});
+		
+		exit = new Button("Abbrechen");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				e.returnToContactForm(sharedContact);
@@ -86,8 +95,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		selUser = new CellTable<JabicsUser>();
 		ldp.setList(allUser);
 		ldp.addDataDisplay(selUser);
-		TextCell s = new TextCell();
-		SingleSelectionModel<JabicsUser> selectionModel  = new SingleSelectionModel<JabicsUser>();
+		selectionModel  = new SingleSelectionModel<JabicsUser>();
 		
 		selectionModel.addSelectionChangeHandler(
 			      new SelectionChangeEvent.Handler() {
@@ -97,6 +105,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 			      });
 		selUser.setSelectionModel(selectionModel);
 		
+		addButton = new Button("Nutzer hinzufügen");
 		addButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if (selectedUserAdd != null) finalUser.add(selectedUserAdd);
@@ -106,7 +115,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 			}
 		});
 		
-		Button removeButton = new Button();
+		removeButton = new Button("Nutzer entfernen");
 		removeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if(selectedUserRemove != null) {
@@ -116,7 +125,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 				}	
 			}
 		});
-		TextColumn<JabicsUser> username = new TextColumn<JabicsUser>() {
+		username = new TextColumn<JabicsUser>() {
 			public String getValue(JabicsUser u) {
 				return u.getUsername();
 			}
@@ -168,17 +177,17 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		valueProvider.setList(pv);
 		valueProvider.addDataDisplay(selValues);
 		// Es kann sein, dass hier noch kexprovider benötigt werden
-		MultiSelectionModel<PValue> selectionModel  = new MultiSelectionModel<PValue>();
+		multiSelectionModel  = new MultiSelectionModel<PValue>();
 		
 		// Bei Auswahl ausgewählte PValues inf finalPV speichern
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		multiSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			         public void onSelectionChange(SelectionChangeEvent event) {
-			        	 finalPV = (HashSet<PValue>) selectionModel.getSelectedSet();
+			        	 finalPV = (HashSet<PValue>) multiSelectionModel.getSelectedSet();
 			        	 
 			        	 Window.alert("Auswahl geändert");
 			         }
 			      });
-		selValues.setSelectionModel(selectionModel);
+		selValues.setSelectionModel(multiSelectionModel);
 		
 		/* Wenn funktional kann dieser code gelöscht werden
 		CheckboxCell check = new CheckboxCell(true, false) {
@@ -193,17 +202,17 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		}; */
 		
 		
-		Column<PValue, Boolean> checkbox = new Column<PValue, Boolean>(new CheckboxCell(true, false)){
+		checkbox = new Column<PValue, Boolean>(new CheckboxCell(true, false)){
 			public Boolean getValue(PValue object) {
-		        return selectionModel.isSelected(object);
+		        return multiSelectionModel.isSelected(object);
 		      }
 		};
-		Column<PValue, String> property = new Column<PValue, String>(new TextCell()) {
+		property = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
 		        return object.getProperty().getLabel();
 		      }
 		};
-		Column<PValue, String> propertyvalue = new Column<PValue, String>(new TextCell()) {
+		propertyvalue = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
 		        return object.toString();
 		      }

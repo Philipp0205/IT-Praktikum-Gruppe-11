@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.shared.report;
 
-import java.time.LocalDate;
+import java.util.Date;
+
 import de.hdm.group11.jabics.shared.bo.PValue;
 
 
@@ -29,7 +30,7 @@ public class PropertyView {
 					 break;
 			 case 2: this.pvalue = pv.getStringValue();
 			 		 break;
-			 case 3: LocalDate dt = pv.getDateValue();
+			 case 3: Date dt = pv.getDateValue();
 			         this.pvalue = dt.toString();
 			         break;
 			 case 4: Float f = pv.getFloatValue();

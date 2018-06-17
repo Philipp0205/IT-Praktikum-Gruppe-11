@@ -1,6 +1,6 @@
 package de.hdm.group11.jabics.shared.bo;
 
-import java.time.LocalDateTime;
+import java.sql.*;
 
 
 
@@ -14,14 +14,16 @@ import java.time.LocalDateTime;
 public abstract class BusinessObject {
 	
 	public BusinessObject() { 
-		this.dateCreated = LocalDateTime.now();
-		this.dateUpdated = this.dateCreated;
+//		this.dateCreated = 
+//		this.dateUpdated = this.dateCreated;
 	}
 
 	int id;
-	JabicsUser owner;
-	LocalDateTime dateCreated;
-	LocalDateTime dateUpdated;
+	JabicsUser owner;	
+	Timestamp dateUpdated;
+	Timestamp dateCreated;
+	
+	
 	private long serialVersionUID = 1L;
 	
 	/**
@@ -63,23 +65,17 @@ public abstract class BusinessObject {
 	public void setOwner(JabicsUser owner) {
 		this.owner = owner;
 	}
-	public LocalDateTime getDateCreated() {
-		return dateCreated;
-	}
-	public void setDateCreated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
-		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
-	}
-	public void setDateCreated(LocalDateTime dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	public LocalDateTime getDateUpdated() {
+	public Timestamp getDateUpdated() {
 		return dateUpdated;
 	}
-	public void setDateUpdated(LocalDateTime dateUpdated) {
+	public void setDateUpdated(Timestamp dateUpdated) {
 		this.dateUpdated = dateUpdated;
 	}
-	public void setDateUpdated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
-		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+	public Timestamp getDateCreated() {
+		return dateCreated;
+	}
+	public void setDateCreated(Timestamp dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 	public long getSerialVersionUID() {
 		return serialVersionUID;

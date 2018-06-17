@@ -1,11 +1,12 @@
 package de.hdm.group11.jabics.client.gui;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
@@ -62,6 +64,8 @@ public class ContactForm extends VerticalPanel {
 	TextBox propertyName = new TextBox();
 	TextBox pValueName = new TextBox();
 	Label contactName = new Label();
+	DatePicker datePicker = new DatePicker();
+	Date selectedDate = new Date();
 
 	public void onLoad() {
 
@@ -84,7 +88,7 @@ public class ContactForm extends VerticalPanel {
 		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 		// Die gesamte Zeile (4) wird ein HorizontalPanel
 		HorizontalPanel propertyAddBox = new HorizontalPanel();
-		// in diesem Horizontal Panel gibt es 4 Felder
+		// in diesem Horizontal Panel gibt es 4 Felder 
 		// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
 		propertyAddBox.add(propertyName);
 		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
@@ -100,14 +104,28 @@ public class ContactForm extends VerticalPanel {
 		// 2. ein Eingabefeld, um die konkrete Eigenschaftsausprägung anzugeben (z.B.
 		// "blond")
 		propertyAddBox.add(pValueName);
-
+		
 		// 3. einen Button zum Hinzufügen
 		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.add(addPropertyButton);
+		
+		//4 einen Datepicker
+		// Set the value in the text box when the user selects a date
+		propertyAddBox.add(datePicker);
+	    datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
+	      public void onValueChange(ValueChangeEvent<Date> event) {
+	        selectedDate = event.getValue();
+	      }
+	    });
+	    // Set the default value
+	    datePicker.setValue(new Date(), true);
+	  
+		
 
 		// hinzufügen von Zeile 4 zum Hauptgrid
 		userInformationGrid.setWidget(3, 0, propertyAddBox);
+		
 
 		// GRID-ZEILE 5:
 
@@ -127,6 +145,9 @@ public class ContactForm extends VerticalPanel {
 	public void setEditor(Editor e) {
 		this.e = e;
 	}
+	public void setUser(JabicsUser u) {
+		this.u = u;
+	}
 
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die
@@ -136,6 +157,8 @@ public class ContactForm extends VerticalPanel {
 	 * @author Brase
 	 * @author Ilg
 	 */
+	
+	
 
 	/**
 	 * Diese Klasse realisiert einen Clickhandler für den DeleteContactButton. Beim
@@ -227,7 +250,8 @@ public class ContactForm extends VerticalPanel {
 						new CreatePValueCallback());
 				break;
 			case "Datum":
-				LocalDate ld = LocalDate.parse(pValueName.getText());
+				Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
+				Date ld = selectedDate;
 				// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
 				editorService.createPValue(result, ld, contactToDisplay, u, new CreatePValueCallback());
 				break;
@@ -301,6 +325,11 @@ public class ContactForm extends VerticalPanel {
 	 * Textboxen, Buttons und Checkboxen, sowie deren Clickhandler werden dynamisch
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
+	
+	int pointer1;
+	PValue currentPV;
+	TextBox[] pValueTextBox;
+	
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert("Fehler in GetPValuesCallback");
@@ -313,49 +342,50 @@ public class ContactForm extends VerticalPanel {
 			checkedPV.clear();
 
 			Label[] propertyLabels = new Label[result.size()];
-			TextBox[] pValueTextBox = new TextBox[result.size()];
+			pValueTextBox = new TextBox[result.size()];
 			Button[] saveButton = new Button[result.size()];
 			Button[] deleteButton = new Button[result.size()];
 
 			for (int i = result.size(); i > 0; i--) {
 
-				int pointer = i;
+				pointer1 = i;
 
-				PValue currentPV = result.get(pointer);
+				currentPV = result.get(pointer1);
 
-				propertyLabels[pointer] = new Label(result.get(pointer).getProperty().toString());
-				pValueTextBox[pointer] = new TextBox();
-				pValueTextBox[pointer].setText(result.get(pointer).toString());
-				saveButton[pointer] = new Button("Save");
+				propertyLabels[pointer1] = new Label(result.get(pointer1).getProperty().toString());
+				pValueTextBox[pointer1] = new TextBox();
+				pValueTextBox[pointer1].setText(result.get(pointer1).toString());
+				saveButton[pointer1] = new Button("Save");
 
-				saveButton[pointer].addClickHandler(new ClickHandler() {
+				saveButton[pointer1].addClickHandler(new ClickHandler() {
+
 					// TODO Bisher noch nicht funktional
 					public void onClick(ClickEvent event) {
 
 						int currentID = currentPV.getPropertyId();
-						PValue newPV = new PValue(result.get(pointer).getProperty(), u);
+						PValue newPV = new PValue(result.get(pointer1).getProperty(), u);
 
 						switch (currentPV.getPointer()) {
 						case 1:
-							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); break;
+							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer1].getValue())); break;
 						case 2:
-							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
+							newPV.setStringValue(pValueTextBox[pointer1].getValue().toString()); break;
 						case 3:
-							// Das Datum muss folgendermaßen eingegeben werden: 2015-08-04T10:11:30
-							newPV.setDateValue(LocalDateTime.parse(pValueTextBox[pointer].getValue())); break;
+							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
+							newPV.setDateValue(new Date(01,01,01)); break;
 						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
+							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer1].getValue())); break;
 						default:
 						}
 						editorService.updatePValue(newPV, new UpdatePValueCallback());
 
-						Window.alert("Wert" + pValueTextBox[pointer].getValue().toString() + "gespeichert");
+						Window.alert("Wert" + pValueTextBox[pointer1].getValue().toString() + "gespeichert");
 					}
 				});
 
-				deleteButton[pointer] = new Button("Delete");
+				deleteButton[pointer1] = new Button("Delete");
 
-				deleteButton[pointer].addClickHandler(new ClickHandler() {
+				deleteButton[pointer1].addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 
 						if (contactToDisplay == null) {

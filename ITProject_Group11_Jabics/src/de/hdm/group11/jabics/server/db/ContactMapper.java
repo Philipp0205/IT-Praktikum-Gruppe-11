@@ -1,7 +1,6 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -88,22 +87,21 @@ public class ContactMapper{
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-		String query = ("INSERT INTO contact (dateCreated, dateUpdated) VALUES " 
-				+ "(" + "'" + ServiceClass.convertdate(c.getDateCreated()) + "', " + "'" +
-				ServiceClass.convertdate(c.getDateUpdated()) + "')"  );
-		
+		String query = ("INSERT INTO contact () VALUES ()"  );
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
-		
 		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
-		
 		ResultSet rs = stmt.getGeneratedKeys();
+		Statement stmt2 =  con.createStatement();
+		ResultSet rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
+		
 		if(rs.next()) {
 			c.setId(rs.getInt(1));
 		}
-		
-		System.out.println(c.getId());
-		
+		if(rs2.next()) {
+			c.setDateCreated(rs2.getTimestamp("dateCreated"));
+			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+		}
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -127,8 +125,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + ServiceClass.convertdate(c.getDateUpdated()) +
-	    			"' WHERE contactID = " + c.getId()   );
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP WHERE contactID = " + c.getId());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -189,8 +186,8 @@ public class ContactMapper{
 	      
 				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-	    		c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		c.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(c);
 			}
 			return al;
@@ -221,8 +218,8 @@ public class ContactMapper{
 	    	if (rs.next()) {
 		    	//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
-				c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+				c.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    	}
 	    	return c;
 	    }
@@ -265,8 +262,8 @@ public class ContactMapper{
 		      
 					//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 					c.setId(rs.getInt("contactID"));
-					c.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-		    		c.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+					c.setDateCreated(rs.getTimestamp("dateCreated"));
+		    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 					al.add(c);
 				}
 	    	

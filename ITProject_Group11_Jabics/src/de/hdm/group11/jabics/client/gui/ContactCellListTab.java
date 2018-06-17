@@ -12,9 +12,9 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import de.hdm.group11.jabics.server.LoginInfo;
 import de.hdm.group11.jabics.server.db.ContactMapper;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
@@ -23,7 +23,6 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 public class ContactCellListTab  {
 	
 	private Contact selectedContact;
-
 	
 	private EditorServiceAsync eService = null;
 	//LoginInfo loginfo = new LoginInfo();
@@ -37,8 +36,7 @@ public class ContactCellListTab  {
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time." 
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());	
 	}
 	
 	

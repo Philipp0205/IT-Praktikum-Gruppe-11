@@ -7,13 +7,13 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 
@@ -23,7 +23,7 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
  */
 
 
-public class Editor implements EntryPoint {
+public class Editor implements EntryPoint{
 	
 	/**
 	 * Im folgenden Interface werden die Items, öffnen und schlie0en, hinzugefügt.
@@ -41,15 +41,13 @@ public class Editor implements EntryPoint {
 	}
 	
 	EditorServiceAsync editorAdmin = null;
+	LoginInfo loginfo;
 	
-
 	VerticalPanel mainPanel = new VerticalPanel();
 	HorizontalPanel topPanel = new HorizontalPanel();
 	HorizontalPanel widgetPanel = new HorizontalPanel();
-	
 	HorizontalPanel placeholder = new HorizontalPanel();
 	
-
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
@@ -90,12 +88,15 @@ public class Editor implements EntryPoint {
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */
-		//widgetPanel.add(treeViewMenu);
+		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		
 		RootPanel.get("details").add(mainPanel);
 		
 	}
 	
+	public void setLoginInfo(LoginInfo logon) {
+		this.loginfo = logon;
+	}
 	
 	public void showContact(Contact c) {
 		if(this.cForm == null) {
@@ -103,9 +104,10 @@ public class Editor implements EntryPoint {
 			cForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		//widgetPanel.add(treeViewMenu);
+		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		//cForm.clear();
 		cForm.setCurrentContact(c);
+		cForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(cForm);
 	}
 	
@@ -115,9 +117,10 @@ public class Editor implements EntryPoint {
 			clForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		//widgetPanel.add(treeViewMenu);
+		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		//clForm.clear();
 		clForm.setCurrentList(cl);
+		clForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(clForm);
 	}
 	public void showContactCollab(Contact c) {
@@ -126,9 +129,10 @@ public class Editor implements EntryPoint {
 			ccForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		//widgetPanel.add(treeViewMenu);
+		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		//ccForm.clear();
 		ccForm.setContact(c);
+		//ccForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(ccForm);
 	}
 	
@@ -138,9 +142,10 @@ public class Editor implements EntryPoint {
 			clcForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		//widgetPanel.add(treeViewMenu);
+		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		//clcForm.clear();
 		clcForm.setList(cl);
+		//clcForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(clcForm);
 	}
 	public void returnToContactForm(Contact c) {
@@ -160,15 +165,13 @@ public class Editor implements EntryPoint {
 		widgetPanel.add(clForm);
 	}
 	public void addContactToTree(Contact c) {
-		/*
-		 * treeViewMenu.getListDataProvider.set();
-		 * TODO: implement. alle drei tabs des treeview müssen den kontakt aktualisieren
-		 */
+		treeViewMenu.addContact(c);
 	}
 	public void addContactListToTree(ContactList cl) {
-		/*
-		 * TODO: implement. alle drei tabs des treeview müssen die kontaktliste aktualisieren
-		 */
+		treeViewMenu.addContactList(cl);
+	}
+	public void addContactToListInTree(ContactList cl, Contact c) {
+		treeViewMenu.addContactToList(cl, c);
 	}
 	
 	

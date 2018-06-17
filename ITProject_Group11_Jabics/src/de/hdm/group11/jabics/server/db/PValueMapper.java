@@ -1,8 +1,6 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -102,45 +100,76 @@ public class PValueMapper {
 					String value = pv.getStringValue();
 		
 					// Füllen des Statements
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' , '" + ServiceClass.convertdate(c.getDateUpdated()) + "' , '"  + value + "' , "  + " null, "  
-					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
+					+ "( '" + value + "' , "  + " null, "  
+					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
+					ResultSet rs = stmt.getGeneratedKeys();
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					break;
 				}
 				case INT: {
 					int value = pv.getIntValue();
 					System.out.println(pv.getIntValue());
     	
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' , '" + ServiceClass.convertdate(c.getDateUpdated()) + "', "  + "null, " + value  
-					+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
+					+ "dateValue, propertyID, contactID) VALUES " 
+					+ "("  + "null, " + value  
+					+ ", " + "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS );  
+					ResultSet rs = stmt.getGeneratedKeys();
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					break;
 				}
 				case DATE: {
-					
-					/**
-					 *  Befüllen des Statements.
-					 * (Die Tabelle hat folgende Spalten:
-					 * 
-					 *     dateCreated|dateUpdated|stringValue|intValue|floatValue|pValueID|dateValue|propertyID|contactID)
-					 */
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' ,'" + ServiceClass.convertdate(c.getDateUpdated()) + "', "  + "null, " + "null, " 
-					+ "null, " + "'" + ServiceClass.convertdatevalue(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
-					break;
+					+ "(, "  + "null, " + "null, " 
+					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
+					ResultSet rs = stmt.getGeneratedKeys();
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}					break;
 				}
 				case FLOAT: {
 					Float value = pv.getFloatValue();
 		
 					// Füllen des Statements
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + ServiceClass.convertdate(c.getDateCreated()) + "' , '" + ServiceClass.convertdate(c.getDateUpdated()) + "', " +  "null, " +  "null, " + value 
-					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
-					break;
+					+ "( " +  "null, " +  "null, " + value 
+					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
+					ResultSet rs = stmt.getGeneratedKeys();
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}					break;
 				}
    			}
 
@@ -190,11 +219,10 @@ public class PValueMapper {
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
-	    		Date date =rs.getDate("dateValue");
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		//Muss noch in der Apl realisiert werden
-	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate());
+	    		pv.setDateValue(rs.getDate("dateValue"));
 	    		
 	    		al.add(pv);
 	 	    }
@@ -232,10 +260,10 @@ public class PValueMapper {
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
-	    		pv.setDateCreated(rs.getTimestamp("dateCreated").toLocalDateTime());
-	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated").toLocalDateTime());
+	    		pv.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		//Muss noch implementiert werden.
-	    		pv.setDateValue(rs.getDate("dateValue").toLocalDate()); 
+	    		pv.setDateValue(rs.getDate("dateValue")); 
 	    	}
 	    	return pv;
 	    }
@@ -267,30 +295,25 @@ public class PValueMapper {
 	    	switch (pv.getProperty().getType()) {
 	    		case STRING: {
 	    			
-	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = '" 
-	    			+ ServiceClass.convertdate(pv.getDateUpdated()) + "'"
-	    			+  " WHERE pValueID = '" + pv.getId() + "';");
+	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = CURRENT_TIMESTAMP WHERE pValueID = '" + pv.getId() + "';");
 	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + ServiceClass.convertdate(pv.getDateUpdated())
-	    			+ "'," + columnname + "= '"
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP , " + columnname + "= '"
 	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
 	    			break;
 	    		}
 	    		case DATE: {
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + ServiceClass.convertdate(pv.getDateUpdated())
-	    			+ "'," + columnname + "= '"
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
 	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;
 	    		}
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + ServiceClass.convertdate(pv.getDateUpdated())
-	    			+ "'," + columnname + "= '"
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
 	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;
 	    		}
