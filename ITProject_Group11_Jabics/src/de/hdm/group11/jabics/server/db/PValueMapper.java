@@ -105,6 +105,15 @@ public class PValueMapper {
 					+ "( '" + value + "' , "  + " null, "  
 					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
 					ResultSet rs = stmt.getGeneratedKeys();
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						c.setDateCreated(rs2.getTimestamp("dateCreated"));
+						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					break;
 				}
 				case INT: {
@@ -116,6 +125,15 @@ public class PValueMapper {
 					+ "("  + "null, " + value  
 					+ ", " + "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS );  
 					ResultSet rs = stmt.getGeneratedKeys();
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						c.setDateCreated(rs2.getTimestamp("dateCreated"));
+						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					break;
 				}
 				case DATE: {
@@ -124,7 +142,15 @@ public class PValueMapper {
 					+ "(, "  + "null, " + "null, " 
 					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
 					ResultSet rs = stmt.getGeneratedKeys();
-					break;
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						c.setDateCreated(rs2.getTimestamp("dateCreated"));
+						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}					break;
 				}
 				case FLOAT: {
 					Float value = pv.getFloatValue();
@@ -135,7 +161,15 @@ public class PValueMapper {
 					+ "( " +  "null, " +  "null, " + value 
 					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
 					ResultSet rs = stmt.getGeneratedKeys();
-					break;
+					Statement stmt2 =  con.createStatement();
+					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+					if(rs.next()) {
+						pv.setId(rs.getInt(1));
+					}
+					if(rs2.next()) {
+						c.setDateCreated(rs2.getTimestamp("dateCreated"));
+						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}					break;
 				}
    			}
 
