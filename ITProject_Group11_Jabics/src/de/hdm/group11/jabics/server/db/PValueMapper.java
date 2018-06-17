@@ -100,44 +100,41 @@ public class PValueMapper {
 					String value = pv.getStringValue();
 		
 					// Füllen des Statements
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
-					+ "('" + c.getDateCreated() + "' , '" + c.getDateUpdated() + "' , '"  + value + "' , "  + " null, "  
-					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  ); 
+					+ "( '" + value + "' , "  + " null, "  
+					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
+					ResultSet rs = stmt.getGeneratedKeys();
 					break;
 				}
 				case INT: {
 					int value = pv.getIntValue();
 					System.out.println(pv.getIntValue());
     	
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
-					+ "pValueID, dateValue, propertyID, contactID) VALUES " 
-					+ "('" + c.getDateCreated() + "' , '" + c.getDateUpdated() + "', "  + "null, " + value  
-					+ ", " + "null, " + pv.getId() + "," + "null, " + pv.getProperty().getId() + ", " + c.getId() + ")"  );  
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
+					+ "dateValue, propertyID, contactID) VALUES " 
+					+ "("  + "null, " + value  
+					+ ", " + "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS );  
+					ResultSet rs = stmt.getGeneratedKeys();
 					break;
 				}
 				case DATE: {
-					
-					/**
-					 *  Befüllen des Statements.
-					 * (Die Tabelle hat folgende Spalten:
-					 * 
-					 *     dateCreated|dateUpdated|stringValue|intValue|floatValue|pValueID|dateValue|propertyID|contactID)
-					 */
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + c.getDateCreated() + "' ,'" + c.getDateUpdated() + "', "  + "null, " + "null, " 
-					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  );
+					+ "(, "  + "null, " + "null, " 
+					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
+					ResultSet rs = stmt.getGeneratedKeys();
 					break;
 				}
 				case FLOAT: {
 					Float value = pv.getFloatValue();
 		
 					// Füllen des Statements
-					stmt.executeUpdate("INSERT INTO pValue (dateCreated, dateUpdated, stringValue, intValue, floatValue, "
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "('" + c.getDateCreated() + "' , '" + c.getDateUpdated() + "', " +  "null, " +  "null, " + value 
-					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")"  ); 
+					+ "( " +  "null, " +  "null, " + value 
+					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
+					ResultSet rs = stmt.getGeneratedKeys();
 					break;
 				}
    			}
