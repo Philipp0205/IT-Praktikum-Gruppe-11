@@ -1,7 +1,6 @@
 package de.hdm.group11.jabics.server.db;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -126,8 +125,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = '" + c.getDateUpdated() +
-	    			"' WHERE contactID = " + c.getId()   );
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP WHERE contactID = " + c.getId());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);

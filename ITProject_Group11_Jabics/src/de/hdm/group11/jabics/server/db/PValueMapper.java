@@ -111,8 +111,8 @@ public class PValueMapper {
 						pv.setId(rs.getInt(1));
 					}
 					if(rs2.next()) {
-						c.setDateCreated(rs2.getTimestamp("dateCreated"));
-						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					break;
 				}
@@ -131,8 +131,8 @@ public class PValueMapper {
 						pv.setId(rs.getInt(1));
 					}
 					if(rs2.next()) {
-						c.setDateCreated(rs2.getTimestamp("dateCreated"));
-						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					break;
 				}
@@ -148,8 +148,8 @@ public class PValueMapper {
 						pv.setId(rs.getInt(1));
 					}
 					if(rs2.next()) {
-						c.setDateCreated(rs2.getTimestamp("dateCreated"));
-						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}					break;
 				}
 				case FLOAT: {
@@ -167,8 +167,8 @@ public class PValueMapper {
 						pv.setId(rs.getInt(1));
 					}
 					if(rs2.next()) {
-						c.setDateCreated(rs2.getTimestamp("dateCreated"));
-						c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}					break;
 				}
    			}
@@ -295,30 +295,25 @@ public class PValueMapper {
 	    	switch (pv.getProperty().getType()) {
 	    		case STRING: {
 	    			
-	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = '" 
-	    			+ pv.getDateUpdated() + "'"
-	    			+  " WHERE pValueID = '" + pv.getId() + "';");
+	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = CURRENT_TIMESTAMP WHERE pValueID = '" + pv.getId() + "';");
 	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + pv.getDateUpdated()
-	    			+ "'," + columnname + "= '"
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP , " + columnname + "= '"
 	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
 	    			break;
 	    		}
 	    		case DATE: {
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE pValue SET pValue.dateUpdated ='" + pv.getDateUpdated()
-	    			+ "'," + columnname + "= '"
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
 	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;
 	    		}
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
-	    			stmt.executeUpdate("UPDATE pValue SET dateUpdated ='" + pv.getDateUpdated()
-	    			+ "'," + columnname + "= '"
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
 	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
 	    			break;
 	    		}
