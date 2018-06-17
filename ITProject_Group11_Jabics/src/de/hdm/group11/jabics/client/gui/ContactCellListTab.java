@@ -23,7 +23,6 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 public class ContactCellListTab  {
 	
 	private Contact selectedContact;
-
 	
 	private EditorServiceAsync eService = null;
 	//LoginInfo loginfo = new LoginInfo();
@@ -37,8 +36,7 @@ public class ContactCellListTab  {
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time." 
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());	
 	}
 	
 	

@@ -134,32 +134,33 @@ public class ContactListTreeTab implements TreeViewModel {
 	}
 
 	private void setSelectedContact(Contact c) {
-		selectedContact	= c;
+		//selectedContact	= c;
 		// momentan aktiver User muss angegeben werden
-		editor.showContact(c);;
+		editor.showContact(c);			
 		
+//		if (c != null) {
+//			eService.getUserById(c.getOwner().getId(), new AsyncCallback<JabicsUser>() {
+//
+//				@Override
+//				public void onFailure(Throwable caught) {
+//					// nix.	
+//					
+//				}
+//
+//				@Override
+//				public void onSuccess(JabicsUser result) {
+//					//Muss das result nicht ein Kontakt sein?
+//					selectedContact = c;
+//					//contactForm.setSelected(c);				
+//				}
+//				
+//			});
+//			
+//		}
 		
-		
-		if (c != null) {
-			eService.getUserById(c.getOwner().getId(), new AsyncCallback<JabicsUser>() {
-
-				@Override
-				public void onFailure(Throwable caught) {
-					// nix.
-					
-				}
-
-				@Override
-				public void onSuccess(JabicsUser result) {
-					//Muss das result nicht ein Kontakt sein?
-					selectedContact = c;
-					//contactForm.setSelected(c);				
-				}
-				
-			});
-		}
 		
 	}
+
 	
 	 public Contact getSelectedContact() {
 		return selectedContact;
