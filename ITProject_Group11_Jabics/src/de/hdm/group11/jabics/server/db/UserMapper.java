@@ -290,3 +290,39 @@ public class UserMapper {
 		}
 	}	
 }
+
+/**
+ * Diese Methode erlaubt die Suche eines  <code>User</code> Objekts in der Datenbank nach seiner E-Mail-Adresse.
+ * 
+ * @param email  die email nach der gesucht werden soll.
+ * @return das gesuchte  <code>User</code> Objekt.
+ */
+public JabicsUser findUserByEmail(String email)  {
+	// Erzeugen der Datenbankverbindung
+	Connection con = DBConnection.connection();
+
+	try {
+		// Erzeugen eines ungefüllten SQL-Statements
+		Statement stmt = con.createStatement();
+	   
+		// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
+		ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE email = '" + email+"'");
+	   
+		if (rs.next()) {
+			JabicsUser u = new JabicsUser();
+			
+			//Befüllen des Kontakt-Objekts
+			u.setId(rs.getInt("systemUserID"));
+			u.setEmail(rs.getString("email"));
+			u.setUsername(rs.getString("name"));
+	        
+	        return u;
+		}else
+		return null;
+	}
+	catch (SQLException e) {
+	    System.err.print(e);
+	    return null;
+	}
+}	
+}
