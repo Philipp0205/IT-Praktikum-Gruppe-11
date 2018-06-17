@@ -51,6 +51,8 @@ public class ContactListForm extends VerticalPanel {
 	VerticalPanel listEdit, conEdit;
 	HorizontalPanel listShareBox, listDeleteBox, listAddBox, listRmvBox;
 	
+	MultiSelectionModel<Contact> selectionModel;
+	
 	Button deleteListButton, shareListButton;
 	
 	MultiSelectionModel<Contact> selectionModel1  = new MultiSelectionModel<Contact>();
@@ -177,6 +179,9 @@ public class ContactListForm extends VerticalPanel {
 		valueProvider.addDataDisplay(selValues);
 		 //finalC;
 		// Es kann sein, dass hier noch kexprovider benötigt werden
+
+		selectionModel  = new MultiSelectionModel<Contact>();
+
 		
 		selectionModel1.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 	         public void onSelectionChange(SelectionChangeEvent event) {

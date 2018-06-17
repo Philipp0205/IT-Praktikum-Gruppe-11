@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
@@ -61,6 +64,8 @@ public class ContactForm extends VerticalPanel {
 	TextBox propertyName = new TextBox();
 	TextBox pValueName = new TextBox();
 	Label contactName = new Label();
+	DatePicker datePicker = new DatePicker();
+	Date selectedDate = new Date();
 
 	public void onLoad() {
 
@@ -83,7 +88,7 @@ public class ContactForm extends VerticalPanel {
 		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 		// Die gesamte Zeile (4) wird ein HorizontalPanel
 		HorizontalPanel propertyAddBox = new HorizontalPanel();
-		// in diesem Horizontal Panel gibt es 4 Felder
+		// in diesem Horizontal Panel gibt es 4 Felder 
 		// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
 		propertyAddBox.add(propertyName);
 		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
@@ -99,14 +104,28 @@ public class ContactForm extends VerticalPanel {
 		// 2. ein Eingabefeld, um die konkrete Eigenschaftsausprägung anzugeben (z.B.
 		// "blond")
 		propertyAddBox.add(pValueName);
-
+		
 		// 3. einen Button zum Hinzufügen
 		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.add(addPropertyButton);
+		
+		//4 einen Datepicker
+		// Set the value in the text box when the user selects a date
+		propertyAddBox.add(datePicker);
+	    datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
+	      public void onValueChange(ValueChangeEvent<Date> event) {
+	        selectedDate = event.getValue();
+	      }
+	    });
+	    // Set the default value
+	    datePicker.setValue(new Date(), true);
+	  
+		
 
 		// hinzufügen von Zeile 4 zum Hauptgrid
 		userInformationGrid.setWidget(3, 0, propertyAddBox);
+		
 
 		// GRID-ZEILE 5:
 
@@ -138,6 +157,8 @@ public class ContactForm extends VerticalPanel {
 	 * @author Brase
 	 * @author Ilg
 	 */
+	
+	
 
 	/**
 	 * Diese Klasse realisiert einen Clickhandler für den DeleteContactButton. Beim
@@ -230,7 +251,7 @@ public class ContactForm extends VerticalPanel {
 				break;
 			case "Datum":
 				Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
-				Date ld = new Date(01,01,01);
+				Date ld = selectedDate;
 				// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
 				editorService.createPValue(result, ld, contactToDisplay, u, new CreatePValueCallback());
 				break;
@@ -337,6 +358,7 @@ public class ContactForm extends VerticalPanel {
 				saveButton[pointer1] = new Button("Save");
 
 				saveButton[pointer1].addClickHandler(new ClickHandler() {
+
 					// TODO Bisher noch nicht funktional
 					public void onClick(ClickEvent event) {
 
