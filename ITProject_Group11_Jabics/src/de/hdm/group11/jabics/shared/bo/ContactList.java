@@ -57,7 +57,7 @@ public class ContactList extends BusinessObject {
 			 */
 			public void addContact(Contact c) {				
 				contacts.add(c);
-				this.setDateUpdated(LocalDateTime.now());
+				//this.setDateUpdated(LocalDateTime.now());
 			}
 			
 			/** 
@@ -83,21 +83,21 @@ public class ContactList extends BusinessObject {
 			}
 			public void setContacts(ArrayList<Contact> contacts) {
 				this.contacts = contacts;
-				this.setDateUpdated(LocalDateTime.now());
+				//this.setDateUpdated(LocalDateTime.now());
 			}
 			public String getListName() {
 				return listName;
 			}
 			public void setListName(String listName) {
 				this.listName = listName;
-				this.dateUpdated = LocalDateTime.now();
+				//this.dateUpdated = LocalDateTime.now();
 			}
 			public BoStatus getShareStatus() {
 				return shareStatus;
 			}
 			public void setShareStatus(BoStatus shareStatus) {
 				this.shareStatus = shareStatus;
-				this.dateUpdated = LocalDateTime.now();
+				//this.dateUpdated = LocalDateTime.now();
 			}
 			
 			

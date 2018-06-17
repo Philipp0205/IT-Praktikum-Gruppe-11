@@ -86,8 +86,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
-		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		
+		Contact cnew = cMapper.findContactById(c.getId());	
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -109,7 +113,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
 		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -130,7 +137,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
 		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -151,7 +161,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
 		Contact cnew = cMapper.findContactById(c.getId());
-		cnew.setDateUpdated(LocalDateTime.now());
+		
+		//cnew.setDateUpdated(LocalDateTime.now());
+		
+		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -354,7 +367,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 		PValue pvtemp = pvMapper.findPValueById(pv.getId());
 		if(pv != pvtemp) {
-			 pv.setDateUpdated(LocalDateTime.now());
+			
+			 //pv.setDateUpdated(LocalDateTime.now());
+			 
 			 return pvMapper.updatePValue(pv);
 		}else return pvMapper.findPValueById(pv.getId());
 	}
@@ -362,7 +377,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ContactList updateContactList(ContactList cl){
 		ContactList cltemp = clMapper.findContactListById(cl.getId());
 		if(cl != cltemp) {
-			cl.setDateUpdated(LocalDateTime.now());
+			
+			//cl.setDateUpdated(LocalDateTime.now());
+			
 			//Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist, wenn ja, einfügen
 			for (Contact c : cl.getContacts()) {
 				boolean bol = false;
@@ -398,7 +415,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * .equals in Contact noch schreiben?
 		 */
 		if(c.equals(ctemp) == false) {
-			c.setDateUpdated(LocalDateTime.now());
+			
+			//c.setDateUpdated(LocalDateTime.now());
+			
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				if(pvMapper.findPValueById(pv.getId()) != pv) {

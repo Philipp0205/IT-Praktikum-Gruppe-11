@@ -92,14 +92,14 @@ public class Contact extends BusinessObject implements Comparable<Contact>{
 	}
 	public void setValues(ArrayList<PValue> values) {
 		this.values = values;
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 	}
 	public BoStatus getShareStatus() {
 		return shareStatus;

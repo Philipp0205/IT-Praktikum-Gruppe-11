@@ -10,10 +10,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.gui.Editor;
-import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
-import de.hdm.group11.jabics.shared.LoginService;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;

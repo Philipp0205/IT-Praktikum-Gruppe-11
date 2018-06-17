@@ -3,8 +3,6 @@ package de.hdm.group11.jabics.shared.bo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneId;
-import java.util.TimeZone;
 
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -26,6 +24,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	private int intValue; 
 	private String stringValue; 
 	private LocalDate dateValue;
+	private String dateValue2;
 	private float floatValue; 
 	private Property property;
 	private int propertyId;
@@ -86,7 +85,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	}
 	public void setIntValue(int intValue) {
 		this.intValue = intValue;
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 		this.pointer = 1; 
 
 	}
@@ -95,7 +94,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	}
 	public void setStringValue(String stringValue) {
 		this.stringValue = stringValue;
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 		this.pointer = 2; 
 
 	}
@@ -104,13 +103,13 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	}
 	public void setDateValue(int year, int month, int dayOfMonth) {
 		this.dateValue = LocalDate.of(year, month, dayOfMonth);
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
 	}
 	// overload method if date is given in the datatype "month". 
 	public void setDateValue(int year, Month month, int dayOfMonth) {
 		this.dateValue = LocalDate.of(year, month, dayOfMonth);
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 		this.pointer = 3; 
 	}
 	public void setDateValue(LocalDate t) {
@@ -126,7 +125,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	}
 	public void setFloatValue(float floatValue) {
 		this.floatValue = floatValue;
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 		this.pointer = 4; 
 	}
 	public Property getProperty() {
@@ -134,7 +133,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>{
 	}
 	public void setProperty(Property property) {
 		this.property = property;
-		this.dateUpdated = LocalDateTime.now();
+		//this.dateUpdated = LocalDateTime.now();
 	}
 	public int getPropertyId() {
 		return propertyId;

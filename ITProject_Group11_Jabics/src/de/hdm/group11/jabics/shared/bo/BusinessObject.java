@@ -14,14 +14,19 @@ import java.time.LocalDateTime;
 public abstract class BusinessObject {
 	
 	public BusinessObject() { 
-		this.dateCreated = LocalDateTime.now();
-		this.dateUpdated = this.dateCreated;
+//		this.dateCreated = 
+//		this.dateUpdated = this.dateCreated;
 	}
 
 	int id;
 	JabicsUser owner;
-	LocalDateTime dateCreated;
-	LocalDateTime dateUpdated;
+	//LocalDateTime dateCreated;
+	//LocalDateTime dateUpdated;
+	
+	String dateUpdated;
+	String dateCreated;
+	
+	
 	private long serialVersionUID = 1L;
 	
 	/**
@@ -63,29 +68,29 @@ public abstract class BusinessObject {
 	public void setOwner(JabicsUser owner) {
 		this.owner = owner;
 	}
-	public LocalDateTime getDateCreated() {
-		return dateCreated;
-	}
-	public void setDateCreated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
-		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
-	}
-	public void setDateCreated(LocalDateTime dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	public LocalDateTime getDateUpdated() {
-		return dateUpdated;
-	}
-	public void setDateUpdated(LocalDateTime dateUpdated) {
-		this.dateUpdated = dateUpdated;
-	}
-	public void setDateUpdated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
-		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
-	}
-	public long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-	public void setSerialVersionUID(long serialVersionUID) {
-		this.serialVersionUID = serialVersionUID;
-	}
+//	public LocalDateTime getDateCreated() {
+//		return dateCreated;
+//	}
+//	public void setDateCreated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
+//		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+//	}
+//	public void setDateCreated(LocalDateTime dateCreated) {
+//		this.dateCreated = dateCreated;
+//	}
+//	public LocalDateTime getDateUpdated() {
+//		return dateUpdated;
+//	}
+//	public void setDateUpdated(LocalDateTime dateUpdated) {
+//		this.dateUpdated = dateUpdated;
+//	}
+//	public void setDateUpdated(int year, int month, int dayOfMonth, int hour, int minute, int second) {
+//		this.dateCreated = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+//	}
+//	public long getSerialVersionUID() {
+//		return serialVersionUID;
+//	}
+//	public void setSerialVersionUID(long serialVersionUID) {
+//		this.serialVersionUID = serialVersionUID;
+//	}
 	
 }
