@@ -1,6 +1,10 @@
 package de.hdm.group11.jabics.client.gui;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
@@ -16,6 +20,10 @@ import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.Property;
+import de.hdm.group11.jabics.shared.bo.Type;
 
 /*
  * In der folgenden Klasse "Editor" wird die Darstellung einzelnen Klassen bestimmt:
@@ -60,7 +68,7 @@ public class Editor implements EntryPoint{
 	
 	@Override
 	public void onModuleLoad() {
-		
+		GWT.log("5");
 		
 		if(editorAdmin == null) {
 			editorAdmin = ClientsideSettings.getEditorService();
@@ -84,14 +92,27 @@ public class Editor implements EntryPoint{
 		topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
-		
+		GWT.log("6");
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		JabicsUser u = new JabicsUser("hans");
+		Property p1 = new Property("Name", Type.STRING);
+		Property p2 = new Property("VorName", Type.STRING);
+		p1.setStandard(true);
+		Property p3 = new Property("Straße", Type.STRING);
+		ArrayList<PValue> val = new ArrayList<PValue>();
+		val.add(new PValue( p1, "Max", u));
+		val.add(new PValue( p2, "Mustermann", u));
+		val.add(new PValue( p3, "eineStraße", u));
 		
+		Contact c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
+		GWT.log("5");
+		showContact(c1);
+		GWT.log("6");
 		RootPanel.get("details").add(mainPanel);
-		
+		GWT.log("5");
 	}
 	
 	public void setLoginInfo(LoginInfo logon) {
@@ -103,11 +124,12 @@ public class Editor implements EntryPoint{
 			cForm = new ContactForm();
 			cForm.setEditor(this);
 		}
+		GWT.log("7");
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		//cForm.clear();
 		cForm.setCurrentContact(c);
-		cForm.setUser(loginfo.getCurrentUser());
+		//cForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(cForm);
 	}
 	

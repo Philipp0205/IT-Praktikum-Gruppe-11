@@ -484,13 +484,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u){
-		ArrayList<PValue> result = new ArrayList<PValue>();
+		/*ArrayList<PValue> result = new ArrayList<PValue>();
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
 			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
 				if (u.getId() == uu.getId()) result.add(pv);
 			}
 		}
-		return result;
+		return result;*/
+		return c1.getValues();
 	}
 	
 	/**
