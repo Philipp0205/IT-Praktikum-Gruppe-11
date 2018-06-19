@@ -1,5 +1,8 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.io.Serializable;
+
+import java.io.Serializable;
 
 /**
  * Diese Klasse definiert die abstrakte Version einer Eigenschaft, also wie diese hei�t und welcher Datentyp diese repr�sentiert.
@@ -7,7 +10,8 @@ package de.hdm.group11.jabics.shared.bo;
  * Eine <code>Property</code> kann nur erstellt werden, wenn mindestens ein Name und ein Datentyp (von Enum Type) bekannt ist.
  * @author Anders
  */
-public class Property extends BusinessObject {
+public class Property extends BusinessObject implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private String label;
 	private Type type;

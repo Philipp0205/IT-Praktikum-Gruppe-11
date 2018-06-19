@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.RemoteService;
 
 import de.hdm.group11.jabics.shared.bo.*;
+
 
 
 public interface EditorServiceAsync {
@@ -38,7 +40,7 @@ public interface EditorServiceAsync {
 	
 	void addContactToList(Contact c, ContactList cl, AsyncCallback<ContactList> callback);
 	
-	void addValueToContact(PValue pv, Contact c, AsyncCallback<Contact> callback);
+	void addValueToContact(PValue pv, Contact c, JabicsUser u, AsyncCallback<Contact> callback);
 	
 	void searchForContactByExpression(String s, JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 	
@@ -90,5 +92,5 @@ public interface EditorServiceAsync {
 	
 	void initialise(AsyncCallback<Void> callback);
 	
-	JabicsUser setJabicsUser(JabicsUser u, AsyncCallback<JabicsUser> callback) throws IllegalArgumentException;
+	void setJabicsUser(JabicsUser u, AsyncCallback<JabicsUser> callback);
 }

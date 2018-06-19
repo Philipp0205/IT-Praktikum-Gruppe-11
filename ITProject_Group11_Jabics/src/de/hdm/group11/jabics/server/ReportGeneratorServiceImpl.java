@@ -114,7 +114,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		ArrayList<Contact> contacts = cMapper.findAllContacts(u);
 
 		// Zuerst wird ein leerer Report angelegt. 
-		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport(contacts, pv);
+		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport();
 		
 		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
 		result.setHeadline("Gefilterter Report für Nutzer " + u.getUsername());

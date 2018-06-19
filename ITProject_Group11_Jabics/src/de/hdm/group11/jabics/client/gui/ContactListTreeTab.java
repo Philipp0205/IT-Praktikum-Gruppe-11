@@ -163,7 +163,7 @@ public class ContactListTreeTab implements TreeViewModel {
 				@Override
 				public void onSuccess(JabicsUser result) {
 					//Muss das result nicht ein Kontakt sein?
-					selectedContact = c;
+					//selectedContact = c;
 					//contactForm.setSelected(c);				
 				}
 				

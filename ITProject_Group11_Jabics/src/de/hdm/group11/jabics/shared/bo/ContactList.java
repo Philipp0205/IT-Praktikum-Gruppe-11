@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -10,8 +11,8 @@ import java.util.ArrayList;
  * @author Anders
  *
  */
-public class ContactList extends BusinessObject {
-	
+public class ContactList extends BusinessObject implements Serializable{
+	private static final long serialVersionUID = 1L;
 		private String listName; 
 	    private BoStatus shareStatus; 
 	    

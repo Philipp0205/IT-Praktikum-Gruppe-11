@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared.report;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -13,17 +14,14 @@ import de.hdm.group11.jabics.shared.bo.Property;
  */
 
 // TODO Simple Report --> ContactReport
-public class FilteredContactsOfUserReport extends CompositeReport {
+public class FilteredContactsOfUserReport extends CompositeReport implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	Paragraph filtercriteria; // String, float, int oder Contact
 
 
-	public FilteredContactsOfUserReport(ArrayList<Contact> contacts, PValue pv) {	
+	public FilteredContactsOfUserReport() {	
 		
 	}
 
