@@ -1,12 +1,15 @@
 package de.hdm.group11.jabics.shared.report;
 
+import java.io.Serializable;
+
 /**
  * Dies ist die Grundklasse der ReportWriter. Wird dafür benutzt um einen Report in eine andere Form zu übersetzen.
  * @author Kurrle
  *
  */
 
-public abstract class ReportWriter {
+public abstract class ReportWriter implements Serializable{
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Übersetzt einen AllContactsInSystemReport in das Zielformat.
 	 * @param r

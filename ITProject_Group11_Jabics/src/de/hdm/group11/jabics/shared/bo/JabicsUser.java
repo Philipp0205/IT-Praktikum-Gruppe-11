@@ -1,5 +1,7 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.io.Serializable;
+
 /** 
  * Ein Nutzer ist in Jabocs ein Bediener der Software, der sich über Google eingeloggt hat.
  * Viele Attribute werden direkt aus der Google Accounts API übernommen.
@@ -7,8 +9,8 @@ package de.hdm.group11.jabics.shared.bo;
  *  @author Kurrle and Anders
  */
 
-public class JabicsUser {
-	
+public class JabicsUser implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id; 
 	private String email;
 	private String username;

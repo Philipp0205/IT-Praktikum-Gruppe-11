@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared.report;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  *
  */
 
-public class ContactReport extends Report  {
+public class ContactReport extends Report  implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	

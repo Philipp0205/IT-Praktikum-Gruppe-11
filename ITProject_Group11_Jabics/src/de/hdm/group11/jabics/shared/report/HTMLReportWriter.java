@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared.report;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -10,7 +11,8 @@ import java.util.ArrayList;
  * @author Anders
  *
  */
-public class HTMLReportWriter extends ReportWriter {
+public class HTMLReportWriter extends ReportWriter implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Speichert das Ergebnis einer process Methode. Format: HTML

@@ -14,6 +14,7 @@ import de.hdm.group11.jabics.shared.*;
  * */
 public class ClientsideSettings {
 
+	public ClientsideSettings() {}
 	/*
 	 * Remote Service Proxy: 
 	 * Verbindungsaufnahme mit dem Server-Seitigen Dienst

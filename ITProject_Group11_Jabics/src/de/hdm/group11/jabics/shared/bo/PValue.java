@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
@@ -15,9 +16,9 @@ import com.google.gwt.view.client.ProvidesKey;
  * @author Kurrle und Anders
  */
 
-public class PValue extends BusinessObject implements Comparable<PValue>{
+public class PValue extends BusinessObject implements Comparable<PValue>, Serializable{
 
-
+	private static final long serialVersionUID = 1L;
 	
 	private int intValue; 
 	private String stringValue; 

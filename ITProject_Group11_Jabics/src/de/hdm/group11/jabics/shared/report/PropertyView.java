@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.shared.report;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import de.hdm.group11.jabics.shared.bo.PValue;
@@ -10,7 +11,8 @@ import de.hdm.group11.jabics.shared.bo.PValue;
  * Eigenschaftsauspr�gung in einem Report geeignet ist. Ein PropertyView enth�lt einen String f�r den Namen 
  * der Eigenschaft und einen String f�r den Wert der Auspr�gung.
  */
-public class PropertyView {
+public class PropertyView implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	
 	private String pname; 
