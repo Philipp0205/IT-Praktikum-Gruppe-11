@@ -329,6 +329,8 @@ public class ContactForm extends VerticalPanel {
 	int pointer1;
 	PValue currentPV;
 	TextBox[] pValueTextBox;
+	PValue newPV;
+	
 	
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
@@ -337,6 +339,7 @@ public class ContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
+			newPV = new PValue(result.get(pointer1).getProperty(), u);
 
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			checkedPV.clear();
@@ -345,6 +348,7 @@ public class ContactForm extends VerticalPanel {
 			pValueTextBox = new TextBox[result.size()];
 			Button[] saveButton = new Button[result.size()];
 			Button[] deleteButton = new Button[result.size()];
+			
 
 			for (int i = result.size(); i > 0; i--) {
 
@@ -356,6 +360,7 @@ public class ContactForm extends VerticalPanel {
 				pValueTextBox[pointer1] = new TextBox();
 				pValueTextBox[pointer1].setText(result.get(pointer1).toString());
 				saveButton[pointer1] = new Button("Save");
+				
 
 				saveButton[pointer1].addClickHandler(new ClickHandler() {
 
@@ -363,7 +368,7 @@ public class ContactForm extends VerticalPanel {
 					public void onClick(ClickEvent event) {
 
 						int currentID = currentPV.getPropertyId();
-						PValue newPV = new PValue(result.get(pointer1).getProperty(), u);
+						
 
 						switch (currentPV.getPointer()) {
 						case 1:

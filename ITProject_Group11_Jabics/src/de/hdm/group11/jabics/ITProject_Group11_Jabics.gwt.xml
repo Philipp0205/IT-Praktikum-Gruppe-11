@@ -23,7 +23,7 @@
   <entry-point class='de.hdm.group11.jabics.client.Jabics'/>
 
   <!-- Specify the paths for translatable code                    -->
-  <source path='client'/>
+  <source path= 'client'/>
   <source path='shared'/>
 
   <!-- allow Super Dev Mode -->

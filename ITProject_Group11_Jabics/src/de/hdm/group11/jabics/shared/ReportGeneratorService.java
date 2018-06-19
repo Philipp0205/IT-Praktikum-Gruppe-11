@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import de.hdm.group11.jabics.shared.report.*;
 import de.hdm.group11.jabics.shared.bo.*;
 
@@ -20,7 +22,7 @@ import de.hdm.group11.jabics.shared.bo.*;
  */ 
 
 
-
+@RemoteServiceRelativePath("report")
 public interface ReportGeneratorService extends RemoteService {
 	
 	/**
@@ -35,7 +37,7 @@ public interface ReportGeneratorService extends RemoteService {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	AllContactsOfUserReport createAllContactsOfUserReport(JabicsUser u) throws IllegalArgumentException;
+	public AllContactsOfUserReport createAllContactsOfUserReport(JabicsUser u) throws IllegalArgumentException;
 	
 	/** 
 	 *  Diese Methode erstelle einen FilteredContactsOfUserReport.
@@ -46,7 +48,7 @@ public interface ReportGeneratorService extends RemoteService {
 	 * @return Das gefilterte Reportobjekt.
 	 * @throws IllegalArgumentException
 	 */
-	FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u) throws IllegalArgumentException;
+	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u) throws IllegalArgumentException;
 	
 	public void init() throws IllegalArgumentException;
 	

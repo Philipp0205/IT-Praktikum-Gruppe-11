@@ -3,6 +3,7 @@
  */
 package de.hdm.group11.jabics.shared.bo;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -18,15 +19,17 @@ import com.google.gwt.view.client.ProvidesKey;
  * @author Kurrle 
  */
 
-public class Contact extends BusinessObject implements Comparable<Contact>{
+public class Contact extends BusinessObject implements Comparable<Contact>, Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Instanzenvariablen
 	 */
 	ArrayList<PValue> values = new ArrayList<PValue>();
 	private String name;
 	private BoStatus shareStatus;
-		
+	
+
 	public Contact(ArrayList<PValue> a, JabicsUser u) { 
 		this(a);
 		this.owner = u;

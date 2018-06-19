@@ -1,6 +1,8 @@
 package de.hdm.group11.jabics.shared.bo;
 
+import java.io.Serializable;
 import java.sql.*;
+
 
 
 
@@ -11,7 +13,9 @@ import java.sql.*;
  * 
  */
 
-public abstract class BusinessObject {
+public abstract class BusinessObject implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	public BusinessObject() { 
 //		this.dateCreated = 
@@ -23,8 +27,6 @@ public abstract class BusinessObject {
 	Timestamp dateUpdated;
 	Timestamp dateCreated;
 	
-	
-	private long serialVersionUID = 1L;
 	
 	/**
 	 * hashCode returns the id that is also used in the Database 
@@ -76,12 +78,6 @@ public abstract class BusinessObject {
 	}
 	public void setDateCreated(Timestamp dateCreated) {
 		this.dateCreated = dateCreated;
-	}
-	public long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-	public void setSerialVersionUID(long serialVersionUID) {
-		this.serialVersionUID = serialVersionUID;
 	}
 	
 }

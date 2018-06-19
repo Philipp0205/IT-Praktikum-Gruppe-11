@@ -13,9 +13,7 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  */
 
 public abstract class Report implements Serializable {
-	
-	
-	static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	Date creationDate;
 	JabicsUser creator;

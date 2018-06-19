@@ -1,5 +1,7 @@
 package de.hdm.group11.jabics.shared.report;
 
+import java.io.Serializable;
+
 /**
  * Paragraphen dienen der Darstellung von Filterkriteren in Reports. 
  * 
@@ -7,11 +9,14 @@ package de.hdm.group11.jabics.shared.report;
  *
  */
 
-public class Paragraph {
+public class Paragraph implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
 	private String[] filtercriteria = new String[4];
 	private String content;
 	
+	public Paragraph() {
+	}
 	public Paragraph(String content) {
 		super();
 		this.content = content;

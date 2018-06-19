@@ -1,11 +1,16 @@
 package de.hdm.group11.jabics.shared;
 
 import java.util.Date;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
 
-public interface EditorService {
+@RemoteServiceRelativePath("editor")
+public interface EditorService extends RemoteService{
 	
 	public JabicsUser createUser(String name, String email) throws IllegalArgumentException;
 	

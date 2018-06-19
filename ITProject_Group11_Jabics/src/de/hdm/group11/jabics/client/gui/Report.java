@@ -86,14 +86,14 @@ public class Report implements EntryPoint {
 					//TODO hier currentUser einfügen
 					reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new CreateFilteredContactsOfUserReportCallback() );
 				} else if (intBox.getText().isEmpty() == false) {
-					if (StringUtils.isNumericSpace(stringBox.getText()) == true ) {
+					if (stringBox.getText() != null ) {
 						pvalue.setIntValue(Integer.parseInt(stringBox.getText()));
 						
 					} else 
 						System.out.println("Eingegebener Wert ist nicht im korrekten Format (int).");
 					
 				} else if (floatBox.getText().isEmpty() == false) {
-					if (StringUtils.isNumericSpace(floatBox.getText()) == true ) {
+					if (floatBox.getText() != null ) {
 						pvalue.setFloatValue(Float.parseFloat(floatBox.getText()));
 					}
 				} else if (dateBox.getText().isEmpty() == false) {
