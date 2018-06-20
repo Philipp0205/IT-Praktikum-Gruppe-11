@@ -35,6 +35,9 @@ public class JabicsUser implements Serializable{
 	public JabicsUser() {
 		super();	
 	}
+	public JabicsUser(int id) {
+		this.id = id;	
+	}
 	public JabicsUser(String email) {
 		this();
 		this.email = email;

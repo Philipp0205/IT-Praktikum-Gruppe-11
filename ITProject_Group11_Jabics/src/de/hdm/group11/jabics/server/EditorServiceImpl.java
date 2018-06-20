@@ -617,8 +617,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 */
 		
 		u = new JabicsUser("MeinNutzer");
-		p1 = new Property("name", Type.STRING);
-		p2 = new Property("lastname", Type.STRING);
+		p1 = new Property("Vorname", Type.STRING);
+		p2 = new Property("Nachname", Type.STRING);
 		p1.setStandard(true);
 		p3 = new Property("Straße", Type.STRING);
 		p4 = new Property("Hausnummer", Type.INT);

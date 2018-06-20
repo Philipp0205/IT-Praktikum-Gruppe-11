@@ -82,6 +82,7 @@ public class Editor implements EntryPoint {
 		/*
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
 		 */
+		currentUser = new JabicsUser(1);
 		//loginService = ClientsideSettings.getLoginService();
 		//GWT.log(GWT.getHostPageBaseURL());
 		//loadEditor();
@@ -115,6 +116,8 @@ public class Editor implements EntryPoint {
 		mainPanel.add(widgetPanel);
 
 		treeViewMenu = new TreeViewMenu();
+		
+		treeViewMenu.getStackLayoutPanel().
 
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
@@ -149,8 +152,9 @@ public class Editor implements EntryPoint {
 		showContact(c1);
 		GWT.log("6");
 		mainPanel.add(widgetPanel);
+		GWT.log("7");
 		RootPanel.get("details").add(mainPanel);
-		GWT.log("5");
+		
 	}
 
 	private void loadLogin() {
@@ -183,14 +187,18 @@ public class Editor implements EntryPoint {
 			cForm = new ContactForm();
 			cForm.setEditor(this);
 		}
-		GWT.log("7");
+		GWT.log("8");
 		widgetPanel.clear();
-		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		GWT.log("9");
+		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// cForm.clear();
+		GWT.log("10");
 		cForm.setCurrentContact(c);
+		GWT.log("11");
 		// cForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(cForm);
-	}
+		
+		}
 
 	public void showContactList(ContactList cl) {
 		if (this.clForm == null) {
