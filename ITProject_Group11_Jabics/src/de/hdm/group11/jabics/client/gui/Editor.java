@@ -81,6 +81,7 @@ public class Editor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
+		testMethod();
 		/*
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
 		 */
@@ -117,6 +118,7 @@ public class Editor implements EntryPoint {
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
 
+		
 		treeViewMenu = new TreeViewMenu();
 
 		Button createC = new Button("Neuer Kontakt");

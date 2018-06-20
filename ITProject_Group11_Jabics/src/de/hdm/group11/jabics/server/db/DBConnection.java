@@ -20,20 +20,32 @@ public class DBConnection {
 	//private static String googleUrl = "";
 	
 	public static Connection connection() {
-		
+		 String url = null;
+		 
 		try {
 			/** 
 			 * Laden des JDBC Treibers
 			 */
-			Class.forName("com.mysql.jdbc.GoogleDriver");
 			
 			/**
 			 * Der DriverManager baut mit den angegebenen Verbindungsinformationen die Verbindung zur Datenbank auf. 
 			 * Diese Verbinfung wird in der Variable  "con" gespeichert.  
 			 */
-			//con = DriverManager.getConnection("jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true","root","ThieskesOberesDrittel!");
 			/* Bin mir nicht sicher ob die klappt: */
-			con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?user=root&password=ThieskesOberesDrittel!");
+			
+			if (SystemProperty.environment.value() ==
+				      SystemProperty.Environment.Value.Production) {
+				System.out.println( SystemProperty.Environment.Value.Production.toString());
+				    // Load the class that provides the new "jdbc:google:mysql://" prefix.
+				    Class.forName("com.mysql.jdbc.GoogleDriver");
+				    url = "jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?user=root&password=ThieskesOberesDrittel!";
+				  } else {
+				    // Local MySQL instance to use during development.
+				    Class.forName("com.mysql.jdbc.Driver");
+				    url = ("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?user=s242770_2739576&password=itPROJEKT2018");
+				  }
+			
+			con = DriverManager.getConnection(url);
 			 /**/
 			
 			System.out.println("Connected to DB");	
