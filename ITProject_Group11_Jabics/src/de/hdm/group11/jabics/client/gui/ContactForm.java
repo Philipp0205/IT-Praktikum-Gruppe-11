@@ -393,7 +393,7 @@ public class ContactForm extends VerticalPanel {
 				
 				currentPV = result.get(pointer1);
 				
-				propertyLabels[i] = new Label(result.get(pointer1).getProperty().toString());
+				propertyLabels[i] = new Label(result.get(pointer1).getProperty().getLabel()+ ":");
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(pointer1).toString());
 				saveButton[i] = new Button("Save");

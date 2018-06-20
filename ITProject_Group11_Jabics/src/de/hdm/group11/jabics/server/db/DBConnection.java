@@ -35,14 +35,14 @@ public class DBConnection {
 			
 			if (SystemProperty.environment.value() ==
 				      SystemProperty.Environment.Value.Production) {
-				System.out.println( SystemProperty.Environment.Value.Production.toString());
 				    // Load the class that provides the new "jdbc:google:mysql://" prefix.
 				    Class.forName("com.mysql.jdbc.GoogleDriver");
 				    url = "jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?user=root&password=ThieskesOberesDrittel!";
 				  } else {
 				    // Local MySQL instance to use during development.
 				    Class.forName("com.mysql.jdbc.Driver");
-				    url = ("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?user=s242770_2739576&password=itPROJEKT2018");
+				  url = ("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?user=s242770_2739576&password=itPROJEKT2018");
+
 				  }
 			
 			con = DriverManager.getConnection(url);
