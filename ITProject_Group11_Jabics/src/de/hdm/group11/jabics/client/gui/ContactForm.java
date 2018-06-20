@@ -35,6 +35,7 @@ import de.hdm.group11.jabics.shared.bo.*;
  *
  */
 public class ContactForm extends VerticalPanel {
+	
 	/**
 	 * Struktur von
 	 * 
@@ -50,7 +51,7 @@ public class ContactForm extends VerticalPanel {
 	Editor e;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	JabicsUser u = null;
+	JabicsUser u;
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu contacttree = null;
@@ -69,14 +70,17 @@ public class ContactForm extends VerticalPanel {
 	Date selectedDate = new Date();
 
 	public void onLoad() {
-
+		
 		super.onLoad();
+		
 
 		// Erstellen des Haupt-Grids
-		Grid userInformationGrid = new Grid(6, 1);
+		Grid userInformationGrid = new Grid(6, 2);
+		this.add(userInformationGrid);
 
 		// GRID-ZEILE 1: Vergabe des Fensternamens
 		Label formName = new Label("Kontakt-Editor");
+		
 		userInformationGrid.setWidget(0, 0, formName);
 
 		// GRID-ZEILE 2: Holen des Kontakt-Namens
@@ -88,32 +92,43 @@ public class ContactForm extends VerticalPanel {
 
 		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 		// Die gesamte Zeile (4) wird ein HorizontalPanel
-		HorizontalPanel propertyAddBox = new HorizontalPanel();
+		Grid propertyAddBox = new Grid(2,5);
+		
 		// in diesem Horizontal Panel gibt es 4 Felder 
 		// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
-		propertyAddBox.add(propertyName);
+		Label z1l = new Label("Eigenschaftsname:");
+		propertyAddBox.setWidget(0, 0, z1l);
+		propertyAddBox.setWidget(1, 0, propertyName);
 		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
 		// deklariert.)
-
+		
 		// 1.1 eine Listbox zum Setzen des Formats
 		formattype.addItem("Text");
 		formattype.addItem("Datum");
 		formattype.addItem("Kommazahl");
 		formattype.addItem("Zahl");
-		propertyAddBox.add(formattype);
-
+		Label z2l = new Label("Art:");
+		propertyAddBox.setWidget(0,1,z2l);
+		propertyAddBox.setWidget(1,1,formattype);
+		
 		// 2. ein Eingabefeld, um die konkrete Eigenschaftsausprägung anzugeben (z.B.
 		// "blond")
-		propertyAddBox.add(pValueName);
-		
+		Label z3l = new Label("Wert:");
+		propertyAddBox.setWidget(0,2,z3l);
+		propertyAddBox.setWidget(1, 2, pValueName);
 		// 3. einen Button zum Hinzufügen
 		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
-		propertyAddBox.add(addPropertyButton);
+		propertyAddBox.setWidget(1, 3,addPropertyButton);
 		
 		//4 einen Datepicker
 		// Set the value in the text box when the user selects a date
-		propertyAddBox.add(datePicker);
+		propertyAddBox.setWidget(1, 4, datePicker);
+		datePicker.setVisible(false);
+		formattype.addClickHandler(new FormatClickHandler());
+        if(formattype.getSelectedItemText()=="Datum") {
+        	datePicker.setVisible(true);
+		}
 	    datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
 	      public void onValueChange(ValueChangeEvent<Date> event) {
 	        selectedDate = event.getValue();
@@ -121,30 +136,34 @@ public class ContactForm extends VerticalPanel {
 	    });
 	    // Set the default value
 	    datePicker.setValue(new Date(), true);
-	  
-		
-
+	   
 		// hinzufügen von Zeile 4 zum Hauptgrid
 		userInformationGrid.setWidget(3, 0, propertyAddBox);
 		
 
 		// GRID-ZEILE 5:
-
+		
 		shareContactButton = new Button("Kontakt teilen");
 		shareContactButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				e.showContactCollab(contactToDisplay);
 			}
 		});
-
+		
+		
 		userInformationGrid.setWidget(4, 0, shareContactButton);
+		
 		// GRID-ZEILE 5.1:
 		deleteContactButton.addClickHandler(new DeleteContactClickHandler());
+		
 		userInformationGrid.setWidget(4, 1, deleteContactButton);
+		
 	}
-
+	
+	
 	public void setEditor(Editor e) {
 		this.e = e;
+		
 	}
 	public void setUser(JabicsUser u) {
 		this.u = u;
@@ -159,7 +178,18 @@ public class ContactForm extends VerticalPanel {
 	 * @author Ilg
 	 */
 	
-	
+	private class FormatClickHandler implements ClickHandler {
+		@Override
+		
+		public void onClick(ClickEvent event) {
+			
+			if (formattype.getSelectedItemText() == "Datum") {
+				datePicker.setVisible(true);
+			} else {
+				datePicker.setVisible(false);
+			}
+		}
+	}
 
 	/**
 	 * Diese Klasse realisiert einen Clickhandler für den DeleteContactButton. Beim
@@ -168,11 +198,13 @@ public class ContactForm extends VerticalPanel {
 	 */
 	private class DeleteContactClickHandler implements ClickHandler {
 		@Override
+		
 		public void onClick(ClickEvent event) {
-
+			
 			if (contactToDisplay == null) {
 				Window.alert("Kein Kontakt ausgewählt");
 			} else {
+				
 				editorService.deleteContact(contactToDisplay, u, new deleteContactCallback(contactToDisplay));
 			}
 		}
@@ -188,6 +220,7 @@ public class ContactForm extends VerticalPanel {
 
 		deleteContactCallback(Contact c) {
 			contact = c;
+			
 		}
 
 		public void onFailure(Throwable caugth) {
@@ -312,12 +345,14 @@ public class ContactForm extends VerticalPanel {
 			// this.u = u;
 			deleteContactButton.setEnabled(true);
 			contactName.setText(contactToDisplay.getName());
-			GWT.log("hello");
+			
 			editorService.getPValueOf(c, u, new GetPValuesCallback());
+			
+			
 		} else {
 			contactToDisplay = null;
 			deleteContactButton.setEnabled(false);
-			shareContactButton.setEnabled(false);
+			shareContactButton.setEnabled(false); 
 		}
 	}
 
@@ -336,11 +371,10 @@ public class ContactForm extends VerticalPanel {
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
-
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			GWT.log("RPCPVAlue erfolgreich");
+			GWT.log("onsuccess aufgerufen!");
 			newPV = new PValue(result.get(pointer1).getProperty(), u);
 
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
@@ -351,21 +385,22 @@ public class ContactForm extends VerticalPanel {
 			Button[] saveButton = new Button[result.size()];
 			Button[] deleteButton = new Button[result.size()];
 			
+			ArrayList<PValue> result1 = result;
 
-			for (int i = result.size(); i > 0; i--) {
-
+			for (int i = 0; i < result.size(); i++) {
+				
 				pointer1 = i;
-
+				
 				currentPV = result.get(pointer1);
-
-				propertyLabels[pointer1] = new Label(result.get(pointer1).getProperty().toString());
-				pValueTextBox[pointer1] = new TextBox();
-				pValueTextBox[pointer1].setText(result.get(pointer1).toString());
-				saveButton[pointer1] = new Button("Save");
+				
+				propertyLabels[i] = new Label(result.get(pointer1).getProperty().toString());
+				pValueTextBox[i] = new TextBox();
+				pValueTextBox[i].setText(result.get(pointer1).toString());
+				saveButton[i] = new Button("Save");
 				
 
-				saveButton[pointer1].addClickHandler(new ClickHandler() {
-
+				saveButton[i].addClickHandler(new ClickHandler() {
+					
 					// TODO Bisher noch nicht funktional
 				public void onClick(ClickEvent event) {
 
@@ -389,8 +424,8 @@ public class ContactForm extends VerticalPanel {
 						Window.alert("Wert" + pValueTextBox[pointer1].getValue().toString() + "gespeichert");
 					}
 				});
-
-				deleteButton[pointer1] = new Button("Delete");
+				
+				deleteButton[i] = new Button("Delete");
 
 				deleteButton[pointer1].addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
@@ -402,10 +437,10 @@ public class ContactForm extends VerticalPanel {
 						}
 					}
 				});
-
-				contactGrid.resize(result.size(), 4);
+				GWT.log("huhu");
+				contactGrid.resize(result.size()+1, 5);
 			}
-			for (int j = propertyLabels.length; j > 0; j--) {
+			for (int j = 0; j < propertyLabels.length; j++) {
 
 				contactGrid.setWidget(j, 0, propertyLabels[j]);
 				contactGrid.setWidget(j, 1, pValueTextBox[j]);
@@ -455,5 +490,4 @@ public class ContactForm extends VerticalPanel {
 			Window.alert("Wert geändert");
 		}
 	}
-
 }
