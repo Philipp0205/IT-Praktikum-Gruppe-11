@@ -47,6 +47,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 	}
 	
+	public String testMethod() {
+		System.out.print("hiwelt");
+		Contact c = cMapper.findContactById(1);
+		ArrayList<PValue> pv = pvMapper.findPValueForContact(c);
+		return pv.get(1).getStringValue();
+		
+	}
 	/**
 	 * Diese Methode erstelle einen Nutzer, indem ihr ein String mit dem Namen und der email des Nutzers übergeben wird.
 	 */
@@ -609,8 +616,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * TODO: Implemetieren Init methode
 		 */
 		u = new JabicsUser("MeinNutzer");
-		p1 = new Property("Name", Type.STRING);
-		p2 = new Property("VorName", Type.STRING);
+		p1 = new Property("name", Type.STRING);
+		p2 = new Property("lastname", Type.STRING);
 		p1.setStandard(true);
 		p3 = new Property("Straße", Type.STRING);
 		p4 = new Property("Hausnummer", Type.INT);

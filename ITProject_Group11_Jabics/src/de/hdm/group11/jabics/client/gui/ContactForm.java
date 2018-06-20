@@ -313,7 +313,7 @@ public class ContactForm extends VerticalPanel {
 			deleteContactButton.setEnabled(true);
 			contactName.setText(contactToDisplay.getName());
 			GWT.log("hello");
-			//editorService.getPValueOf(c, u, new GetPValuesCallback());
+			editorService.getPValueOf(c, u, new GetPValuesCallback());
 		} else {
 			contactToDisplay = null;
 			deleteContactButton.setEnabled(false);
@@ -335,7 +335,7 @@ public class ContactForm extends VerticalPanel {
 	
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
-			Window.alert("Fehler in GetPValuesCallback");
+			Window.alert(caught.toString());
 
 		}
 

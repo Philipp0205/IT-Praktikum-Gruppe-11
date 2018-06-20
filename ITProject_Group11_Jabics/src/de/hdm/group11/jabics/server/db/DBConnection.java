@@ -25,16 +25,16 @@ public class DBConnection {
 			/** 
 			 * Laden des JDBC Treibers
 			 */
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.GoogleDriver");
 			
 			/**
 			 * Der DriverManager baut mit den angegebenen Verbindungsinformationen die Verbindung zur Datenbank auf. 
 			 * Diese Verbinfung wird in der Variable  "con" gespeichert.  
 			 */
-			con = DriverManager.getConnection("jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true","root","ThieskesOberesDrittel!");
-			/** Bin mir nicht sicher ob die klappt:
-			 * con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?user=root&password=ThieskesOberesDrittel!");
-			 */
+			//con = DriverManager.getConnection("jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true","root","ThieskesOberesDrittel!");
+			/* Bin mir nicht sicher ob die klappt: */
+			con = DriverManager.getConnection("jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?user=root&password=ThieskesOberesDrittel!");
+			 /**/
 			
 			System.out.println("Connected to DB");	
 		} 

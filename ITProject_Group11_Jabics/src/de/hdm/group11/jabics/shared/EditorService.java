@@ -12,6 +12,8 @@ import de.hdm.group11.jabics.shared.bo.*;
 @RemoteServiceRelativePath("editor")
 public interface EditorService extends RemoteService{
 	
+	public String testMethod();
+	
 	public JabicsUser createUser(String name, String email) throws IllegalArgumentException;
 	
 	public Contact createContact(ArrayList<PValue> cArray, JabicsUser u);

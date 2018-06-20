@@ -9,6 +9,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import de.hdm.group11.jabics.shared.bo.*;
 
 public interface EditorServiceAsync {
+	
+	void testMethod(AsyncCallback<String> s);
 
 	void createUser(String name, String email, AsyncCallback<JabicsUser> callback) throws IllegalArgumentException;
 	

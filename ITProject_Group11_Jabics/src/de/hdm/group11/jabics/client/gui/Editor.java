@@ -82,10 +82,26 @@ public class Editor implements EntryPoint {
 		/*
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
 		 */
-		loginService = ClientsideSettings.getLoginService();
-		GWT.log(GWT.getHostPageBaseURL());
-		loadEditor();
-		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());		 
+		//loginService = ClientsideSettings.getLoginService();
+		//GWT.log(GWT.getHostPageBaseURL());
+		//loadEditor();
+		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		testMethod();
+	}
+	
+	public void testMethod() {
+		editorAdmin = ClientsideSettings.getEditorService();
+		editorAdmin.testMethod(new AsyncCallback<String>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				GWT.log(caught.toString());
+			}
+
+			@Override
+			public void onSuccess(String s) {
+					Window.alert(s);
+			} 
+		});
 	}
 	
 	public void loadEditor() {
