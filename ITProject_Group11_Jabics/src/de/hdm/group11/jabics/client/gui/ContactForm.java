@@ -3,6 +3,7 @@ package de.hdm.group11.jabics.client.gui;
 import java.util.Date;
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -311,8 +312,8 @@ public class ContactForm extends VerticalPanel {
 			// this.u = u;
 			deleteContactButton.setEnabled(true);
 			contactName.setText(contactToDisplay.getName());
-
-			editorService.getPValueOf(c, u, new GetPValuesCallback());
+			GWT.log("hello");
+			//editorService.getPValueOf(c, u, new GetPValuesCallback());
 		} else {
 			contactToDisplay = null;
 			deleteContactButton.setEnabled(false);

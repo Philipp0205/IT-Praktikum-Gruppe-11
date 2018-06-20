@@ -43,17 +43,21 @@
 
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
+    <url-pattern>/itproject_group11_jabics_login/login</url-pattern>
+    <url-pattern>/itproject_group11_jabics/login</url-pattern>
     <url-pattern>/jabics/login</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>editorService</servlet-name>
-    <url-pattern>/jabics/editor</url-pattern>
+    <url-pattern>/itproject_group11_jabics_editor/editor</url-pattern>
+    <url-pattern>/itproject_group11_jabics/editor</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>reportGeneratorService</servlet-name>
-    <url-pattern>/jabics/report</url-pattern>
+    <url-pattern>/itproject_group11_jabics_report/report</url-pattern>
+    <url-pattern>/itproject_group11_jabics/report</url-pattern>
   </servlet-mapping>
   
 
