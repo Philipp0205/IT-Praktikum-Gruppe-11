@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -347,7 +348,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	public Widget createTab() {
 		TreeViewModel model = new ContactListTreeTab();
 		
-		CellTree tree = new CellTree(model, "Item 1");
+		CellTree tree = new CellTree(model, null);
+		tree.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		
 		return tree;
 	}

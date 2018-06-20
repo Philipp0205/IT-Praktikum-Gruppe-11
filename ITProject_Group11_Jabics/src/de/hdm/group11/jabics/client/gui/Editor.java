@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
@@ -64,6 +65,8 @@ public class Editor implements EntryPoint {
 	HorizontalPanel topPanel = new HorizontalPanel();
 	HorizontalPanel widgetPanel = new HorizontalPanel();
 	HorizontalPanel placeholder = new HorizontalPanel();
+	
+	StackPanel stackPanel = new StackPanel();
 
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an um Jabics nutzen zu k�nnen.");
@@ -77,7 +80,7 @@ public class Editor implements EntryPoint {
 	ContactListCollaborationForm clcForm;
 	
 	// SearchForm sForm = new SearchForm();
-	TreeViewMenu treeViewMenu;
+	TreeViewMenu treeViewMenu = new TreeViewMenu();
 
 	@Override
 	public void onModuleLoad() {
@@ -117,9 +120,8 @@ public class Editor implements EntryPoint {
 
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
-
-		
-		treeViewMenu = new TreeViewMenu();
+		//mainPanel.add(stackPanel);
+		mainPanel.add(treeViewMenu.createMenu());
 
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
@@ -129,6 +131,11 @@ public class Editor implements EntryPoint {
 		search.addClickHandler(new SearchClickHandler());
 		Button settings = new Button("irgendwas anderes");
 		settings.addClickHandler(new SearchClickHandler());
+		
+		stackPanel.add(new Label("Foo"), "foo");
+		stackPanel.add(new Label("Foo"), "foo");
+		stackPanel.add(new Label("Foo"), "foo");
+		stackPanel.add(new Label("Foo"), "foo");
 		
 		cForm = new ContactForm();
 		//Verlinkung
@@ -224,7 +231,7 @@ public class Editor implements EntryPoint {
 			ccForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// ccForm.clear();
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());
@@ -237,42 +244,42 @@ public class Editor implements EntryPoint {
 			clcForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		widgetPanel.add(treeViewMenu.createMenu());
 		// clcForm.clear();
 		clcForm.setList(cl);
 		// clcForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(clcForm);
 	}
 
-	public void returnToContactForm(Contact c) {
-		if (this.cForm == null) {
-			cForm = new ContactForm();
-		}
-		addContactToTree(c);
-		cForm.setCurrentContact(c);
-		widgetPanel.add(cForm);
-	}
+//	public void returnToContactForm(Contact c) {
+//		if (this.cForm == null) {
+//			cForm = new ContactForm();
+//		}
+//		addContactToTree(c);
+//		cForm.setCurrentContact(c);
+//		widgetPanel.add(cForm);
+//	}
+//
+//	public void returnToContactListForm(ContactList cl) {
+//		if (this.clForm == null) {
+//			clForm = new ContactListForm();
+//		}
+//		addContactListToTree(cl);
+//		clForm.setCurrentList(cl);
+//		widgetPanel.add(clForm);
+//	}
 
-	public void returnToContactListForm(ContactList cl) {
-		if (this.clForm == null) {
-			clForm = new ContactListForm();
-		}
-		addContactListToTree(cl);
-		clForm.setCurrentList(cl);
-		widgetPanel.add(clForm);
-	}
-
-	public void addContactToTree(Contact c) {
-		treeViewMenu.addContact(c);
-	}
-
-	public void addContactListToTree(ContactList cl) {
-		treeViewMenu.addContactList(cl);
-	}
-
-	public void addContactToListInTree(ContactList cl, Contact c) {
-		treeViewMenu.addContactToList(cl, c);
-	}
+//	public void addContactToTree(Contact c) {
+//		treeViewMenu.addContact(c);
+//	}
+//
+//	public void addContactListToTree(ContactList cl) {
+//		treeViewMenu.addContactList(cl);
+//	}
+//
+//	public void addContactToListInTree(ContactList cl, Contact c) {
+//		treeViewMenu.addContactToList(cl, c);
+//	}
 
 	/**
 	 * ClickHandler um die SearchForm anzuzeigen
