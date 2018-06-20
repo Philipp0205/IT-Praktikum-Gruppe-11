@@ -83,11 +83,13 @@ public class Editor implements EntryPoint {
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
 		 */
 		currentUser = new JabicsUser(1);
-		//loginService = ClientsideSettings.getLoginService();
-		//GWT.log(GWT.getHostPageBaseURL());
+		editorAdmin = ClientsideSettings.getEditorService();
+		loginService = ClientsideSettings.getLoginService();
+		GWT.log(GWT.getHostPageBaseURL());
 		//loadEditor();
-		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-		loadEditor();
+		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		//loadEditor();
+		//testMethod();
 	}
 	
 	public void testMethod() {
@@ -97,7 +99,7 @@ public class Editor implements EntryPoint {
 			public void onFailure(Throwable caught) {
 				GWT.log(caught.toString());
 			}
-
+			
 			@Override
 			public void onSuccess(String s) {
 					Window.alert(s);
@@ -106,18 +108,18 @@ public class Editor implements EntryPoint {
 	}
 	
 	public void loadEditor() {
-		GWT.log("5");
-
+		GWT.log("1");
+		
 		if (editorAdmin == null) {
 			editorAdmin = ClientsideSettings.getEditorService();
 		}
-
+		
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
 
 		treeViewMenu = new TreeViewMenu();
 		
-		treeViewMenu.getStackLayoutPanel().
+		treeViewMenu.getStackLayoutPanel();
 
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
@@ -132,7 +134,7 @@ public class Editor implements EntryPoint {
 		topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
-		GWT.log("6");
+		GWT.log("2");
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */ 
@@ -146,20 +148,18 @@ public class Editor implements EntryPoint {
 		val.add(new PValue(p1, "Max", u));
 		val.add(new PValue(p2, "Mustermann", u));
 		val.add(new PValue(p3, "eineStraße", u));
-
-		Contact c1 = new Contact(val, "maxmuster");
-		GWT.log("5");
-		showContact(c1);
-		GWT.log("6");
-		mainPanel.add(widgetPanel);
-		GWT.log("7");
-		RootPanel.get("details").add(mainPanel);
 		
+		Contact c1 = new Contact(val, "maxmuster");
+		GWT.log("3");
+		showContact(c1);
+		GWT.log("4");
+		mainPanel.add(widgetPanel);
+		GWT.log("5");
+		RootPanel.get("details").add(mainPanel);
 	}
 
 	private void loadLogin() {
 	    // Assemble login panel.
-		this.checkForNewUser();
 		Window.alert("3.1");
 	    signInLink.setHref(loginfo.getLoginUrl());
 	    Window.alert("3.2");
@@ -168,20 +168,16 @@ public class Editor implements EntryPoint {
 	    loginPanel.add(signInLink);
 	    Window.alert("3.4");
 	    RootPanel.get("content").add(loginPanel);
-	    
-	  }
+	}
+	
 	public void setLoginInfo(LoginInfo logon) {
 		this.loginfo = logon;
 	}
-	private void checkForNewUser() { 
-		if (this.currentUser == null) {
-			this.currentUser = JabicsUser.getJabicsUser();
-		} else
-			return;
-	}
+
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
 	}
+	
 	public void showContact(Contact c) {
 		if (this.cForm == null) {
 			cForm = new ContactForm();
@@ -190,7 +186,7 @@ public class Editor implements EntryPoint {
 		GWT.log("8");
 		widgetPanel.clear();
 		GWT.log("9");
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// cForm.clear();
 		GWT.log("10");
 		cForm.setCurrentContact(c);
@@ -310,10 +306,10 @@ public class Editor implements EntryPoint {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
 		}
-
+ 
 		@Override
 		public void onSuccess(LoginInfo logon) {
-			GWT.log("2");
+			GWT.log("Login sucess 2");
 			currentUser = logon.getCurrentUser();
 			setLoginInfo(logon);
 
