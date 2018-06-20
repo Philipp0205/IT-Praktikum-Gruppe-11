@@ -23,52 +23,51 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	@Override
 	public LoginInfo login(String requestUri) {
 
-		System.err.println("++++++++++++++++++++++++++++++++++");
-		System.out.println("##################################");
+		System.err.println("1++++++++++++++++++++++++++++++++++");
+		LoginInfo res = new LoginInfo();
+		res.setCurrentUser(new JabicsUser(1));
+		res.setLoggedIn(true);
+		return res;
+		
+		/*
 		// Google User.
 		UserService userService = UserServiceFactory.getUserService();
+		System.out.println("2##################################");
 		User user = userService.getCurrentUser();
 		LoginInfo loginInfo = new LoginInfo();
-		
+		//return new LoginInfo();
+		*/
 		/**
 		 * Logik aus http://www.gwtproject.org/doc/latest/tutorial/appengine.html
 		 */
+		/*
 		try {
-			// JabicsUser existingJabicsUser =
-			// UserMapper.userMapper().findUserByEmail(user.getEmail());
+			// JabicsUser existingJabicsUser = UserMapper.userMapper().findUserByEmail(user.getEmail());
 
 			// Temporary! Delete when DB is deployed
-			JabicsUser existingJabicsUser = new JabicsUser("Testuser");
-
+			JabicsUser existingJabicsUser = new JabicsUser(1);
+			
 			if (existingJabicsUser != null) {
-				loginInfo.setLoggedIn(true);
-				loginInfo.setEmailAddress(user.getEmail());
-				loginInfo.setNickname(user.getNickname());
-				loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
+				System.out.println("3##################################");
 				loginInfo.setCurrentUser(existingJabicsUser);
+				System.out.println("4##################################");
+				loginInfo.setLoggedIn(true);
+				System.out.println("5##################################");
+				//loginInfo.setEmailAddress(user.getEmail());
+				//loginInfo.setNickname(user.getNickname());
+				//loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 			} else {
+				System.out.println("6##################################");
 				loginInfo.setLoggedIn(false);
-				loginInfo.setLoginUrl(userService.createLoginURL(requestUri));
+				//loginInfo.setLoginUrl(userService.createLoginURL(requestUri));
 			}
-
+			System.out.println("7##################################");
 			return loginInfo;
 			
 		} catch (Exception e) {
 			loginInfo.setLoggedIn(false);
 			return loginInfo;
 		}
+		*/
 	}
 }
-
-/*
- * if (user != null) { JabicsUser existingJabicsUser =
- * UserMapper.userMapper().findUserByEmail(user.getEmail());
- * 
- * if (existingJabicsUser != null) { existingJabicsUser.setLoggedIn(true);
- * existingJabicsUser.setEmailAddress(user.getEmail());
- * existingJabicsUser.setEmailAddress(user.getNickname());
- * existingJabicsUser.setLogoutUrl(userService.createLogoutURL(requestUri));
- * 
- * } else { existingJabicsUser.setLoggedIn(false);
- * existingJabicsUser.setLoginUrl(userService.createLoginURL(requestUri)); }
- */
