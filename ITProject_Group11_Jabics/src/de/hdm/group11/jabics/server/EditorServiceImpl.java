@@ -16,6 +16,7 @@ import de.hdm.group11.jabics.shared.bo.*;
 
 import de.hdm.group11.jabics.shared.EditorService;
 
+import com.google.appengine.api.utils.SystemProperty;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
@@ -48,8 +49,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	public String testMethod() {
-		System.out.print("hiwelt");
-		//Contact c = cMapper.findContactById(1);
+		ArrayList<PValue>  lel = cMapper.findContactById(1).getValues();
+		
+		for(int i= 0; i< lel.size(); i++) {
+			System.out.println(lel.get(i).getStringValue());
+		}
+		
+		
 		//ArrayList<PValue> pv = pvMapper.findPValueForContact(c);
 		return pv1.getStringValue();
 		//return "hallo";
