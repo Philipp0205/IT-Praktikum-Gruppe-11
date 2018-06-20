@@ -86,7 +86,7 @@ public class Editor implements EntryPoint {
 		//GWT.log(GWT.getHostPageBaseURL());
 		//loadEditor();
 		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-		testMethod();
+		loadEditor();
 	}
 	
 	public void testMethod() {

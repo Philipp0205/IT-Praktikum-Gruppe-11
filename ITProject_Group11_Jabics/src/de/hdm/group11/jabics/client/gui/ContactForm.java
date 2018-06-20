@@ -340,6 +340,7 @@ public class ContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
+			GWT.log("RPCPVAlue erfolgreich");
 			newPV = new PValue(result.get(pointer1).getProperty(), u);
 
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
@@ -366,7 +367,7 @@ public class ContactForm extends VerticalPanel {
 				saveButton[pointer1].addClickHandler(new ClickHandler() {
 
 					// TODO Bisher noch nicht funktional
-					public void onClick(ClickEvent event) {
+				public void onClick(ClickEvent event) {
 
 						int currentID = currentPV.getPropertyId();
 						

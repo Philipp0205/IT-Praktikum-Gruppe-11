@@ -59,6 +59,4 @@
     <url-pattern>/itproject_group11_jabics_report/report</url-pattern>
     <url-pattern>/itproject_group11_jabics/report</url-pattern>
   </servlet-mapping>
-  
-
 </web-app>
