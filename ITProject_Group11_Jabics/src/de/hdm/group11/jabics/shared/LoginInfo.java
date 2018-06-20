@@ -2,6 +2,8 @@ package de.hdm.group11.jabics.shared;
 
 import java.io.Serializable;
 
+import com.google.gwt.user.client.Window;
+
 import de.hdm.group11.jabics.server.db.ContactMapper;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
@@ -54,7 +56,8 @@ public class LoginInfo implements Serializable  {
 	  }
 
 	  public String getLoginUrl() {
-	    return loginUrl;
+		 Window.alert("4");
+	    return this.loginUrl;
 	  }
 
 	  public void setLoginUrl(String loginUrl) {

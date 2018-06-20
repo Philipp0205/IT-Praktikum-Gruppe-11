@@ -47,6 +47,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 	}
 	
+	public String testMethod() {
+		System.out.print("hiwelt");
+		//Contact c = cMapper.findContactById(1);
+		//ArrayList<PValue> pv = pvMapper.findPValueForContact(c);
+		return pv1.getStringValue();
+		//return "hallo";
+	}
 	/**
 	 * Diese Methode erstelle einen Nutzer, indem ihr ein String mit dem Namen und der email des Nutzers übergeben wird.
 	 */
@@ -484,13 +491,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u){
-		ArrayList<PValue> result = new ArrayList<PValue>();
+		/*ArrayList<PValue> result = new ArrayList<PValue>();
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
 			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
 				if (u.getId() == uu.getId()) result.add(pv);
 			}
 		}
-		return result;
+		return result;*/
+		return c1.getValues();
 	}
 	
 	/**
@@ -607,15 +615,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		/**
 		 * TODO: Implemetieren Init methode
 		 */
+		
 		u = new JabicsUser("MeinNutzer");
-		p1 = new Property("Name", Type.STRING);
-		p2 = new Property("VorName", Type.STRING);
+		p1 = new Property("name", Type.STRING);
+		p2 = new Property("lastname", Type.STRING);
 		p1.setStandard(true);
 		p3 = new Property("Straße", Type.STRING);
 		p4 = new Property("Hausnummer", Type.INT);
 		p5 = new Property("Geb", Type.DATE);
 		p6 = new Property("Irgendwas1", Type.INT);
 		p7 = new Property("Irgendwas2", Type.FLOAT);
+		pv1 = new PValue(p1, "Hans", u);
 		ArrayList<PValue> val = new ArrayList<PValue>();
 		val.add(new PValue( p1, "Max", u));
 		val.add(new PValue( p2, "Mustermann",u));
