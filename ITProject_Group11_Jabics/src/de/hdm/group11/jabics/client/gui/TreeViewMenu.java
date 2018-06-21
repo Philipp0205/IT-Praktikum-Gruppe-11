@@ -54,11 +54,9 @@ public class TreeViewMenu  {
 	}
 	
 	public Widget createTreeTab() {
-		GWT.log("createTab");
 		TreeViewModel model = new CustomTreeModel();
 		
 		CellTree tree = new CellTree(model, "Item 1");
-		GWT.log("createTab2");
 		return tree;	
 	}
 	
