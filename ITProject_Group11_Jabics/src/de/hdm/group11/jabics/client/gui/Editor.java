@@ -137,7 +137,6 @@ public class Editor implements EntryPoint {
 		//Verlinkung
 		cForm.setEditor(this);
 		
-		widgetPanel.add(cForm);
 
 		topPanel.add(search);
 		topPanel.add(settings);
@@ -167,8 +166,6 @@ public class Editor implements EntryPoint {
 		
 		RootPanel.get("details").add(mainPanel);
 
-		GWT.log("5");
-		RootPanel.get("details").add(mainPanel);
 	}
 
 	private void loadLogin() {
