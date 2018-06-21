@@ -93,5 +93,4 @@ public interface EditorServiceAsync {
 	void initialise(AsyncCallback<Void> callback);
 	
 	void setJabicsUser(JabicsUser u, AsyncCallback<JabicsUser> callback);
-
 }

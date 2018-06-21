@@ -28,6 +28,7 @@ public class Property extends BusinessObject implements Serializable {
 		super();
 	}
 	
+	
 	/**
 	 * Getter und Setter.
 	 */

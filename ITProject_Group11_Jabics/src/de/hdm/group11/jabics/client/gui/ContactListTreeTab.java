@@ -30,7 +30,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	private EditorServiceAsync eService = null;
 	//Instanziierung des Singelton-Objektes
 	//private LoginInfo loginfo = LoginInfo.getloginInfo();
-	JabicsUser jabicsUser;
+	JabicsUser jabicsUser = new JabicsUser();
 	Editor editor;
 	
 	/*
@@ -286,7 +286,7 @@ public class ContactListTreeTab implements TreeViewModel {
 			contactListDataProviders = new ListDataProvider<ContactList>();
 			
 			//Der aktuelle User wird verwendet.
-			eService.getListsOf(jabicsUser , new AsyncCallback<ArrayList<ContactList>>() {
+			eService.getListsOf(JabicsUser.getJabicsUser() , new AsyncCallback<ArrayList<ContactList>>() {
 				@Override
 				public void onFailure(Throwable caught) {
 					// Nix.

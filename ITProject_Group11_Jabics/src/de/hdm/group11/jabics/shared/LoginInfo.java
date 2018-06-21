@@ -16,16 +16,30 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class LoginInfo implements Serializable  {
 	
+	/*
+	 * Singelton
+	 */
+	private static LoginInfo loginInfo = null;
+	
+	public static LoginInfo getloginInfo() {
+		if (loginInfo == null) {
+			loginInfo = new LoginInfo();
+		}
+		return loginInfo;
+	}
+	
+	 /*
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String loginUrl;
-	private String logoutUrl;
+	  private String loginUrl;
+	  private String logoutUrl;
 	  
-	private JabicsUser currentUser;
-	
-	public LoginInfo() {}
+	  private JabicsUser currentUser;
 	  
-	public JabicsUser getCurrentUser() {
+	  
+	  public JabicsUser getCurrentUser() {
 		return currentUser;
 	}
 
@@ -42,7 +56,7 @@ public class LoginInfo implements Serializable  {
 	  }
 
 	  public String getLoginUrl() {
-		Window.alert("4");
+		 Window.alert("4");
 	    return this.loginUrl;
 	  }
 

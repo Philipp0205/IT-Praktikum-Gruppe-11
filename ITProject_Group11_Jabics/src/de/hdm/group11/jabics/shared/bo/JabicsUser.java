@@ -10,15 +10,21 @@ import java.io.Serializable;
  */
 
 public class JabicsUser implements Serializable{
-	
 	private static final long serialVersionUID = 1L;
-	
 	private int id; 
 	private String email;
 	private String username;
 	private boolean isLoggedIn;
 	
-	public JabicsUser() {}
+	// Singelton
+	private static JabicsUser jabicsUser = null;
+	
+	public static JabicsUser getJabicsUser() {
+		if (jabicsUser == null) {
+			jabicsUser = new JabicsUser();
+		}
+		return jabicsUser;
+	}
 	
 	public boolean getIsLoggedIn() {
 		return isLoggedIn;
@@ -26,8 +32,8 @@ public class JabicsUser implements Serializable{
 	public void setLoggedIn(boolean isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
 	}
-	public JabicsUser(int id) {
-		this.id = id;	
+	public JabicsUser() {
+		super();	
 	}
 	public JabicsUser(String email) {
 		this();

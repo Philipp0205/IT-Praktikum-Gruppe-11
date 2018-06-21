@@ -5,7 +5,6 @@ import java.util.HashSet;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -37,16 +36,15 @@ public class ContactListForm extends VerticalPanel {
 	 * @author Christian Rathke
 	 * 
 	 *         Angepasst von
-	 * @author Anders
+	 * @author Brase
+	 * @author Ilg
 	 */
 	
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
-	
+
 	Editor e;
 	JabicsUser u = null;
 	ContactList currentList = null;
-	
-	// Widgets deren Inhalte variabel sind werden als Attribute angelegt.
 	
 	Grid contactListGrid;
 	
@@ -55,8 +53,7 @@ public class ContactListForm extends VerticalPanel {
 	
 	MultiSelectionModel<Contact> selectionModel;
 	
-	Button deleteListButton = new Button("Liste löschen");
-	Button shareListButton = new Button("Liste teilen");
+	Button deleteListButton, shareListButton;
 	
 	MultiSelectionModel<Contact> selectionModel1  = new MultiSelectionModel<Contact>();
 	
@@ -69,15 +66,13 @@ public class ContactListForm extends VerticalPanel {
 		/*
 		 * noch rausfinden ob das geht this.currentList = cl; this.e = e;
 		 */
-		
+
 		super.onLoad();
 		// For Debugging
 		Window.alert("Neue CL Form");
-		
-		contactListGrid = new Grid(5, 1);
-	
-		this.add(contactListGrid);
-		
+
+		contactListGrid = new Grid(6, 1);
+
 		Label formName = new Label("Listen-Editor");
 		contactListGrid.setWidget(0, 0, formName);
 
@@ -111,6 +106,7 @@ public class ContactListForm extends VerticalPanel {
 		Label deleteQuestion = new Label("Wollen Sie diese Liste löschen?");
 		listDeleteBox.add(deleteQuestion);
 
+		deleteListButton = new Button("Liste löschen");
 		deleteListButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				editorService.deleteContactList(currentList, u, new DeleteContactListCallback());

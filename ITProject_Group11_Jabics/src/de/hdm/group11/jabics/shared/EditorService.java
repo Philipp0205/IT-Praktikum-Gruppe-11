@@ -96,7 +96,6 @@ public interface EditorService extends RemoteService{
 	
 	public void initialise();
 
-
 }
 
 
