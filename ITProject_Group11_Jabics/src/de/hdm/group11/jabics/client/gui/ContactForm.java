@@ -373,21 +373,22 @@ public class ContactForm extends VerticalPanel {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
 		}
-
+		
 		public void onSuccess(ArrayList<PValue> result) {
+			contactToDisplay.setValues(result);
 			GWT.log("onsuccess aufgerufen!");
 			newPV = new PValue(result.get(pointer1).getProperty(), u);
-
+			
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			checkedPV.clear();
-
+			
 			Label[] propertyLabels = new Label[result.size()];
 			pValueTextBox = new TextBox[result.size()];
 			Button[] saveButton = new Button[result.size()];
 			Button[] deleteButton = new Button[result.size()];
 			
 			ArrayList<PValue> result1 = result;
-
+			
 			for (int i = 0; i < result.size(); i++) {
 				
 				pointer1 = i;

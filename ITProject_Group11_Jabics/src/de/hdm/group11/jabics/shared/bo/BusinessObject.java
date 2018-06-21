@@ -4,22 +4,17 @@ import java.io.Serializable;
 import java.sql.*;
 
 
-
-
 /**
  * Dies ist die Basisklasse für alle Kontakte, Listen und Property(values) in Jabics
  * Hier sind Erstelldaten und Änderungsdaten gespeichert, sowie der Ersteller eines Objektes.
  * @author Anders
  * 
  */
-
 public abstract class BusinessObject implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	public BusinessObject() { 
-//		this.dateCreated = 
-//		this.dateUpdated = this.dateCreated;
+	public BusinessObject() {
 	}
 
 	int id;
