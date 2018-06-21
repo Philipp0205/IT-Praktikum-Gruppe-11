@@ -158,8 +158,8 @@ public class Editor implements EntryPoint {
 
 		c1.setId(1);
 
-
-		showContactCollab(c1);
+		showContact(c1);
+		//showContactCollab(c1);
 		
 		//treeViewMenu.addContact(c1);
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
