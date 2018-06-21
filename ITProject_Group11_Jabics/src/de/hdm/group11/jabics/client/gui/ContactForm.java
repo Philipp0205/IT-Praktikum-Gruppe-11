@@ -145,7 +145,9 @@ public class ContactForm extends VerticalPanel {
 		
 		shareContactButton = new Button("Kontakt teilen");
 		shareContactButton.addClickHandler(new ClickHandler() {
+			
 			public void onClick(ClickEvent event) {
+				GWT.log(contactToDisplay.getName());
 				e.showContactCollab(contactToDisplay);
 			}
 		});
@@ -200,7 +202,6 @@ public class ContactForm extends VerticalPanel {
 		@Override
 		
 		public void onClick(ClickEvent event) {
-			
 			if (contactToDisplay == null) {
 				Window.alert("Kein Kontakt ausgewählt");
 			} else {
@@ -394,7 +395,7 @@ public class ContactForm extends VerticalPanel {
 				
 				currentPV = result.get(pointer1);
 				
-				propertyLabels[i] = new Label(result.get(pointer1).getProperty().toString());
+				propertyLabels[i] = new Label(result.get(pointer1).getProperty().getLabel()+ ":");
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(pointer1).toString());
 				saveButton[i] = new Button("Save");
@@ -438,7 +439,7 @@ public class ContactForm extends VerticalPanel {
 						}
 					}
 				});
-				GWT.log("huhu");
+				
 				contactGrid.resize(result.size()+1, 5);
 			}
 			for (int j = 0; j < propertyLabels.length; j++) {

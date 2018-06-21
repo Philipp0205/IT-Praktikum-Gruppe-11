@@ -52,11 +52,11 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	Column<PValue, Boolean> checkbox;
 	Column<PValue, String> property;
 	Column<PValue, String> propertyvalue;
+	ContactForm cf;
 	
 	Grid grid;
 
-	
-	public void onLoad() {
+public void onLoad() {
 		GWT.log("hionlaodcollab");
 		//SuggestOracle oracle =
 		
@@ -78,6 +78,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		retrieveUser();
 		createSuggestBox();
 		createPValueBox(sharedContact.getValues());
+
 		GWT.log("collab4");
 		grid = new Grid(10,10);
 		//grid.setSize("500px", "400px");
@@ -254,7 +255,11 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		
 	}
 	public void setContact(Contact c) {
+		if(c!= null) {
 		this.sharedContact = c;
+		}else {
+		this.sharedContact = null;	
+		}
 	}
 	
 	private void retrieveUser() {
