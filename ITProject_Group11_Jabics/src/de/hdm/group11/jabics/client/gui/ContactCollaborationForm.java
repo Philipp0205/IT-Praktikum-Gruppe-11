@@ -51,13 +51,14 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	Column<PValue, Boolean> checkbox;
 	Column<PValue, String> property;
 	Column<PValue, String> propertyvalue;
+	ContactForm cf;
 	
 	AbsolutePanel ap;
 
 	
-	public void onLoad(Contact c) {
+	public void onLoad() { //onLoad(Contact c){
 		//SuggestOracle oracle =
-		this.sharedContact = c;
+		//this.sharedContact = c;
 		
 		shareContact = new Button("Kontakt freigeben");
 		shareContact.addClickHandler(new ClickHandler() {
@@ -77,6 +78,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		createSuggestBox();
 		createPValueBox(sharedContact.getValues());
 		ap = new AbsolutePanel();
+		this.add(ap);
 		ap.setSize("500px", "400px");
 		ap.add(selUser, 0, 0);
 		ap.add(addButton, 200, 0);
@@ -244,7 +246,11 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		
 	}
 	public void setContact(Contact c) {
+		if(c!= null) {
 		this.sharedContact = c;
+		}else {
+		this.sharedContact = null;	
+		}
 	}
 	
 	private void retrieveUser() {
