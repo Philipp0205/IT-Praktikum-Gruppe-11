@@ -15,8 +15,15 @@ import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
 
 import de.hdm.group11.jabics.shared.EditorService;
+import de.hdm.group11.jabics.shared.LoginInfo;
+
+
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.appengine.api.utils.SystemProperty;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
@@ -623,8 +630,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 */
 		
 		u = new JabicsUser("MeinNutzer");
-		p1 = new Property("name", Type.STRING);
-		p2 = new Property("lastname", Type.STRING);
+		p1 = new Property("Vorname", Type.STRING);
+		p2 = new Property("Nachname", Type.STRING);
 		p1.setStandard(true);
 		p3 = new Property("Straße", Type.STRING);
 		p4 = new Property("Hausnummer", Type.INT);
@@ -668,5 +675,4 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// TODO Auto-generated method stub
 		
 	}
-	
 }

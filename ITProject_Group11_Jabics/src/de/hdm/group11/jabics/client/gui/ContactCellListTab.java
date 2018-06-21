@@ -47,7 +47,7 @@ public class ContactCellListTab  {
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		eService.getContactsOf(JabicsUser.getJabicsUser(), new AsyncCallback<ArrayList<Contact>>() {
+		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

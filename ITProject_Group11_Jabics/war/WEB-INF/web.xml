@@ -4,27 +4,14 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
-
-  <!-- Servlets temporarily not configurable, as code is missing
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>de.hdm.group11.jabics.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/itproject_group11_jabics/greet</url-pattern>
-  </servlet-mapping>
-  
-  -->
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>ITProject_Group11_Jabics.html</welcome-file>
+    <welcome-file>Jabics_Editor.html</welcome-file>
+    <welcome-file>Jabics_Report.html</welcome-file>
   </welcome-file-list>
   
    <!-- Servlets NICHT LÖSCHEN -->
-  	
   <servlet>
     <servlet-name>loginService</servlet-name>
     <servlet-class>de.hdm.group11.jabics.server.LoginServiceImpl</servlet-class>
@@ -40,18 +27,16 @@
     <servlet-class>de.hdm.group11.jabics.server.ReportGeneratorServiceImpl</servlet-class>
   </servlet>
   
-
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
-    <url-pattern>/itproject_group11_jabics_login/login</url-pattern>
-    <url-pattern>/itproject_group11_jabics/login</url-pattern>
+    <url-pattern>/itproject_group11_jabics_editor/login</url-pattern>
     <url-pattern>/jabics/login</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>editorService</servlet-name>
     <url-pattern>/itproject_group11_jabics_editor/editor</url-pattern>
-    <url-pattern>/itproject_group11_jabics/editor</url-pattern>
+    <url-pattern>/itproject_group11_jabics_report/editor</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
