@@ -3,6 +3,8 @@ package de.hdm.group11.jabics.server.db;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
@@ -236,7 +238,8 @@ public class ContactMapper{
 	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
 	 */
 	
-	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {   
+	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {
+		GWT.log("cMapper: findContactsOfContactList");
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 

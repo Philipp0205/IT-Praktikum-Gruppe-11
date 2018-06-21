@@ -206,65 +206,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Gibt alle Kontaktlisten eines Nutzers zurück.
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
+		GWT.log("EditorServiceImpl: getListsOf");
+		GWT.log("EditorServiceImpl: getListOf");
 		
-		u = new JabicsUser("MeinNutzer");
-		p1 = new Property("Vorname", Type.STRING);
-		p2 = new Property("Nachname", Type.STRING);
-		p1.setStandard(true);
-		p3 = new Property("Straße", Type.STRING);
-		p4 = new Property("Hausnummer", Type.INT);
-		p5 = new Property("Geb", Type.DATE);
-		p6 = new Property("Irgendwas1", Type.INT);
-		p7 = new Property("Irgendwas2", Type.FLOAT);
-		pv1 = new PValue(p1, "Hans", u);
-		ArrayList<PValue> val = new ArrayList<PValue>();
-		val.add(new PValue( p1, "Max", u));
-		val.add(new PValue( p2, "Mustermann",u));
-		val.add(new PValue( p3, "eineStraße",u));
-		val.add(new PValue( p4, 63,u));
-		val.add(new PValue( p5, new Date(1,2,3),u));
-		val.add(new PValue( p7, 188.5f,u));
-		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
-		ArrayList<PValue> val2 = new ArrayList<PValue>();
-		val2.add(new PValue( p1, "Alex",u));
-		val2.add(new PValue( p2, "Muster123",u));
-		val2.add(new PValue( p3, "eineStraße1234",u));
-		val2.add(new PValue( p4, 4,u));
-		val2.add(new PValue( p5, new Date(1,2,3),u));
-		val2.add(new PValue( p7, 167.2f,u));
-		c2 = new Contact(val2);
-		ArrayList<PValue> val3 = new ArrayList<PValue>();
-		val3.add(new PValue( p1, "Udo",u));
-		val3.add(new PValue( p2, "Mildenberger",u));
-		val3.add(new PValue( p3, "Nobelstraße",u));
-		val3.add(new PValue( p4, 8,u));
-		val3.add(new PValue( p5, new Date(1,2,3),u));
-		val3.add(new PValue( p7, 7.2f,u));
-		c3 = new Contact(val3);
-		ArrayList<Contact> contacts = new ArrayList<Contact>();
-		contacts.add(c1);
-		contacts.add(c2);
-		contacts.add(c3);
-		cl = new ContactList(contacts, "MeineListe",u);
+		ArrayList<ContactList> res = new ArrayList<ContactList>();
 		
-		ArrayList<ContactList> arrayList = new ArrayList<ContactList>();
-		arrayList.add(cl);
+		for (ContactList cl: clMapper.findContactListOfUser(u)) {
+			cl.setOwner(uMapper.findUserByContactList(cl));
+			res.add(cl);
+		}
 		
-		return arrayList;
-		
-		
-		
-		
-//		GWT.log("EditorServiceImpl: getListOf");
-//		
-//		ArrayList<ContactList> res = new ArrayList<ContactList>();
-//		
-//		for (ContactList cl: clMapper.findContactListOfUser(u)) {
-//			cl.setOwner(uMapper.findUserByContactList(cl));
-//			res.add(cl);
-//		}
-//		
-//		return res; 
+		return res; 
 		
 		// temporär: kann gelöscht werden
 		
@@ -275,22 +227,22 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
-		/* dies ist der richtige Code, nicht löschen!!!
+		GWT.log("EditorImpl: getContactsOfList");
+
 		ArrayList<Contact> result = new ArrayList<Contact>();
-		for (Contact c : clMapper.findContactsFromContactList(cl)) {
+		for (Contact c : cMapper.findContactsOfContactList(cl)) {
 			if(cMapper.findCollaborators(c).contains(u)) result.add(c);
 		}
 		for (Contact cres : result) {
-			cres.setOwner(uMapper.findOwnerForContact(cres));
+			cres.setOwner(uMapper.findUserByContact(cres));
 		}
 		return result;
-		*/
 		
 		// temporär: kann gelöscht werden sobald funktional
-		ArrayList<Contact> cltemp = new ArrayList<Contact>();
-		cltemp.add(this.c1);
-		cltemp.add(this.c3);
-		return cltemp; 
+//		ArrayList<Contact> cltemp = new ArrayList<Contact>();
+//		cltemp.add(this.c1);
+//		cltemp.add(this.c3);
+//		return cltemp; 
 	}
 	
 	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
@@ -669,60 +621,60 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	
-	public void init() {
-		/*
-		 * Instanzen von allen Mappern
-		 */
-		
-		this.cMapper = ContactMapper.contactMapper();
-		this.clMapper = ContactListMapper.contactListMapper();
-		this.pvMapper = PValueMapper.pValueMapper();
-		this.pMapper = PropertyMapper.propertyMapper();
-		this.uMapper = UserMapper.userMapper();
-		/**
-		 * TODO: Implemetieren Init methode
-		 */
-		
-		u = new JabicsUser("MeinNutzer");
-		p1 = new Property("Vorname", Type.STRING);
-		p2 = new Property("Nachname", Type.STRING);
-		p1.setStandard(true);
-		p3 = new Property("Straße", Type.STRING);
-		p4 = new Property("Hausnummer", Type.INT);
-		p5 = new Property("Geb", Type.DATE);
-		p6 = new Property("Irgendwas1", Type.INT);
-		p7 = new Property("Irgendwas2", Type.FLOAT);
-		pv1 = new PValue(p1, "Hans", u);
-		ArrayList<PValue> val = new ArrayList<PValue>();
-		val.add(new PValue( p1, "Max", u));
-		val.add(new PValue( p2, "Mustermann",u));
-		val.add(new PValue( p3, "eineStraße",u));
-		val.add(new PValue( p4, 63,u));
-		val.add(new PValue( p5, new Date(1,2,3),u));
-		val.add(new PValue( p7, 188.5f,u));
-		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
-		ArrayList<PValue> val2 = new ArrayList<PValue>();
-		val2.add(new PValue( p1, "Alex",u));
-		val2.add(new PValue( p2, "Muster123",u));
-		val2.add(new PValue( p3, "eineStraße1234",u));
-		val2.add(new PValue( p4, 4,u));
-		val2.add(new PValue( p5, new Date(1,2,3),u));
-		val2.add(new PValue( p7, 167.2f,u));
-		c2 = new Contact(val2);
-		ArrayList<PValue> val3 = new ArrayList<PValue>();
-		val3.add(new PValue( p1, "Udo",u));
-		val3.add(new PValue( p2, "Mildenberger",u));
-		val3.add(new PValue( p3, "Nobelstraße",u));
-		val3.add(new PValue( p4, 8,u));
-		val3.add(new PValue( p5, new Date(1,2,3),u));
-		val3.add(new PValue( p7, 7.2f,u));
-		c3 = new Contact(val3);
-		ArrayList<Contact> contacts = new ArrayList<Contact>();
-		contacts.add(c1);
-		contacts.add(c2);
-		contacts.add(c3);
-		cl = new ContactList(contacts, "MeineListe",u);
-	}
+//	public void init() {
+//		/*
+//		 * Instanzen von allen Mappern
+//		 */
+//		
+//		this.cMapper = ContactMapper.contactMapper();
+//		this.clMapper = ContactListMapper.contactListMapper();
+//		this.pvMapper = PValueMapper.pValueMapper();
+//		this.pMapper = PropertyMapper.propertyMapper();
+//		this.uMapper = UserMapper.userMapper();
+//		/**
+//		 * TODO: Implemetieren Init methode
+//		 */
+//		
+//		u = new JabicsUser("MeinNutzer");
+//		p1 = new Property("Vorname", Type.STRING);
+//		p2 = new Property("Nachname", Type.STRING);
+//		p1.setStandard(true);
+//		p3 = new Property("Straße", Type.STRING);
+//		p4 = new Property("Hausnummer", Type.INT);
+//		p5 = new Property("Geb", Type.DATE);
+//		p6 = new Property("Irgendwas1", Type.INT);
+//		p7 = new Property("Irgendwas2", Type.FLOAT);
+//		pv1 = new PValue(p1, "Hans", u);
+//		ArrayList<PValue> val = new ArrayList<PValue>();
+//		val.add(new PValue( p1, "Max", u));
+//		val.add(new PValue( p2, "Mustermann",u));
+//		val.add(new PValue( p3, "eineStraße",u));
+//		val.add(new PValue( p4, 63,u));
+//		val.add(new PValue( p5, new Date(1,2,3),u));
+//		val.add(new PValue( p7, 188.5f,u));
+//		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
+//		ArrayList<PValue> val2 = new ArrayList<PValue>();
+//		val2.add(new PValue( p1, "Alex",u));
+//		val2.add(new PValue( p2, "Muster123",u));
+//		val2.add(new PValue( p3, "eineStraße1234",u));
+//		val2.add(new PValue( p4, 4,u));
+//		val2.add(new PValue( p5, new Date(1,2,3),u));
+//		val2.add(new PValue( p7, 167.2f,u));
+//		c2 = new Contact(val2);
+//		ArrayList<PValue> val3 = new ArrayList<PValue>();
+//		val3.add(new PValue( p1, "Udo",u));
+//		val3.add(new PValue( p2, "Mildenberger",u));
+//		val3.add(new PValue( p3, "Nobelstraße",u));
+//		val3.add(new PValue( p4, 8,u));
+//		val3.add(new PValue( p5, new Date(1,2,3),u));
+//		val3.add(new PValue( p7, 7.2f,u));
+//		c3 = new Contact(val3);
+//		ArrayList<Contact> contacts = new ArrayList<Contact>();
+//		contacts.add(c1);
+//		contacts.add(c2);
+//		contacts.add(c3);
+//		cl = new ContactList(contacts, "MeineListe",u);
+//	}
 
 
 	public void initialise() {

@@ -59,7 +59,7 @@ public class Editor implements EntryPoint {
 	EditorServiceAsync editorAdmin;
 	LoginInfo loginfo;
 	
-	JabicsUser currentUser;
+	JabicsUser currentUser = new JabicsUser();
 
 	VerticalPanel mainPanel = new VerticalPanel();
 	HorizontalPanel topPanel = new HorizontalPanel();
@@ -84,6 +84,7 @@ public class Editor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
+		currentUser.setId(1);
 		testMethod();
 		/*
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
