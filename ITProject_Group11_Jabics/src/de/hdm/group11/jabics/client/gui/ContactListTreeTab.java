@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,6 +42,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	private ListDataProvider<ContactList> contactListDataProviders =  new ListDataProvider<ContactList>();
 	
 	public ContactListTreeTab() {
+		GWT.log("Konstruktor ContactListTreeTab");
 
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time." 
