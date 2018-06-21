@@ -86,11 +86,9 @@ public class PValueMapper {
 	public PValue insertPValue(PValue pv, Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
-	    
 	    try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-			
 			/**
 			 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 			 * und trägt den Wert in die Datenbank ein
@@ -98,21 +96,21 @@ public class PValueMapper {
 			switch (pv.getProperty().getType()) {
 				case STRING: {
 					String value = pv.getStringValue();
-		
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
 					+ "( '" + value + "' , "  + " null, "  
-					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
+					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" , Statement.RETURN_GENERATED_KEYS ); 
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					}
 					break;
 				}
@@ -126,13 +124,14 @@ public class PValueMapper {
 					+ ", " + "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS );  
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					}
 					break;
 				}
@@ -143,14 +142,16 @@ public class PValueMapper {
 					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
-					}					break;
+					}
+					}			
+					break;
 				}
 				case FLOAT: {
 					Float value = pv.getFloatValue();
@@ -162,14 +163,16 @@ public class PValueMapper {
 					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
-					}					break;
+					}
+					}				
+					break;
 				}
    			}
 

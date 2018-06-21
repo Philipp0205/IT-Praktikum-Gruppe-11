@@ -84,34 +84,37 @@ public class PropertyMapper {
 	public Property insertProperty(Property p){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
-	    
 	    try {
 	    	// Einfügen der neuen Eigenschaft in die Datenbank.
 	    	String query = ("INSERT INTO property (isStandard, type, name) VALUES " 
-	    	+ "('" + p.isStandard() + ", '" 
+	    	+ "(" + p.isStandard() + ", '" 
 	    	+ p.getTypeInString() + "' , '" 
 	    	+ p.getLabel() + "' ) "); 
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();	
-			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
+			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS );
 	    	ResultSet rs = stmt.getGeneratedKeys();
+	    	System.out.println("rs1 done");
 			Statement stmt2 =  con.createStatement();
-			ResultSet rs2 = stmt2.executeQuery("SELECT * FROM property WHERE propertyID = " + rs.getInt(1));
-			
-	    	if(rs.next()) {
+			System.out.println("statement done");
+			ResultSet rs2;
+			System.out.println("rs2 done");
+	    	while(rs.next()) {
+	    		rs2 = stmt2.executeQuery("SELECT * FROM property WHERE propertyID = " + rs.getInt(1));
 	    		p.setId(rs.getInt(1));
-	    	}
-	    	if(rs2.next()) {
+	    	
+	    	while(rs2.next()) {
 				p.setDateCreated(rs2.getTimestamp("dateCreated"));
 				p.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 			}
+	    	}
 	    	return p;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
-	}
+}
 	
 	/**
 	 * Diese Methode löscht ein <code>Property</code> Objekt aus der Datenbank.

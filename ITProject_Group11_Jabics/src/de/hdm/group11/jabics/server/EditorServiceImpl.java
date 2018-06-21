@@ -23,7 +23,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.appengine.api.utils.SystemProperty;
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
@@ -55,18 +55,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 	}
 	
-	public String testMethod() {
-		ArrayList<PValue>  lel = cMapper.findContactById(1).getValues();
-		
-		for(int i= 0; i< lel.size(); i++) {
-			System.out.println(lel.get(i).getStringValue());
-		}
-		
-		
-		//ArrayList<PValue> pv = pvMapper.findPValueForContact(c);
-		return pv1.getStringValue();
-		//return "hallo";
-	}
 	/**
 	 * Diese Methode erstelle einen Nutzer, indem ihr ein String mit dem Namen und der email des Nutzers übergeben wird.
 	 */
@@ -101,25 +89,26 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erstellen eines neuen <code>PValue</code> Objekts, das einen String speichert.
 	 */
 	public PValue createPValue(Property p, String s, Contact c, JabicsUser u) {
+		System.out.println(p.getLabel());
+		System.out.println(p.getTypeInString());
 		PValue newPValue = new PValue(p, s, u);
+		p.getId();
+		
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
-		
-		
 		Contact cnew = cMapper.findContactById(c.getId());	
+		
 		//cnew.setDateUpdated(LocalDateTime.now());
-		
-		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
 		 */
-		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		newPValue=pvMapper.insertPValue(newPValue, cnew);
+		 
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
 		return newPValue; 
-		
 	}
 	
 	/**
@@ -134,7 +123,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		Contact cnew = cMapper.findContactById(c.getId());
 		
 		//cnew.setDateUpdated(LocalDateTime.now());
-		
 		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
@@ -175,7 +163,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, float f, Contact c, JabicsUser u) {
+		System.out.println("start");
 		PValue newPValue = new PValue(p, f, u);
+		System.out.println("ende");
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und DateUpdated auf jetzt stellen.
 		 */
@@ -200,6 +190,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Property createProperty(String label, Type type) {
 		return pMapper.insertProperty(new Property(label, type));
+		
 	}
 	
 	/**

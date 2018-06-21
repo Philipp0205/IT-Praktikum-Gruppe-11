@@ -81,7 +81,7 @@ public class Editor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		testMethod();
+		
 		/*
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
 		 */
@@ -93,21 +93,6 @@ public class Editor implements EntryPoint {
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 		//loadEditor();
 		//testMethod();
-	}
-	
-	public void testMethod() {
-		editorAdmin = ClientsideSettings.getEditorService();
-		editorAdmin.testMethod(new AsyncCallback<String>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				GWT.log(caught.toString());
-			}
-			
-			@Override
-			public void onSuccess(String s) {
-					Window.alert(s);
-			} 
-		});
 	}
 	
 	public void loadEditor() {
@@ -134,9 +119,8 @@ public class Editor implements EntryPoint {
 		settings.addClickHandler(new SearchClickHandler());
 		clForm = new ContactListForm();
 		cForm = new ContactForm();
+		ccForm = new ContactCollaborationForm();
 		
-		
-
 		topPanel.add(search);
 		topPanel.add(settings);
 		topPanel.add(createC);
@@ -146,7 +130,11 @@ public class Editor implements EntryPoint {
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */ 
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
-		JabicsUser u = new JabicsUser("hans");
+		JabicsUser u = new JabicsUser();
+		u.setEmail("stahl.alexander@live.de");
+		u.setId(1);
+		u.setUsername("Alexander Stahl");
+		cForm.setUser(u);
 		Property p1 = new Property("Name", Type.STRING);
 		Property p2 = new Property("VorName", Type.STRING);
 		p1.setStandard(true);
@@ -162,16 +150,14 @@ public class Editor implements EntryPoint {
 		cl1.setId(5);
 		cl1.setListName("Lischde");
 		
-
 		c1.setValues(val);
+		c1.setId(1);
 		GWT.log("5");
 		showContact(c1);
 	//	showContactList(cl1);
 		GWT.log("6");
 		
-		
 		RootPanel.get("details").add(mainPanel);
-
 	}
 
 	private void loadLogin() {
@@ -196,20 +182,17 @@ public class Editor implements EntryPoint {
 	
 	public void showContact(Contact c) {
 		if (this.cForm == null) {
-			
 			cForm.setEditor(this);
+			cForm = new ContactForm();
 		}
-
+		cForm.setEditor(this);
 		widgetPanel.clear();
-		GWT.log("9");
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// cForm.clear();
-		GWT.log("10");
 		cForm.setCurrentContact(c);
-		GWT.log("11");
 		// cForm.setUser(loginfo.getCurrentUser());
-		widgetPanel.add(cForm);
 		
+		widgetPanel.add(cForm);
 		}
 
 	public void showContactList(ContactList cl) {

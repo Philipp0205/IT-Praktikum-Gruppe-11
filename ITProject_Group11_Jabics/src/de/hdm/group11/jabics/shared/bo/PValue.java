@@ -111,7 +111,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 		this.pointer = 4; 
 	}
 	public Property getProperty() {
-		return property;
+		return this.property;
 	}
 	public void setProperty(Property property) {
 		this.property = property;
