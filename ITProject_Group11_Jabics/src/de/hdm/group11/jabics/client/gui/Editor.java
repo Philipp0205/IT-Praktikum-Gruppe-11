@@ -132,10 +132,9 @@ public class Editor implements EntryPoint {
 		search.addClickHandler(new SearchClickHandler());
 		Button settings = new Button("irgendwas anderes");
 		settings.addClickHandler(new SearchClickHandler());
-		
+		clForm = new ContactListForm();
 		cForm = new ContactForm();
-		//Verlinkung
-		cForm.setEditor(this);
+		
 		
 
 		topPanel.add(search);
@@ -158,11 +157,18 @@ public class Editor implements EntryPoint {
 		val.add(new PValue(p3, "eineStraße", u));
 		
 		Contact c1 = new Contact(val, "maxmuster");
+		ContactList cl1 = new ContactList();
+		cl1.addContact(c1);
+		cl1.setId(5);
+		cl1.setListName("Lischde");
+		
 
 		c1.setValues(val);
 		GWT.log("5");
 		showContact(c1);
+	//	showContactList(cl1);
 		GWT.log("6");
+		
 		
 		RootPanel.get("details").add(mainPanel);
 
@@ -208,25 +214,29 @@ public class Editor implements EntryPoint {
 
 	public void showContactList(ContactList cl) {
 		if (this.clForm == null) {
-			clForm = new ContactListForm();
+			//clForm = new ContactListForm(); ist in der loadEditor
 			clForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clForm.clear();
 		clForm.setCurrentList(cl);
 		clForm.setUser(loginfo.getCurrentUser());
+		
 		widgetPanel.add(clForm);
+		
 	}
 
 	public void showContactCollab(Contact c) {
+		GWT.log("huhu?");
 		if (this.ccForm == null) {
-			ccForm = new ContactCollaborationForm();
 			ccForm.setEditor(this);
 		}
+		GWT.log("huhu");
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// ccForm.clear();
+		ccForm = new ContactCollaborationForm();
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(ccForm);
