@@ -8,6 +8,7 @@ import de.hdm.group11.jabics.shared.*;
 import de.hdm.group11.jabics.shared.bo.*;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.cell.client.*;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.Window;
@@ -52,12 +53,12 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	Column<PValue, String> property;
 	Column<PValue, String> propertyvalue;
 	
-	AbsolutePanel ap;
+	Grid grid;
 
 	
-	public void onLoad(Contact c) {
+	public void onLoad() {
+		GWT.log("hionlaodcollab");
 		//SuggestOracle oracle =
-		this.sharedContact = c;
 		
 		shareContact = new Button("Kontakt freigeben");
 		shareContact.addClickHandler(new ClickHandler() {
@@ -66,23 +67,28 @@ public class ContactCollaborationForm extends HorizontalPanel{
 				e.returnToContactForm(sharedContact);
 			}
 		});
-		
+		GWT.log("collab2");
 		exit = new Button("Abbrechen");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				e.returnToContactForm(sharedContact);
 			 }
 		});
+		GWT.log("collab3");
 		retrieveUser();
 		createSuggestBox();
 		createPValueBox(sharedContact.getValues());
-		ap = new AbsolutePanel();
-		ap.setSize("500px", "400px");
-		ap.add(selUser, 0, 0);
-		ap.add(addButton, 200, 0);
-		ap.add(shareContact, 450, 350);
-		ap.add(exit, 20, 350);
-		ap.add(selValues, 250, 0);
+		GWT.log("collab4");
+		grid = new Grid(10,10);
+		//grid.setSize("500px", "400px");
+		grid.setWidget(0,0, selUser);
+		grid.setWidget(1,0, addButton);
+		grid.setWidget(2, 0, shareContact);
+		grid.setWidget(3,0, exit);
+		grid.setWidget(4,0, selValues);
+		GWT.log("halloattach4");
+		this.add(grid);
+		GWT.log("collab5");
 	}
 	
 	//selUser.getResources und getRowElement
@@ -91,6 +97,7 @@ public class ContactCollaborationForm extends HorizontalPanel{
 		/**
 		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 		 */
+		GWT.log("SuggestBox");
 		ldp = new ListDataProvider<JabicsUser>();
 		selUser = new CellTable<JabicsUser>();
 		ldp.setList(allUser);
@@ -163,11 +170,14 @@ public class ContactCollaborationForm extends HorizontalPanel{
 				}
 			});
 		sug.setLimit(5);
-		
+		GWT.log("halloattach");
+		//ap.add(selUser);
+		GWT.log("halloattach2");
 		//hier muss noch die Suggestbox in die form eingefügt werden.
 	}
 	
 	public void setEditor(Editor e) {
+		GWT.log("Editor in Collab setzen");
 		this.e = e;
 	}
 	
@@ -248,7 +258,9 @@ public class ContactCollaborationForm extends HorizontalPanel{
 	}
 	
 	private void retrieveUser() {
+		GWT.log("allUser");
 		editorService.getAllUsers(new GetAllUsersCallback());
+		GWT.log("allUserfetisch");
 	}
 	public void setAllUser(ArrayList<JabicsUser> user) {
 		this.allUser = user;

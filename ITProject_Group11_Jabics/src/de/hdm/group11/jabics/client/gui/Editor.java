@@ -81,7 +81,7 @@ public class Editor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		testMethod();
+		//testMethod();
 		/*
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
 		 */
@@ -92,7 +92,6 @@ public class Editor implements EntryPoint {
 		//loadEditor();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 		//loadEditor();
-		//testMethod();
 	}
 	
 	public void testMethod() {
@@ -120,9 +119,9 @@ public class Editor implements EntryPoint {
 		mainPanel.add(widgetPanel);
 
 		
-		treeViewMenu = new TreeViewMenu();
+		//treeViewMenu = new TreeViewMenu();
 		
-		treeViewMenu.getStackLayoutPanel();
+		//treeViewMenu.getStackLayoutPanel();
 
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
@@ -133,11 +132,11 @@ public class Editor implements EntryPoint {
 		Button settings = new Button("irgendwas anderes");
 		settings.addClickHandler(new SearchClickHandler());
 		
-		cForm = new ContactForm();
+		//cForm = new ContactForm();
 		//Verlinkung
-		cForm.setEditor(this);
+		//cForm.setEditor(this);
 		
-		widgetPanel.add(cForm);
+		//widgetPanel.add(cForm);
 
 		topPanel.add(search);
 		topPanel.add(settings);
@@ -147,7 +146,7 @@ public class Editor implements EntryPoint {
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */ 
-		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		
 		JabicsUser u = new JabicsUser("hans");
 		Property p1 = new Property("Name", Type.STRING);
 		Property p2 = new Property("VorName", Type.STRING);
@@ -161,13 +160,14 @@ public class Editor implements EntryPoint {
 		Contact c1 = new Contact(val, "maxmuster");
 
 		c1.setValues(val);
-		GWT.log("5");
-		showContact(c1);
-		GWT.log("6");
+		showContactCollab(c1);
 		
-		RootPanel.get("details").add(mainPanel);
-
+		//treeViewMenu.addContact(c1);
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		GWT.log("5");
+		//showContact(c1);
+		GWT.log("6");
+		mainPanel.add(widgetPanel);
 		RootPanel.get("details").add(mainPanel);
 	}
 
@@ -193,7 +193,7 @@ public class Editor implements EntryPoint {
 	
 	public void showContact(Contact c) {
 		if (this.cForm == null) {
-			
+			cForm = new ContactForm();
 			cForm.setEditor(this);
 		}
 
@@ -223,12 +223,13 @@ public class Editor implements EntryPoint {
 	}
 
 	public void showContactCollab(Contact c) {
+		GWT.log("contactCollab");
 		if (this.ccForm == null) {
 			ccForm = new ContactCollaborationForm();
 			ccForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// ccForm.clear();
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());

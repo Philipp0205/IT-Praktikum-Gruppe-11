@@ -56,17 +56,28 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	public String testMethod() {
-		ArrayList<PValue>  lel = cMapper.findContactById(1).getValues();
-		
-		for(int i= 0; i< lel.size(); i++) {
-			System.out.println(lel.get(i).getStringValue());
+	    /*Contact c = cMapper.findContactById(1);
+	    //PValue pv = pvMapper.findPValueById(1);
+	    System.out.println(c.getId());
+	    System.out.println(c.getDateCreated().toString());
+	    c.setOwner(uMapper.findUserByContact(c));
+	    return c.getOwner().getEmail();*/
+		//return "halowelt";
+		ContactList cl = clMapper.findContactListById(1);
+		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
+		for (Contact cnew : c) {
+			for (PValue pv : pvMapper.findPValueForContact(cnew)) {
+				cnew.addPValue(pv);
+				System.out.println(pv.getStringValue());
+			};
 		}
-		
-		
-		//ArrayList<PValue> pv = pvMapper.findPValueForContact(c);
-		return pv1.getStringValue();
-		//return "hallo";
-	}
+		return c.get(1).getValues().get(1).toString();
+	    //ArrayList<PValue> lol = pvMapper.findPValueForContact(c);
+	    //for(int i= 0; i< lol.size(); i++) {
+	    //  System.out.println(lol.get(i).getStringValue());
+	    //}
+	    //return lol.get(1).getStringValue();
+	  }
 	/**
 	 * Diese Methode erstelle einen Nutzer, indem ihr ein String mit dem Namen und der email des Nutzers übergeben wird.
 	 */
