@@ -17,11 +17,6 @@ import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 import de.hdm.group11.jabics.shared.LoginInfo;
 
-
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
 import com.google.appengine.api.utils.SystemProperty;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -146,7 +141,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 		//cnew.setDateUpdated(LocalDateTime.now());
 		
-		
 		/*
 		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit isOwner = true 
 		 * und zuletzt den Contact updaten, damit dieser einen neuen Zeitstempel bekommt.
@@ -226,9 +220,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return res; */
 		
 		// temporär: kann gelöscht werden
-		ArrayList<ContactList> cl = new ArrayList<ContactList>();
-		cl.add(this.cl);
-		return cl; 
+		ArrayList<ContactList> con = new ArrayList<ContactList>();
+		con.add(this.cl);
+		return con;
 	}
 	
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
