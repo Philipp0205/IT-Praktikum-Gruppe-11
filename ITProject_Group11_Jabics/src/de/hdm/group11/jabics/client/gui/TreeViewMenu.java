@@ -63,7 +63,7 @@ public class TreeViewMenu  {
 	public Widget createTreeTab2() {
 		TreeViewModel model = new ContactListTreeTab();
 		
-		CellTree tree = new CellTree(model, "Item 1");
+		CellTree tree = new CellTree(model, "Root");
 		GWT.log("TreeViewMenu: createTab2");
 		return tree;
 	}

@@ -283,21 +283,26 @@ public class ContactListTreeTab implements TreeViewModel {
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
 		GWT.log("TreeTab: getNodeInfo start.");
+		GWT.log("TreeTab: Value: " + value.toString());
 		
 		if (value.equals("Root")) {
 			GWT.log("TreeTab: value.equals");
+			
 			contactListDataProviders = new ListDataProvider<ContactList>();
 			
 			JabicsUser jabicsUser2 = new JabicsUser();
+			GWT.log("ContatListTree: User erstellt" );
+			//GWT.log(jabicsUser2.toString());
 			//Der aktuelle User wird verwendet.
 			eService.getListsOf(jabicsUser2 , new AsyncCallback<ArrayList<ContactList>>() {
 				@Override
 				public void onFailure(Throwable caught) {
-					// Nix.
+					GWT.log("TreeTab: onFailure");
 					
 				}
 				@Override
 				public void onSuccess(ArrayList<ContactList> contactlists) {
+					GWT.log("TreeTab: onSuccess");
 					for (ContactList cl : contactlists) {
 						contactListDataProviders.getList().add(cl);
 					}

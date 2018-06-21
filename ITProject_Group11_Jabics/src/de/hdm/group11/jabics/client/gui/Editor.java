@@ -342,7 +342,6 @@ public class Editor implements EntryPoint {
  
 		@Override
 		public void onSuccess(LoginInfo logon) {
-			GWT.log("Login sucess 2");
 			currentUser = logon.getCurrentUser();
 			setLoginInfo(logon);
 

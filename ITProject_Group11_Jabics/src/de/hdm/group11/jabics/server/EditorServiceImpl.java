@@ -23,7 +23,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.appengine.api.utils.SystemProperty;
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService{
@@ -206,18 +206,72 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Gibt alle Kontaktlisten eines Nutzers zurück.
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
-		/*
-		ArrayList<ContactList> res = new ArrayList<ContactList>();
-		for (ContactList cl: clMapper.findAllContactList(u){
-			cl.setOwner(uMapper.findOwnerForContactList(cl));
-			res.add(cl);
-		}
-		return res; */
+		
+		u = new JabicsUser("MeinNutzer");
+		p1 = new Property("Vorname", Type.STRING);
+		p2 = new Property("Nachname", Type.STRING);
+		p1.setStandard(true);
+		p3 = new Property("Straße", Type.STRING);
+		p4 = new Property("Hausnummer", Type.INT);
+		p5 = new Property("Geb", Type.DATE);
+		p6 = new Property("Irgendwas1", Type.INT);
+		p7 = new Property("Irgendwas2", Type.FLOAT);
+		pv1 = new PValue(p1, "Hans", u);
+		ArrayList<PValue> val = new ArrayList<PValue>();
+		val.add(new PValue( p1, "Max", u));
+		val.add(new PValue( p2, "Mustermann",u));
+		val.add(new PValue( p3, "eineStraße",u));
+		val.add(new PValue( p4, 63,u));
+		val.add(new PValue( p5, new Date(1,2,3),u));
+		val.add(new PValue( p7, 188.5f,u));
+		c1 = new Contact(val, "maxmuster(absichtlichfalschundmitÜberlänge)");
+		ArrayList<PValue> val2 = new ArrayList<PValue>();
+		val2.add(new PValue( p1, "Alex",u));
+		val2.add(new PValue( p2, "Muster123",u));
+		val2.add(new PValue( p3, "eineStraße1234",u));
+		val2.add(new PValue( p4, 4,u));
+		val2.add(new PValue( p5, new Date(1,2,3),u));
+		val2.add(new PValue( p7, 167.2f,u));
+		c2 = new Contact(val2);
+		ArrayList<PValue> val3 = new ArrayList<PValue>();
+		val3.add(new PValue( p1, "Udo",u));
+		val3.add(new PValue( p2, "Mildenberger",u));
+		val3.add(new PValue( p3, "Nobelstraße",u));
+		val3.add(new PValue( p4, 8,u));
+		val3.add(new PValue( p5, new Date(1,2,3),u));
+		val3.add(new PValue( p7, 7.2f,u));
+		c3 = new Contact(val3);
+		ArrayList<Contact> contacts = new ArrayList<Contact>();
+		contacts.add(c1);
+		contacts.add(c2);
+		contacts.add(c3);
+		cl = new ContactList(contacts, "MeineListe",u);
+		
+		ArrayList<ContactList> arrayList = new ArrayList<ContactList>();
+		arrayList.add(cl);
+		
+		return arrayList;
+		
+		
+		
+		
+//		GWT.log("EditorServiceImpl: getListOf");
+//		
+//		ArrayList<ContactList> res = new ArrayList<ContactList>();
+//		
+//		for (ContactList cl: clMapper.findContactListOfUser(u)) {
+//			cl.setOwner(uMapper.findUserByContactList(cl));
+//			res.add(cl);
+//		}
+//		
+//		return res; 
 		
 		// temporär: kann gelöscht werden
-		ArrayList<ContactList> cl = new ArrayList<ContactList>();
-		cl.add(this.cl);
-		return cl; 
+		
+		
+//		ArrayList<ContactList> cl = new ArrayList<ContactList>();
+//		cl.add(this.cl);
+//		return cl; 
 	}
 	
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
