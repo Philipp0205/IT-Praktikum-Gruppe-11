@@ -23,10 +23,12 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	@Override
 	public LoginInfo login(String requestUri) {
 
-		System.err.println("1++++++++++++++++++++++++++++++++++");
+		System.err.println("LoginStart++++++++++++++++++++++++++++++++++");
 		LoginInfo res = new LoginInfo();
-		res.setCurrentUser(new JabicsUser(1));
+		JabicsUser u = new JabicsUser(1);
+		res.setCurrentUser(u);
 		res.setLoggedIn(true);
+		System.err.println("LogiReturns++++++++++++++++++++++++++++++++++");
 		return res;
 		
 		/*

@@ -107,7 +107,6 @@ public class ContactCellListTab  {
 			this.setSelectedContact((Contact)selection);
 				
 		}
-
 		private void setSelectedContact(Contact c) {
 			selectedContact = c;
 			editor.showContact(c);
@@ -116,12 +115,10 @@ public class ContactCellListTab  {
 		
 	}
 	
-	
 	public void addContact(Contact c) {
 		contactsProvider.getList().add(c);
 		selectionModel.setSelected(c, true);
 	}
-	
 	
 	public void removeContact(Contact c) {
 		contactsProvider.getList().remove(c);
@@ -172,11 +169,5 @@ public class ContactCellListTab  {
 		}
 		 
 	 }
-	
-	
-	
-	
-	
-	
 
 }

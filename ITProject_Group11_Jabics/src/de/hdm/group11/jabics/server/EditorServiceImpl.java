@@ -17,11 +17,6 @@ import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 import de.hdm.group11.jabics.shared.LoginInfo;
 
-
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -55,6 +50,31 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 	}
 	
+
+	public String testMethod() {
+	    /*Contact c = cMapper.findContactById(1);
+	    //PValue pv = pvMapper.findPValueById(1);
+	    System.out.println(c.getId());
+	    System.out.println(c.getDateCreated().toString());
+	    c.setOwner(uMapper.findUserByContact(c));
+	    return c.getOwner().getEmail();*/
+		//return "halowelt";
+		ContactList cl = clMapper.findContactListById(1);
+		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
+		for (Contact cnew : c) {
+			for (PValue pv : pvMapper.findPValueForContact(cnew)) {
+				cnew.addPValue(pv);
+				System.out.println(pv.getStringValue());
+			};
+		}
+		return c.get(1).getValues().get(1).toString();
+	    //ArrayList<PValue> lol = pvMapper.findPValueForContact(c);
+	    //for(int i= 0; i< lol.size(); i++) {
+	    //  System.out.println(lol.get(i).getStringValue());
+	    //}
+	    //return lol.get(1).getStringValue();
+	  }
+
 	/**
 	 * Diese Methode erstelle einen Nutzer, indem ihr ein String mit dem Namen und der email des Nutzers übergeben wird.
 	 */
@@ -206,9 +226,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return res; */
 		
 		// temporär: kann gelöscht werden
-		ArrayList<ContactList> cl = new ArrayList<ContactList>();
-		cl.add(this.cl);
-		return cl; 
+		ArrayList<ContactList> con = new ArrayList<ContactList>();
+		con.add(this.cl);
+		return con;
 	}
 	
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
