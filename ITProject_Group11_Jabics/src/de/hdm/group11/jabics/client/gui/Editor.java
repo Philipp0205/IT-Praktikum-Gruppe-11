@@ -149,6 +149,7 @@ public class Editor implements EntryPoint {
 		
 		StackPanel stackPanel2 = new StackPanel();
 		stackPanel2.add(treeViewMenu.createTreeTab(), "TreeView");
+		GWT.log("Editor: createTreeTab2");
 		stackPanel2.add(treeViewMenu.createTreeTab2(), "TreeView");
 		stackPanel2.add(new Label("Foo"), "foo");
 		
@@ -159,7 +160,6 @@ public class Editor implements EntryPoint {
 		topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
-		GWT.log("2");
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */ 
@@ -182,10 +182,8 @@ public class Editor implements EntryPoint {
 		
 
 		c1.setValues(val);
-		GWT.log("5");
 		showContact(c1);
 	//	showContactList(cl1);
-		GWT.log("6");
 		
 		
 		RootPanel.get("details").add(mainPanel);
@@ -219,12 +217,9 @@ public class Editor implements EntryPoint {
 		}
 
 		widgetPanel.clear();
-		GWT.log("9");
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// cForm.clear();
-		GWT.log("10");
 		cForm.setCurrentContact(c);
-		GWT.log("11");
 		// cForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(cForm);
 		
@@ -259,7 +254,7 @@ public class Editor implements EntryPoint {
 		// ccForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(ccForm);
 	}
-
+	
 	public void showContactListCollab(ContactList cl) {
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
