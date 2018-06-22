@@ -225,16 +225,31 @@ public class PValueMapper {
 	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		//Muss noch in der Apl realisiert werden
 	    		pv.setDateValue(rs.getDate("dateValue"));
-	    		
+
+	    		if(pv.getStringValue()!= null) {
+	    			pv.setPointer(2);
+	    			
+	    		}else if(pv.getDateValue()!=null) {
+	    			pv.setPointer(3);
+	    		}else if(Integer.valueOf(pv.getIntValue())!= null) {
+	    			pv.setPointer(1);
+	    		}else {
+	    			pv.setPointer(4);
+	    		}
+	    		System.out.println(pv.getPointer());
 	    		al.add(pv);
 	 	    }
+
 		    	con.close();
+
 	 	   	return al;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
+	    	
 	    }
+	    
 	}
 	
 	/**
@@ -295,34 +310,37 @@ public class PValueMapper {
 	    	 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 	    	 * und trägt den Wert in die Datenbank ein
 	    	 */
-	    	
+	    	System.out.println(pv.getProperty().getType().toString());
 	    	switch (pv.getProperty().getType()) {
+	    	
 	    		case STRING: {
 	    			
-	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = CURRENT_TIMESTAMP WHERE pValueID = '" + pv.getId() + "';");
+	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = CURRENT_TIMESTAMP WHERE pValueID = " + pv.getId() + ";");
 	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
 	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP , " + columnname + "= '"
-	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
+	    			+ pv.getIntValue() + "' WHERE pValueID = " + pv.getId() + ";");  
 	    			break;
 	    		}
 	    		case DATE: {
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
-	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP, " + columnname + "= '"
+	    			+ pv.getDateValue() + "' WHERE pValueID = " + pv.getId() + ";"); 
 	    			break;
 	    		}
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
 	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
-	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			+ pv.getFloatValue() + "' WHERE pValueID = " + pv.getId() + ";"); 
 	    			break;
 	    		}
 	    	}	
+
 	    		con.close();
+
 		    return pv;
 	    }
 	    catch (SQLException e) {
@@ -408,17 +426,22 @@ public class PValueMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
+	   System.out.println("anfang");
+	   System.out.println("u.getUsername");
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " 
-	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() +   ")"  );
+
+	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() + ")"  );
+
 		    con.close();
+
 	    	return pv;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
+	    
 	}
 	
 	/**

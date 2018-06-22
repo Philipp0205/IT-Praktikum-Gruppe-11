@@ -136,6 +136,7 @@ public class Editor implements EntryPoint {
 
 		
 
+
 		widgetPanel.add(treeViewMenu.getStackPanel());
 		mainPanel.add(widgetPanel);
 
@@ -182,7 +183,9 @@ public class Editor implements EntryPoint {
 			cForm.setEditor(this);
 			cForm.setUser(this.currentUser);
 		}
+
 		GWT.log("showCont2");
+
 		cForm.setUser(currentUser);
 		cForm.setCurrentContact(c);
 		GWT.log("showCOnt4");

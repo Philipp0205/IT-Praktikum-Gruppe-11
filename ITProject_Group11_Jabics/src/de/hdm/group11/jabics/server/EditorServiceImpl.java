@@ -423,14 +423,19 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @param Ein PropertyValue, das aktualisiert werden soll
 	 */
 	public PValue updatePValue(PValue pv) {
-		
+		System.out.println(pv.getStringValue());
+		System.out.println(pv.getId());
 		PValue pvtemp = pvMapper.findPValueById(pv.getId());
+		System.out.println("1");
 		if(pv != pvtemp) {
-			
 			 //pv.setDateUpdated(LocalDateTime.now());
-			 
-			 return pvMapper.updatePValue(pv);
-		}else return pvMapper.findPValueById(pv.getId());
+			PValue p = pvMapper.updatePValue(pv);
+			System.out.println(p.getStringValue());
+			 System.out.println("holla");
+			 return p;
+		}else 
+		System.out.println("nop"); 
+		return pvMapper.findPValueById(pv.getId()); 
 	}
 	
 	public ContactList updateContactList(ContactList cl){
@@ -553,18 +558,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u){
-		System.out.println(u.getId());
-		System.out.println(u.getEmail());
+		//Achtung HardgeCODED!!
 		u.setId(1);
 		ArrayList<PValue> result = new ArrayList<PValue>();
 		
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
-			System.out.println("hier leer: " + pv.getPropertyId());
 			 pv.setProperty(pMapper.findPropertyById(pv.getPropertyId()));
-			 System.out.println("Hier voll: " + pv.getProperty().getLabel());
+			 
 			 for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
 				if (u.getId() == uu.getId()) {
-					System.out.println("Hier nutzer: " + u.getId());
 					result.add(pv);
 				}
 			}

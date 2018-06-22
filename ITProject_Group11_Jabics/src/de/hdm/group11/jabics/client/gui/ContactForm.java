@@ -78,7 +78,7 @@ public class ContactForm extends VerticalPanel {
 		this.add(userInformationGrid);
 
 		// GRID-ZEILE 1: Vergabe des Fensternamens
-		Label formName = new Label("Kontakt-Editor");
+		Label formName = new Label("Kontakt-Bearbeiten");
 		
 		userInformationGrid.setWidget(0, 0, formName);
 
@@ -138,21 +138,6 @@ public class ContactForm extends VerticalPanel {
 		// hinzufügen von Zeile 4 zum Hauptgrid
 		userInformationGrid.setWidget(3, 0, propertyAddBox);
 		
-
-		// GRID-ZEILE 5:
-		
-		shareContactButton = new Button("Kontakt teilen");
-		shareContactButton.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event) {
-				GWT.log(contactToDisplay.getName());
-				e.showContactCollab(contactToDisplay);
-			}
-		});
-		
-		
-		userInformationGrid.setWidget(4, 0, shareContactButton);
-		
 		// GRID-ZEILE 5.1:
 		deleteContactButton.addClickHandler(new DeleteContactClickHandler());
 		
@@ -168,9 +153,7 @@ public class ContactForm extends VerticalPanel {
 				e.showExistingContactCollab(contactToDisplay);
 			}
 		});
-		
 	}
-	
 	
 	public void setEditor(Editor e) {
 		this.e = e;
@@ -182,7 +165,7 @@ public class ContactForm extends VerticalPanel {
 		JabicsUser currentUser = new JabicsUser();
 		currentUser.setEmail("stahl.alexander@live.de");
 		currentUser.setId(1);
-		currentUser.setUsername("Alexander Stahl");
+		currentUser.setUsername("AlexanderStahl");
 		this.u = currentUser;
 		GWT.log("usergesetzt:");
 		GWT.log("usergesetzt2: " + u.getEmail());
@@ -338,25 +321,7 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 
-	/**
-	 * private class DeletePValueClickHandler implements ClickHandler {
-	 * 
-	 * @Override public void onClick(ClickEvent event) {
-	 * 
-	 *           if(contactToDisplay == null) { Window.alert("Kein Kontakt
-	 *           ausgewählt"); }else { editorService.deletePValue(selectedPValue,
-	 *           new deletePValueCallback(selectedPValue)); } } }
-	 * 
-	 */
-	/**
-	 * Diese Methode wird im TreeViewMenu aufgerufen und übergibt der ContactForm
-	 * den anzuzeigenden Kontakt.
-	 * 
-	 * @param u
-	 *            das <code>User</code> Objekt, zu welchem der Kontkt gehört.
-	 * @param c
-	 *            der Kontakt welcher angezeigt werden soll.
-	 */
+
 	public void setCurrentContact(Contact c) { // JabicsUser u) {
 		if (c != null) {
 			this.contactToDisplay = c;
@@ -381,12 +346,10 @@ public class ContactForm extends VerticalPanel {
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
 	
-	PValue currentPV;
 	TextBox[] pValueTextBox;
-	PValue newPV;
 	
 	
-	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
+	public class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
 		}
@@ -403,54 +366,11 @@ public class ContactForm extends VerticalPanel {
 			Button[] deleteButton = new Button[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
-//				int pointer = i;
-				ArrayList<PValue> rs = result;
-				currentPV = result.get(i);
-//				newPV = new PValue(result.get(pointer).getProperty(), u);
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(i).getStringValue());
 				saveButton[i] = new Button("Save");
-				saveButton[i].addClickHandler(new ClickHandler() {
-					
-					// TODO Bisher noch nicht funktional
-				public void onClick(ClickEvent event) {
-//					int pointer1 = pointer;
-//						newPV = new PValue(rs.get(pointer1).getProperty(), u);
-//					
-//						int currentID = currentPV.getPropertyId();
-//
-//						switch (currentPV.getPointer()) {
-//						case 1:
-//							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer1].getValue())); break;
-//						case 2:
-//							newPV.setStringValue(pValueTextBox[pointer1].getValue().toString()); break;
-//						case 3:
-//							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
-//							newPV.setDateValue(new Date(01,01,01)); break;
-//						case 4:
-//							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer1].getValue())); break;
-//						default:
-//						}
-//						editorService.updatePValue(newPV, new UpdatePValueCallback());
-//
-//						Window.alert("Wert" + pValueTextBox[pointer1].getValue().toString() + "gespeichert");
-					}
-				});
-				
 				deleteButton[i] = new Button("Delete");
-
-				deleteButton[i].addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-
-						if (contactToDisplay == null) {
-							Window.alert("Kein Kontakt ausgewählt");
-						} else {
-							editorService.deletePValue(currentPV, new deletePValueCallback(currentPV));
-						}
-					}
-				});
-				
 				contactGrid.resize(result.size()+1, 5);
 			}
 			for (int j = 0; j < propertyLabels.length; j++) {
@@ -463,45 +383,4 @@ public class ContactForm extends VerticalPanel {
 		}
 }
 
-
-	/**
-	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer
-	 * Eigenschafts- ausprägung.
-	 */
-	class deletePValueCallback implements AsyncCallback<Void> {
-
-		private PValue pvalue = null;
-
-		deletePValueCallback(PValue pv) {
-			pvalue = pv;
-		}
-
-		public void onFailure(Throwable caugth) {
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-			if (pvalue != null) {
-				// update Contact bzw. Contacttree
-			}
-		}
-	}
-
-	/**
-	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer
-	 * Eigenschafts- ausprägung.
-	 */
-	private class UpdatePValueCallback implements AsyncCallback<PValue> {
-
-		public void onFailure(Throwable caugth) {
-			Window.alert("Die Änderung ist fehlgeschlagen.");
-		}
-
-		@Override
-		public void onSuccess(PValue result) {
-			// Contacttree muss aktualisiert werden .
-			// Conacttree.refresh();
-			Window.alert("Wert geändert");
-		}
-	}
 }
