@@ -354,17 +354,30 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @param Contact, der gelöscht werden soll
 	 */
 	public void deleteContact(Contact c, JabicsUser ju){
-		if(cMapper.findContactById(c.getId()).getOwner().getId() == ju.getId()) {
+		if( uMapper.findUserByContact(c).getId() == ju.getId()) {
+			
 			ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
+			ArrayList<PValue> pvalues = pvMapper.findPValueForContact(c);
+			System.out.println("log1");
 			for (JabicsUser u : users) {
 				cMapper.deleteCollaboration(c, u);
+				for(int i=0;i<pvalues.size();i++) {
+					pvMapper.deleteCollaboration(pvalues.get(i), u);
+				}
+				System.out.println("log2");
 			}
-			for (PValue pv : c.getValues()) {
+			for (PValue pv : pvMapper.findPValueForContact(c)) {
 				pvMapper.deletePValue(pv);
+				System.out.println("log3");
 			}
 			cMapper.deleteContact(c);
+
+			System.out.println("log4");
+		}else {System.out.println("fail");}
+		
+
 		}
-	}
+	
 	
 	/**
 	 * Eine <code>ContactList</code> aus der DB löschen. Löscht die Liste für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.

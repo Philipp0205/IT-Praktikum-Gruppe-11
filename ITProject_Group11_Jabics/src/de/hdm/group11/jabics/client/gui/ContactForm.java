@@ -391,8 +391,7 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onSuccess(ArrayList<PValue> result) {
-			GWT.log("pvalueszuück");
-			//
+			
 			GWT.log("huhu1");
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			checkedPV.clear();
@@ -405,7 +404,7 @@ public class ContactForm extends VerticalPanel {
 			for (int i = 0; i < result.size(); i++) {
 				int pointer = i;
 				currentPV = result.get(i);
-				
+				newPV = new PValue(result.get(pointer).getProperty(), u);
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(i).getStringValue());

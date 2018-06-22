@@ -152,6 +152,9 @@ public class Editor implements EntryPoint {
 		
 
 		Contact c1 = new Contact();
+
+		c1.setId(3);
+	//	cForm.setUser(u);
 		c1.setId(10);
 //		ContactList cl1 = new ContactList();
 //		cl1.addContact(c1);

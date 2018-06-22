@@ -224,6 +224,7 @@ public class ContactMapper{
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		c.setName(rs.getString("nickname"));
+	    		System.out.println(c.getName());
 	    	}
 	    	return c;
 	    }
