@@ -89,7 +89,7 @@ public class ContactMapper{
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-		String query = ("INSERT INTO contact () VALUES ()"  );
+		String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
@@ -127,7 +127,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP WHERE contactID = " + c.getId());
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP AND SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -190,6 +190,7 @@ public class ContactMapper{
 				c.setId(rs.getInt("contactID"));
 	    		c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
 			return al;
@@ -222,6 +223,7 @@ public class ContactMapper{
 				c.setId(rs.getInt("contactID"));
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		c.setName(rs.getString("nickname"));
 	    	}
 	    	return c;
 	    }
@@ -264,10 +266,9 @@ public class ContactMapper{
 		      
 					//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 					c.setId(rs.getInt("contactID"));
-					System.out.println(String.valueOf(rs.getInt("contactID")));
 					c.setDateCreated(rs.getTimestamp("dateCreated"));
 		    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
-		    		
+		    		c.setName(rs.getString("nickname"));
 					al.add(c);
 				}
 	    	return al;
