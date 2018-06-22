@@ -23,21 +23,19 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
  */
 
 public class TreeViewMenu {
+	Editor e;
+	
 	ContactListTreeTab contactListTab;
-	ContactCellListTab contactsTab;
+	ContactCellListTab contactTab;
 	StackPanel stackPanel;
-
 	CellTree tree;
 
 	public Widget onLoad() {
-
 		// StackPanel wird erstellt.
 		stackPanel = new StackPanel();
-
-		contactsTab = new ContactCellListTab();
-		contactListTab = new ContactListTreeTab();
-
-		stackPanel.add(new Label("new"), ("Test"));
+		stackPanel.add(createContactListTreeTab(), "TreeView");
+		//stackPanel.add(createContactListTreeTab(), "TreeView");
+		stackPanel.add(new Label("Foo"), "foo");
 
 		stackPanel.ensureDebugId("cwStackPanel");
 		return stackPanel;
@@ -52,27 +50,33 @@ public class TreeViewMenu {
 	}
 
 	public void addContact(Contact c) {
-		contactsTab.addContact(c);
+		contactTab.addContact(c);
 	}
 
 	public StackPanel getStackPanel() {
 		return this.stackPanel;
 	}
 
-	public Widget createTreeTab() {
-		TreeViewModel model = new CustomTreeModel();
 
-		tree = new CellTree(model, "Item 1");
-		return tree;
+	public void setEditor(Editor editor) {
+		GWT.log("Editor setzen in tree view");
+		GWT.log("Editor: " + editor.hashCode());
+		this.e = editor;
+		contactListTab.setEditor(editor);
+		//contactsTab.setEditor(editor);
 	}
 
-
-
+	public Widget createTreeTab() {
+		contactTab = new ContactCellListTab();
+		tree = new CellTree(contactTab, "Root");
+		GWT.log("TreeViewMenu: createContactTab");
+		return tree;
+	}
+	
 	public Widget createContactListTreeTab() {
-		TreeViewModel model = new ContactListTreeTab();
-
-		CellTree tree = new CellTree(model, "Root");
-		GWT.log("TreeViewMenu: createTab2");
+		this.contactListTab = new ContactListTreeTab();
+		CellTree tree = new CellTree(contactListTab, "Root");
+		GWT.log("TreeViewMenu: createListTab");
 		return tree;
 	}
 
