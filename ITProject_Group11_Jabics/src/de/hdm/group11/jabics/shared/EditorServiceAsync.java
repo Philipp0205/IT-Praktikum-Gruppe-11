@@ -68,6 +68,8 @@ public interface EditorServiceAsync {
 	
 	void deleteCollaboration(ContactList cl, JabicsUser u, AsyncCallback<Void> callback);
 	
+	void deleteCollaboration(Contact c, JabicsUser u, AsyncCallback<Void> callback);
+	
 	void getPValueOf(Contact c , JabicsUser u, AsyncCallback<ArrayList<PValue>> callback);
 	
 	void searchExpressionInList(String s, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
@@ -83,6 +85,10 @@ public interface EditorServiceAsync {
 	void getCollaborators(Contact c, AsyncCallback<ArrayList<JabicsUser>> callback);
 	
 	void getCollaborators(ContactList cl, AsyncCallback<ArrayList<JabicsUser>> callback);
+	
+	void getAllNotCollaboratingUser(Contact c, AsyncCallback<ArrayList<JabicsUser>> callback);
+	
+	void getAllNotCollaboratingUser(ContactList cl, AsyncCallback<ArrayList<JabicsUser>> callback);
 	
 	void getCollaborators(PValue pv, AsyncCallback<ArrayList<JabicsUser>> callback);
 	

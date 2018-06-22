@@ -75,6 +75,8 @@ public class Editor implements EntryPoint {
 	ContactListForm clForm = new ContactListForm();
 	ContactCollaborationForm ccForm;
 	ContactListCollaborationForm clcForm;
+	ExistingContactCollaborationForm eccForm;
+	//ExistingContactListCollaborationForm clcForm;
 	
 	// SearchForm sForm = new SearchForm();
 	TreeViewMenu treeViewMenu;
@@ -121,7 +123,6 @@ public class Editor implements EntryPoint {
 
 		clForm = new ContactListForm();
 		cForm = new ContactForm();
-		ccForm = new ContactCollaborationForm();
 
 		topPanel.add(search);
 		topPanel.add(settings);
@@ -153,14 +154,15 @@ public class Editor implements EntryPoint {
 		cl1.addContact(c1);
 		cl1.setId(5);
 		cl1.setListName("Lischde");
-		
+		c1.setId(1);
 		c1.setValues(val);
 
-		c1.setId(1);
-
-		showContact(c1);
+    //****************
+    //hier auswahl, was angezeigt werden soll
+		showExistingContactCollab(c1);
+		//showContact(c1);
 		//showContactCollab(c1);
-		
+
 		//treeViewMenu.addContact(c1);
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 
@@ -249,6 +251,25 @@ public class Editor implements EntryPoint {
 		// ccForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(ccForm);
 	}
+	
+	public void showExistingContactCollab(Contact c) {
+
+		GWT.log("existingContactCollab");
+		eccForm = new ExistingContactCollaborationForm();
+		if (this.eccForm == null) {
+			eccForm = new ExistingContactCollaborationForm();
+			eccForm.setEditor(this);
+			
+		}
+		widgetPanel.clear();
+
+		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		// ccForm.clear();
+		//ccForm = new ContactCollaborationForm();
+		eccForm.setContact(c);
+		// ccForm.setUser(loginfo.getCurrentUser());
+		widgetPanel.add(eccForm);
+	}
 
 	public void showContactListCollab(ContactList cl) {
 		if (this.clcForm == null) {
@@ -261,6 +282,12 @@ public class Editor implements EntryPoint {
 		clcForm.setList(cl);
 		// clcForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(clcForm);
+	}
+	
+	public void showExistingContactListCollab(ContactList cl) {
+		/**
+		 * TODO implement
+		 */
 	}
 
 	public void returnToContactForm(Contact c) {

@@ -301,6 +301,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ContactList addContactToList(Contact c, ContactList cl) {
 		cl.addContact(c);
+		for (JabicsUser u : clMapper.findCollaborators(cl)) {
+			addCollaboration(c, u);
+		}
 		clMapper.insertContactIntoContactList(cl, c);
 		return clMapper.updateContactList(cl);
 		
@@ -334,6 +337,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ContactList removeContactFromList(Contact c, ContactList cl) {
 		cl.removeContact(c);
+		for (JabicsUser u : clMapper.findCollaborators(cl)) {
+			deleteCollaboration(c, u);
+		}
 		clMapper.deleteContactfromContactList(cl, c);
 		return cl;
 	}
@@ -416,7 +422,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				for(Contact ctemp : cltemp.getContacts()) {
 					if(c.getId() == ctemp.getId()) bol = true;
 				}
-				if (bol == false) clMapper.insertContactIntoContactList(cl, c);
+				if (bol == false) {
+					clMapper.insertContactIntoContactList(cl, c);
+					for (JabicsUser u : clMapper.findCollaborators(cl)) {
+						addCollaboration(c, u);
+					}
+				}
 			}
 			//Alle Kontakte in der neuen Liste durchlaufen, ob einer weggefallen ist, wenn ja, löschen
 			for (Contact ctemp : cltemp.getContacts()) {
@@ -424,13 +435,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				for(Contact c : cl.getContacts()) {
 					if(c.getId() == ctemp.getId()) bol = true;
 				}
-				if (bol == false) clMapper.deleteContactfromContactList(cl, ctemp);
+				if (bol == false) {
+					clMapper.deleteContactfromContactList(cl, ctemp);
+					for (JabicsUser u : clMapper.findCollaborators(cl)) {
+						deleteCollaboration(ctemp, u);
+					}
+				}
 			}
 			return clMapper.updateContactList(cl);
 		}else return clMapper.findContactListById(cl.getId());
-			/**
-			 * TODO Nachdenken, ob wir nur Änderungen überprüfen und nur diese an die DB weitergeben oder das ganze ding in die DB geben
-			 */
 	}
 	
 	/*
@@ -515,14 +528,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u){
-		/*ArrayList<PValue> result = new ArrayList<PValue>();
+		ArrayList<PValue> result = new ArrayList<PValue>();
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
 			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
 				if (u.getId() == uu.getId()) result.add(pv);
 			}
 		}
-		return result;*/
-		return c1.getValues();
+		return result;
+		//return c1.getValues();
 	}
 	
 	/**
@@ -593,6 +606,28 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return result;
 	}
 
+	/**
+	 * Erhalten aller noch nicht kollaborierenden Nutzer für einen Kontakt
+	 */
+	public ArrayList<JabicsUser> getAllNotCollaboratingUser(Contact c){
+		ArrayList<JabicsUser> res = uMapper.findAllUser();
+		for(JabicsUser u : cMapper.findCollaborators(c)) {
+			res.remove(u);
+		}
+		return res;
+	}
+	
+	/**
+	 * Erhalten aller noch nicht kollaborierenden Nutzer für eine Kontaktliste
+	 */
+	public ArrayList<JabicsUser> getAllNotCollaboratingUser(ContactList cl){
+		ArrayList<JabicsUser> res = uMapper.findAllUser();
+		for(JabicsUser u : clMapper.findCollaborators(cl)) {
+			res.remove(u);
+		}
+		return res;
+	}
+	
 	/**
 	 * Erhalten aller kollaborierenden Nutzer für einen Kontakt
 	 */
