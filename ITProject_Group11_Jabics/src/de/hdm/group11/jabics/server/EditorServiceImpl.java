@@ -371,14 +371,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				System.out.println("log3");
 			}
 			cMapper.deleteContact(c);
-<<<<<<< HEAD
+
 			System.out.println("log4");
 		}else {System.out.println("fail");}
 		
-=======
+
 		}
->>>>>>> refs/remotes/origin/Testing
-	}
+	
 	
 	/**
 	 * Eine <code>ContactList</code> aus der DB löschen. Löscht die Liste für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.

@@ -152,12 +152,10 @@ public class Editor implements EntryPoint {
 		
 
 		Contact c1 = new Contact();
-<<<<<<< HEAD
+
 		c1.setId(3);
-		cForm.setUser(u);
-=======
+	//	cForm.setUser(u);
 		c1.setId(10);
->>>>>>> refs/remotes/origin/Testing
 //		ContactList cl1 = new ContactList();
 //		cl1.addContact(c1);
 //		cl1.setId(5);
