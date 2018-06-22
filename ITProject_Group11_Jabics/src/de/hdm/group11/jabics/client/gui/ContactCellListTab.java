@@ -28,21 +28,17 @@ public class ContactCellListTab{
 
 	private Contact selectedContact;
 	Editor editor;
+	JabicsUser user;
 
 	private EditorServiceAsync eService;
 	CellList<Contact> contactCell;
-	JabicsUser user;
 	ListDataProvider<Contact> contactDataProvider;
 	private ContactKeyProvider keyProvider = null;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
 
-
-	//LoginInfo loginfo = new LoginInfo();
-	JabicsUser user;
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
 	ListDataProvider<Contact> contactsProvider = null;
-	Editor editor;
 	
 	public ContactCellListTab() {
 
