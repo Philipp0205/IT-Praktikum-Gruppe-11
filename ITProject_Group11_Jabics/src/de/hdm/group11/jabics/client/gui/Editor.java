@@ -130,8 +130,9 @@ public class Editor implements EntryPoint {
 		StackPanel stackPanel = new StackPanel();
 		//stackPanel.add(treeViewMenu.createTreeTab(), "TreeView");
 		GWT.log("Editor: createTreeTab2");
-		stackPanel.add(treeViewMenu.createContactListTreeTab(), "TreeView");
-		stackPanel.add(new Label("Foo"), "foo");
+		stackPanel.add(treeViewMenu.createContactListTreeTab(), "Meine Listen");
+		stackPanel.add(treeViewMenu.createContactCellTreeTab(), "Meine Kontakte");
+		stackPanel.add(treeViewMenu.createContactCellTreeTab2(), "Meine Kontakte");
 		
 		//mainPanel.add(stackPanel);
 		mainPanel.add(stackPanel);
@@ -140,6 +141,8 @@ public class Editor implements EntryPoint {
 		topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
+		
+		
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */ 
