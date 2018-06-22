@@ -556,22 +556,21 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println(u.getId());
 		System.out.println(u.getEmail());
 		u.setId(1);
-		System.out.println("getpvalue2");
 		ArrayList<PValue> result = new ArrayList<PValue>();
-		System.out.println("getpvalue3");
+		
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
+			System.out.println("hier leer: " + pv.getPropertyId());
 			 pv.setProperty(pMapper.findPropertyById(pv.getPropertyId()));
-			 System.out.println("getpvalue4");
+			 System.out.println("Hier voll: " + pv.getProperty().getLabel());
 			 for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
 				if (u.getId() == uu.getId()) {
+					System.out.println("Hier nutzer: " + u.getId());
 					result.add(pv);
-					System.out.println("getpvalue5");
 				}
 			}
 		}
-		System.out.println("getpvalue6");
-		return pvMapper.findPValueForContact(c);
-		//return c1.getValues();
+
+		return result;
 	}
 	
 	/**

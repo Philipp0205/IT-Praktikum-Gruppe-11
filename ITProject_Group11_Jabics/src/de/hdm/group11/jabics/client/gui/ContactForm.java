@@ -13,7 +13,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -52,7 +51,7 @@ public class ContactForm extends VerticalPanel {
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	//TODO USER richtig setzen (wird hier nur instanziiert, dass er nicht undefinded ist)
-	JabicsUser u;
+	JabicsUser u = new JabicsUser();
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
 	TreeViewMenu contacttree = null;
@@ -74,8 +73,6 @@ public class ContactForm extends VerticalPanel {
 	public void onLoad() {
 		
 		super.onLoad();
-		
-
 		// Erstellen des Haupt-Grids
 		Grid userInformationGrid = new Grid(6, 3);
 		this.add(userInformationGrid);
@@ -86,7 +83,6 @@ public class ContactForm extends VerticalPanel {
 		userInformationGrid.setWidget(0, 0, formName);
 
 		// GRID-ZEILE 2: Holen des Kontakt-Namens
-
 		userInformationGrid.setWidget(1, 0, contactName);
 
 		// GRID-ZEILE 3: Einfügen des 'Kontakt-Grids'
@@ -182,11 +178,16 @@ public class ContactForm extends VerticalPanel {
 	}
 	public void setUser(JabicsUser user) {
 		GWT.log("usersetz");
-		this.u = user;
-		GWT.log("usergesetzt: " + u.getEmail());
+		//GWT.log("usergesetzt: " + user.getEmail());
+		JabicsUser currentUser = new JabicsUser();
+		currentUser.setEmail("stahl.alexander@live.de");
+		currentUser.setId(1);
+		currentUser.setUsername("Alexander Stahl");
+		this.u = currentUser;
+		GWT.log("usergesetzt:");
+		GWT.log("usergesetzt2: " + u.getEmail());
 	}
 	
-
 
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die

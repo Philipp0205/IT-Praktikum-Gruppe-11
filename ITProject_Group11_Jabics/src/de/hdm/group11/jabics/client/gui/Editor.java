@@ -117,10 +117,6 @@ public class Editor implements EntryPoint {
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
 		
-		/*
-		 *  
-		 */
-
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
 		Button createCL = new Button("Neue Liste");
@@ -151,11 +147,11 @@ public class Editor implements EntryPoint {
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		
 
-		Contact c1 = new Contact();
+		//Contact c1 = new Contact();
 
-		c1.setId(3);
+		//c1.setId(3);
 	//	cForm.setUser(u);
-		c1.setId(10);
+		//c1.setId(10);
 //		ContactList cl1 = new ContactList();
 //		cl1.addContact(c1);
 //		cl1.setId(5);
