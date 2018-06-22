@@ -81,7 +81,7 @@ public class UserMapper {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 		JabicsUser u = new JabicsUser();
-		
+		System.out.println("m1");
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -91,8 +91,7 @@ public class UserMapper {
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
 					+ " WHERE contactCollaboration.contactID = " + c.getId() + " AND isOwner = 1" );
-			
-			if(rs.next()) {
+			while(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
@@ -101,6 +100,7 @@ public class UserMapper {
 		catch (SQLException e) {
 		    System.err.print(e);  
 		}
+		System.out.println("done");
 		return u;
 	}
 	

@@ -173,7 +173,7 @@ public class Editor implements EntryPoint {
 //		val.add(new PValue(p3, "eineStraße", u));
 //		
 		Contact c1 = new Contact();
-		c1.setId(10);
+		c1.setId(3);
 		cForm.setUser(u);
 //		ContactList cl1 = new ContactList();
 //		cl1.addContact(c1);
