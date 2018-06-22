@@ -530,8 +530,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u){
 		ArrayList<PValue> result = new ArrayList<PValue>();
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
+			 pv.setProperty(pMapper.findPropertyById(pv.getPropertyId()));
 			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
-				if (u.getId() == uu.getId()) result.add(pv);
+				if (u.getId() == uu.getId()) {
+				result.add(pv);
+				}
 			}
 		}
 		return result;

@@ -151,7 +151,7 @@ public class PropertyMapper {
 	    	Statement stmt = con.createStatement();
 	    	
 	    	// Auswählen der Eigenschaften mit einer bestimmten id. 
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Property " + "WHERE PropertyID = " + id );
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE PropertyID = " + id );
 	   
 	    	//Erzeugen eines Property-Objektes
 	    	Property p = new Property();

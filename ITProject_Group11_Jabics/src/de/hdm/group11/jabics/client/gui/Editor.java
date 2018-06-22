@@ -140,27 +140,29 @@ public class Editor implements EntryPoint {
 		u.setUsername("Alexander Stahl");
 		cForm.setUser(u);
 
-		Property p1 = new Property("Name", Type.STRING);
-		Property p2 = new Property("VorName", Type.STRING);
-		p1.setStandard(true);
-		Property p3 = new Property("Straße", Type.STRING);
-		ArrayList<PValue> val = new ArrayList<PValue>();
-		val.add(new PValue(p1, "Max", u));
-		val.add(new PValue(p2, "Mustermann", u));
-		val.add(new PValue(p3, "eineStraße", u));
-		
-		Contact c1 = new Contact(val, "maxmuster");
-		ContactList cl1 = new ContactList();
-		cl1.addContact(c1);
-		cl1.setId(5);
-		cl1.setListName("Lischde");
-		c1.setId(1);
-		c1.setValues(val);
+//		Property p1 = new Property("Name", Type.STRING);
+//		Property p2 = new Property("VorName", Type.STRING);
+//		p1.setStandard(true);
+//		Property p3 = new Property("Straße", Type.STRING);
+//		ArrayList<PValue> val = new ArrayList<PValue>();
+//		val.add(new PValue(p1, "Max", u));
+//		val.add(new PValue(p2, "Mustermann", u));
+//		val.add(new PValue(p3, "eineStraße", u));
+//		
+		Contact c1 = new Contact();
+		c1.setId(10);
+		cForm.setUser(u);
+//		ContactList cl1 = new ContactList();
+//		cl1.addContact(c1);
+//		cl1.setId(5);
+//		cl1.setListName("Lischde");
+//		c1.setId(1);
+//		c1.setValues(val);
 
     //****************
     //hier auswahl, was angezeigt werden soll
-		showExistingContactCollab(c1);
-		//showContact(c1);
+		//showExistingContactCollab(c1);
+		showContact(c1);
 		//showContactCollab(c1);
 
 		//treeViewMenu.addContact(c1);
