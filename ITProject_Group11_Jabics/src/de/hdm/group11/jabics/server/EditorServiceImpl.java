@@ -237,11 +237,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
-		int i = 0;
+		
 		for (Contact c : cMapper.findContactsOfContactList(cl)) {
-			i++;
-			System.out.println(String.valueOf(c.getId()));
-			c.setName("test" + i);
+			
 			//if(cMapper.findCollaborators(c).contains(u)) result.add(c);
 			c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
