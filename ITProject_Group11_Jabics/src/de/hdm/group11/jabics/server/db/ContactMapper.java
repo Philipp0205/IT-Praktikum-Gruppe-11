@@ -253,7 +253,7 @@ public class ContactMapper{
         	ArrayList<Contact> al = new ArrayList<Contact>();
 	    	
 	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
-	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated contact.nickname"
 	    			+ " FROM contact"
 	    			+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
 	    			+ " WHERE contactContactLists.contactListID = " + cl.getId()) ;
