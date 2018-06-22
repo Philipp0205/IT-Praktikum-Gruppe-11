@@ -180,8 +180,10 @@ public class ContactForm extends VerticalPanel {
 		this.e = e;
 		
 	}
-	public void setUser(JabicsUser u) {
-		this.u = u;
+	public void setUser(JabicsUser user) {
+		GWT.log("usersetz");
+		this.u = user;
+		GWT.log("usergesetzt: " + u.getEmail());
 	}
 	
 
@@ -360,7 +362,7 @@ public class ContactForm extends VerticalPanel {
 			// this.u = u;
 			deleteContactButton.setEnabled(true);
 			contactName.setText(contactToDisplay.getName());
-			
+			GWT.log("currentUser: " + u.getEmail() + u.getId());
 			editorService.getPValueOf(c, u, new GetPValuesCallback());
 			
 			
@@ -378,7 +380,6 @@ public class ContactForm extends VerticalPanel {
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
 	
-	int pointer1;
 	PValue currentPV;
 	TextBox[] pValueTextBox;
 	PValue newPV;
@@ -390,7 +391,8 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onSuccess(ArrayList<PValue> result) {
-			newPV = new PValue(result.get(pointer1).getProperty(), u);
+			GWT.log("pvalueszuück");
+			//
 			GWT.log("huhu1");
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			checkedPV.clear();
@@ -401,43 +403,42 @@ public class ContactForm extends VerticalPanel {
 			Button[] deleteButton = new Button[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
-				pointer1 = i;
+				int pointer = i;
 				currentPV = result.get(i);
 				
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(i).getStringValue());
 				saveButton[i] = new Button("Save");
-				
 				saveButton[i].addClickHandler(new ClickHandler() {
 					
 					// TODO Bisher noch nicht funktional
 				public void onClick(ClickEvent event) {
-
+						newPV = new PValue(result.get(pointer).getProperty(), u);
+					
 						int currentID = currentPV.getPropertyId();
-						
 
 						switch (currentPV.getPointer()) {
 						case 1:
-							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer1].getValue())); break;
+							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); break;
 						case 2:
-							newPV.setStringValue(pValueTextBox[pointer1].getValue().toString()); break;
+							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
 						case 3:
 							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
 							newPV.setDateValue(new Date(01,01,01)); break;
 						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer1].getValue())); break;
+							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
 						default:
 						}
 						editorService.updatePValue(newPV, new UpdatePValueCallback());
 
-						Window.alert("Wert" + pValueTextBox[pointer1].getValue().toString() + "gespeichert");
+						Window.alert("Wert" + pValueTextBox[pointer].getValue().toString() + "gespeichert");
 					}
 				});
 				
 				deleteButton[i] = new Button("Delete");
 
-				deleteButton[pointer1].addClickHandler(new ClickHandler() {
+				deleteButton[i].addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 
 						if (contactToDisplay == null) {
