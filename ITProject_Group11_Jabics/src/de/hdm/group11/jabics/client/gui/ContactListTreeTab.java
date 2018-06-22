@@ -272,7 +272,7 @@ public class ContactListTreeTab implements TreeViewModel {
 			GWT.log("ContatListTree: User erstellt" );
 			//GWT.log(jabicsUser2.toString());
 			//Der aktuelle User wird verwendet.
-			GWT.log("Akuteller User: " + user2.toString());
+			GWT.log("Akuteller User111: " + user2.toString());
 			eService2.getListsOf(user2, new AsyncCallback<ArrayList<ContactList>>() {
 				
 				@Override
@@ -316,13 +316,10 @@ public class ContactListTreeTab implements TreeViewModel {
 			GWT.log("CurrentCL: " + currentCL.toString());
 			
 			eService.getContactsOfList(currentCL, user2, new AsyncCallback<ArrayList<Contact>>() {
-				
-
 				@Override
 				public void onFailure(Throwable caught) {
 					GWT.log("TreeTab value instanceof ContactList onFailure");	
 				}
-
 				@Override
 				public void onSuccess(ArrayList<Contact> contacts) {
 					GWT.log("TreeTab value instanceof ContactList onSuccess");	

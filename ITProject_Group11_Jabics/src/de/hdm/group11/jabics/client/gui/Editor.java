@@ -145,7 +145,7 @@ public class Editor implements EntryPoint {
 		 */
 		Contact c6 = new Contact();
 		c6.setId(1);
-		showContact(c6);
+		//showContact(c6);
 
 	}
 
