@@ -338,25 +338,7 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 
-	/**
-	 * private class DeletePValueClickHandler implements ClickHandler {
-	 * 
-	 * @Override public void onClick(ClickEvent event) {
-	 * 
-	 *           if(contactToDisplay == null) { Window.alert("Kein Kontakt
-	 *           ausgewählt"); }else { editorService.deletePValue(selectedPValue,
-	 *           new deletePValueCallback(selectedPValue)); } } }
-	 * 
-	 */
-	/**
-	 * Diese Methode wird im TreeViewMenu aufgerufen und übergibt der ContactForm
-	 * den anzuzeigenden Kontakt.
-	 * 
-	 * @param u
-	 *            das <code>User</code> Objekt, zu welchem der Kontkt gehört.
-	 * @param c
-	 *            der Kontakt welcher angezeigt werden soll.
-	 */
+
 	public void setCurrentContact(Contact c) { // JabicsUser u) {
 		if (c != null) {
 			this.contactToDisplay = c;
@@ -385,7 +367,6 @@ public class ContactForm extends VerticalPanel {
 	TextBox[] pValueTextBox;
 	int pointer;
 	int dpointer;
-	//ArrayList<TextBox> pValueTextBox = new ArrayList<TextBox>();
 	
 	
 	public class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
@@ -415,49 +396,9 @@ public class ContactForm extends VerticalPanel {
 				GWT.log(pValueTextBox[i].getText());
 				saveButton[i] = new Button("Save");
 				
-				saveButton[i].addClickHandler(new ClickHandler() {
-					
-					// TODO Bisher noch nicht funktional
-				public void onClick(ClickEvent event) {
-					
-					PValue newPV = currentPV.get(pointer);
-					
-						switch (currentPV.get(pointer).getPointer()) {
-						case 1:
-							newPV.setIntValue(Integer.valueOf(pValueTextBox[pointer].getText()));
-							break;
-						case 2:
-							//newPV.setStringValue(pValueTextBox.get(pointer).getText()); 
-							GWT.log(pValueTextBox[pointer].getText());
-							break;
-						case 3:
-							Date ld = selectedDate;
-							// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
-							//neuer Datepicker
-							newPV.setDateValue(null);
-							break;
-						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); 
-							break;
-						default:
-						}
-						editorService.updatePValue(newPV, new UpdatePValueCallback());
-					}
-				});
-				
 				deleteButton[i] = new Button("Delete");
 
-				deleteButton[i].addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						int dpointer = pointer;
-
-						if (contactToDisplay == null) {
-							Window.alert("Kein Kontakt ausgewählt");
-						} else {
-							editorService.deletePValue(currentPV.get(dpointer), new deletePValueCallback(currentPV.get(dpointer)));
-						}
-					}
-				});
+				
 				
 				contactGrid.resize(result.size()+1, 5);
 			}
@@ -472,44 +413,4 @@ public class ContactForm extends VerticalPanel {
 }
 
 
-	/**
-	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer
-	 * Eigenschafts- ausprägung.
-	 */
-	class deletePValueCallback implements AsyncCallback<Void> {
-
-		private PValue pvalue = null;
-
-		deletePValueCallback(PValue pv) {
-			pvalue = pv;
-		}
-
-		public void onFailure(Throwable caugth) {
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-			if (pvalue != null) {
-				// update Contact bzw. Contacttree
-			}
-		}
-	}
-
-	/**
-	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer
-	 * Eigenschafts- ausprägung.
-	 */
-	private class UpdatePValueCallback implements AsyncCallback<PValue> {
-
-		public void onFailure(Throwable caugth) {
-			Window.alert("Die Änderung ist fehlgeschlagen.");
-		}
-
-		@Override
-		public void onSuccess(PValue result) {
-			// Contacttree muss aktualisiert werden .
-			// Conacttree.refresh();
-			Window.alert("Wert gespeichert");
-		}
-	}
 }
