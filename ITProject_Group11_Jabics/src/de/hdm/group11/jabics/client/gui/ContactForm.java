@@ -392,7 +392,7 @@ public class ContactForm extends VerticalPanel {
 		
 		public void onSuccess(ArrayList<PValue> result) {
 			GWT.log("pvalueszuück");
-			//newPV = new PValue(result.get(i).getProperty(), u);
+			//
 			GWT.log("huhu1");
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			checkedPV.clear();
@@ -403,6 +403,7 @@ public class ContactForm extends VerticalPanel {
 			Button[] deleteButton = new Button[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
+				int pointer = i;
 				currentPV = result.get(i);
 				
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
@@ -413,24 +414,25 @@ public class ContactForm extends VerticalPanel {
 					
 					// TODO Bisher noch nicht funktional
 				public void onClick(ClickEvent event) {
-
+						newPV = new PValue(result.get(pointer).getProperty(), u);
+					
 						int currentID = currentPV.getPropertyId();
 
 						switch (currentPV.getPointer()) {
 						case 1:
-							newPV.setIntValue(Integer.parseInt(pValueTextBox[i].getValue())); break;
+							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); break;
 						case 2:
-							newPV.setStringValue(pValueTextBox[i].getValue().toString()); break;
+							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
 						case 3:
 							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
 							newPV.setDateValue(new Date(01,01,01)); break;
 						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[i].getValue())); break;
+							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
 						default:
 						}
 						editorService.updatePValue(newPV, new UpdatePValueCallback());
 
-						Window.alert("Wert" + pValueTextBox[i].getValue().toString() + "gespeichert");
+						Window.alert("Wert" + pValueTextBox[pointer].getValue().toString() + "gespeichert");
 					}
 				});
 				
