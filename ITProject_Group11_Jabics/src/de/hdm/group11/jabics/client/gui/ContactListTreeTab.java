@@ -52,8 +52,10 @@ public class ContactListTreeTab implements TreeViewModel {
 
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time." 
+		
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
+		
 		/*
 		 * Assoziativspeicher, bei dem Kontakte Kontaktlisten zugeordnet werden.
 		 * Freunde --> Max Mustermann 
@@ -64,6 +66,22 @@ public class ContactListTreeTab implements TreeViewModel {
 		
 	}
 	
+
+	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
+
+		@Override
+		public void onSelectionChange(SelectionChangeEvent event) {
+			BusinessObject selection = selectionModel.getSelectedObject();
+			GWT.log("selectionchange");
+			if (selection instanceof Contact) {;
+				setSelectedContact((Contact) selection);
+			} else if (selection instanceof ContactList) {
+				setSelectedContactList((ContactList) selection);
+			}
+
+		}
+
+	}
 	/*
 	 * In der Map werden die ListDataProviders f�r die expandierten Kontakte gepespeichert.
 	 * 
@@ -99,7 +117,7 @@ public class ContactListTreeTab implements TreeViewModel {
 			}
 		}
 		
-	};
+	}
 	
 	private BusinessObjectKeyProvider boKeyProvider;
 	
@@ -110,34 +128,23 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * im Baum ausgew�hlt wird. Es wird zwischen ausgew�hlten Kontakten und Kontaktlisten unterschieden.
 	 *
 	 */
-	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
-
-		@Override
-		public void onSelectionChange(SelectionChangeEvent event) {
-			BusinessObject selection = selectionModel.getSelectedObject();
-			if (selection instanceof Contact) {
-				setSelectedContact((Contact) selection);
-			} else if (selection instanceof ContactList) {
-				setSelectedContactList((ContactList) selection);
-			}
-					
-		}
-					
-	}
+	
 	
 
-	private void setSelectedContactList(ContactList cl) {
-		selectedContactList = cl;	
+	public void setSelectedContactList(ContactList cl) {
+		selectedContactList = cl;
+		GWT.log("ausgewählt");
 		editor.showContactList(cl);
 	}
 	
 	public ContactList getSelectedContactList() {
 		return selectedContactList;
 	}
-
-	private void setSelectedContact(Contact c) {
+	
+	public void setSelectedContact(Contact c) {
 		//selectedContact	= c;
 		// momentan aktiver User muss angegeben werden
+		GWT.log("ausgewählt");
 		editor.showContact(c);			
 		
 //		if (c != null) {
@@ -318,7 +325,7 @@ public class ContactListTreeTab implements TreeViewModel {
 					for (ContactList cl : contactlists) {
 						currentCL = cl;
 						contactListDataProviders.getList().add(cl);
-						getNodeInfo(cl);
+						contactListDataProviders.flush();
 					}
 					GWT.log("TreeTab onSuccess fertig");
 				}
@@ -358,7 +365,6 @@ public class ContactListTreeTab implements TreeViewModel {
 					GWT.log("TreeTab value instanceof ContactList onSuccess");	
 					GWT.log(contacts.toString());
 					for (Contact c : contacts) {
-						GWT.log("forforfor");
 						contactProvider.getList().add(c);
 					}			
 				}		
@@ -369,8 +375,6 @@ public class ContactListTreeTab implements TreeViewModel {
 			
 		}
 		return null;
-		
-		
 	}
 	
 	// Check if the specified value represents a leaf node. Leaf nodes

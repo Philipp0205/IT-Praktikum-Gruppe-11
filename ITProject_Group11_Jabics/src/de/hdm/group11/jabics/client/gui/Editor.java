@@ -59,7 +59,7 @@ public class Editor implements EntryPoint {
 	EditorServiceAsync editorAdmin;
 	LoginInfo loginfo;
 	
-	JabicsUser currentUser = new JabicsUser();
+	JabicsUser currentUser;
 
 	VerticalPanel mainPanel = new VerticalPanel();
 	HorizontalPanel topPanel = new HorizontalPanel();
@@ -92,13 +92,17 @@ public class Editor implements EntryPoint {
 		/*
 		 * Zunächst wird eine Editor-Instanz hinzugefügt.
 		 */
-		currentUser = new JabicsUser(1);
+		currentUser = new JabicsUser();
+		currentUser.setEmail("stahl.alexander@live.de");
+		currentUser.setId(1);
+		currentUser.setUsername("Alexander Stahl");
+		
 		editorAdmin = ClientsideSettings.getEditorService();
-		loginService = ClientsideSettings.getLoginService();
-		GWT.log(GWT.getHostPageBaseURL());
+		//loginService = ClientsideSettings.getLoginService();
+		//GWT.log(GWT.getHostPageBaseURL());
 		//loadEditor();
-		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-		//loadEditor();
+		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		loadEditor();
 
 	}
 	
@@ -126,27 +130,15 @@ public class Editor implements EntryPoint {
 		Button settings = new Button("irgendwas anderes");
 		settings.addClickHandler(new SearchClickHandler());
 
-		clForm = new ContactListForm();
-		cForm = new ContactForm();
-
-
 		
-		/**
-		 * STACKPANEL werden kreiert
-		 */
 		StackPanel stackPanel = new StackPanel();
-		stackPanel.add(new Label("Foo"), "foo");
-		stackPanel.add(new Label("Foo"), "foo");
-		stackPanel.add(new Label("Foo"), "foo");
-		
-		StackPanel stackPanel2 = new StackPanel();
-		stackPanel2.add(treeViewMenu.createTreeTab(), "TreeView");
+		//stackPanel.add(treeViewMenu.createTreeTab(), "TreeView");
 		GWT.log("Editor: createTreeTab2");
-		stackPanel2.add(treeViewMenu.createTreeTab2(), "TreeView");
-		stackPanel2.add(new Label("Foo"), "foo");
+		stackPanel.add(treeViewMenu.createContactListTreeTab(), "TreeView");
+		stackPanel.add(new Label("Foo"), "foo");
 		
 		//mainPanel.add(stackPanel);
-		mainPanel.add(stackPanel2);
+		mainPanel.add(stackPanel);
 
 		topPanel.add(search);
 		topPanel.add(settings);
@@ -157,24 +149,10 @@ public class Editor implements EntryPoint {
 		 */ 
 
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
-		JabicsUser u = new JabicsUser();
-		u.setEmail("stahl.alexander@live.de");
-		u.setId(1);
-		u.setUsername("Alexander Stahl");
-		cForm.setUser(u);
+		
 
-//		Property p1 = new Property("Name", Type.STRING);
-//		Property p2 = new Property("VorName", Type.STRING);
-//		p1.setStandard(true);
-//		Property p3 = new Property("Straße", Type.STRING);
-//		ArrayList<PValue> val = new ArrayList<PValue>();
-//		val.add(new PValue(p1, "Max", u));
-//		val.add(new PValue(p2, "Mustermann", u));
-//		val.add(new PValue(p3, "eineStraße", u));
-//		
 		Contact c1 = new Contact();
 		c1.setId(10);
-		cForm.setUser(u);
 //		ContactList cl1 = new ContactList();
 //		cl1.addContact(c1);
 //		cl1.setId(5);
@@ -182,16 +160,7 @@ public class Editor implements EntryPoint {
 //		c1.setId(1);
 //		c1.setValues(val);
 
-    //****************
-    //hier auswahl, was angezeigt werden soll
-		//showExistingContactCollab(c1);
-		showContact(c1);
-		//showContactCollab(c1);
-
-		//treeViewMenu.addContact(c1);
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
-
-	//	showContactList(cl1);
 		
 		
 		RootPanel.get("details").add(mainPanel);
@@ -221,20 +190,26 @@ public class Editor implements EntryPoint {
 	
 	public void showContact(Contact c) {
 		if (this.cForm == null) {
-			cForm.setEditor(this);
 			cForm = new ContactForm();
+			cForm.setEditor(this);
+			cForm.setUser(this.currentUser);
 		}
-
+		GWT.log("showCOnt2");
 		cForm.setEditor(this);
-
-		this.widgetPanel.clear();
-		GWT.log("9");
+		currentUser = new JabicsUser();
+		currentUser.setEmail("stahl.alexander@live.de");
+		currentUser.setId(1);
+		currentUser.setUsername("Alexander Stahl");
+		GWT.log("showCon: " + this.currentUser.getEmail());
+		cForm.setUser(currentUser);
+		//this.widgetPanel.clear();
+		GWT.log("showCOnt3");
 
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// cForm.clear();
 		cForm.setCurrentContact(c);
 		// cForm.setUser(loginfo.getCurrentUser());
-		
+		GWT.log("showCOnt4");
 		widgetPanel.add(cForm);
 		}
 
