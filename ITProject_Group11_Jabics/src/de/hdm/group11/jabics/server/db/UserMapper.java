@@ -87,7 +87,7 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 
 			// Join zwischen SystemUserID und ContactCollaboration zum Herausfinden der Userinformationen. 
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
 					+ " WHERE contactCollaboration.contactID = " + c.getId() + " AND isOwner = 1" );

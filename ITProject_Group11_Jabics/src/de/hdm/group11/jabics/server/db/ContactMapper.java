@@ -3,6 +3,8 @@ package de.hdm.group11.jabics.server.db;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
@@ -87,7 +89,7 @@ public class ContactMapper{
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-		String query = ("INSERT INTO contact () VALUES ()"  );
+		String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
@@ -125,7 +127,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP WHERE contactID = " + c.getId());
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP AND SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -188,6 +190,7 @@ public class ContactMapper{
 				c.setId(rs.getInt("contactID"));
 	    		c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
 			return al;
@@ -220,6 +223,7 @@ public class ContactMapper{
 				c.setId(rs.getInt("contactID"));
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		c.setName(rs.getString("nickname"));
 	    	}
 	    	return c;
 	    }
@@ -236,7 +240,8 @@ public class ContactMapper{
 	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
 	 */
 	
-	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {   
+	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {
+		
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
@@ -248,12 +253,11 @@ public class ContactMapper{
         	ArrayList<Contact> al = new ArrayList<Contact>();
 	    	
 	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
-	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated, contact.nickname"
 	    			+ " FROM contact"
 	    			+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
 	    			+ " WHERE contactContactLists.contactListID = " + cl.getId()) ;
 	   
-	    	
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		while (rs.next()) {
 					
@@ -264,9 +268,9 @@ public class ContactMapper{
 					c.setId(rs.getInt("contactID"));
 					c.setDateCreated(rs.getTimestamp("dateCreated"));
 		    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+		    		c.setName(rs.getString("nickname"));
 					al.add(c);
 				}
-	    	
 	    	return al;
 	    }
 	    catch (SQLException e) {

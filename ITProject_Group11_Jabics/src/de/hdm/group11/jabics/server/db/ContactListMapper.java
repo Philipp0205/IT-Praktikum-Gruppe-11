@@ -3,6 +3,8 @@ package de.hdm.group11.jabics.server.db;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
@@ -257,14 +259,13 @@ public class ContactListMapper {
 	 * @param u der Teilhaber, dessen <code>ContactList</code> Objekte zurückgegeben werden sollen.
 	 * @return Die ArrayList, die mit den <code>ContactList</code> Objekten befüllt ist.
 	 */
-	public ArrayList<ContactList> findContactListOfUser(JabicsUser u)  {   
+	public ArrayList<ContactList> findContactListOfUser(JabicsUser u)  {  
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
 	    	//Erzeugen einer ArrayList
 			ArrayList<ContactList> al = new ArrayList<ContactList>();
 	    	
@@ -285,6 +286,7 @@ public class ContactListMapper {
 	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		al.add(cl);
 	    	}
+	    	System.out.println(cl.getListName());
 	    	return al;
 	    }
 	    catch (SQLException e) {
