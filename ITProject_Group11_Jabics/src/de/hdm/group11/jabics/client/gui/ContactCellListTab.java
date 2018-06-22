@@ -7,6 +7,7 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -27,6 +28,7 @@ public class ContactCellListTab{
 
 	private Contact selectedContact;
 	Editor editor;
+
 	private EditorServiceAsync eService;
 	CellList<Contact> contactCell;
 	JabicsUser user;
@@ -35,6 +37,13 @@ public class ContactCellListTab{
 
 	private SingleSelectionModel<Contact> selectionModel = null;
 
+
+	//LoginInfo loginfo = new LoginInfo();
+	JabicsUser user;
+	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
+	ListDataProvider<Contact> contactsProvider = null;
+	Editor editor;
+	
 	public ContactCellListTab() {
 
 		keyProvider = new ContactKeyProvider();
@@ -53,10 +62,13 @@ public class ContactCellListTab{
 		contactDataProvider = new ListDataProvider<Contact>();
 		
 		user = new JabicsUser(1);
+
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
+		JabicsUser user2 = new JabicsUser();
+		user2.setId(1);
+		eService.getContactsOf(user2, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -64,11 +76,15 @@ public class ContactCellListTab{
 			}
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
+				GWT.log("CellList: onSuccess");
+				
 				for (Contact c : contacts) {
 					contactDataProvider.getList().add(c);
 				}
+
 			}
 		});
+
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 		GWT.log("Contacts1");
