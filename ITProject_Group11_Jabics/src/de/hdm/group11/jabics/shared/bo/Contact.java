@@ -118,6 +118,31 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 			return 0;
 		} else return -1;
 	}
+	
+	/**
+	 * Check if BusinessObject is the same as transfer parameter
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof Contact) {
+			Contact c = (Contact) obj;
+			if (c.getId() == this.id) {
+				boolean bol = true;
+				for(PValue pv : c.getValues()) {
+					if (!this.values.contains(pv)) {
+						bol = false;
+					}
+				}
+				for(PValue pv : this.values) {
+					if (!c.getValues().contains(pv)) {
+						bol = false;
+					}
+				}
+				return bol;
+			}
+			return false;
+		}
+		return false;
+	}
 	/**
      * Der Key Provider für einen Contact
      */

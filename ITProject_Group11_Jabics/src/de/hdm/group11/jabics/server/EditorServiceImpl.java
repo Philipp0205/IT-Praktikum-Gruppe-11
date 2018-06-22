@@ -128,7 +128,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
-		return newPValue; 
+		return newPValue;
 	}
 	
 	/**
@@ -225,8 +225,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			result.add(cl);
 		}
 		
-		return result; 
-		
+		return result;
 		// temporär: kann gelöscht werden	
 		
 //		ArrayList<ContactList> cl = new ArrayList<ContactList>();
@@ -242,7 +241,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		for (Contact c : cMapper.findContactsOfContactList(cl)) {
 			i++;
 			System.out.println(String.valueOf(c.getId()));
-			c.setName("test"+i);
+			c.setName("test" + i);
 			//if(cMapper.findCollaborators(c).contains(u)) result.add(c);
 			c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
@@ -468,7 +467,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * .equals in Contact noch schreiben?
 		 */
 		if(c.equals(ctemp) == false) {
-			
 			//c.setDateUpdated(LocalDateTime.now());
 			
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
@@ -479,7 +477,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					pvMapper.insertCollaboration(u, pv, true);
 				}
 			}
-			return cMapper.updateContact(c);
+			//neues kontaktobjekt erstellen, damit der nickname richtig gesetzt wird
+			Contact updatedContact = new Contact(c.getValues(), c.getOwner());
+			updatedContact.setId(c.getId());
+			return cMapper.updateContact(updatedContact);
 		}else return cMapper.findContactById(c.getId());
 	}
 	
