@@ -78,7 +78,7 @@ public class ContactForm extends VerticalPanel {
 		this.add(userInformationGrid);
 
 		// GRID-ZEILE 1: Vergabe des Fensternamens
-		Label formName = new Label("Kontakt-Editor");
+		Label formName = new Label("Kontakt-Bearbeiten");
 		
 		userInformationGrid.setWidget(0, 0, formName);
 
@@ -138,21 +138,6 @@ public class ContactForm extends VerticalPanel {
 		// hinzufügen von Zeile 4 zum Hauptgrid
 		userInformationGrid.setWidget(3, 0, propertyAddBox);
 		
-
-		// GRID-ZEILE 5:
-		
-		shareContactButton = new Button("Kontakt teilen");
-		shareContactButton.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event) {
-				GWT.log(contactToDisplay.getName());
-				e.showContactCollab(contactToDisplay);
-			}
-		});
-		
-		
-		userInformationGrid.setWidget(4, 0, shareContactButton);
-		
 		// GRID-ZEILE 5.1:
 		deleteContactButton.addClickHandler(new DeleteContactClickHandler());
 		
@@ -168,9 +153,7 @@ public class ContactForm extends VerticalPanel {
 				e.showExistingContactCollab(contactToDisplay);
 			}
 		});
-		
 	}
-	
 	
 	public void setEditor(Editor e) {
 		this.e = e;
@@ -182,7 +165,7 @@ public class ContactForm extends VerticalPanel {
 		JabicsUser currentUser = new JabicsUser();
 		currentUser.setEmail("stahl.alexander@live.de");
 		currentUser.setId(1);
-		currentUser.setUsername("Alexander Stahl");
+		currentUser.setUsername("AlexanderStahl");
 		this.u = currentUser;
 		GWT.log("usergesetzt:");
 		GWT.log("usergesetzt2: " + u.getEmail());
@@ -363,10 +346,7 @@ public class ContactForm extends VerticalPanel {
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
 	
-	ArrayList<PValue> currentPV = new ArrayList<PValue>();
 	TextBox[] pValueTextBox;
-	int pointer;
-	int dpointer;
 	
 	
 	public class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
@@ -386,20 +366,11 @@ public class ContactForm extends VerticalPanel {
 			Button[] deleteButton = new Button[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
-				currentPV = result;
-				pointer = i;
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
-
-
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(i).getStringValue());
-				GWT.log(pValueTextBox[i].getText());
 				saveButton[i] = new Button("Save");
-				
 				deleteButton[i] = new Button("Delete");
-
-				
-				
 				contactGrid.resize(result.size()+1, 5);
 			}
 			for (int j = 0; j < propertyLabels.length; j++) {
@@ -411,6 +382,5 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 }
-
 
 }
