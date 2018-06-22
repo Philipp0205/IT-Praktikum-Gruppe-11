@@ -97,12 +97,12 @@ public class UserMapper {
 			u.setUsername(rs.getString("name"));
 			}
 			con.close();
-			return u;
+			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
 		}
-		System.out.println("done");
+		return u;
 	}
 	
 	public JabicsUser findUserByContactList(ContactList cl) {
@@ -128,11 +128,12 @@ public class UserMapper {
 			u.setUsername(rs.getString("name"));
 			}
 			con.close();
-			return u;
+			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
 		}
+		return u;
 	}
 	
 	public JabicsUser findUserByPValue(PValue pv) {
@@ -157,11 +158,12 @@ public class UserMapper {
 			u.setUsername(rs.getString("name"));
 			}
 			con.close();
-			return u;
+			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
 		}
+		return u;
 	}
 	
 	
@@ -268,7 +270,7 @@ public class UserMapper {
 	public JabicsUser findUserById(int id)  {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
+		JabicsUser u = new JabicsUser();
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -277,20 +279,21 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE systemUserID = " + id);
 		   
 			if (rs.next()) {
-				JabicsUser u = new JabicsUser();
+				
 				
 				//Befüllen des Kontakt-Objekts
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 		        con.close();
-		        return u;
 			}
+			return u;
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
 		    return null;
-		}
+		} 
+		
 	}	
 
 
