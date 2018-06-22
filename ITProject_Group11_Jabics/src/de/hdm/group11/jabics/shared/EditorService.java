@@ -68,6 +68,8 @@ public interface EditorService extends RemoteService{
 	
 	public void deleteCollaboration(PValue pv, JabicsUser u);
 	
+	public void deleteCollaboration(Contact c, JabicsUser u);
+	
 	public void deleteCollaboration(ContactList cl, JabicsUser u);
 	
 	public ArrayList<PValue> getPValueOf(Contact c , JabicsUser u);
@@ -88,6 +90,10 @@ public interface EditorService extends RemoteService{
 	
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl);
 	
+	public ArrayList<JabicsUser> getAllNotCollaboratingUser(Contact c);
+	
+	public ArrayList<JabicsUser> getAllNotCollaboratingUser(ContactList cl);
+		
 	public ArrayList<JabicsUser> getCollaborators(PValue pv);
 	
 	public ArrayList<JabicsUser> getAllUsers();
