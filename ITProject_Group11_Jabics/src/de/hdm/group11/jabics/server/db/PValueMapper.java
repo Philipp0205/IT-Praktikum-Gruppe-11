@@ -205,13 +205,11 @@ public class PValueMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-
 	    	//Erzeugen einer ArrayList
 		    ArrayList<PValue> al = new ArrayList<PValue>();
 
 	 	   	// Füllen des Statements
 	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
-	 	   	System.out.println(c.getId());
 
 	 	   	while (rs.next()) {
 	 	   	//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.

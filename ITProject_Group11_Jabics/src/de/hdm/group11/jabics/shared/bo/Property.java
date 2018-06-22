@@ -22,6 +22,13 @@ public class Property extends BusinessObject implements Serializable {
 		this.label = label;
 		this.type = type;
 	}
+	//Dieser Konstruktor wird gebraucht wenn PValues in den Mappern aus der Datenbank gelesen werden, die Standardpropertys haben
+	public Property(String label, Type type, boolean isStandard) {
+		super();
+		this.label = label;
+		this.type = type;
+		this.isStandard = isStandard;
+	}
 	
 	//Leerer Konstruktor
 	public Property() { 

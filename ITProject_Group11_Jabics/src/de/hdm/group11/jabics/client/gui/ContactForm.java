@@ -375,31 +375,27 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onSuccess(ArrayList<PValue> result) {
-			contactToDisplay.setValues(result);
-			GWT.log("onsuccess contactform aufgerufen!");
+			GWT.log("onsuccess aufgerufen!");
 			newPV = new PValue(result.get(pointer1).getProperty(), u);
-			
+			GWT.log("huhu1");
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			checkedPV.clear();
-			
+
 			Label[] propertyLabels = new Label[result.size()];
 			pValueTextBox = new TextBox[result.size()];
 			Button[] saveButton = new Button[result.size()];
 			Button[] deleteButton = new Button[result.size()];
 			
-			ArrayList<PValue> result1 = result;
-			
 			for (int i = 0; i < result.size(); i++) {
-				
 				pointer1 = i;
+				currentPV = result.get(i);
 				
-				currentPV = result.get(pointer1);
-				
-				propertyLabels[i] = new Label(result.get(pointer1).getProperty().getLabel()+ ":");
+				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
 				pValueTextBox[i] = new TextBox();
-				pValueTextBox[i].setText(result.get(pointer1).toString());
+				pValueTextBox[i].setText(result.get(i).getStringValue());
 				saveButton[i] = new Button("Save");
 				
+
 				saveButton[i].addClickHandler(new ClickHandler() {
 					
 					// TODO Bisher noch nicht funktional
@@ -449,7 +445,8 @@ public class ContactForm extends VerticalPanel {
 				contactGrid.setWidget(j, 3, deleteButton[j]);
 			}
 		}
-	}
+}
+
 
 	/**
 	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer
