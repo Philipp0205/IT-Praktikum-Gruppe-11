@@ -417,16 +417,21 @@ public class PValueMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
+	   System.out.println("anfang");
+	   System.out.println("u.getUsername");
 	    	// Füllen des Statements
-	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID, nickname) VALUES " 
-	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() +  u.getUsername() + ")"  );
+	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " 
+	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() + ")"  );
+	    	System.out.println("ende");
+	    	
+	    	con.close();
 	    	return pv;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
+	    
 	}
 	
 	/**
