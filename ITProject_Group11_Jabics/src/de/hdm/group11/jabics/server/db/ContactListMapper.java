@@ -106,6 +106,7 @@ public class ContactListMapper {
 				cl.setDateCreated(rs2.getTimestamp("dateCreated"));
 				cl.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 			}
+		con.close();
 	    	return cl;
 	    }
 	    catch (SQLException e) {
@@ -132,7 +133,7 @@ public class ContactListMapper {
 		   
 	    	//Update des Namens der Kontaktliste und des letzten Updates
 	    	stmt.executeUpdate("UPDATE contactList SET listname = '" + cl.getListName()	+ "' WHERE contactlistID = " + cl.getId()); 
-	   
+	   		con.close();
 	  	  	return cl;
 	    }
 	    catch (SQLException e) {
@@ -155,6 +156,7 @@ public class ContactListMapper {
 		   
 	    	// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
 	    	stmt.executeUpdate("DELETE FROM contactList WHERE  contactlistID = " + cl.getId());
+		    con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -184,7 +186,7 @@ public class ContactListMapper {
 		   
 	    	//Update des letzten Updates der Kontaktliste.
 	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactlistID = " + cl.getId()); 
-		   
+		   con.close();
 	    	return cl;
 	    }  
 	    catch (SQLException e) {
@@ -213,6 +215,7 @@ public class ContactListMapper {
 		   
 		   //Update des letzten Updates der Kontaktliste.
 		   stmt2.executeUpdate("UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactlistID = " + cl.getId()); 
+	  con.close();
 	  }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -246,6 +249,7 @@ public class ContactListMapper {
 	    		cl.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    	}
+		    con.close();
 	    	return cl;
 	    }
 	    catch (SQLException e) {
@@ -287,6 +291,7 @@ public class ContactListMapper {
 	    		al.add(cl);
 	    	}
 	    	System.out.println(cl.getListName());
+		    con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -315,7 +320,7 @@ public class ContactListMapper {
 	    	// Einfügen einer neuen Teilhaberschaft mit Eigentümerschaft in die ContactlistCollaboration Tabelle.
 	    	stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES " 
 	    	+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")"  );
-
+		con.close();
 	    	return cl;
 	    }
 	    catch (SQLException e) {
@@ -341,6 +346,7 @@ public class ContactListMapper {
 		   
 	    	// Löschen einer Teilhaberschaft aus der ContactlistCollaboration Tabelle.
 	    	stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId() + " AND systemUserID = " + u.getId());   
+	    con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);  
@@ -376,6 +382,7 @@ public class ContactListMapper {
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	        }
+		    con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
