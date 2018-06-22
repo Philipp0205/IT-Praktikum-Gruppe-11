@@ -46,10 +46,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	JabicsUser jabicsUser = new JabicsUser();
 	
 	
-	public EditorServiceImpl() {
-		
+	public EditorServiceImpl() {	
 	}
-	
 
 	public String testMethod() {
 	    /*Contact c = cMapper.findContactById(1);
@@ -366,7 +364,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			}
 			cMapper.deleteContact(c);
 		}
-		
 	}
 	
 	/**
@@ -537,16 +534,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u){
+		System.out.println(u.getId());
+		System.out.println(u.getEmail());
+		u.setId(1);
+		System.out.println("getpvalue2");
 		ArrayList<PValue> result = new ArrayList<PValue>();
+		System.out.println("getpvalue3");
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
 			 pv.setProperty(pMapper.findPropertyById(pv.getPropertyId()));
-			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
+			 System.out.println("getpvalue4");
+			 for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
 				if (u.getId() == uu.getId()) {
-				result.add(pv);
+					result.add(pv);
+					System.out.println("getpvalue5");
 				}
 			}
 		}
-		return result;
+		System.out.println("getpvalue6");
+		return pvMapper.findPValueForContact(c);
 		//return c1.getValues();
 	}
 	
