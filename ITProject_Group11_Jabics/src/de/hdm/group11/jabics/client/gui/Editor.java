@@ -119,6 +119,7 @@ public class Editor implements EntryPoint {
 		Button settings = new Button("irgendwas anderes");
 		settings.addClickHandler(new SearchClickHandler());
 
+
 		topPanel.add(search);
 		topPanel.add(settings);
 		topPanel.add(createC);

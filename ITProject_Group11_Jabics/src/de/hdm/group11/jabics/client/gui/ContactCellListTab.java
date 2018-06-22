@@ -3,7 +3,11 @@ package de.hdm.group11.jabics.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,54 +33,55 @@ public class ContactCellListTab implements TreeViewModel {
 	private Contact selectedContact;
 	Editor editor;
 	private EditorServiceAsync eService = null;
-	// LoginInfo loginfo = new LoginInfo();
-	JabicsUser user = new JabicsUser();
-	// private final ArrayList<Contact> allcontacts =
-	// cMapper.findAllContacts(loginfo.getCurrentUser());
-	ListDataProvider<Contact> contactDataProvider;
 
+	//LoginInfo loginfo = new LoginInfo();
+	JabicsUser user;
+	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
+	ListDataProvider<Contact> contactsProvider = null;
+	Editor editor;
+	
 	public ContactCellListTab() {
-
+		GWT.log("CellList: Konstruktor");
+		
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-	}
 
-	// ursprünglich onLoad();
-	public Widget createTab() {
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());	
 
+	
+	
+		GWT.log("CellList: createTab");
+		
+		contactsProvider = new ListDataProvider<Contact>();
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
+		JabicsUser user2 = new JabicsUser();
+		user2.setId(1);
+		eService.getContactsOf(user2, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// Nix.
 
+				GWT.log("CellList: onFailure");
+				
 			}
 
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
+				GWT.log("CellList: onSuccess");
+				
 				for (Contact c : contacts) {
-					contactDataProvider.getList().add(c);
-				}
 
+					contactsProvider.getList().add(c);
+				}				
 			}
 
 		});
 
-		// Create a CellList using the keyProvider.
-		CellList<Contact> cellList = new CellList<Contact>(new ContactCell());
 
-		/*
-		 * Redraw the CellList. Sarah/Sara will still be selected because we identify
-		 * her by ID. If we did not use a keyProvider, Sara would not be selected.
-		 */
-		cellList.redraw();
 
-		return cellList;
 
 	}
 
@@ -165,7 +170,18 @@ public class ContactCellListTab implements TreeViewModel {
 					contacts.set(i, contact);
 					break;
 				}
-			}
+
+			}		
+		}
+		 
+	 }
+	private static class ContactCell extends AbstractCell<Contact> {
+
+		@Override
+		public void render(Context context, Contact value, SafeHtmlBuilder sb) {
+			GWT.log("CellTab  Value: " + value.toString());
+			sb.appendEscaped(value.getName());
+			
 		}
 	}
 
