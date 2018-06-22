@@ -401,6 +401,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**glöckchen:	if(pv.getOwner().getId()==u.getId()) {
 	 * 
 	 */
+		
 		for(int i=0; i<cols.size();i++ ) {
 			pvMapper.deleteCollaboration(pv, cols.get(i));
 			pvMapper.deletePValue(pv);
