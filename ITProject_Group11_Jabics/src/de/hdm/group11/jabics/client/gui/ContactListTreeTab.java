@@ -313,6 +313,8 @@ public class ContactListTreeTab implements TreeViewModel {
 				@Override
 				public void onSuccess(ArrayList<ContactList> contactlists) {
 					GWT.log("TreeTab: onSuccess");
+					GWT.log(contactlists.toString());
+					
 					for (ContactList cl : contactlists) {
 						currentCL = cl;
 						contactListDataProviders.getList().add(cl);
@@ -326,13 +328,14 @@ public class ContactListTreeTab implements TreeViewModel {
 			});
 			
 		// Return a node info that pairs the data with a cell.	
-		GWT.log("ContactTree DefaultNodeInfo");
+		GWT.log("ContactTree DefaultNodeInfo1");
 		return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
 			
 		}
 		
 		if (value instanceof ContactList) {
-			GWT.log("TreeTab value instanceof ContactList");
+			GWT.log("TreeTab: instanceof ContactList");
+			GWT.log(currentCL.toString());
 			
 			JabicsUser user2 = new JabicsUser();
 			user2.setId(1);
@@ -341,6 +344,7 @@ public class ContactListTreeTab implements TreeViewModel {
 			contactDataProviders.put((ContactList) value, contactProvider);
 			
 			GWT.log("CurrentCL: " + currentCL.toString());
+			
 			eService.getContactsOfList(currentCL, user2, new AsyncCallback<ArrayList<Contact>>() {
 				
 
@@ -352,6 +356,7 @@ public class ContactListTreeTab implements TreeViewModel {
 				@Override
 				public void onSuccess(ArrayList<Contact> contacts) {
 					GWT.log("TreeTab value instanceof ContactList onSuccess");	
+					GWT.log(contacts.toString());
 					for (Contact c : contacts) {
 						GWT.log("forforfor");
 						contactProvider.getList().add(c);

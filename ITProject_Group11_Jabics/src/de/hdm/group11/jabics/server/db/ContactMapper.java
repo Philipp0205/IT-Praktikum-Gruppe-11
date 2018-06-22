@@ -239,7 +239,7 @@ public class ContactMapper{
 	 */
 	
 	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {
-		GWT.log("cMapper: findContactsOfContactList");
+		System.out.println("q21312312312313");
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 

@@ -206,17 +206,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Gibt alle Kontaktlisten eines Nutzers zurück.
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
-		GWT.log("EditorServiceImpl: getListsOf");
-		GWT.log("EditorServiceImpl: getListOf");
 		
-		ArrayList<ContactList> res = new ArrayList<ContactList>();
+		ArrayList<ContactList> result = new ArrayList<ContactList>();
 		
 		for (ContactList cl: clMapper.findContactListOfUser(u)) {
 			cl.setOwner(uMapper.findUserByContactList(cl));
-			res.add(cl);
+			result.add(cl);
 		}
 		
-		return res; 
+		return result; 
 		
 		// temporär: kann gelöscht werden
 		
@@ -227,15 +225,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
-		GWT.log("EditorImpl: getContactsOfList");
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
+		
 		for (Contact c : cMapper.findContactsOfContactList(cl)) {
-			if(cMapper.findCollaborators(c).contains(u)) result.add(c);
+			//if(cMapper.findCollaborators(c).contains(u)) result.add(c);
+			c.setOwner(uMapper.findUserByContact(c));
+			result.add(c);
 		}
-		for (Contact cres : result) {
-			cres.setOwner(uMapper.findUserByContact(cres));
-		}
+//		for (Contact cres : result) {
+//			cres.setOwner(uMapper.findUserByContact(cres));
+//		}
 		return result;
 		
 		// temporär: kann gelöscht werden sobald funktional
