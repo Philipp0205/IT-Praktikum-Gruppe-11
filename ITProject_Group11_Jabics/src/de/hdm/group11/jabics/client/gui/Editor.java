@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
@@ -58,7 +59,7 @@ public class Editor implements EntryPoint {
 	EditorServiceAsync editorAdmin;
 	LoginInfo loginfo;
 	
-	JabicsUser currentUser;
+	JabicsUser currentUser = new JabicsUser();
 
 	VerticalPanel mainPanel = new VerticalPanel();
 	HorizontalPanel topPanel = new HorizontalPanel();
@@ -68,6 +69,7 @@ public class Editor implements EntryPoint {
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an um Jabics nutzen zu k�nnen.");
 	private Anchor signInLink = new Anchor("Anmelden.");
+	
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
@@ -80,6 +82,7 @@ public class Editor implements EntryPoint {
 	
 	// SearchForm sForm = new SearchForm();
 	TreeViewMenu treeViewMenu;
+	
 
 	@Override
 	public void onModuleLoad() {
@@ -96,6 +99,7 @@ public class Editor implements EntryPoint {
 		//loadEditor();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 		//loadEditor();
+
 	}
 	
 	public void loadEditor() {
@@ -104,13 +108,14 @@ public class Editor implements EntryPoint {
 			editorAdmin = ClientsideSettings.getEditorService();
 		}
 		
-		mainPanel.add(topPanel);
-		mainPanel.add(widgetPanel);
-
-		
 		treeViewMenu = new TreeViewMenu();
 		
-		treeViewMenu.getStackLayoutPanel();
+		mainPanel.add(topPanel);
+		mainPanel.add(widgetPanel);
+		
+		/*
+		 *  
+		 */
 
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
@@ -124,11 +129,29 @@ public class Editor implements EntryPoint {
 		clForm = new ContactListForm();
 		cForm = new ContactForm();
 
+
+		
+		/**
+		 * STACKPANEL werden kreiert
+		 */
+		StackPanel stackPanel = new StackPanel();
+		stackPanel.add(new Label("Foo"), "foo");
+		stackPanel.add(new Label("Foo"), "foo");
+		stackPanel.add(new Label("Foo"), "foo");
+		
+		StackPanel stackPanel2 = new StackPanel();
+		stackPanel2.add(treeViewMenu.createTreeTab(), "TreeView");
+		GWT.log("Editor: createTreeTab2");
+		stackPanel2.add(treeViewMenu.createTreeTab2(), "TreeView");
+		stackPanel2.add(new Label("Foo"), "foo");
+		
+		//mainPanel.add(stackPanel);
+		mainPanel.add(stackPanel2);
+
 		topPanel.add(search);
 		topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
-		GWT.log("2");
 		/**
 		 * TODO: wie funktioniert das hinzufügen des TreeView?
 		 */ 
@@ -168,13 +191,14 @@ public class Editor implements EntryPoint {
 		//treeViewMenu.addContact(c1);
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 
-		GWT.log("5");
-		//showContact(c1);
-		GWT.log("6");
+		c1.setValues(val);
+		showContact(c1);
+	//	showContactList(cl1);
+		
+		
+		RootPanel.get("details").add(mainPanel);
 
 		mainPanel.add(widgetPanel);
-
-		RootPanel.get("details").add(mainPanel);
 	}
 
 	private void loadLogin() {
@@ -272,14 +296,12 @@ public class Editor implements EntryPoint {
 		// ccForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(eccForm);
 	}
-
 	public void showContactListCollab(ContactList cl) {
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
 		}
 		widgetPanel.clear();
-		widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clcForm.clear();
 		clcForm.setList(cl);
 		// clcForm.setUser(loginfo.getCurrentUser());
@@ -367,7 +389,6 @@ public class Editor implements EntryPoint {
  
 		@Override
 		public void onSuccess(LoginInfo logon) {
-			GWT.log("Login sucess 2");
 			currentUser = logon.getCurrentUser();
 			setLoginInfo(logon);
 

@@ -375,7 +375,6 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onSuccess(ArrayList<PValue> result) {
-			GWT.log("onsuccess aufgerufen!");
 			newPV = new PValue(result.get(pointer1).getProperty(), u);
 			GWT.log("huhu1");
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
