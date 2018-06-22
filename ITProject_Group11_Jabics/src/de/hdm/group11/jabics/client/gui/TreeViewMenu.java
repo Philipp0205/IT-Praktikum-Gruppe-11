@@ -42,9 +42,10 @@ public class TreeViewMenu {
 	public Widget onLoad() {
 		// StackPanel wird erstellt.
 		stackPanel = new StackPanel();
-		stackPanel.add(createContactListTreeTab(), "TreeView");
-		//stackPanel.add(createContactListTreeTab(), "TreeView");
-		stackPanel.add(new Label("Foo"), "foo");
+		stackPanel.add(createContactListTreeTab(), "Meine Listen");
+		//stackPanel.add(createContactCellListTab(), "Meine Kontakte");
+		GWT.log("createdAllTabs");
+		//stackPanel.add(new Label("Foo"), "foo");
 
 		stackPanel.ensureDebugId("cwStackPanel");
 		return stackPanel;
@@ -75,11 +76,9 @@ public class TreeViewMenu {
 		//contactsTab.setEditor(editor);
 	}
 
-	public Widget createTreeTab() {
+	public Widget createContactCellListTab() {
 		contactTab = new ContactCellListTab();
-		tree = new CellTree(contactTab, "Root");
-		GWT.log("TreeViewMenu: createContactTab");
-		return tree;
+		return contactTab.createContactTab();
 	}
 	
 	public Widget createContactListTreeTab() {
