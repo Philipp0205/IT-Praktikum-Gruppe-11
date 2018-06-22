@@ -191,8 +191,6 @@ public class Editor implements EntryPoint {
 		//treeViewMenu.addContact(c1);
 		//widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 
-		c1.setValues(val);
-		showContact(c1);
 	//	showContactList(cl1);
 		
 		

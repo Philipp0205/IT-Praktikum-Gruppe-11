@@ -239,7 +239,7 @@ public class ContactMapper{
 	 */
 	
 	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {
-		System.out.println("q21312312312313");
+		
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
@@ -256,7 +256,6 @@ public class ContactMapper{
 	    			+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
 	    			+ " WHERE contactContactLists.contactListID = " + cl.getId()) ;
 	   
-	    	
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		while (rs.next()) {
 					
@@ -265,11 +264,12 @@ public class ContactMapper{
 		      
 					//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 					c.setId(rs.getInt("contactID"));
+					System.out.println(String.valueOf(rs.getInt("contactID")));
 					c.setDateCreated(rs.getTimestamp("dateCreated"));
 		    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+		    		
 					al.add(c);
 				}
-	    	
 	    	return al;
 	    }
 	    catch (SQLException e) {

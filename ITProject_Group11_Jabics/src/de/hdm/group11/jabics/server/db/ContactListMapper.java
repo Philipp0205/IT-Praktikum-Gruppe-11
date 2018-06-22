@@ -260,14 +260,12 @@ public class ContactListMapper {
 	 * @return Die ArrayList, die mit den <code>ContactList</code> Objekten befüllt ist.
 	 */
 	public ArrayList<ContactList> findContactListOfUser(JabicsUser u)  {  
-		GWT.log("CLMapper: findContactListOfUser");
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
 	    	//Erzeugen einer ArrayList
 			ArrayList<ContactList> al = new ArrayList<ContactList>();
 	    	
@@ -288,6 +286,7 @@ public class ContactListMapper {
 	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		al.add(cl);
 	    	}
+	    	System.out.println(cl.getListName());
 	    	return al;
 	    }
 	    catch (SQLException e) {
