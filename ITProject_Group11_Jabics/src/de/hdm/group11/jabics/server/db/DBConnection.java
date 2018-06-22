@@ -44,8 +44,9 @@ public class DBConnection {
 				    Class.forName("com.mysql.jdbc.Driver");
 				  //url = ("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?user=s242770_2739576&password=itPROJEKT2018");
 				//  url = ("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?verifyServerCertificate=false&useSSL=true","s242770_2739576","itPROJEKT2018");
-				    con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?verifyServerCertificate=false&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","s242770_2739576","itPROJEKT2018");
-				//    con = DriverManager.getConnection("jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true","root","ThieskesOberesDrittel!");
+
+				    con = DriverManager.getConnection("jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true","root","ThieskesOberesDrittel!");
+
 				  }
 			
 			System.out.println("Connected to DB");	

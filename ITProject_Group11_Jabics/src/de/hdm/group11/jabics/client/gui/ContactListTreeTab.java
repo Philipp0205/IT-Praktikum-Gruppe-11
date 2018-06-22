@@ -33,11 +33,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	//Instanziierung des Singelton-Objektes
 	//private LoginInfo loginfo = LoginInfo.getloginInfo();
 	JabicsUser jabicsUser;
-	Editor editor = new Editor();
+	Editor editor;
 	
 	ContactList currentCL;
-	
-	
 	
 	/*
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer wenn etwas geändert wird. 
@@ -129,7 +127,11 @@ public class ContactListTreeTab implements TreeViewModel {
 	 *
 	 */
 	
-	
+	public void setEditor(Editor editor) {
+		GWT.log("Editor setzen in contactlisttree");
+		GWT.log("Editor: " + editor.hashCode());
+		this.editor = editor;
+	}
 
 	public void setSelectedContactList(ContactList cl) {
 		selectedContactList = cl;
@@ -144,47 +146,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	public void setSelectedContact(Contact c) {
 		//selectedContact	= c;
 		// momentan aktiver User muss angegeben werden
-		GWT.log("ausgewählt");
-		editor.showContact(c);			
-		
-//		if (c != null) {
-//			eService.getUserById(c.getOwner().getId(), new AsyncCallback<JabicsUser>() {
-//
-//				@Override
-//				public void onFailure(Throwable caught) {
-//					// nix.	
-//					
-//				}
-//
-//				@Override
-//				public void onSuccess(JabicsUser result) {
-//					//Muss das result nicht ein Kontakt sein?
-//					selectedContact = c;
-//					//contactForm.setSelected(c);				
-//				}
-//				
-//			});
-//			
-//		}
-		
-		if (c != null) {
-			eService.getUserById(c.getOwner().getId(), new AsyncCallback<JabicsUser>() {
-
-				@Override
-				public void onFailure(Throwable caught) {
-					// nix.
-				}
-
-				@Override
-				public void onSuccess(JabicsUser result) {
-					//Muss das result nicht ein Kontakt sein?
-					//selectedContact = c;
-					//contactForm.setSelected(c);				
-				}
-				
-			});
-		}
-
+		GWT.log("Zurück zum Editor: " + editor.hashCode());
+		editor.showContact(c);
 	}
 
 	
@@ -309,7 +272,7 @@ public class ContactListTreeTab implements TreeViewModel {
 			GWT.log("ContatListTree: User erstellt" );
 			//GWT.log(jabicsUser2.toString());
 			//Der aktuelle User wird verwendet.
-			GWT.log("Akuteller User: " + user2.toString());
+			GWT.log("Akuteller User111: " + user2.toString());
 			eService2.getListsOf(user2, new AsyncCallback<ArrayList<ContactList>>() {
 				
 				@Override
@@ -353,13 +316,10 @@ public class ContactListTreeTab implements TreeViewModel {
 			GWT.log("CurrentCL: " + currentCL.toString());
 			
 			eService.getContactsOfList(currentCL, user2, new AsyncCallback<ArrayList<Contact>>() {
-				
-
 				@Override
 				public void onFailure(Throwable caught) {
 					GWT.log("TreeTab value instanceof ContactList onFailure");	
 				}
-
 				@Override
 				public void onSuccess(ArrayList<Contact> contacts) {
 					GWT.log("TreeTab value instanceof ContactList onSuccess");	
@@ -377,8 +337,9 @@ public class ContactListTreeTab implements TreeViewModel {
 		return null;
 	}
 	
-	// Check if the specified value represents a leaf node. Leaf nodes
-	// cannot be opened.
+	/**
+	 * Überprüfen, ob ein Objekt eine Leaf-Node ist
+	 */
 	@Override
 	public boolean isLeaf(Object value) {
 		// value is of type Contact.

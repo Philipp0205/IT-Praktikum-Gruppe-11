@@ -39,7 +39,6 @@ public class ContactListForm extends VerticalPanel {
 	 *         Angepasst von
 	 * @author Anders
 	 */
-	
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 	
 	Editor e;
@@ -47,7 +46,6 @@ public class ContactListForm extends VerticalPanel {
 	ContactList currentList = null;
 	
 	// Widgets deren Inhalte variabel sind werden als Attribute angelegt.
-	
 	Grid contactListGrid;
 	
 	VerticalPanel listEdit, conEdit;
@@ -60,27 +58,20 @@ public class ContactListForm extends VerticalPanel {
 	
 	MultiSelectionModel<Contact> selectionModel1  = new MultiSelectionModel<Contact>();
 	
-	MultiSelectionModel<Contact> selectionModel2  = new MultiSelectionModel<Contact>();
-		
-		
-		
+	MultiSelectionModel<Contact> selectionModel2  = new MultiSelectionModel<Contact>();	
+	
 	public void onLoad() { // Editor e, ContactList cl) {
-
 		/*
 		 * noch rausfinden ob das geht this.currentList = cl; this.e = e;
 		 */
-		
 		super.onLoad();
 		// For Debugging
-		Window.alert("Neue CL Form");
-		
+		Window.alert("Neue CL Form");		
 		contactListGrid = new Grid(5, 1);
-	
 		this.add(contactListGrid);
 		
 		Label formName = new Label("Listen-Editor");
 		contactListGrid.setWidget(0, 0, formName);
-
 		Label listName = new Label(currentList.getListName());
 		contactListGrid.setWidget(1, 0, listName);
 
@@ -152,7 +143,6 @@ public class ContactListForm extends VerticalPanel {
 		conEdit.add(listAddBox);
 		conEdit.add(listRmvBox);
 		contactListGrid.setWidget(3, 0, conEdit);
-
 	}
 	
 	public void setCurrentList(ContactList cl) {
@@ -249,7 +239,6 @@ public class ContactListForm extends VerticalPanel {
 		valueProvider.addDataDisplay(selValues);
 		 //finalC;
 		// Es kann sein, dass hier noch kexprovider benötigt werden
-
 		
 		selectionModel2.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 	         public void onSelectionChange(SelectionChangeEvent event) {
@@ -305,6 +294,7 @@ public class ContactListForm extends VerticalPanel {
 	public void setUser(JabicsUser u) {
 		this.u = u;
 	}
+	
 	/**
 	 * Clickhandler und Asynchrone Methodenaufrufe für das Löschen eines
 	 * <code>ContactList</code> Objekts.
