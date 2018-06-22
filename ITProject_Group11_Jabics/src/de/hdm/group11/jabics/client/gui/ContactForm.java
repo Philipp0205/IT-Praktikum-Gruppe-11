@@ -402,9 +402,10 @@ public class ContactForm extends VerticalPanel {
 			Button[] deleteButton = new Button[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
-				int pointer = i;
+//				int pointer = i;
+				ArrayList<PValue> rs = result;
 				currentPV = result.get(i);
-				newPV = new PValue(result.get(pointer).getProperty(), u);
+//				newPV = new PValue(result.get(pointer).getProperty(), u);
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(i).getStringValue());
@@ -413,25 +414,26 @@ public class ContactForm extends VerticalPanel {
 					
 					// TODO Bisher noch nicht funktional
 				public void onClick(ClickEvent event) {
-						newPV = new PValue(result.get(pointer).getProperty(), u);
-					
-						int currentID = currentPV.getPropertyId();
-
-						switch (currentPV.getPointer()) {
-						case 1:
-							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer].getValue())); break;
-						case 2:
-							newPV.setStringValue(pValueTextBox[pointer].getValue().toString()); break;
-						case 3:
-							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
-							newPV.setDateValue(new Date(01,01,01)); break;
-						case 4:
-							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); break;
-						default:
-						}
-						editorService.updatePValue(newPV, new UpdatePValueCallback());
-
-						Window.alert("Wert" + pValueTextBox[pointer].getValue().toString() + "gespeichert");
+//					int pointer1 = pointer;
+//						newPV = new PValue(rs.get(pointer1).getProperty(), u);
+//					
+//						int currentID = currentPV.getPropertyId();
+//
+//						switch (currentPV.getPointer()) {
+//						case 1:
+//							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer1].getValue())); break;
+//						case 2:
+//							newPV.setStringValue(pValueTextBox[pointer1].getValue().toString()); break;
+//						case 3:
+//							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
+//							newPV.setDateValue(new Date(01,01,01)); break;
+//						case 4:
+//							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer1].getValue())); break;
+//						default:
+//						}
+//						editorService.updatePValue(newPV, new UpdatePValueCallback());
+//
+//						Window.alert("Wert" + pValueTextBox[pointer1].getValue().toString() + "gespeichert");
 					}
 				});
 				
