@@ -51,6 +51,7 @@ public class ContactForm extends VerticalPanel {
 	Editor e;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
+	//TODO USER richtig setzen (wird hier nur instanziiert, dass er nicht undefinded ist)
 	JabicsUser u;
 	Contact contactToDisplay = null;
 	PValue selectedPValue = null;
@@ -243,10 +244,8 @@ public class ContactForm extends VerticalPanel {
 	 * <code>createPValue()</code> aufgerufen.
 	 */
 	private class AddPropertyClickHandler implements ClickHandler {
-
 		@Override
 		public void onClick(ClickEvent event) {
-
 			switch (formattype.getSelectedItemText()) {
 			case "Text":
 				editorService.createProperty(propertyName.getText(), Type.STRING, new CreatePropertyCallback());
@@ -279,6 +278,7 @@ public class ContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Property result) {
+			GWT.log(result.getTypeInString());
 			switch (formattype.getSelectedItemText()) {
 			case "Text":
 				editorService.createPValue(result, pValueName.getText(), contactToDisplay, u,
