@@ -394,9 +394,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 	
 	public void deletePValue(PValue pv){
-		if(pv.getProperty().getLabel() != "name") {
+		ArrayList<JabicsUser> cols = pvMapper.findCollaborators(pv);
+	/**glöckchen:	if(pv.getOwner().getId()==u.getId()) {
+	 * 
+	 */
+		
+		for(int i=0; i<cols.size();i++ ) {
+			pvMapper.deleteCollaboration(pv, cols.get(i));
 			pvMapper.deletePValue(pv);
-		}
+	}
 	}
 	
 	/**

@@ -61,6 +61,7 @@ public class ContactForm extends VerticalPanel {
 
 	Button deleteContactButton = new Button("Kontakt löschen");
 	Button shareContactButton;
+	Button existingSharedContactButton;
 	Grid contactGrid = new Grid();
 	ArrayList<PValue> checkedPV = new ArrayList<PValue>();
 	ListBox formattype = new ListBox();
@@ -76,7 +77,7 @@ public class ContactForm extends VerticalPanel {
 		
 
 		// Erstellen des Haupt-Grids
-		Grid userInformationGrid = new Grid(6, 2);
+		Grid userInformationGrid = new Grid(6, 3);
 		this.add(userInformationGrid);
 
 		// GRID-ZEILE 1: Vergabe des Fensternamens
@@ -161,6 +162,17 @@ public class ContactForm extends VerticalPanel {
 		
 		userInformationGrid.setWidget(4, 1, deleteContactButton);
 		
+		//GRID-Zeile 5.2
+		existingSharedContactButton = new Button("Freigegeben an");
+		userInformationGrid.setWidget(5, 0, existingSharedContactButton);
+		existingSharedContactButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				GWT.log(contactToDisplay.getName());
+				e.showExistingContactCollab(contactToDisplay);
+			}
+		});
+		
 	}
 	
 	
@@ -173,6 +185,8 @@ public class ContactForm extends VerticalPanel {
 		this.u = user;
 		GWT.log("usergesetzt: " + u.getEmail());
 	}
+	
+
 
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die
@@ -356,6 +370,7 @@ public class ContactForm extends VerticalPanel {
 			contactToDisplay = null;
 			deleteContactButton.setEnabled(false);
 			shareContactButton.setEnabled(false); 
+			existingSharedContactButton.setEnabled(false);
 		}
 	}
 
@@ -394,7 +409,6 @@ public class ContactForm extends VerticalPanel {
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(i).getStringValue());
 				saveButton[i] = new Button("Save");
-
 				saveButton[i].addClickHandler(new ClickHandler() {
 					
 					// TODO Bisher noch nicht funktional
