@@ -391,8 +391,7 @@ public class ContactForm extends VerticalPanel {
 		}
 		
 		public void onSuccess(ArrayList<PValue> result) {
-			GWT.log("pvalueszuück");
-			//
+			newPV = new PValue(result.get(pointer1).getProperty(), u);
 			GWT.log("huhu1");
 			// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
 			checkedPV.clear();
@@ -403,7 +402,7 @@ public class ContactForm extends VerticalPanel {
 			Button[] deleteButton = new Button[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
-				int pointer = i;
+				pointer1 = i;
 				currentPV = result.get(i);
 				
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
