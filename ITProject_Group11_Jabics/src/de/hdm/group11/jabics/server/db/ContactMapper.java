@@ -127,7 +127,7 @@ public class ContactMapper{
 	    	Statement stmt = con.createStatement();
 		  
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP AND SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP, SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);

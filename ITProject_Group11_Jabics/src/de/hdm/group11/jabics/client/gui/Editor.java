@@ -147,11 +147,12 @@ public class Editor implements EntryPoint {
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		
 
-		//Contact c1 = new Contact();
+	Contact c1 = new Contact();
 
 		//c1.setId(3);
 	//	cForm.setUser(u);
-		//c1.setId(10);
+		c1.setId(10);
+		showContact(c1);
 //		ContactList cl1 = new ContactList();
 //		cl1.addContact(c1);
 //		cl1.setId(5);
@@ -200,6 +201,8 @@ public class Editor implements EntryPoint {
 		currentUser.setId(1);
 		currentUser.setUsername("Alexander Stahl");
 		GWT.log("showCon: " + this.currentUser.getEmail());
+		
+		
 		cForm.setUser(currentUser);
 		//this.widgetPanel.clear();
 		GWT.log("showCOnt3");

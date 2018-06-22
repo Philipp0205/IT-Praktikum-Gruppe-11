@@ -381,12 +381,14 @@ public class ContactForm extends VerticalPanel {
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
 	
-	PValue currentPV;
+	ArrayList<PValue> currentPV = new ArrayList<PValue>();
 	TextBox[] pValueTextBox;
-	PValue newPV;
+	int pointer;
+	int dpointer;
+	//ArrayList<TextBox> pValueTextBox = new ArrayList<TextBox>();
 	
 	
-	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
+	public class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
 		}
@@ -403,38 +405,43 @@ public class ContactForm extends VerticalPanel {
 			Button[] deleteButton = new Button[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
-//				int pointer = i;
-				ArrayList<PValue> rs = result;
-				currentPV = result.get(i);
-//				newPV = new PValue(result.get(pointer).getProperty(), u);
+				currentPV = result;
+				pointer = i;
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
+
+
 				pValueTextBox[i] = new TextBox();
 				pValueTextBox[i].setText(result.get(i).getStringValue());
+				GWT.log(pValueTextBox[i].getText());
 				saveButton[i] = new Button("Save");
+				
 				saveButton[i].addClickHandler(new ClickHandler() {
 					
 					// TODO Bisher noch nicht funktional
 				public void onClick(ClickEvent event) {
-//					int pointer1 = pointer;
-//						newPV = new PValue(rs.get(pointer1).getProperty(), u);
-//					
-//						int currentID = currentPV.getPropertyId();
-//
-//						switch (currentPV.getPointer()) {
-//						case 1:
-//							newPV.setIntValue(Integer.parseInt(pValueTextBox[pointer1].getValue())); break;
-//						case 2:
-//							newPV.setStringValue(pValueTextBox[pointer1].getValue().toString()); break;
-//						case 3:
-//							Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
-//							newPV.setDateValue(new Date(01,01,01)); break;
-//						case 4:
-//							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer1].getValue())); break;
-//						default:
-//						}
-//						editorService.updatePValue(newPV, new UpdatePValueCallback());
-//
-//						Window.alert("Wert" + pValueTextBox[pointer1].getValue().toString() + "gespeichert");
+					
+					PValue newPV = currentPV.get(pointer);
+					
+						switch (currentPV.get(pointer).getPointer()) {
+						case 1:
+							newPV.setIntValue(Integer.valueOf(pValueTextBox[pointer].getText()));
+							break;
+						case 2:
+							//newPV.setStringValue(pValueTextBox.get(pointer).getText()); 
+							GWT.log(pValueTextBox[pointer].getText());
+							break;
+						case 3:
+							Date ld = selectedDate;
+							// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
+							//neuer Datepicker
+							newPV.setDateValue(null);
+							break;
+						case 4:
+							newPV.setFloatValue(Float.parseFloat(pValueTextBox[pointer].getValue())); 
+							break;
+						default:
+						}
+						editorService.updatePValue(newPV, new UpdatePValueCallback());
 					}
 				});
 				
@@ -442,11 +449,12 @@ public class ContactForm extends VerticalPanel {
 
 				deleteButton[i].addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
+						int dpointer = pointer;
 
 						if (contactToDisplay == null) {
 							Window.alert("Kein Kontakt ausgewählt");
 						} else {
-							editorService.deletePValue(currentPV, new deletePValueCallback(currentPV));
+							editorService.deletePValue(currentPV.get(dpointer), new deletePValueCallback(currentPV.get(dpointer)));
 						}
 					}
 				});
@@ -501,7 +509,7 @@ public class ContactForm extends VerticalPanel {
 		public void onSuccess(PValue result) {
 			// Contacttree muss aktualisiert werden .
 			// Conacttree.refresh();
-			Window.alert("Wert geändert");
+			Window.alert("Wert gespeichert");
 		}
 	}
 }
