@@ -66,7 +66,7 @@ public class EditContactForm extends VerticalPanel {
 				save();
 			}
 		});
-
+		
 		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 		// Die gesamte Zeile (4) wird ein HorizontalPanel
 		Grid propertyAddBox = new Grid(2, 5);
@@ -78,7 +78,7 @@ public class EditContactForm extends VerticalPanel {
 		propertyAddBox.setWidget(1, 0, propertyName);
 		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
 		// deklariert.)
-
+		
 		// 1.1 eine Listbox zum Setzen des Formats
 		formattype.addItem("Text");
 		formattype.addItem("Datum");
@@ -92,10 +92,9 @@ public class EditContactForm extends VerticalPanel {
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.setWidget(1, 2, addPropertyButton);
 	//	addPanel.add(propertyAddBox);
-
+		p= new ArrayList<Property>();
 		// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
 		// werden können
-
 		p.add(new Property("Vorname", Type.STRING, true, 1));
 		p.add(new Property("Nachname", Type.STRING, true, 2));
 		p.add(new Property("Noch benennen", Type.STRING, true, 3));
@@ -106,14 +105,16 @@ public class EditContactForm extends VerticalPanel {
 		p.add(new Property("Noch benennen", Type.STRING, true, 8));
 		p.add(new Property("Noch benennen", Type.STRING, true, 9));
 		p.add(new Property("Noch benennen", Type.STRING, true, 10));
-
+		
 		this.add(pPanel);
 		this.add(buttonPanel);
 		this.add(addPPanel);
+		renderContact(contact.getValues());
 
 	}
 
 	public void renderContact(ArrayList<PValue> values) {
+		val = new ArrayList<PropForm>();
 		for (Property p : p) {
 			val.add(new PropForm(p));
 		}
