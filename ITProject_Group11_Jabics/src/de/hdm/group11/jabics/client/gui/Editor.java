@@ -136,9 +136,6 @@ public class Editor implements EntryPoint {
 
 		widgetPanel.add(treeViewMenu.getStackPanel());
 		
-
-		widgetPanel.add(treeViewMenu.getStackPanel());
-
 		/**
 		 * Das kann weg sobald treeview passt
 		 */
@@ -146,7 +143,6 @@ public class Editor implements EntryPoint {
 		c6.setId(1);
 		editContact(c6);
 		
-		mainPanel.add(widgetPanel);
 		RootPanel.get("details").add(mainPanel);
 	}
 
@@ -198,7 +194,7 @@ public class Editor implements EntryPoint {
 		}
 		cForm.setUser(currentUser);
 		cForm.setContact(c);
-		widgetPanel.insert(cForm, 0);
+		widgetPanel.insert(cForm, 1);
 		GWT.log("editcontFertig");
 	}
 
