@@ -29,6 +29,13 @@ public class Property extends BusinessObject implements Serializable {
 		this.type = type;
 		this.isStandard = isStandard;
 	}
+	public Property(String label, Type type, boolean isStandard, int id) {
+		super();
+		this.label = label;
+		this.type = type;
+		this.isStandard = isStandard;
+		this.id = id;
+	}
 	
 	//Leerer Konstruktor
 	public Property() { 
