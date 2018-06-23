@@ -91,7 +91,7 @@ public class EditContactForm extends VerticalPanel {
 		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.setWidget(1, 2, addPropertyButton);
-		addPanel.add(propertyAddBox);
+	//	addPanel.add(propertyAddBox);
 
 		// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
 		// werden können
@@ -371,14 +371,24 @@ public class EditContactForm extends VerticalPanel {
 			dp = new DatePicker();
 			this.pval = pv;
 			val.setText(pv.toString());
-			val.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					if (pv.getPointer() == 3) {
-						dp.setVisible(true);
-					}
+			CreateClickHandler cch = new CreateClickHandler();
+			cch.setPV(pv);
+			val.addClickHandler(cch);
+			
+			
+		}
+		class CreateClickHandler implements ClickHandler {
+			PValue pv;
+			void setPV(PValue pv) {
+				this.pv=pv;
+			}
+			@Override
+			public void onClick(ClickEvent event) {
+				if (pv.getPointer() == 3) {
+					dp.setVisible(true);
 				}
-			});
+			}
+		}
 			/*
 			 * val.addChangeHandler(new ChangeHandler() {
 			
@@ -412,4 +422,4 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 	}
-}
+
