@@ -253,6 +253,7 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
+			con.close();
 			return al;
 	    }
 	    catch (SQLException e) {
@@ -287,6 +288,7 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 		        con.close();
 			}
+			con.close();
 			return u;
 		}
 		catch (SQLException e) {
@@ -324,6 +326,7 @@ public JabicsUser findUserByEmail(String email)  {
 	        con.close();
 	        return u;
 		}else
+			con.close();
 		return null;
 	}
 	catch (SQLException e) {
