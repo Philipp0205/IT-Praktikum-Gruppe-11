@@ -279,15 +279,15 @@ public class Editor implements EntryPoint {
 		 */
 	}
 	
-	/* public void showSearchForm(ContactList cl) {
+	 public void showSearchForm(ContactList cl) {
 		if (this.sForm == null) {
 			sForm = new SearchForm();
-			sForm.setEditor();
 		}
+		sForm.setEditor(this);
+		widgetPanel.clear();
 		sForm.setContactList(cl);
-		widgetPanel.insert(sForm, 1);
-		
-	} */
+		widgetPanel.add(sForm);
+	} 
 
 	
 	public void returnToContactForm(Contact c) {
@@ -332,18 +332,41 @@ public class Editor implements EntryPoint {
 	 * ClickHandler um die SearchForm anzuzeigen
 	 */
 	private class SearchClickHandler implements ClickHandler {
+		ContactList cl;
+		void setCL(ContactList cl){
+			this.cl=cl;
+		}
 		@Override
 		public void onClick(ClickEvent event) {
-
-			// //treeViewMenu.setContactForm(cForm);
-			// //cForm.setTreeViewMenu(treeViewMenu);
-			//
-			// hPanel.add(contactDetailPanel);
-			//
-			// contactDetailPanel.clear();
-			// contactDetailPanel.add(cForm);
-			//
-			// RootPanel.get("details").add(contactDetailPanel);
+			
+			 //treeViewMenu.setContactForm(cForm);
+			 //cForm.setTreeViewMenu(treeViewMenu);
+			
+//			 hPanel.add(contactDetailPanel);
+//			
+//			 contactDetailPanel.clear();
+//			 contactDetailPanel.add(cForm);
+			
+	//		 RootPanel.get("details").add(contactDetailPanel);
+			//TODO 
+//			ContactList cl = new ContactList();
+//			cl.setId(1);
+//			JabicsUser u = new JabicsUser();
+//			Contact c1 = new Contact();
+//			Property p = new Property();
+//			p.setId(2);
+//			PValue pv = new PValue(p,"Fiffi",u);
+//			c1.setName("Uschi");
+//			Contact c2 = new Contact();
+//			c2.setName("Strolch");
+//			Contact c3 = new Contact();
+//			c3.setName("Fiffi");
+//			c3.addPValue(pv);
+//			cl.setListName("Idiyets");
+//			cl.addContact(c1);
+//			cl.addContact(c2);
+//			cl.addContact(c3);
+			showSearchForm(cl);
 
 		}
 	}/**
