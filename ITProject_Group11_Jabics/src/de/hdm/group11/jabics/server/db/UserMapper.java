@@ -96,11 +96,12 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
+			con.close();
+			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
 		}
-		System.out.println("done");
 		return u;
 	}
 	
@@ -126,6 +127,8 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
+			con.close();
+			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -154,6 +157,8 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
+			con.close();
+			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -185,7 +190,7 @@ public class UserMapper {
 			if(rs.next()) {
 				u.setId(rs.getInt(1));
 			}
-		
+			con.close();
 			return u;
 		}
 		catch (SQLException e) {
@@ -208,7 +213,8 @@ public class UserMapper {
 			Statement stmt = con.createStatement();
 			   
 			// Löschen des Users.
-			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId()); 
+			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
+			con.close();
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
@@ -264,7 +270,7 @@ public class UserMapper {
 	public JabicsUser findUserById(int id)  {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
+		JabicsUser u = new JabicsUser();
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -273,21 +279,21 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE systemUserID = " + id);
 		   
 			if (rs.next()) {
-				JabicsUser u = new JabicsUser();
+				
 				
 				//Befüllen des Kontakt-Objekts
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
-		        
-		        return u;
-			}else
-			return null;
+		        con.close();
+			}
+			return u;
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
 		    return null;
-		}
+		} 
+		
 	}	
 
 
@@ -315,7 +321,7 @@ public JabicsUser findUserByEmail(String email)  {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
-	        
+	        con.close();
 	        return u;
 		}else
 		return null;

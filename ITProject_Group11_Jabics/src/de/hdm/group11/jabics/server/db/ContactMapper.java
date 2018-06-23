@@ -104,12 +104,13 @@ public class ContactMapper{
 			c.setDateCreated(rs2.getTimestamp("dateCreated"));
 			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 		}
+		con.close();
+		return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
-	    return c;
 	}
 	
 	/**
@@ -125,16 +126,23 @@ public class ContactMapper{
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-		  
+		  System.out.println(">>>>>>>>>>>"+c.getName());
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP AND SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
+
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP, nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
+	    	con.close();
+
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
+
+	    
 	    return c;
-	}
+	   
+	    }
+
 
 	/**
 	 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
@@ -152,6 +160,7 @@ public class ContactMapper{
 		   
 		   // Löschen des Kontakts.
 		   stmt.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId()); 
+		   con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -193,6 +202,7 @@ public class ContactMapper{
 	    		c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
+			con.close();
 			return al;
 	    }
 	    catch (SQLException e) {
@@ -226,7 +236,8 @@ public class ContactMapper{
 	    		c.setName(rs.getString("nickname"));
 	    		System.out.println(c.getName());
 	    	}
-	    	return c;
+		con.close();
+		return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -272,6 +283,7 @@ public class ContactMapper{
 		    		c.setName(rs.getString("nickname"));
 					al.add(c);
 				}
+		con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -310,6 +322,7 @@ public class ContactMapper{
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
+		con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -341,7 +354,8 @@ public class ContactMapper{
 	    	+ c.getId() + ", "
 	    	+ u.getId() + ")");
 
-	  	  	return c;
+		con.close();
+		return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -365,6 +379,7 @@ public class ContactMapper{
 		   
 		   // Löschen der Teilhaberschaft.
 		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= " + c.getId() );   	  
+	    		con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
