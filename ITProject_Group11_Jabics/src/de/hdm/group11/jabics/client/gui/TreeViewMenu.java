@@ -23,6 +23,7 @@ public class TreeViewMenu {
 	Editor e;
 	
 	ContactListTreeTab contactListTab;
+	SharedContactCellListTab sharedContactListTab;
 	ContactCellListTab contactTab;
 	StackPanel stackPanel;
 	CellTree tree;
@@ -33,6 +34,7 @@ public class TreeViewMenu {
 		stackPanel = new StackPanel();
 		stackPanel.add(createContactListTreeTab(), "Meine Listen");
 		stackPanel.add(createContactCellListTab(), "Meine Kontakte");
+		stackPanel.add(createSharedContactListTreeTab(), "Meine geteilte Kontakte");
 		GWT.log("createdAllTabs");
 		//stackPanel.add(new Label("Foo"), "foo");
 
@@ -61,6 +63,8 @@ public class TreeViewMenu {
 		GWT.log("Editor: " + editor.hashCode());
 		this.e = editor;
 		contactListTab.setEditor(editor);
+		contactTab.setEditor(editor);
+		sharedContactListTab.setEditor(editor);
 	}
 
 	public CellList createContactCellListTab() {
@@ -73,6 +77,12 @@ public class TreeViewMenu {
 		CellTree tree = new CellTree(contactListTab, "Root");
 		GWT.log("TreeViewMenu: createListTab");
 		return tree;
+	}
+	
+	public Widget createSharedContactListTreeTab() {
+		this.sharedContactListTab = new SharedContactCellListTab();
+		return sharedContactListTab.createContactTab();
+		
 	}
 
 
