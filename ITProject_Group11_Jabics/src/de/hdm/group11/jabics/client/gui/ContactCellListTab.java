@@ -38,7 +38,7 @@ public class ContactCellListTab{
 	private SingleSelectionModel<Contact> selectionModel = null;
 
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
-	ListDataProvider<Contact> contactsProvider = null;
+	ListDataProvider<Contact> contactsProvider;
 	
 	public ContactCellListTab() {
 
@@ -46,33 +46,35 @@ public class ContactCellListTab{
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		GWT.log("ContactsConstruct");
+		GWT.log("ContactsConstructor");
 		
 	}
 
 	public CellList createContactTab() {
+		GWT.log("3.1 createContactTab");
 		eService = ClientsideSettings.getEditorService();
 		
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
-		
 		contactDataProvider = new ListDataProvider<Contact>();
-		
 		user = new JabicsUser(1);
+		
+		contactsProvider = new ListDataProvider<Contact>();
 
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		JabicsUser user2 = new JabicsUser();
-		user2.setId(1);
-		eService.getContactsOf(user2, new AsyncCallback<ArrayList<Contact>>() {
+		//JabicsUser user2 = new JabicsUser(1);
+		GWT.log("2.1 User: " + user.getId());
+		
+		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// Nix.
+				GWT.log("3.1 CellList onFailure" + caught.toString());
 			}
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
-				GWT.log("CellList: onSuccess");
+				GWT.log("3.1 CellList onSuccess");
 				
 				for (Contact c : contacts) {
 					contactDataProvider.getList().add(c);
@@ -115,7 +117,7 @@ public class ContactCellListTab{
 		}
 
 		private void setSelectedContact(Contact c) {
-			selectedContact = c;
+			GWT.log("3.1 Kontakt anzeigen" + c.getName());
 			editor.showContact(c);
 		}
 	}
