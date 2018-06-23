@@ -41,7 +41,7 @@ public class ContactCellListTab{
 	ListDataProvider<Contact> contactsProvider;
 	
 	public ContactCellListTab() {
-
+		contactDataProvider = new ListDataProvider<Contact>();
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
@@ -105,6 +105,7 @@ public class ContactCellListTab{
 	}
 
 	public CellList getCellList() {
+		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		return this.contactCell;
 	}
 	
@@ -117,7 +118,7 @@ public class ContactCellListTab{
 		}
 
 		private void setSelectedContact(Contact c) {
-			GWT.log("3.1 Kontakt anzeigen" + c.getName());
+			GWT.log("3.1 Kontakt anzeigen " + c.getName());
 			editor.showContact(c);
 		}
 	}

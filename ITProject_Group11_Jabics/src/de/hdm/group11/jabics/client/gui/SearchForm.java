@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
@@ -35,16 +36,12 @@ public class SearchForm extends VerticalPanel{
 	Editor e;
 	
 	public void onLoad() {
-		tvm = new TreeViewMenu();
-		sp = new StackPanel();
-		ct= new  ContactCellListTab();
-		sb = new Button("Finden");
-		tb = new TextBox();
-		l = new Label("Wert:");
+		GWT.log("lol");
 		this.add(l);
 		this.add(tb);
 		this.add(sb);
 		this.add(sp);
+		
 		sb.addClickHandler((new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
@@ -52,6 +49,15 @@ public class SearchForm extends VerticalPanel{
 				editorService.searchInList(tb.getValue(), cl, new SearchInListCallback());
 			}
 		}));
+	}
+	public SearchForm() {
+		tvm = new TreeViewMenu();
+		sp = new StackPanel();
+		ct= new  ContactCellListTab();
+		sb = new Button("Finden");
+		tb = new TextBox();
+		l = new Label("Wert:");
+		sp.add(ct.getCellList(), "Ausgabe");
 	}
 	void setContactList(ContactList cl) {
 		this.cl =cl;
@@ -70,10 +76,10 @@ public class SearchForm extends VerticalPanel{
  		public void onSuccess(ArrayList<Contact> result) {
  			GWT.log("OnSuccess");
  			for(Contact c : result) {
- 				GWT.log(c.getValues().get(0).getStringValue());
+ 			GWT.log(c.getValues().get(0).getStringValue());
  			ct.addContact(c);
  			}
- 			sp.add(ct.getCellList(), "Ausgabe");
+
  			}
  		}
 	}
