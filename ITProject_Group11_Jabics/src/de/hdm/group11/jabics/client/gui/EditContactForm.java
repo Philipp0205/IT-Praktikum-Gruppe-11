@@ -91,6 +91,7 @@ public class EditContactForm extends VerticalPanel {
 		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.setWidget(1, 2, addPropertyButton);
+		addPanel.add(propertyAddBox);
 
 		// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
 		// werden können
