@@ -54,7 +54,6 @@ public class TreeViewMenu {
 		return this.stackPanel;
 	}
 
-
 	public void setEditor(Editor editor) {
 		GWT.log("Editor setzen in tree view");
 		GWT.log("Editor: " + editor.hashCode());
