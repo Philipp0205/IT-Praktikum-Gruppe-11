@@ -71,7 +71,8 @@ public class Editor implements EntryPoint {
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
-	ContactForm cForm;
+	EditContactForm cForm;
+	ShowContactForm scForm;
 	ContactListForm clForm = new ContactListForm();
 	ContactCollaborationForm ccForm;
 	ContactListCollaborationForm clcForm;
@@ -125,30 +126,28 @@ public class Editor implements EntryPoint {
 		topPanel.add(createC);
 		topPanel.add(createCL);
 
-		/**
-		 * Menü hinzufügen
-		 */
+		
+		// Menü hinzufügen
+		
 		treeViewMenu = new TreeViewMenu();
 		treeViewMenu.onLoad();
 		treeViewMenu.setEditor(this);
-		// stackPanel.add(treeViewMenu.createTreeTab(), "TreeView");
 		GWT.log("Editor: TreeViewMenu erstellen");
 
+		widgetPanel.add(treeViewMenu.getStackPanel());
 		
 
-
 		widgetPanel.add(treeViewMenu.getStackPanel());
-		mainPanel.add(widgetPanel);
-
-		RootPanel.get("details").add(mainPanel);
 
 		/**
 		 * Das kann weg sobald treeview passt
 		 */
 		Contact c6 = new Contact();
 		c6.setId(1);
-		//showContact(c6);
-
+		editContact(c6);
+		
+		mainPanel.add(widgetPanel);
+		RootPanel.get("details").add(mainPanel);
 	}
 
 	private void loadLogin() {
@@ -178,18 +177,29 @@ public class Editor implements EntryPoint {
 	 * Kontakte, Listen und CollabForms anzeigen
 	 */
 	public void showContact(Contact c) {
+		if (this.scForm == null) {
+			scForm = new ShowContactForm();
+			scForm.setEditor(this);
+			scForm.setUser(this.currentUser);
+		}
+		GWT.log("showCont2");
+		scForm.setUser(currentUser);
+		scForm.showContact(c);
+		GWT.log("showCOnt4");
+		widgetPanel.insert(scForm, 1);
+	}
+	
+	public void editContact(Contact c) {
+		GWT.log("editcont");
 		if (this.cForm == null) {
-			cForm = new ContactForm();
+			cForm = new EditContactForm();
 			cForm.setEditor(this);
 			cForm.setUser(this.currentUser);
 		}
-
-		GWT.log("showCont2");
-
 		cForm.setUser(currentUser);
-		cForm.setCurrentContact(c);
-		GWT.log("showCOnt4");
-		widgetPanel.insert(cForm, 1);
+		cForm.setContact(c);
+		widgetPanel.insert(cForm, 0);
+		GWT.log("editcontFertig");
 	}
 
 	public void showContactList(ContactList cl) {
@@ -244,7 +254,6 @@ public class Editor implements EntryPoint {
 		// ccForm.setUser(loginfo.getCurrentUser());
 		widgetPanel.add(eccForm);
 	}
-
 	
 	public void showContactListCollab(ContactList cl) {
 		if (this.clcForm == null) {
@@ -268,10 +277,10 @@ public class Editor implements EntryPoint {
 	
 	public void returnToContactForm(Contact c) {
 		if (this.cForm == null) {
-			cForm = new ContactForm();
+			scForm = new ShowContactForm();
 		}
 		//addContactToTree(c);
-		cForm.setCurrentContact(c);
+		scForm.setContact(c);
 		widgetPanel.add(cForm);
 	}
 

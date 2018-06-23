@@ -46,7 +46,6 @@ public class DBConnection {
 				//  url = ("jdbc:mysql://mysql.webhosting31.1blu.de/db242770x2739576?verifyServerCertificate=false&useSSL=true","s242770_2739576","itPROJEKT2018");
 
 				    con = DriverManager.getConnection("jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true","root","ThieskesOberesDrittel!");
-
 				  }
 			
 			System.out.println("Connected to DB");	
