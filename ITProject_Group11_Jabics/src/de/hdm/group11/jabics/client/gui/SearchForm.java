@@ -35,13 +35,9 @@ public class SearchForm extends VerticalPanel{
 	Editor e;
 	
 	public void onLoad() {
-		
-		
-		
 		tvm = new TreeViewMenu();
 		sp = new StackPanel();
 		ct= new  ContactCellListTab();
-		GWT.log("in der SearchForm");
 		sb = new Button("Finden");
 		tb = new TextBox();
 		l = new Label("Wert:");
@@ -53,11 +49,9 @@ public class SearchForm extends VerticalPanel{
 			
 			public void onClick(ClickEvent event) {
 				GWT.log(cl.getListName());
-				GWT.log(tb.getValue());
 				editorService.searchInList(tb.getValue(), cl, new SearchInListCallback());
 			}
 		}));
-		GWT.log("Ende Load");
 	}
 	void setContactList(ContactList cl) {
 		this.cl =cl;
@@ -68,16 +62,18 @@ public class SearchForm extends VerticalPanel{
 	
 	class SearchInListCallback implements AsyncCallback<ArrayList<Contact>> {
 		@Override 
+		
  		public void onFailure(Throwable caugth) {
-			Window.alert("Die Durchsuchung ist fehlgeschlagen");
+			Window.alert("Der angegebene Wert wurde nicht gefunden");
  		}
  		@Override
  		public void onSuccess(ArrayList<Contact> result) {
- 			GWT.log("onSucess");
+ 			GWT.log("OnSuccess");
  			for(Contact c : result) {
+ 				GWT.log(c.getValues().get(0).getStringValue());
  			ct.addContact(c);
- 			sp.add(ct.getCellList(), "Ausgabe");
  			}
+ 			sp.add(ct.getCellList(), "Ausgabe");
  			}
  		}
 	}
