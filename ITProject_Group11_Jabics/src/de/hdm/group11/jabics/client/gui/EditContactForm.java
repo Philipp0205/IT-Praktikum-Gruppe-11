@@ -8,6 +8,8 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -52,7 +54,7 @@ public class EditContactForm extends VerticalPanel {
 
 	public void onLoad() {
 
-		GWT.log("Hallo");
+		GWT.log("EditCont");
 		pPanel = new VerticalPanel();
 		buttonPanel = new HorizontalPanel();
 		addPPanel = new HorizontalPanel();
@@ -78,7 +80,7 @@ public class EditContactForm extends VerticalPanel {
 		propertyAddBox.setWidget(1, 0, propertyName);
 		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
 		// deklariert.)
-		
+
 		// 1.1 eine Listbox zum Setzen des Formats
 		formattype.addItem("Text");
 		formattype.addItem("Datum");
@@ -91,7 +93,9 @@ public class EditContactForm extends VerticalPanel {
 		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.setWidget(1, 2, addPropertyButton);
-	//	addPanel.add(propertyAddBox);
+		addPPanel.add(propertyAddBox);
+		
+		
 		p= new ArrayList<Property>();
 		// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
 		// werden können
@@ -106,18 +110,32 @@ public class EditContactForm extends VerticalPanel {
 		p.add(new Property("Noch benennen", Type.STRING, true, 9));
 		p.add(new Property("Noch benennen", Type.STRING, true, 10));
 		
+		//for (Property p : p) {
+			
+		//}
+		
+		GWT.log("EditContPErstellt");
+		
 		this.add(pPanel);
 		this.add(buttonPanel);
 		this.add(addPPanel);
+		
 		renderContact(contact.getValues());
+		this.add(pPanel);
 
 	}
 
 	public void renderContact(ArrayList<PValue> values) {
+		GWT.log("EditContRender6");
 		val = new ArrayList<PropForm>();
-		for (Property p : p) {
-			val.add(new PropForm(p));
+		for (Property pl : p) {
+			GWT.log("EditContRenderfuu");
+			val.add(new PropForm(pl));
+			GWT.log("EditContRenderfuu2");
 		}
+		
+		GWT.log("EditContRender7");
+		
 		// PValues, die standardeigenschaften sind, den entsprechenden PropForms
 		// zuordnen
 		for (PValue pv : values) {
@@ -132,6 +150,9 @@ public class EditContactForm extends VerticalPanel {
 				val.add(pnew);
 			}
 		}
+		
+		GWT.log("EditContRender8");
+		
 		// Alle PropForms mit allen PVForms anzeigen lassen
 		for (PropForm p : val) {
 			pPanel.add(p);
@@ -307,11 +328,17 @@ public class EditContactForm extends VerticalPanel {
 		Label property;
 		Button add = new Button("Ausprägung hinzufügen");
 
-		PropForm(Property p) {
-			this.p = p;
-			property.setText(p.getLabel());
+		PropForm(Property pv) {
+			GWT.log("newPropForm");
+			this.p = pv;
+			pvs = new VerticalPanel();
+			property = new Label(p.getLabel());
+			GWT.log("newPropForm");
 			this.add(property);
+
+			//pvForms.add(new PVForm());
 			this.add(pvs);
+			GWT.log("newPropForm3");
 			this.add(add);
 		}
 
@@ -354,19 +381,25 @@ public class EditContactForm extends VerticalPanel {
 			this.add(delete);
 			this.add(val);
 			this.add(dp);
+			
+			dp.setVisible(false);
+		    dp.addValueChangeHandler(new ValChange());
+		    dp.setValue(new Date(), true);
 		}
+		
+		class ValChange implements ValueChangeHandler<Date> {
+		      public void onValueChange(ValueChangeEvent<Date> event) {
+		        pval.setDateValue(event.getValue());
+		        val.setText(pval.toString());
+		      }
+		}
+		
 
 		PValue getPV() {
 			return this.pval;
 		}
 
-		//dp.setVisible(false);
-//	    dp.addValueChangeHandler(new ValueChangeHandler<Date>() {
-//	      public void onValueChange(ValueChangeEvent<Date> event) {
-//	        pval.setDateValue(event.getValue());
-//	        val.setText(pval.toString());
-//	      }
-//	    });
+		
 
 		void create(PValue pv) {
 			dp = new DatePicker();
@@ -375,8 +408,6 @@ public class EditContactForm extends VerticalPanel {
 			CreateClickHandler cch = new CreateClickHandler();
 			cch.setPV(pv);
 			val.addClickHandler(cch);
-			
-			
 		}
 		class CreateClickHandler implements ClickHandler {
 			PValue pv;

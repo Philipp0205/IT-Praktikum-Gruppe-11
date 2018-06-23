@@ -62,6 +62,8 @@ public class Editor implements EntryPoint {
 	VerticalPanel mainPanel = new VerticalPanel();
 	HorizontalPanel topPanel = new HorizontalPanel();
 	HorizontalPanel widgetPanel = new HorizontalPanel();
+	//VerticalPanel menuPanel = new VerticalPanel();
+	//VerticalPanel formPanel = new VerticalPanel();
 	HorizontalPanel placeholder = new HorizontalPanel();
 
 	private VerticalPanel loginPanel = new VerticalPanel();
@@ -77,6 +79,7 @@ public class Editor implements EntryPoint {
 	ContactCollaborationForm ccForm;
 	ContactListCollaborationForm clcForm;
 	ExistingContactCollaborationForm eccForm;
+	SearchForm sForm;
 	// ExistingContactListCollaborationForm clcForm;
 
 	// SearchForm sForm = new SearchForm();
@@ -110,6 +113,8 @@ public class Editor implements EntryPoint {
 
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
+	//	widgetPanel.add(menuPanel);
+	//	widgetPanel.add(formPanel);
 
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
@@ -128,14 +133,13 @@ public class Editor implements EntryPoint {
 
 		
 		// Menü hinzufügen
-		
+
 		treeViewMenu = new TreeViewMenu();
 		treeViewMenu.onLoad();
 		treeViewMenu.setEditor(this);
-		GWT.log("Editor: TreeViewMenu erstellen");
+		GWT.log("Editor: TreeViewMenu erstellt");
 
 		widgetPanel.add(treeViewMenu.getStackPanel());
-		
 		/**
 		 * Das kann weg sobald treeview passt
 		 */
@@ -182,6 +186,7 @@ public class Editor implements EntryPoint {
 		scForm.setUser(currentUser);
 		scForm.showContact(c);
 		GWT.log("showCOnt4");
+		widgetPanel.remove(1);
 		widgetPanel.insert(scForm, 1);
 	}
 	
@@ -192,8 +197,12 @@ public class Editor implements EntryPoint {
 			cForm.setEditor(this);
 			cForm.setUser(this.currentUser);
 		}
+		GWT.log("editContact");
 		cForm.setUser(currentUser);
 		cForm.setContact(c);
+		GWT.log("editContact");
+		//widgetPanel.remove(1);
+		GWT.log("editContact");
 		widgetPanel.insert(cForm, 1);
 		GWT.log("editcontFertig");
 	}
@@ -269,6 +278,16 @@ public class Editor implements EntryPoint {
 		 * TODO implement
 		 */
 	}
+	
+	/* public void showSearchForm(ContactList cl) {
+		if (this.sForm == null) {
+			sForm = new SearchForm();
+			sForm.setEditor();
+		}
+		sForm.setContactList(cl);
+		widgetPanel.insert(sForm, 1);
+		
+	} */
 
 	
 	public void returnToContactForm(Contact c) {

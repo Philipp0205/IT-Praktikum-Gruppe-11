@@ -14,7 +14,7 @@ public class ContactCell extends AbstractCell<Contact> {
 
 	@Override
 	public void render(Context context, Contact value, SafeHtmlBuilder sb) {
-		if (value == null) {
+		if (value != null) {
 			// sb.appendHtmlConstant("<div>");
 			sb.appendEscaped(value.getName());
 			// sb.appendHtmlConstant("</div>");
