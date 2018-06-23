@@ -9,6 +9,8 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -26,30 +28,44 @@ public class SearchForm extends VerticalPanel{
 	TreeViewMenu tvm;
 	StackPanel sp;
 	ContactCellListTab ct;
-	TextBox tb = new TextBox();
-	Button sb = new Button();
+	TextBox tb;
+	Button sb;
+	Label l;
 	ContactList cl ;
-
+	Editor e;
+	
 	public void onLoad() {
+		
 		
 		
 		tvm = new TreeViewMenu();
 		sp = new StackPanel();
 		ct= new  ContactCellListTab();
-		
-		sp.add(ct.getCellList(), "Ausgabe");
-		this.add(sp);
-		this.add(sb);
+		GWT.log("in der SearchForm");
+		sb = new Button("Finden");
+		tb = new TextBox();
+		l = new Label("Wert:");
+		this.add(l);
 		this.add(tb);
-		
+		this.add(sb);
+		this.add(sp);
 		sb.addClickHandler((new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
+				GWT.log(cl.getListName());
+				GWT.log(tb.getValue());
 				editorService.searchInList(tb.getValue(), cl, new SearchInListCallback());
 			}
 		}));
-		
+		GWT.log("Ende Load");
 	}
+	void setContactList(ContactList cl) {
+		this.cl =cl;
+	}
+	void setEditor(Editor e) {
+		this.e=e;
+	}
+	
 	class SearchInListCallback implements AsyncCallback<ArrayList<Contact>> {
 		@Override 
  		public void onFailure(Throwable caugth) {
@@ -57,8 +73,10 @@ public class SearchForm extends VerticalPanel{
  		}
  		@Override
  		public void onSuccess(ArrayList<Contact> result) {
+ 			GWT.log("onSucess");
  			for(Contact c : result) {
  			ct.addContact(c);
+ 			sp.add(ct.getCellList(), "Ausgabe");
  			}
  			}
  		}
