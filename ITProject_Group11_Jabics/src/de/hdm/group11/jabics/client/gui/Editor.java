@@ -126,18 +126,18 @@ public class Editor implements EntryPoint {
 		topPanel.add(createC);
 		topPanel.add(createCL);
 
-		/**
-		 * Menü hinzufügen
-		 *
+		
+		// Menü hinzufügen
+		
 		treeViewMenu = new TreeViewMenu();
 		treeViewMenu.onLoad();
 		treeViewMenu.setEditor(this);
 		GWT.log("Editor: TreeViewMenu erstellen");
 
-		widgetPanel.add(treeViewMenu.getStackPanel()); */
+		widgetPanel.add(treeViewMenu.getStackPanel());
 		
 
-		
+		widgetPanel.add(treeViewMenu.getStackPanel());
 
 		/**
 		 * Das kann weg sobald treeview passt
@@ -196,7 +196,6 @@ public class Editor implements EntryPoint {
 			cForm.setEditor(this);
 			cForm.setUser(this.currentUser);
 		}
-		
 		cForm.setUser(currentUser);
 		cForm.setContact(c);
 		widgetPanel.insert(cForm, 0);
