@@ -177,11 +177,11 @@ public class Editor implements EntryPoint {
 	 * Kontakte, Listen und CollabForms anzeigen
 	 */
 	public void showContact(Contact c) {
-		if (this.scForm == null) {
+		//if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
 			scForm.setUser(this.currentUser);
-		}
+		// }
 		GWT.log("showCont2");
 		scForm.setUser(currentUser);
 		scForm.showContact(c);
