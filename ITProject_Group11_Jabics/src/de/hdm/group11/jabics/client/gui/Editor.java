@@ -279,15 +279,15 @@ public class Editor implements EntryPoint {
 		 */
 	}
 	
-	/* public void showSearchForm(ContactList cl) {
+	 public void showSearchForm(ContactList cl) {
 		if (this.sForm == null) {
 			sForm = new SearchForm();
-			sForm.setEditor();
 		}
+		sForm.setEditor(this);
+		widgetPanel.clear();
 		sForm.setContactList(cl);
-		widgetPanel.insert(sForm, 1);
-		
-	} */
+		widgetPanel.add(sForm);
+	} 
 
 	
 	public void returnToContactForm(Contact c) {
@@ -335,15 +335,28 @@ public class Editor implements EntryPoint {
 		@Override
 		public void onClick(ClickEvent event) {
 
-			// //treeViewMenu.setContactForm(cForm);
-			// //cForm.setTreeViewMenu(treeViewMenu);
-			//
-			// hPanel.add(contactDetailPanel);
-			//
-			// contactDetailPanel.clear();
-			// contactDetailPanel.add(cForm);
-			//
-			// RootPanel.get("details").add(contactDetailPanel);
+			 //treeViewMenu.setContactForm(cForm);
+			 //cForm.setTreeViewMenu(treeViewMenu);
+			
+//			 hPanel.add(contactDetailPanel);
+//			
+//			 contactDetailPanel.clear();
+//			 contactDetailPanel.add(cForm);
+			
+	//		 RootPanel.get("details").add(contactDetailPanel);
+			ContactList cl = new ContactList();
+			cl.setId(1);
+			Contact c1 = new Contact();
+			c1.setName("Uschi");
+			Contact c2 = new Contact();
+			c1.setName("Strolch");
+			Contact c3 = new Contact();
+			c1.setName("Fiffi");
+			cl.setListName("Idiyets");
+			cl.addContact(c1);
+			cl.addContact(c2);
+			cl.addContact(c3);
+			showSearchForm(cl);
 
 		}
 	}/**
