@@ -280,9 +280,9 @@ public class Editor implements EntryPoint {
 	}
 	
 	 public void showSearchForm(ContactList cl) {
-		if (this.sForm == null) {
-			sForm = new SearchForm();
-		}
+//		if (this.sForm == null) {
+		sForm = new SearchForm();
+		
 		sForm.setEditor(this);
 		widgetPanel.clear();
 		sForm.setContactList(cl);
@@ -349,23 +349,23 @@ public class Editor implements EntryPoint {
 			
 	//		 RootPanel.get("details").add(contactDetailPanel);
 			//TODO 
-//			ContactList cl = new ContactList();
-//			cl.setId(1);
-//			JabicsUser u = new JabicsUser();
-//			Contact c1 = new Contact();
-//			Property p = new Property();
-//			p.setId(2);
-//			PValue pv = new PValue(p,"Fiffi",u);
-//			c1.setName("Uschi");
-//			Contact c2 = new Contact();
-//			c2.setName("Strolch");
-//			Contact c3 = new Contact();
-//			c3.setName("Fiffi");
-//			c3.addPValue(pv);
-//			cl.setListName("Idiyets");
-//			cl.addContact(c1);
-//			cl.addContact(c2);
-//			cl.addContact(c3);
+			ContactList cl = new ContactList();
+			cl.setId(1);
+			JabicsUser u = new JabicsUser();
+			Contact c1 = new Contact();
+			Property p = new Property();
+			p.setId(2);
+			PValue pv = new PValue(p,"Fiffi",u);
+			c1.setName("Uschi");
+			Contact c2 = new Contact();
+			c2.setName("Strolch");
+			Contact c3 = new Contact();
+			c3.setName("Fiffi");
+			c3.addPValue(pv);
+			cl.setListName("Idiyets");
+			cl.addContact(c1);
+			cl.addContact(c2);
+			cl.addContact(c3);
 			showSearchForm(cl);
 
 		}
