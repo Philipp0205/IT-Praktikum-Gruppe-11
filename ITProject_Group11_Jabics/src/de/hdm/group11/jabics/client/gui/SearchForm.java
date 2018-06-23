@@ -36,11 +36,11 @@ public class SearchForm extends VerticalPanel{
 	Editor e;
 	
 	public void onLoad() {
-		GWT.log("lol");
 		this.add(l);
 		this.add(tb);
 		this.add(sb);
 		this.add(sp);
+		ct.setEditor(e);
 		
 		sb.addClickHandler((new ClickHandler() {
 			
@@ -57,7 +57,6 @@ public class SearchForm extends VerticalPanel{
 		sb = new Button("Finden");
 		tb = new TextBox();
 		l = new Label("Wert:");
-		sp.add(ct.getCellList(), "Ausgabe");
 	}
 	void setContactList(ContactList cl) {
 		this.cl =cl;
@@ -77,9 +76,9 @@ public class SearchForm extends VerticalPanel{
  			GWT.log("OnSuccess");
  			for(Contact c : result) {
  			GWT.log(c.getValues().get(0).getStringValue());
- 			ct.addContact(c);
+ 			ct.addsearchedContact(c);
  			}
-
+ 			sp.add(ct.getCellList(), "Ausgabe");
  			}
  		}
 	}
