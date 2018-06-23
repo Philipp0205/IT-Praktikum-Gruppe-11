@@ -43,7 +43,20 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * 
 	 * In diesem Fall werden werden Kontaktlisten bereitgestellt. 
 	 */
-	private ListDataProvider<ContactList> contactListDataProviders =  new ListDataProvider<ContactList>();
+	private ListDataProvider<ContactList> contactListDataProvider =  new ListDataProvider<ContactList>();
+	/*
+	 * In der Map werden die ListDataProviders f�r die expandierten Kontakte gepespeichert.
+	 * 
+	 * Das Java Map Interface "mappt" einzigartige Schl�ssel (keys) und den zugeh�rigen Wert (value), vergleichbar mit einem W�rterbuch oder 
+	 * Zuweisungstabellen in der DB. Die values k�nnen jeder Zeit anhand der Keys aufgerufen werden. Also ein Assoziativspeicher. 
+	 * 
+	 * Beispiel: 
+	 * key: 1234 --> Value: Kontakt (Max, Mustermann, 1990, ...)  
+	 * 
+	 */
+	private Map<ContactList, ListDataProvider<Contact>> allContactOfListProvider;
+	
+	
 	
 	public ContactListTreeTab() {
 		GWT.log("Konstruktor ContactListTreeTab");
@@ -60,7 +73,7 @@ public class ContactListTreeTab implements TreeViewModel {
 		 * 
 		 * (wird weiter unten deklariert)
 		 */
-		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
+		allContactOfListProvider = new HashMap<ContactList, ListDataProvider<Contact>>();
 		
 	}
 	
@@ -76,26 +89,15 @@ public class ContactListTreeTab implements TreeViewModel {
 			} else if (selection instanceof ContactList) {
 				setSelectedContactList((ContactList) selection);
 			}
-
 		}
-
 	}
-	/*
-	 * In der Map werden die ListDataProviders f�r die expandierten Kontakte gepespeichert.
-	 * 
-	 * Das Java Map Interface "mappt" einzigartige Schl�ssel (keys) und den zugeh�rigen Wert (value), vergleichbar mit einem W�rterbuch oder 
-	 * Zuweisungstabellen in der DB. Die values k�nnen jeder Zeit anhand der Keys aufgerufen werden. Also ein Assoziativspeicher. 
-	 * 
-	 * Beispiel: 
-	 * key: 1234 --> Value: Kontakt (Max, Mustermann, 1990, ...)  
-	 * 
-	 */
-	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
+	
+	
 	
 	/**
 	 * In folgender Klasse werden BusinessObjects auf eindeutige Zahlenobjekte abgebildet, die als Schl�ssel f�r Baumknoten dienen. 
 	 * Dadurch werden im Selektionsmodell alle Objekte mit derselben id selektiert, wenn eines davon selektiert wird. Der
-	 * Schl�ssel f�r Kontaktobjekte ist eine positive, der f�r Kundenobjekte eine
+	 * Schlüssel für Kontaktobjekte ist eine positive, der f�r Kundenobjekte eine
 	 * negative Zahl, die sich jeweils aus der id des Objektes ergibt. Dadurch
 	 * k�nnen Kunden- von Kontenobjekten unterschieden werden, auch wenn sie dieselbe id haben.
 	 * 
@@ -160,14 +162,14 @@ public class ContactListTreeTab implements TreeViewModel {
 	  */
 	 public void addContactList(ContactList cl) { 
 		 //Neue Kontaktliste wird dem DataProvider hinzugef�gt.
-		 contactListDataProviders.getList().add(cl);
+		 contactListDataProvider.getList().add(cl);
 		 //Die neue Liste wird ausgew�hlt.
 		 selectionModel.setSelected(cl, true);
 		 
 	 }
 	 
 	 public void updateContactList(ContactList cl) {
-		 List<ContactList> contactlists = contactListDataProviders.getList();
+		 List<ContactList> contactlists = contactListDataProvider.getList();
 		 int i = 0;
 			for (ContactList cl2 : contactlists) {
 				if (cl2.getId() == cl.getId()) {
@@ -177,12 +179,12 @@ public class ContactListTreeTab implements TreeViewModel {
 					i++;
 				}
 			}
-			contactListDataProviders.refresh();
+			contactListDataProvider.refresh();
 	 }
 	 
 	 public void removeContactList(Contact cl) {
-		 contactListDataProviders.getList().remove(cl);
-		 contactDataProviders.remove(cl);
+		 contactListDataProvider.getList().remove(cl);
+		 allContactOfListProvider.remove(cl);
 	 }
 	 
 	 /*
@@ -190,10 +192,10 @@ public class ContactListTreeTab implements TreeViewModel {
 	  */	 
 	 public void addContactOfList(ContactList cl, Contact c) {
 		 // wenn es noch keinen Kontaktlisten Provider f�r den Kontakt gitb, dann wurde der Baum noch nicht ge�ffnet und es passiert nichts.
-		 if (!contactDataProviders.containsKey(cl)) {
+		 if (!allContactOfListProvider.containsKey(cl)) {
 			 return;
 		 }
-		 ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
+		 ListDataProvider<Contact> contactsProvider = allContactOfListProvider.get(cl);
 		 if (!contactsProvider.getList().contains(c)) {
 			 contactsProvider.getList().add(c);
 			 
@@ -202,10 +204,10 @@ public class ContactListTreeTab implements TreeViewModel {
 	 }
 	 
 	 public void removeContactOfContactList(ContactList cl, Contact c) {
-		 if (!contactDataProviders.containsKey(cl)) {
+		 if (!allContactOfListProvider.containsKey(cl)) {
 			 return;
 		 }
-		 contactDataProviders.get(cl).getList().remove(c);
+		 allContactOfListProvider.get(cl).getList().remove(c);
 		 selectionModel.setSelected(cl, true);
 	 }
 	 
@@ -239,7 +241,7 @@ public class ContactListTreeTab implements TreeViewModel {
 
 		@Override
 		public void onSuccess(ContactList cl) {
-			List<Contact> contacts = contactDataProviders.get(cl).getList();
+			List<Contact> contacts = allContactOfListProvider.get(cl).getList();
 			for (int i=0; i < contacts.size(); i++) {
 				if (contact.getId() == contacts.get(i).getId()) {
 					contacts.set(i, contact);
@@ -264,8 +266,6 @@ public class ContactListTreeTab implements TreeViewModel {
 		if (value.equals("Root")) {
 			GWT.log("TreeTab: value.equals");
 			
-			contactListDataProviders = new ListDataProvider<ContactList>();
-			
 			JabicsUser user2 = new JabicsUser();
 			user2.setId(1);
 			//JabicsUser jabicsUser2 = new JabicsUser();
@@ -287,19 +287,17 @@ public class ContactListTreeTab implements TreeViewModel {
 					
 					for (ContactList cl : contactlists) {
 						currentCL = cl;
-						contactListDataProviders.getList().add(cl);
-						contactListDataProviders.flush();
+						contactListDataProvider.getList().add(cl);
+						contactListDataProvider.flush();
 					}
 					GWT.log("TreeTab onSuccess fertig");
-				}
-				
-				
+				}	
 				
 			});
 			
 		// Return a node info that pairs the data with a cell.	
 		GWT.log("ContactTree DefaultNodeInfo1");
-		return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
+		return new DefaultNodeInfo<ContactList>(contactListDataProvider, new ContactListCell(), selectionModel, null);
 			
 		}
 		
@@ -309,9 +307,11 @@ public class ContactListTreeTab implements TreeViewModel {
 			
 			JabicsUser user2 = new JabicsUser();
 			user2.setId(1);
-			
+			/**
+			 * ListDataProvider
+			 */
 			final ListDataProvider<Contact> contactProvider = new ListDataProvider<Contact>();
-			contactDataProviders.put((ContactList) value, contactProvider);
+			allContactOfListProvider.put((ContactList) value, contactProvider);
 			
 			GWT.log("CurrentCL: " + currentCL.toString());
 			
@@ -325,8 +325,10 @@ public class ContactListTreeTab implements TreeViewModel {
 					GWT.log("TreeTab value instanceof ContactList onSuccess");	
 					GWT.log(contacts.toString());
 					for (Contact c : contacts) {
+						//allContactOfListProvider.get().getList().add(c);
 						contactProvider.getList().add(c);
-					}			
+					}
+					contactProvider.flush();
 				}		
 			});
 			
@@ -345,7 +347,4 @@ public class ContactListTreeTab implements TreeViewModel {
 		// value is of type Contact.
 		return (value instanceof Contact);
 	}
-	
-	
-
 }

@@ -345,6 +345,7 @@ public class ContactForm extends VerticalPanel {
 	 * Textboxen, Buttons und Checkboxen, sowie deren Clickhandler werden dynamisch
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
+
 	
 	TextBox[] pValueTextBox;
 	
@@ -364,6 +365,8 @@ public class ContactForm extends VerticalPanel {
 			pValueTextBox = new TextBox[result.size()];
 			Button[] saveButton = new Button[result.size()];
 			Button[] deleteButton = new Button[result.size()];
+			DeleteClickHandler[] cl = new DeleteClickHandler[result.size()];
+			SaveClickHandler[] scl = new SaveClickHandler[result.size()];
 			
 			for (int i = 0; i < result.size(); i++) {
 				propertyLabels[i] = new Label(result.get(i).getProperty().getLabel()+ ":");
@@ -372,7 +375,15 @@ public class ContactForm extends VerticalPanel {
 				saveButton[i] = new Button("Save");
 				deleteButton[i] = new Button("Delete");
 				contactGrid.resize(result.size()+1, 5);
-			}
+				cl[i] = new DeleteClickHandler();
+				cl[i].seti(i);
+				deleteButton[i].addClickHandler(cl[i]);
+				scl[i] = new SaveClickHandler();
+				scl[i].seti(i);
+				scl[i].settb(pValueTextBox);
+				saveButton[i].addClickHandler(scl[i]);
+				
+			
 			for (int j = 0; j < propertyLabels.length; j++) {
 
 				contactGrid.setWidget(j, 0, propertyLabels[j]);
@@ -382,5 +393,98 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 }
-
+		class DeleteClickHandler implements ClickHandler {
+			int i;
+			ArrayList<PValue> result;
+			void seti(int i) {
+				this.i=i;
+			}
+			void setal(ArrayList<PValue> result) {
+				this.result = result;
+			}
+			@Override
+			public void onClick(ClickEvent event) {
+				editorService.deletePValue(result.get(i), new deletePValueCallback(result.get(i)));
+				}
+			}
+		class SaveClickHandler implements ClickHandler {
+			int i;
+			ArrayList<PValue> result;
+			TextBox[] tb;
+			void seti(int i) {
+				this.i=i;
+			}
+			void setal(ArrayList<PValue> result) {
+				this.result = result;
+			}
+			void settb(TextBox[] tb) {
+				this.tb = tb;
+			}
+			@Override
+			public void onClick(ClickEvent event) {
+				PValue newPV = result.get(i);
+									
+										switch (result.get(i).getPointer()) {
+										case 1:
+											newPV.setIntValue(Integer.valueOf(tb[i].getText()));
+											break;
+										case 2:
+											//newPV.setStringValue(pValueTextBox.get(pointer).getText()); 
+											GWT.log(tb[i].getText());
+											break;
+										case 3:
+											Date ld = selectedDate;
+											// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
+											//neuer Datepicker
+											newPV.setDateValue(null);
+											break;
+										case 4:
+											newPV.setFloatValue(Float.parseFloat(tb[i].getValue())); 
+											break;
+										default:
+										}
+										editorService.updatePValue(newPV, new UpdatePValueCallback());
+				 					}
+				}
+			}
+		/**
+	 	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer
+	 	 * Eigenschafts- ausprägung.
+	 	 */
+	 	class deletePValueCallback implements AsyncCallback<Void> {
+	 
+	 		private PValue pvalue = null;
+	 
+	 		deletePValueCallback(PValue pv) {
+	 			pvalue = pv;
+	 		}
+	 
+	 		public void onFailure(Throwable caugth) {
+	 		}
+	 
+	 		@Override
+	 		public void onSuccess(Void result) {
+	 			if (pvalue != null) {
+	 				// update Contact bzw. Contacttree
+	 			}
+	 		}
+	}
+	 	/**
+	 	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer
+	 	 * Eigenschafts- ausprägung.
+	 	 */
+	 	private class UpdatePValueCallback implements AsyncCallback<PValue> {
+	 
+	 		public void onFailure(Throwable caugth) {
+	 			Window.alert("Die Änderung ist fehlgeschlagen.");
+	 		}
+	 
+	 		@Override
+	 		public void onSuccess(PValue result) {
+	 			// Contacttree muss aktualisiert werden .
+	 			// Conacttree.refresh();
+				Window.alert("Wert geändert");
+	 		}
+	 	}
 }
+

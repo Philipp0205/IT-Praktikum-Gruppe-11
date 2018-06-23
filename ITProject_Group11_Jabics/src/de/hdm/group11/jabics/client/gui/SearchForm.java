@@ -1,5 +1,66 @@
 package de.hdm.group11.jabics.client.gui;
 
-public class SearchForm {
+import java.util.ArrayList;
 
-}
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.StackPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.bo.Contact;
+import de.hdm.group11.jabics.shared.bo.ContactList;
+import de.hdm.group11.jabics.shared.bo.PValue;
+
+public class SearchForm extends VerticalPanel{
+	
+	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+
+	TreeViewMenu tvm;
+	StackPanel sp;
+	ContactCellListTab ct;
+	TextBox tb = new TextBox();
+	Button sb = new Button();
+	ContactList cl ;
+
+	public void onLoad() {
+		
+		
+		tvm = new TreeViewMenu();
+		sp = new StackPanel();
+		ct= new  ContactCellListTab();
+		
+		sp.add(ct.getCellList(), "Ausgabe");
+		this.add(sp);
+		this.add(sb);
+		this.add(tb);
+		
+		sb.addClickHandler((new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				editorService.searchInList(tb.getValue(), cl, new SearchInListCallback());
+			}
+		}));
+		
+	}
+	class SearchInListCallback implements AsyncCallback<ArrayList<Contact>> {
+		@Override 
+ 		public void onFailure(Throwable caugth) {
+			Window.alert("Die Durchsuchung ist fehlgeschlagen");
+ 		}
+ 		@Override
+ 		public void onSuccess(ArrayList<Contact> result) {
+ 			for(Contact c : result) {
+ 			ct.addContact(c);
+ 			}
+ 			}
+ 		}
+	}
+

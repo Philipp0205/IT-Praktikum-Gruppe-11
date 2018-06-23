@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.client.gui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -54,7 +55,6 @@ public class TreeViewMenu {
 		return this.stackPanel;
 	}
 
-
 	public void setEditor(Editor editor) {
 		GWT.log("Editor setzen in tree view");
 		GWT.log("Editor: " + editor.hashCode());
@@ -63,7 +63,7 @@ public class TreeViewMenu {
 		//contactsTab.setEditor(editor);
 	}
 
-	public Widget createContactCellListTab() {
+	public CellList createContactCellListTab() {
 		contactTab = new ContactCellListTab();
 		return contactTab.createContactTab();
 	}
@@ -74,6 +74,7 @@ public class TreeViewMenu {
 		GWT.log("TreeViewMenu: createListTab");
 		return tree;
 	}
+
 
 }
 
