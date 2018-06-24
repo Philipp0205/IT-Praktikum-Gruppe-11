@@ -175,9 +175,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
-			for (PValue p : c.getValues()) {
-				p.setProperty(pMapper.findPropertyById(p.getPropertyId()));
-			}}
+			}
 		for (Contact c : Filter.filterContactsByString(contacts, pv.getStringValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -199,10 +197,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
-			for (PValue p : c.getValues()) {
-				p.setProperty(pMapper.findPropertyById(p.getPropertyId()));
-			}}
+			c.setValues(pvMapper.findPValueForContact(c));}
 		for (Contact c : Filter.filterContactsByInt(contacts, pv.getIntValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -225,10 +220,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
-			for (PValue p : c.getValues()) {
-				p.setProperty(pMapper.findPropertyById(p.getPropertyId()));
-			}}
+			c.setValues(pvMapper.findPValueForContact(c));}
 		for (Contact c : Filter.filterContactsByDate(contacts, pv.getDateValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -251,10 +243,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
-			for (PValue p : c.getValues()) {
-				p.setProperty(pMapper.findPropertyById(p.getPropertyId()));
-			}}
+			c.setValues(pvMapper.findPValueForContact(c));}
 		for (Contact c : Filter.filterContactsByFloat(contacts, pv.getFloatValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
