@@ -65,7 +65,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 				pointer = 0;
 				break;
 			}
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

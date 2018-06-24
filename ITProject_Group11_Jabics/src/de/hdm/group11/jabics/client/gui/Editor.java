@@ -206,14 +206,14 @@ public class Editor implements EntryPoint {
 		//if (this.clForm == null) {
 		clForm = new ContactListForm();
 		clForm.setEditor(this);
+		clForm.setUser(this.currentUser);
 		
 		formPanel.clear();
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clForm.clear();
 		clForm.setCurrentList(cl);
-		clForm.setUser(loginfo.getCurrentUser());
 
-		widgetPanel.add(clForm);
+		formPanel.add(clForm);
 
 	}
 
@@ -237,22 +237,15 @@ public class Editor implements EntryPoint {
 
 	
 	public void showExistingContactCollab(Contact c) {
-
 		GWT.log("existingContactCollab");
-		eccForm = new ExistingContactCollaborationForm();
 		//if (this.eccForm == null) {
-			eccForm = new ExistingContactCollaborationForm();
-			eccForm.setEditor(this);
-
-		
-		widgetPanel.clear();
-
-		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
-		// ccForm.clear();
-		// ccForm = new ContactCollaborationForm();
+		eccForm = new ExistingContactCollaborationForm();
+		eccForm.setEditor(this);
 		eccForm.setContact(c);
-		// ccForm.setUser(loginfo.getCurrentUser());
-		widgetPanel.add(eccForm);
+		eccForm.setUser(this.currentUser);
+		
+		formPanel.clear();
+		formPanel.add(eccForm);
 	}
 	
 	public void showContactListCollab(ContactList cl) {
@@ -288,12 +281,12 @@ public class Editor implements EntryPoint {
 
 	
 	public void returnToContactForm(Contact c) {
-		if (this.cForm == null) {
+		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 		}
 		//addContactToTree(c);
 		scForm.setContact(c);
-		widgetPanel.add(cForm);
+		formPanel.add(cForm);
 	}
 
 	
@@ -309,7 +302,6 @@ public class Editor implements EntryPoint {
 	/**
 	 * TreeView manipulieren
 	 */
-	/*
 	public void addContactToTree(Contact c) {
 		treeViewMenu.addContact(c);
 	}
@@ -321,7 +313,19 @@ public class Editor implements EntryPoint {
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
 	}
-	*/
+	/*
+	public void removeContactFromTree(Contact c) {
+		treeViewMenu.removeContact(c);
+	}
+
+	public void removeContactListFromTree(ContactList cl) {
+		treeViewMenu.removeContactList(cl);
+	}
+
+	public void removeContactFromListInTree(ContactList cl, Contact c) {
+		treeViewMenu.removeContactFromList(cl, c);
+	}*/
+	
 
 	
 	//+++++++++++++++++++++++++++++++ClickHandler++++++++++++++++++++++++++
