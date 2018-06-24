@@ -6,6 +6,7 @@ import java.util.Date;
 import com.google.gwt.user.server.rpc.*;
 import de.hdm.group11.jabics.server.db.ContactMapper;
 import de.hdm.group11.jabics.server.db.PValueMapper;
+import de.hdm.group11.jabics.server.db.PropertyMapper;
 import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.ReportGeneratorService;
 import de.hdm.group11.jabics.shared.bo.*;
@@ -27,6 +28,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	ContactMapper cMapper;
 	UserMapper uMapper;
 	PValueMapper pvMapper;
+	PropertyMapper pMapper;
 	private static final long serialVersionUID = -4462530285584570547L;
 	
 	// Alternative Lösung die wir vorerst nicht beachten müssen
@@ -45,6 +47,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		cMapper = ContactMapper.contactMapper();
 		uMapper = UserMapper.userMapper();
 		pvMapper = PValueMapper.pValueMapper();
+		pMapper = PropertyMapper.propertyMapper();
 
 	  }
 	
@@ -59,10 +62,13 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 */
 	@Override
 	public AllContactsInSystemReport createAllContactsInSystemReport() {
+		
+		System.out.println("Reporterstellt nicht befüllt");
 		AllContactsInSystemReport result = new AllContactsInSystemReport();
 		result.setHeadline(new Paragraph("Report aller Kontakte im System"));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		result.setCreationDate(new Date());
+		System.out.println("Reporterstellt nicht befüllt");
 		for (JabicsUser u: uMapper.findAllUser()) {
 			result.addReport(createAllContactsOfUserReport(u));
 		}
@@ -82,7 +88,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		// Es wird ein leerer Report angelegt.
 		AllContactsOfUserReport result = new AllContactsOfUserReport();
 		// Headline und Footline werden gesetzt.
-		result.setHeadline(new Paragraph("Report aller Kontakte f�r " + u.getUsername()));
+		result.setHeadline(new Paragraph("Report aller Kontakte für " + u.getUsername()));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		result.setCreationDate(new Date());
 		/**
@@ -106,13 +112,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 * @return FilteredContactsOfUserReport
 	 */
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u) throws IllegalArgumentException {
-		
 		/**
 		 *  Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt. 
 		 *  Aus dieser werden dann anschließend die entsprechenden Kontakte gefiltert.
 		 */
 		ArrayList<Contact> contacts = cMapper.findAllContacts(u);
-
 		// Zuerst wird ein leerer Report angelegt. 
 		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport();
 		
@@ -157,10 +161,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		break;
 			
 		}
-		
-		
 		result.setFiltercriteria(new Paragraph(filtercriteria));
-		
+		System.out.println("FilteredContacts-return ");
 		return result;
 	}
 	
@@ -172,9 +174,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
-		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+			}
 		for (Contact c : Filter.filterContactsByString(contacts, pv.getStringValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -195,7 +199,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	public ArrayList<ContactReport> filterContactsByInt(ArrayList<Contact> contacts, PValue pv) {
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));}
 		for (Contact c : Filter.filterContactsByInt(contacts, pv.getIntValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -217,7 +222,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	public ArrayList<ContactReport> filterContactsByDate(ArrayList<Contact> contacts, PValue pv) {
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));}
 		for (Contact c : Filter.filterContactsByDate(contacts, pv.getDateValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -239,7 +245,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	public ArrayList<ContactReport> filterContactsByFloat(ArrayList<Contact> contacts, PValue pv) {
 		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));}
 		for (Contact c : Filter.filterContactsByFloat(contacts, pv.getFloatValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {

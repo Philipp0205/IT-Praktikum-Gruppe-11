@@ -8,10 +8,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 
 import de.hdm.group11.jabics.shared.bo.*;
 
-
-
 public interface EditorServiceAsync {
-
+	
 	void createUser(String name, String email, AsyncCallback<JabicsUser> callback) throws IllegalArgumentException;
 	
 	void createContact(ArrayList<PValue> cArray, JabicsUser u, AsyncCallback<Contact> callback);
@@ -52,7 +50,7 @@ public interface EditorServiceAsync {
 	
 	void deleteProperty(Property p, AsyncCallback<Void> callback);
 	
-	void deletePValue(PValue pv, AsyncCallback<Void> callback);
+	void deletePValue(PValue pv, Contact c, AsyncCallback<Void> callback);
 	
 	void updatePValue(PValue pv, AsyncCallback<PValue> callback);
 	
@@ -70,6 +68,8 @@ public interface EditorServiceAsync {
 	
 	void deleteCollaboration(ContactList cl, JabicsUser u, AsyncCallback<Void> callback);
 	
+	void deleteCollaboration(Contact c, JabicsUser u, AsyncCallback<Void> callback);
+	
 	void getPValueOf(Contact c , JabicsUser u, AsyncCallback<ArrayList<PValue>> callback);
 	
 	void searchExpressionInList(String s, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
@@ -86,6 +86,10 @@ public interface EditorServiceAsync {
 	
 	void getCollaborators(ContactList cl, AsyncCallback<ArrayList<JabicsUser>> callback);
 	
+	void getAllNotCollaboratingUser(Contact c, AsyncCallback<ArrayList<JabicsUser>> callback);
+	
+	void getAllNotCollaboratingUser(ContactList cl, AsyncCallback<ArrayList<JabicsUser>> callback);
+	
 	void getCollaborators(PValue pv, AsyncCallback<ArrayList<JabicsUser>> callback);
 	
 	void getAllUsers(AsyncCallback<ArrayList<JabicsUser>> callback);
@@ -93,4 +97,5 @@ public interface EditorServiceAsync {
 	void initialise(AsyncCallback<Void> callback);
 	
 	void setJabicsUser(JabicsUser u, AsyncCallback<JabicsUser> callback);
+
 }

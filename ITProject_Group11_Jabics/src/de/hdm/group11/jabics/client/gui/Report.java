@@ -1,113 +1,238 @@
 package de.hdm.group11.jabics.client.gui;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.Property;
+import de.hdm.group11.jabics.shared.bo.Type;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
+import de.hdm.group11.jabics.shared.report.AllContactsOfUserReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
 import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
 
 public class Report implements EntryPoint {
-	
+
+	JabicsUser currentUser;
+
 	ReportGeneratorServiceAsync reportGenerator = null;
-	Button allReportsButton = new Button("Alle Kontakte aller User");
-	Button searchButton = new Button("Suchen!");
-	
-	HorizontalPanel  navPanel = new HorizontalPanel();
-	
+	Button allReportsInSystemButton = new Button("Alle Kontakte aller Nutzer im System");
+	Button filteredReportButton = new Button("Alle Kontakte mit diesen Filterkriterien");
+	Button allReportButton = new Button("Alle meine Kontakte");
+
+	VerticalPanel mainPanel = new VerticalPanel();
+	HorizontalPanel otherReportsPanel = new HorizontalPanel();
+	HorizontalPanel navPanel = new HorizontalPanel();
+	VerticalPanel verPanel1 = new VerticalPanel();
+	VerticalPanel verPanel2 = new VerticalPanel();
+	VerticalPanel verPanel3 = new VerticalPanel();
+	VerticalPanel verPanel4 = new VerticalPanel();
+
 	TextBox stringBox = new TextBox();
 	TextBox intBox = new TextBox();
 	TextBox floatBox = new TextBox();
 	TextBox dateBox = new TextBox();
-	
+
+	Label stringl = new Label("Text:");
+	Label intl = new Label("Ganzzahl:");
+	Label floatl = new Label("Dezimalzahl:");
+	Label db = new Label("Datum:");
+	DatePicker datepicker = new DatePicker();
+
 	@Override
 	public void onModuleLoad() {
-		
+
 		if (reportGenerator == null) {
 			reportGenerator = ClientsideSettings.getReportGeneratorService();
 		}
 		
 		/**
-		 * Das GUI soll folgendermaßen aussehen: 
-		 * Oben gibt es eine Navigation mit 4 Feldern für ints, strings, floars und Dates
-		 * zusätzlich gibt es einen "Suchen" Button zum starten der Suche.
-		 * Sollte keines der Felder ausgefüllt worden sein werden alle Kontakte des Users ausgegeben.
-		 * Des Weiteren gibt es einen AllContactsOfSystem Button
+		 * Zunächst wird eine User-Instanz hinzugefügt.
+		 * Später entfernen und dies den Login übernehmen lassen
+		 */
+		currentUser = new JabicsUser();
+		currentUser.setEmail("stahl.alexander@live.de");
+		currentUser.setId(1);
+		currentUser.setUsername("Alexander Stahl");
+		/**
+		 * Login
+		 */
+		// loginService = ClientsideSettings.getLoginService();
+		// GWT.log(GWT.getHostPageBaseURL());
+		// loadEditor();
+		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		
+		//Übergangslösung
+		loadReport();
+
+	}
+
+	public void loadReport() {
+
+		/**
+		 * Das GUI soll folgendermaßen aussehen: Oben gibt es eine Navigation mit 4
+		 * Feldern für ints, strings, floars und Dates zusätzlich gibt es einen "Suchen"
+		 * Button zum starten der Suche. Sollte keines der Felder ausgefüllt worden sein
+		 * werden alle Kontakte des Users ausgegeben. Des Weiteren gibt es einen
+		 * AllContactsOfSystem Button
 		 * 
 		 * Unterhalb der Navigation wird der Report dargestellt.
 		 */
-		
+
 		// Aufbauen des NavPanels
-		navPanel.add(intBox);
-		navPanel.add(floatBox);
-		navPanel.add(stringBox);
-		navPanel.add(dateBox);
-		
+
+		verPanel1.add(stringl);
+		verPanel1.add(stringBox);
+		verPanel2.add(intl);
+		verPanel2.add(intBox);
+		verPanel3.add(floatl);
+		verPanel3.add(floatBox);
+		verPanel4.add(db);
+		String sDate1 = ("31/12/1998");
+		// Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+		datepicker.setValue(null);
+		verPanel4.add(dateBox);
+		verPanel4.add(datepicker);
+		datepicker.setVisible(false);
+
+		navPanel.add(verPanel1);
+		navPanel.add(verPanel2);
+		navPanel.add(verPanel3);
+		navPanel.add(verPanel4);
+		navPanel.add(filteredReportButton);
+		navPanel.add(allReportButton);
+		navPanel.add(allReportsInSystemButton);
+
+		mainPanel.add(navPanel);
+		otherReportsPanel.add(allReportsInSystemButton);
+		mainPanel.add(otherReportsPanel);
+
 		// Aufbauen des RootPanels
-		RootPanel.get("navigator").add(navPanel);
-		
-		//Verhalten der Buttons
-		allReportsButton.addClickHandler(new ClickHandler() {
+		RootPanel.get("navigator").add(mainPanel);
 
+		// Verhalten der Buttons
+		allReportsInSystemButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				reportGenerator.createAllContactsInSystemReport(new CreateAllContactsInSystemReportCallback() );
-				
+				reportGenerator.createAllContactsInSystemReport(new CreateAllContactsInSystemReportCallback());
 			}
-			
 		});
-		
-		searchButton.addClickHandler(new ClickHandler() {
+
+		// Verhalten der Buttons
+		allReportButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				reportGenerator.createAllContactsOfUserReport(currentUser, new CreateAllContactsOfUserReportCallback());
+			}
+		});
+
+		dateBox.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				PValue pvalue = new PValue();
-				JabicsUser u = null;
-				
-				
-				if (stringBox.getText().isEmpty() == false) {
-					pvalue.setStringValue(stringBox.getText());
-					//TODO hier currentUser einfügen
-					reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new CreateFilteredContactsOfUserReportCallback() );
-				} else if (intBox.getText().isEmpty() == false) {
-					if (stringBox.getText() != null ) {
-						pvalue.setIntValue(Integer.parseInt(stringBox.getText()));
-						
-					} else 
-						System.out.println("Eingegebener Wert ist nicht im korrekten Format (int).");
-					
-				} else if (floatBox.getText().isEmpty() == false) {
-					if (floatBox.getText() != null ) {
-						pvalue.setFloatValue(Float.parseFloat(floatBox.getText()));
-					}
-				} else if (dateBox.getText().isEmpty() == false) {
-					Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
-					pvalue.setDateValue(new Date(01,01,01));
-				}
-				else System.out.println("Es konnte keine Suche durchgeführt werden.");
-		
+				datepicker.setVisible(true);
+				Button finish = new Button("Fertig");
+				verPanel4.add(finish);
+				finish.addClickHandler(new DatePickerClickHandler(finish));
 			}
-			
-		});		
-		
+		});
+
+		/**
+		 * Der DatePicker brauch keinen Valuechangehandler, da der Wert nicht mehr in
+		 * eine Textbox gespeichert wird, sondern direkt nach dem Wert gesucht wird.
+		 */
+		datepicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				if (datepicker != null) {
+					// pval.setDateValue(event.getValue());
+					dateBox.setText(event.getValue().toString());
+				}
+			}
+		});
+
+		filteredReportButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+
+				JabicsUser u = new JabicsUser();
+				u.setId(1);
+				u.setEmail("stahl.alexander@live.de");
+				u.setUsername("Stahlex");
+				u.setLoggedIn(true);
+
+				if (stringBox.getText().isEmpty() == false) {
+					Property p = new Property(null, Type.STRING, false);
+					PValue pvalue = new PValue(p, stringBox.getText(), u);
+					// TODO hier currentUser einfügen
+					reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
+							new CreateFilteredContactsOfUserReportCallback());
+				} else if (intBox.getText().isEmpty() == false) {
+					Property p = new Property(null, Type.INT, false);
+					if (stringBox.getText() != null) {
+						PValue pvalue = new PValue(p, intBox.getText(), u);
+						reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
+								new CreateFilteredContactsOfUserReportCallback());
+					} else
+						System.out.println("Eingegebener Wert ist nicht im korrekten Format (int).");
+
+				} else if (floatBox.getText().isEmpty() == false) {
+					Property p = new Property(null, Type.FLOAT, false);
+					if (floatBox.getText() != null) {
+						PValue pvalue = new PValue(p, floatBox.getText(), u);
+						reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
+								new CreateFilteredContactsOfUserReportCallback());
+					}
+				} else if (datepicker.getValue() != null) {
+					Property p = new Property(null, Type.DATE, false);
+					PValue pvalue = new PValue(p, datepicker.getValue(), u);
+					reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
+							new CreateFilteredContactsOfUserReportCallback());
+				} else
+					Window.alert("Bitte in mindestens ein Feld ein Filterkriterium eingeben");
+
+			}
+
+		});
+
 	}
-	
+
+	class DatePickerClickHandler implements ClickHandler {
+		Button p;
+
+		DatePickerClickHandler(Button p) {
+			this.p = p;
+		}
+
+		public void onClick(ClickEvent event) {
+			datepicker.setVisible(false);
+			p.setVisible(false);
+		}
+	}
+
 	private class CreateAllContactsInSystemReportCallback implements AsyncCallback<AllContactsInSystemReport> {
 
 		@Override
@@ -115,46 +240,49 @@ public class Report implements EntryPoint {
 			// Fehler werden gelogt.
 			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
 		}
-		@Override
-		public void onSuccess(AllContactsInSystemReport report) {
-			if (report != null) { 
-				
-				HTMLReportWriter writer = new HTMLReportWriter();
-				writer.process(report);
-				RootPanel.get("content").clear();
-				RootPanel.get("content").add(new HTML(writer.getReportText()));
-			}
-		}	
-	}
-	
-	private class CreateFilteredContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
 
 		@Override
-		public void onFailure(Throwable caught) {
-			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");	
-		}
-		@Override
-		public void onSuccess(FilteredContactsOfUserReport report) {
-			if (report != null) { 
-				
+		public void onSuccess(AllContactsInSystemReport report) {
+			GWT.log("Report zurück!");
+			if (report != null) {
+
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();
 				RootPanel.get("content").add(new HTML(writer.getReportText()));
 			}
-		}	
+		}
 	}
-	
-	private class CreateAllContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
+
+	private class CreateFilteredContactsOfUserReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
 		}
+
 		@Override
 		public void onSuccess(FilteredContactsOfUserReport report) {
-			if (report != null) { 
-				
+			GWT.log("Filtered Report zurück!");
+			if (report != null) {
+				HTMLReportWriter writer = new HTMLReportWriter();
+				writer.process(report);
+				RootPanel.get("content").clear();
+				RootPanel.get("content").add(new HTML(writer.getReportText()));
+			}
+		}
+	}
+
+	private class CreateAllContactsOfUserReportCallback implements AsyncCallback<AllContactsOfUserReport> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
+		}
+
+		@Override
+		public void onSuccess(AllContactsOfUserReport report) {
+			if (report != null) {
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();

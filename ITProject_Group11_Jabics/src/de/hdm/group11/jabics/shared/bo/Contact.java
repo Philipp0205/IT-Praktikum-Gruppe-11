@@ -27,7 +27,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	 */
 	ArrayList<PValue> values = new ArrayList<PValue>();
 	private String name;
-	private BoStatus shareStatus;
+	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 	
 
 	public Contact(ArrayList<PValue> a, JabicsUser u) { 
@@ -117,6 +117,32 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		if (c.getId() == this.id) {
 			return 0;
 		} else return -1;
+	}
+	
+	/**
+	 * Check if BusinessObject is the same as transfer parameter
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof Contact) {
+			Contact c = (Contact) obj;
+			if (c.getId() == this.id) {
+				boolean bol = true;
+				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
+				for(PValue pv : c.getValues()) {
+					if (!this.values.contains(pv)) {
+						bol = false;
+					}
+				}
+				for(PValue pv : this.values) {
+					if (!c.getValues().contains(pv)) {
+						bol = false;
+					}
+				}
+				return bol;
+			}
+			return false;
+		}
+		return false;
 	}
 	/**
      * Der Key Provider für einen Contact

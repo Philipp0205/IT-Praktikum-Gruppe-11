@@ -86,11 +86,9 @@ public class PValueMapper {
 	public PValue insertPValue(PValue pv, Contact c){
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
-	    
 	    try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-			
 			/**
 			 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 			 * und trägt den Wert in die Datenbank ein
@@ -98,27 +96,26 @@ public class PValueMapper {
 			switch (pv.getProperty().getType()) {
 				case STRING: {
 					String value = pv.getStringValue();
-		
 					// Füllen des Statements
 					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
 					+ "( '" + value + "' , "  + " null, "  
-					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
+					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" , Statement.RETURN_GENERATED_KEYS ); 
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					}
 					break;
 				}
 				case INT: {
 					int value = pv.getIntValue();
-					System.out.println(pv.getIntValue());
     	
 					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
@@ -126,13 +123,14 @@ public class PValueMapper {
 					+ ", " + "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS );  
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					}
 					}
 					break;
 				}
@@ -143,14 +141,16 @@ public class PValueMapper {
 					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
-					}					break;
+					}
+					}
+					break;
 				}
 				case FLOAT: {
 					Float value = pv.getFloatValue();
@@ -162,14 +162,16 @@ public class PValueMapper {
 					+ ", " + "null" + ", " + pv.getProperty().getId() + ", "  + c.getId() + ")" + Statement.RETURN_GENERATED_KEYS ); 
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					if(rs.next()) {
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					}
-					if(rs2.next()) {
+					
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
-					}					break;
+					}
+					}
+					break;
 				}
    			}
 
@@ -180,6 +182,7 @@ public class PValueMapper {
 			//insertCollaboration(pv.getOwner(), pv, true);
 		
 		//Rückgabe des PValue
+		 con.close();
 		return pv;
 		}
 	    catch (SQLException e) {
@@ -202,36 +205,70 @@ public class PValueMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-
+	    	
 	    	//Erzeugen einer ArrayList
 		    ArrayList<PValue> al = new ArrayList<PValue>();
 
 	 	   	// Füllen des Statements
-	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
-	 	   	System.out.println(c.getId());
-
+	 	    ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, "
+	    			+ "pValue.stringValue, "
+	    			+ "pValue.intValue, "
+	    			+ "pValue.floatValue, "
+	    			+ "pValue.dateValue, "
+	    			+ "pValue.dateCreated, "
+	    			+ "pValue.dateUpdated, "
+	    			+ "pValue.contactID, "
+	    			+ "property.propertyID, "
+	    			+ "property.isStandard, "
+	    			+ "property.name, "
+	    			+ "property.type, "
+	    			+ "property.dateCreated, "
+	    			+ "property.dateUpdated "
+	    			+ "FROM pValue "
+	    			+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " +
+					 " WHERE contactID = " + c.getId() );
 	 	   	while (rs.next()) {
 	 	   	//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 	 	   		PValue pv = new PValue();
+	 	   		Property p = new Property();
 	 	   		
 	    		pv.setId(rs.getInt("pValueID"));
 	    		pv.setStringValue(rs.getString("stringValue"));
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
-	    		pv.setPropertyId(rs.getInt("propertyID"));
 	    		pv.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		//Muss noch in der Apl realisiert werden
 	    		pv.setDateValue(rs.getDate("dateValue"));
-	    		
+	    		if(pv.getStringValue()!= null) {
+	    			pv.setPointer(2);
+	    			
+	    		}else if(pv.getDateValue()!=null) {
+	    			pv.setPointer(3);
+	    		}else if(Integer.valueOf(pv.getIntValue())!= null) {
+	    			pv.setPointer(1);
+	    		}else {
+	    			pv.setPointer(4);
+	    		}
+	    		p.setId(rs.getInt("propertyID"));
+	    		p.setStandard(rs.getBoolean("isStandard"));
+	    		p.setLabel(rs.getString("name"));
+	    		p.setType(rs.getString("type"));		
+	    		p.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		p.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		pv.setProperty(p);
 	    		al.add(pv);
 	 	    }
+		    	con.close();
+		    	
 	 	   	return al;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
+	    	
 	    }
+	    
 	}
 	
 	/**
@@ -249,22 +286,46 @@ public class PValueMapper {
 	    	
 	    	//Erzeugen eines PValue-Objektes
 	    	PValue pv = new PValue();
+	    	
+	    	Property p = new Property();
 
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue " + "WHERE pValueID = " + id );
-	   
+	    	
+	    	ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, "
+	    			+ "pValue.stringValue, "
+	    			+ "pValue.intValue, "
+	    			+ "pValue.floatValue, "
+	    			+ "pValue.dateValue, "
+	    			+ "pValue.dateCreated, "
+	    			+ "pValue.dateUpdated, "
+	    			+ "pValue.contactID, "
+	    			+ "property.propertyID, "
+	    			+ "property.isStandard, "
+	    			+ "property.name, "
+	    			+ "property.type, "
+	    			+ "property.dateCreated, "
+	    			+ "property.dateUpdated "
+	    			+ "FROM pValue "
+	    			+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " +
+					 " WHERE pValueID = " + id  );
 	    	if (rs.next()) {
 	    		//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 	    		pv.setId(rs.getInt("pValueID"));
 	    		pv.setStringValue(rs.getString("stringValue"));
 	    		pv.setIntValue(rs.getInt("intValue"));
 	    		pv.setFloatValue(rs.getFloat("floatValue"));
-	    		pv.setPropertyId(rs.getInt("propertyID"));
 	    		pv.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
-	    		//Muss noch implementiert werden.
-	    		pv.setDateValue(rs.getDate("dateValue")); 
+	    		pv.setDateValue(rs.getDate("dateValue"));
+	    		p.setId(rs.getInt("propertyID"));
+	    		p.setStandard(rs.getBoolean("isStandard"));
+	    		p.setLabel(rs.getString("name"));
+	    		p.setType(rs.getString("type"));		
+	    		p.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		p.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		pv.setProperty(p);
 	    	}
+		con.close();
 	    	return pv;
 	    }
 	    catch (SQLException e) {
@@ -291,34 +352,37 @@ public class PValueMapper {
 	    	 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code> Objekts
 	    	 * und trägt den Wert in die Datenbank ein
 	    	 */
-	    	
+	    	System.out.println(pv.getProperty().getType().toString());
 	    	switch (pv.getProperty().getType()) {
+	    	
 	    		case STRING: {
 	    			
-	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = CURRENT_TIMESTAMP WHERE pValueID = '" + pv.getId() + "';");
+	    			stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + " ', dateUpdated = CURRENT_TIMESTAMP WHERE pValueID = " + pv.getId() + ";");
 	    			break;
 	    		}
 	    		case INT: {
 	    			String columnname = "intValue";
 	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP , " + columnname + "= '"
-	    			+ pv.getIntValue() + "' WHERE pValueID = '" + pv.getId() + "';");  
+	    			+ pv.getIntValue() + "' WHERE pValueID = " + pv.getId() + ";");  
 	    			break;
 	    		}
 	    		case DATE: {
 	    			String columnname = "dateValue";
-	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
-	    			+ pv.getDateValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP, " + columnname + "= '"
+	    			+ pv.getDateValue() + "' WHERE pValueID = " + pv.getId() + ";"); 
 	    			break;
 	    		}
 	    		case FLOAT: {
 
 	    			String columnname = "floatValue";
 	    			stmt.executeUpdate("UPDATE pValue SET SET dateUpdated = CURRENT_TIMESTAMP," + columnname + "= '"
-	    			+ pv.getFloatValue() + "' WHERE pValueID = '" + pv.getId() + "';"); 
+	    			+ pv.getFloatValue() + "' WHERE pValueID = " + pv.getId() + ";"); 
 	    			break;
 	    		}
 	    	}	
-	    	
+
+	    		con.close();
+
 		    return pv;
 	    }
 	    catch (SQLException e) {
@@ -343,6 +407,7 @@ public class PValueMapper {
 		   
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("DELETE FROM pValue WHERE pValueID=" + pv.getId()); 
+		    con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -378,6 +443,7 @@ public class PValueMapper {
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
+		    con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -402,16 +468,22 @@ public class PValueMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-	   
+	   System.out.println("anfang");
+	   System.out.println("u.getUsername");
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " 
-	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() +   ")"  );
+
+	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() + ")"  );
+
+		    con.close();
+
 	    	return pv;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
+	    
 	}
 	
 	/**
@@ -430,6 +502,7 @@ public class PValueMapper {
 	    	
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID= " + u.getId() + " AND pValueID= " + pv.getId()); 
+	    con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e); 

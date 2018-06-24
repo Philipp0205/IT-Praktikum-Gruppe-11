@@ -3,6 +3,8 @@ package de.hdm.group11.jabics.server.db;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
@@ -87,7 +89,7 @@ public class ContactMapper{
 	    Connection con = DBConnection.connection();
 	    
 	    try {
-		String query = ("INSERT INTO contact () VALUES ()"  );
+		String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
 		// Erzeugen eines ungefüllten SQL-Statements
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
@@ -102,12 +104,13 @@ public class ContactMapper{
 			c.setDateCreated(rs2.getTimestamp("dateCreated"));
 			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 		}
+		con.close();
+		return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
-	    return c;
 	}
 	
 	/**
@@ -123,16 +126,23 @@ public class ContactMapper{
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-		  
+		  System.out.println(">>>>>>>>>>>"+c.getName());
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP WHERE contactID = " + c.getId());
+
+	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP, nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
+	    	con.close();
+
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
+
+	    
 	    return c;
-	}
+	   
+	    }
+
 
 	/**
 	 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
@@ -150,6 +160,7 @@ public class ContactMapper{
 		   
 		   // Löschen des Kontakts.
 		   stmt.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId()); 
+		   con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -175,11 +186,10 @@ public class ContactMapper{
 			ArrayList<Contact> al = new ArrayList<Contact>();
 	    
 			// Join zwischen Contact und ContactCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
-			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated, contact.nickname"
 			+ " FROM contact"
 			+ " LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
 			+ " WHERE contactCollaboration.systemUserID = " + u.getId());
-			
 			while (rs.next()) {
 				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
@@ -188,8 +198,10 @@ public class ContactMapper{
 				c.setId(rs.getInt("contactID"));
 	    		c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
+			con.close();
 			return al;
 	    }
 	    catch (SQLException e) {
@@ -220,8 +232,11 @@ public class ContactMapper{
 				c.setId(rs.getInt("contactID"));
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		c.setName(rs.getString("nickname"));
+	    		System.out.println(c.getName());
 	    	}
-	    	return c;
+		con.close();
+		return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -236,7 +251,8 @@ public class ContactMapper{
 	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
 	 */
 	
-	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {   
+	public ArrayList<Contact> findContactsOfContactList(ContactList cl)  {
+		
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
 
@@ -248,12 +264,11 @@ public class ContactMapper{
         	ArrayList<Contact> al = new ArrayList<Contact>();
 	    	
 	    	// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte einer Liste auszuwählen.
-	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+	    	ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated, contact.nickname"
 	    			+ " FROM contact"
 	    			+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
 	    			+ " WHERE contactContactLists.contactListID = " + cl.getId()) ;
 	   
-	    	
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		while (rs.next()) {
 					
@@ -264,9 +279,10 @@ public class ContactMapper{
 					c.setId(rs.getInt("contactID"));
 					c.setDateCreated(rs.getTimestamp("dateCreated"));
 		    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+		    		c.setName(rs.getString("nickname"));
 					al.add(c);
 				}
-	    	
+		con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -305,6 +321,7 @@ public class ContactMapper{
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
+		con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -336,7 +353,8 @@ public class ContactMapper{
 	    	+ c.getId() + ", "
 	    	+ u.getId() + ")");
 
-	  	  	return c;
+		con.close();
+		return c;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -360,6 +378,7 @@ public class ContactMapper{
 		   
 		   // Löschen der Teilhaberschaft.
 		   stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= " + c.getId() );   	  
+	    		con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);

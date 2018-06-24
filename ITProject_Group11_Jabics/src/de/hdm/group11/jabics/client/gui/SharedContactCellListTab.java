@@ -1,32 +1,27 @@
 package de.hdm.group11.jabics.client.gui;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.thirdparty.guava.common.io.Resources;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.gwt.view.client.TreeViewModel;
-import com.google.gwt.view.client.TreeViewModel.NodeInfo;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.resource.JabicsResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
-import de.hdm.group11.jabics.resource.*;
 
-public class ContactCellListTab{
-
+public class SharedContactCellListTab {
+	
 	private Contact selectedContact;
 	Editor editor;
 	JabicsUser user;
@@ -37,38 +32,29 @@ public class ContactCellListTab{
 	private ContactKeyProvider keyProvider = null;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
-	
 
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
+	ListDataProvider<Contact> contactsProvider;
 	
-	public ContactCellListTab() {
+	public SharedContactCellListTab() {
+
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
+		GWT.log("ContactsConstructor");
 		
 	}
 
-	public CellList<Contact> createContactTabForSearchForm() {
-
-		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
-		contactDataProvider = new ListDataProvider<Contact>();
-		
-		contactDataProvider.addDataDisplay(contactCell);
-		contactCell.setSelectionModel(selectionModel);
-		
-		contactDataProvider.flush();
-		contactCell.redraw();
-		return contactCell;
-	}
-	
-	public CellList<Contact> createContactTab() {
-		GWT.log("3.1 createContactTab");
+	public CellList createContactTab() {
+		GWT.log("4.1 createContactTab");
 		eService = ClientsideSettings.getEditorService();
 		
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
 		user = new JabicsUser(1);
+		
+		contactsProvider = new ListDataProvider<Contact>();
 
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
@@ -76,15 +62,15 @@ public class ContactCellListTab{
 		//JabicsUser user2 = new JabicsUser(1);
 		GWT.log("2.1 User: " + user.getId());
 		
-		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
+		eService.getAllSharedContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("3.1 CellList onFailure" + caught.toString());
+				GWT.log("4.1 CellList onFailure" + caught.toString());
 			}
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
-				GWT.log("3.1 CellList onSuccess");
+				GWT.log("4.1 CellList onSuccess");
 				
 				for (Contact c : contacts) {
 					contactDataProvider.getList().add(c);
@@ -125,8 +111,9 @@ public class ContactCellListTab{
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
 		}
+
 		private void setSelectedContact(Contact c) {
-			GWT.log("3.1 Kontakt anzeigen " + c.getName());
+			GWT.log("4.1 Kontakt anzeigen" + c.getName());
 			editor.showContact(c);
 		}
 	}
@@ -143,11 +130,8 @@ public class ContactCellListTab{
 	
 	public void addContact(Contact c) {
 		contactDataProvider.getList().add(c);
-		selectionModel.setSelected(c, true);
-	}
-	public void addsearchedContact(Contact c) {
-		contactDataProvider.getList().add(c);
 		contactDataProvider.flush();
+		selectionModel.setSelected(c, true);
 	}
 
 	public void removeContact(Contact c) {
@@ -177,4 +161,5 @@ public class ContactCellListTab{
 		}
 
 	}
+
 }

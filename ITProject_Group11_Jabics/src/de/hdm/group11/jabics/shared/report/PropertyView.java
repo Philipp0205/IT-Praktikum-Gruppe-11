@@ -18,10 +18,13 @@ public class PropertyView implements Serializable{
 	private String pname; 
 	private String pvalue;
 	
+	public PropertyView() {}
+	
 	public PropertyView(String p, String v) {
 		this.pname = p;
 		this.pvalue = v;
 	}
+
 	
 	public PropertyView (PValue pv) throws IllegalArgumentException {
 		this.pname = pv.getProperty().getLabel();
