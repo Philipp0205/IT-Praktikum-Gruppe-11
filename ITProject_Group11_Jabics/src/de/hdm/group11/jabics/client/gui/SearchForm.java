@@ -9,7 +9,6 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -19,15 +18,14 @@ import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
-import de.hdm.group11.jabics.shared.bo.PValue;
 
 public class SearchForm extends VerticalPanel{
 	
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
-
-	TreeViewMenu tvm;
+	
 	StackPanel sp;
 	ContactCellListTab ct;
+	CellList<Contact> list;
 	TextBox tb;
 	Button sb;
 	Label l;
@@ -35,24 +33,33 @@ public class SearchForm extends VerticalPanel{
 	Editor e;
 	
 	public void onLoad() {
-		tvm = new TreeViewMenu();
-		sp = new StackPanel();
-		ct= new  ContactCellListTab();
-		sb = new Button("Finden");
-		tb = new TextBox();
-		l = new Label("Wert:");
+		ct = new ContactCellListTab();
+		list = ct.createContactTabForSearchForm();
 		this.add(l);
 		this.add(tb);
 		this.add(sb);
 		this.add(sp);
+		this.add(list);
+		ct.setEditor(e);
+		l.setText("Durchsuche Liste \"" + cl.getListName() + "\" nach Wert: ");
+		
 		sb.addClickHandler((new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
-				GWT.log(cl.getListName());
+				GWT.log("Suche für " + cl.getListName() + " nach  " + tb.getValue());
 				editorService.searchInList(tb.getValue(), cl, new SearchInListCallback());
 			}
 		}));
 	}
+	
+	public SearchForm() {
+		sp = new StackPanel();
+
+		sb = new Button("Finden");
+		tb = new TextBox();
+		l = new Label("Durchsuche Liste:");
+	}
+	
 	void setContactList(ContactList cl) {
 		this.cl =cl;
 	}
@@ -70,11 +77,11 @@ public class SearchForm extends VerticalPanel{
  		public void onSuccess(ArrayList<Contact> result) {
  			GWT.log("OnSuccess");
  			for(Contact c : result) {
- 				GWT.log(c.getValues().get(0).getStringValue());
- 			ct.addContact(c);
+ 			GWT.log(c.getValues().get(0).getStringValue());
+ 			ct.addsearchedContact(c);
  			}
- 			sp.add(ct.getCellList(), "Ausgabe");
+ 			GWT.log("halloeinTest");
+ 			sp.add(list, "Ausgabe");
  			}
  		}
 	}
-

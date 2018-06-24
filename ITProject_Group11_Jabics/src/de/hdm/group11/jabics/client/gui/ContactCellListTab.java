@@ -40,27 +40,35 @@ public class ContactCellListTab{
 	
 
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
-	ListDataProvider<Contact> contactsProvider;
 	
 	public ContactCellListTab() {
-
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		GWT.log("ContactsConstructor");
 		
 	}
 
-	public CellList createContactTab() {
+	public CellList<Contact> createContactTabForSearchForm() {
+
+		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
+		contactDataProvider = new ListDataProvider<Contact>();
+		
+		contactDataProvider.addDataDisplay(contactCell);
+		contactCell.setSelectionModel(selectionModel);
+		
+		contactDataProvider.flush();
+		contactCell.redraw();
+		return contactCell;
+	}
+	
+	public CellList<Contact> createContactTab() {
 		GWT.log("3.1 createContactTab");
 		eService = ClientsideSettings.getEditorService();
 		
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
 		user = new JabicsUser(1);
-		
-		contactsProvider = new ListDataProvider<Contact>();
 
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
@@ -117,9 +125,8 @@ public class ContactCellListTab{
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
 		}
-
 		private void setSelectedContact(Contact c) {
-			GWT.log("3.1 Kontakt anzeigen" + c.getName());
+			GWT.log("3.1 Kontakt anzeigen " + c.getName());
 			editor.showContact(c);
 		}
 	}
@@ -136,8 +143,11 @@ public class ContactCellListTab{
 	
 	public void addContact(Contact c) {
 		contactDataProvider.getList().add(c);
-		contactDataProvider.flush();
 		selectionModel.setSelected(c, true);
+	}
+	public void addsearchedContact(Contact c) {
+		contactDataProvider.getList().add(c);
+		contactDataProvider.flush();
 	}
 
 	public void removeContact(Contact c) {
