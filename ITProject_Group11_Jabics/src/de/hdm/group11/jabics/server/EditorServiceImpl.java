@@ -10,8 +10,9 @@ import de.hdm.group11.jabics.shared.EditorService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * Die Klasse EditorServiceImpl implementiert die Applikationslogik für den Editor von Jabics.
- * Sie stellt die Logik zur Verfügung, die bei einem RPC aufgerufen wird und gibt die angefragten Objekte zurück.
+ * Die Klasse EditorServiceImpl implementiert die Applikationslogik für den
+ * Editor von Jabics. Sie stellt die Logik zur Verfügung, die bei einem RPC
+ * aufgerufen wird und gibt die angefragten Objekte zurück.
  * 
  * @author Anders
  * @author Kurrle
@@ -25,7 +26,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	PValue pv1, pv2, pv3, pv4, pv5, pv6, pv7;
 	Contact c1, c2, c3;
 	ContactList cl;
-	
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -245,10 +246,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
 
-		ArrayList<Contact> result = new ArrayList<Contact>();
-
-		for (Contact c : cMapper.findContactsOfContactList(cl)) {
-
+		ArrayList<Contact> result = cMapper.findContactsOfContactList(cl);
+		System.out.println("Got all Contacts of List " + cl.toString());
+		for (Contact c : result) {
 			// if(cMapper.findCollaborators(c).contains(u)) result.add(c);
 			c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
@@ -256,43 +256,37 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// for (Contact cres : result) {
 		// cres.setOwner(uMapper.findUserByContact(cres));
 		// }
-
 		return result;
-
-		// temporär: kann gelöscht werden sobald funktional
-		// ArrayList<Contact> cltemp = new ArrayList<Contact>();
-		// cltemp.add(this.c1);
-		// cltemp.add(this.c3);
-		// return cltemp;
 	}
 
 	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
 	public ArrayList<Contact> getContactsOf(JabicsUser u) {
 		ArrayList<Contact> cons = cMapper.findAllContacts(u);
-		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList gespeichert.
-		System.out.println("3.1 getContactsOf");
+		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList
+		// gespeichert.
+		System.out.println("Got all Contacts of User " + u.toString());
 		for (Contact c : cons) {
 
-			//ArrayList<PValue> pvtemp = pvMapper.findPValueForContact(c);
+			// ArrayList<PValue> pvtemp = pvMapper.findPValueForContact(c);
 			// Der Vorname wird in einem sBuffer abgelegt
-//			StringBuffer sBuffer = new StringBuffer();
-//			for (PValue p : pvtemp) {
-//				if (p.getProperty().getLabel() == "name") {
-//					sBuffer.append(p.getStringValue());					
-//					} else {
-//						System.out.println("getContactsOf: No name in Array.");
-//					}
-//			}
-//			// Der Nachname wird im gleichen sBuffer abgelegt.
-//			for (PValue p2: pvtemp) {
-//				if (p2.getProperty().getLabel() == "lastname") {
-//					sBuffer.append(" " + p2.getStringValue());				
-//				} else {
-//					System.out.println("getContactsOf: No lastname in Array");
-//				}
-//			}
-//			c.setName(sBuffer.toString());
-		
+			// StringBuffer sBuffer = new StringBuffer();
+			// for (PValue p : pvtemp) {
+			// if (p.getProperty().getLabel() == "name") {
+			// sBuffer.append(p.getStringValue());
+			// } else {
+			// System.out.println("getContactsOf: No name in Array.");
+			// }
+			// }
+			// // Der Nachname wird im gleichen sBuffer abgelegt.
+			// for (PValue p2: pvtemp) {
+			// if (p2.getProperty().getLabel() == "lastname") {
+			// sBuffer.append(" " + p2.getStringValue());
+			// } else {
+			// System.out.println("getContactsOf: No lastname in Array");
+			// }
+			// }
+			// c.setName(sBuffer.toString());
+
 			c.setOwner(uMapper.findUserByContact(c));
 		}
 		return cons;
@@ -310,8 +304,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	// is this method really needed?
 	public JabicsUser getUserById(int id) {
-		// return uMapper.findUserById(id);
-		return this.u;
+		return uMapper.findUserById(id);
 	}
 
 	/**
@@ -330,7 +323,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		}
 		clMapper.insertContactIntoContactList(cl, c);
 		return clMapper.updateContactList(cl);
-
 	}
 
 	/*
@@ -380,28 +372,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public void deleteContact(Contact c, JabicsUser ju) {
 		if (uMapper.findUserByContact(c).getId() == ju.getId()) {
-
 			ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
 			ArrayList<PValue> pvalues = pvMapper.findPValueForContact(c);
-			System.out.println("log1");
 			for (JabicsUser u : users) {
 				cMapper.deleteCollaboration(c, u);
 				for (int i = 0; i < pvalues.size(); i++) {
 					pvMapper.deleteCollaboration(pvalues.get(i), u);
 				}
-				System.out.println("log2");
+				System.out.println("Contact " + c.getId() + "Collabs deleted");
 			}
-			for (PValue pv : pvMapper.findPValueForContact(c)) {
+			for (PValue pv : pvalues) {
 				pvMapper.deletePValue(pv);
-				System.out.println("log3");
+				System.out.println("PValue " + pv.getId() + "deleted");
 			}
 			cMapper.deleteContact(c);
-
-			System.out.println("log4");
+			System.out.println("Contact " + c.getId() + "deleted");
 		} else {
 			System.out.println("fail");
 		}
-
 	}
 
 	/**
@@ -438,10 +426,22 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			System.out.println("Tried to delete standard property. This should not have been possible");
 	}
 
-	public void deletePValue(PValue pv) {
+	public void deletePValue(PValue pv, Contact c) {
 		ArrayList<JabicsUser> cols = pvMapper.findCollaborators(pv);
+		// überprüfen, ob dieses PV das letzte seiner Art ist und wenn ja die zugehörige
+		// Property löschen
+		if (!pv.getProperty().isStandard()) {
+			ArrayList<PValue> otherPVal = pvMapper.findPValueForContact(c);
+			boolean bol = true;
+			for (PValue o : otherPVal) {
+				if (o.getProperty().getId() == pv.getProperty().getId())
+					bol = false;
+			}
+			if(bol) pMapper.deleteProperty(pv.getProperty());
+		}
+
 		/**
-		 * glöckchen: if(pv.getOwner().getId()==u.getId()) {
+		 * glöckchen: if(pv.getOwner().getId() == u.getId()) {
 		 */
 		for (int i = 0; i < cols.size(); i++) {
 			pvMapper.deleteCollaboration(pv, cols.get(i));
@@ -457,29 +457,25 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 *            PropertyValue, das aktualisiert werden soll
 	 */
 	public PValue updatePValue(PValue pv) {
-		System.out.println(pv.getStringValue());
 		System.out.println(pv.getId());
 		PValue pvtemp = pvMapper.findPValueById(pv.getId());
-		System.out.println("1");
+		// TODO: eine gescheite .equals für PValue programmieren
 		if (pv != pvtemp) {
-			// pv.setDateUpdated(LocalDateTime.now());
 			PValue p = pvMapper.updatePValue(pv);
-			System.out.println(p.getStringValue());
-			System.out.println("holla");
+			System.out.println(p.toString());
 			return p;
 		} else
-			System.out.println("nop");
+			System.out.println("updatePValue unnötig oder fehlgeschlagen");
 		return pvMapper.findPValueById(pv.getId());
 	}
 
 	public ContactList updateContactList(ContactList cl) {
 		ContactList cltemp = clMapper.findContactListById(cl.getId());
+		//TODO: gescheite .equals für Kontaktlisten
 		if (cl != cltemp) {
 
-			// cl.setDateUpdated(LocalDateTime.now());
-
 			// Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist,
-			// wenn ja, einfügen
+			// wenn ja, einfügen. Allen freigegebenen Nutzern den Kontakt freigeben
 			for (Contact c : cl.getContacts()) {
 				boolean bol = false;
 				for (Contact ctemp : cltemp.getContacts()) {
@@ -494,7 +490,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 			}
 			// Alle Kontakte in der neuen Liste durchlaufen, ob einer weggefallen ist, wenn
-			// ja, löschen
+			// ja, löschen, Allen freigegebenen Nutzern den Kontakt entziehen
 			for (Contact ctemp : cltemp.getContacts()) {
 				boolean bol = false;
 				for (Contact c : cl.getContacts()) {
@@ -620,13 +616,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
-		// Achtung HardgeCODED!!
-		u.setId(1);
+
 		ArrayList<PValue> result = new ArrayList<PValue>();
 
 		for (PValue pv : pvMapper.findPValueForContact(c)) {
-			pv.setProperty(pMapper.findPropertyById(pv.getPropertyId()));
-
 			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
 				if (u.getId() == uu.getId()) {
 					result.add(pv);
