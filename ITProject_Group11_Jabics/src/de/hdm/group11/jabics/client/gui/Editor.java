@@ -178,10 +178,11 @@ public class Editor implements EntryPoint {
 	 */
 	public void showContact(Contact c) {
 		//if (this.scForm == null) {
-			scForm = new ShowContactForm();
-			scForm.setEditor(this);
-			scForm.setUser(this.currentUser);
-		// }
+
+		scForm = new ShowContactForm();
+		scForm.setEditor(this);
+		scForm.setUser(this.currentUser);
+
 		GWT.log("showCont2");
 		scForm.setUser(currentUser);
 		scForm.showContact(c);
@@ -192,26 +193,24 @@ public class Editor implements EntryPoint {
 	
 	public void editContact(Contact c) {
 		GWT.log("editcont");
-		if (this.cForm == null) {
+		//if (this.cForm == null) {
 			cForm = new EditContactForm();
 			cForm.setEditor(this);
 			cForm.setUser(this.currentUser);
-		}
-		GWT.log("editContact");
-		cForm.setUser(currentUser);
+		
 		cForm.setContact(c);
 		GWT.log("editContact");
 		//widgetPanel.remove(1);
-		GWT.log("editContact");
+		GWT.log("AltesWidgetEntfernt");
 		widgetPanel.insert(cForm, 1);
 		GWT.log("editcontFertig");
 	}
 
 	public void showContactList(ContactList cl) {
-		if (this.clForm == null) {
+		//if (this.clForm == null) {
 			clForm = new ContactListForm();
 			clForm.setEditor(this);
-		}
+		
 		widgetPanel.clear();
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clForm.clear();
@@ -225,10 +224,10 @@ public class Editor implements EntryPoint {
 	public void showContactCollab(Contact c) {
 
 		GWT.log("contactCollab");
-		if (this.ccForm == null) {
+		//if (this.ccForm == null) {
 			ccForm = new ContactCollaborationForm();
 			ccForm.setEditor(this);
-		}
+		
 		GWT.log("huhu");
 		widgetPanel.clear();
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
@@ -245,11 +244,11 @@ public class Editor implements EntryPoint {
 
 		GWT.log("existingContactCollab");
 		eccForm = new ExistingContactCollaborationForm();
-		if (this.eccForm == null) {
+		//if (this.eccForm == null) {
 			eccForm = new ExistingContactCollaborationForm();
 			eccForm.setEditor(this);
 
-		}
+		
 		widgetPanel.clear();
 
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
