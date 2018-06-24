@@ -35,6 +35,7 @@ import de.hdm.group11.jabics.shared.bo.PValue;
 
 public class ExistingContactCollaborationForm extends HorizontalPanel {
 	Editor e;
+	JabicsUser u;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	Contact sharedContact;
@@ -163,6 +164,9 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	public void setEditor(Editor e) {
 		GWT.log("Editor in Collab setzen");
 		this.e = e;
+	}
+	public void setUser(JabicsUser u) {
+		this.u = u;
 	}
 
 	public void createPValueBox(ArrayList<PValue> pv) {
