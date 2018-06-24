@@ -186,7 +186,7 @@ public class ContactMapper{
 			ArrayList<Contact> al = new ArrayList<Contact>();
 	    
 			// Join zwischen Contact und ContactCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
-			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated"
+			ResultSet rs = stmt.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated, contact.nickname"
 			+ " FROM contact"
 			+ " LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
 			+ " WHERE contactCollaboration.systemUserID = " + u.getId());
@@ -202,7 +202,7 @@ public class ContactMapper{
 	    		c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
-			con.close();
+			//con.close();
 			return al;
 	    }
 	    catch (SQLException e) {
