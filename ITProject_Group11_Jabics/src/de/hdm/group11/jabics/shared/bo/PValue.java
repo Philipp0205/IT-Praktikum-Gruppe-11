@@ -139,7 +139,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	public String getStringValue() {
 		return stringValue;
 	}
-
+	
 	public void setStringValue(String string) {
 		this.stringValue = string;
 		this.contains = true;

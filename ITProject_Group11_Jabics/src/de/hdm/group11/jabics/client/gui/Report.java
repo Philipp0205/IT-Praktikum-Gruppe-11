@@ -24,6 +24,8 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.Property;
+import de.hdm.group11.jabics.shared.bo.Type;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
@@ -48,7 +50,7 @@ public class Report implements EntryPoint {
 	Label stringl = new Label("Text:");
 	Label intl = new Label("Ganzzahl:");
 	Label floatl = new Label("Dezimalzahl:");
-	Button db = new Button("Datum:");
+	Button db = new Button("Datum eingeben");
 	DatePicker dp = new DatePicker();
 	
 	@Override
@@ -132,27 +134,36 @@ public class Report implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				PValue pvalue = new PValue();
-				JabicsUser u = null;
 				
+				JabicsUser u = new JabicsUser();
+				u.setId(1);	
+				u.setEmail("stahl.alexander@live.de");
+				u.setUsername("Stahlex");
+				u.setLoggedIn(true);
 				
 				if (stringBox.getText().isEmpty() == false) {
-					pvalue.setStringValue(stringBox.getText());
+					Property p = new Property(null, Type.STRING, false);
+					PValue pvalue = new PValue(p, stringBox.getText(), u);
 					//TODO hier currentUser einfügen
 					reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new CreateFilteredContactsOfUserReportCallback() );
 				} else if (intBox.getText().isEmpty() == false) {
+					Property p = new Property(null, Type.INT, false);
 					if (stringBox.getText() != null ) {
-						pvalue.setIntValue(Integer.parseInt(stringBox.getText()));
-						
+						PValue pvalue = new PValue(p, intBox.getText(), u);
+						reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new CreateFilteredContactsOfUserReportCallback() );
 					} else 
 						System.out.println("Eingegebener Wert ist nicht im korrekten Format (int).");
 					
 				} else if (floatBox.getText().isEmpty() == false) {
+					Property p = new Property(null, Type.FLOAT, false);
 					if (floatBox.getText() != null ) {
-						pvalue.setFloatValue(Float.parseFloat(floatBox.getText()));
+						PValue pvalue = new PValue(p, floatBox.getText(), u);
+						reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new CreateFilteredContactsOfUserReportCallback() );
 					}
 				} else if (dp.getValue() != null) {
-					pvalue.setDateValue(dp.getValue());
+					Property p = new Property(null, Type.DATE, false);
+					PValue pvalue = new PValue(p, dp.getValue(), u);
+					reportGenerator.createFilteredContactsOfUserReport(pvalue, u, new CreateFilteredContactsOfUserReportCallback() );
 				}
 				else System.out.println("Es konnte keine Suche durchgeführt werden.");
 		

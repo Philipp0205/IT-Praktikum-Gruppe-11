@@ -8,17 +8,20 @@ import de.hdm.group11.jabics.shared.bo.PValue;
 
 public class Filter {
 	
+	
+	
 	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv) {
-			
 			ArrayList<Contact> result = new ArrayList<Contact>();
-			
 			for (Contact c : contacts) {
 				ArrayList<PValue> pvalues = c.getValues();
 				for (PValue p : pvalues) {
-					if (p.getStringValue() == pv || p.getStringValue().contains(pv) || p.getProperty().getLabel().contains(pv)){
-						result.add(c);			
+					if(p.getStringValue()!=null) {
+					if (p.getStringValue() == pv || p.getStringValue().contains(pv)){
+						// || p.getProperty().getLabel().contains(pv)
+						result.add(c);	
 					} 
 				} 	
+			}
 			} 
 			return result;
 	}

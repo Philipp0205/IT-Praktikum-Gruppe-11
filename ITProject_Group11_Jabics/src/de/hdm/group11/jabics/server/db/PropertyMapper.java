@@ -94,11 +94,8 @@ public class PropertyMapper {
 	    	Statement stmt = con.createStatement();	
 			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS );
 	    	ResultSet rs = stmt.getGeneratedKeys();
-	    	System.out.println("rs1 done");
 			Statement stmt2 =  con.createStatement();
-			System.out.println("statement done");
 			ResultSet rs2;
-			System.out.println("rs2 done");
 	    	while(rs.next()) {
 	    		rs2 = stmt2.executeQuery("SELECT * FROM property WHERE propertyID = " + rs.getInt(1));
 	    		p.setId(rs.getInt(1));
