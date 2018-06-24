@@ -19,9 +19,11 @@ public abstract class Report implements Serializable {
 	JabicsUser creator;
 	
 	
-	public Report() {
-		this.creationDate = new Date();
-	}
+//	public Report() {
+//	//	this.creationDate = new Date();
+//	}
+	
+	public Report() {}
 
 	/*
 	 * Getters and Setters
