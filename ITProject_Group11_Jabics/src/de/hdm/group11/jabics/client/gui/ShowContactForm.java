@@ -36,14 +36,14 @@ public class ShowContactForm extends VerticalPanel {
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
 	
-
 	Button editButton = new Button("Kontakt bearbeiten");
 	Button shareContactButton = new Button("Kontakt neu teilen");
 	Button shareExistingContactButton = new Button("Teilen bearbeiten");
 	Button deleteButton = new Button("Kontakt löschen");
 
-	public void onLoad() {
-		GWT.log("OnLoad SHOWContact");
+	public ShowContactForm() {
+		
+		GWT.log("SHOWContact Construct");
 		values = new CellTable<PValue>();
 		
 		prop = new Column<PValue, String>(new TextCell()) {
@@ -63,6 +63,7 @@ public class ShowContactForm extends VerticalPanel {
 		values.setColumnWidth(pval, 50, Unit.PX);
 		
 		try {
+			GWT.log("ShowCont panels hinzufügen");
 			this.add(editButton);
 			this.add(values);
 			this.add(shareContactButton);
@@ -71,7 +72,11 @@ public class ShowContactForm extends VerticalPanel {
 		} catch (Exception caught) {
 			Window.alert(caught.toString());
 		}
-
+		
+	}
+	
+	public void onLoad() {
+		
 		valueProvider = new ListDataProvider<PValue>();
 		valueProvider.addDataDisplay(values);
 
@@ -105,33 +110,20 @@ public class ShowContactForm extends VerticalPanel {
 				e.showExistingContactCollab(currentContact);
 			}
 		});
-		GWT.log("4OnLoad SHOWContact");
-	}
-
-	/**
-	 * Diese MEthode macht die Anzeige der PV möglich
-	 * 
-	 * @param c
-	 */
-	public void showContact(Contact c) {
-		this.setContact(c);
-		this.onLoad();
 		editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
+		GWT.log("4OnLoad SHOWContact");
 	}
 
 	public void setContact(Contact c) {
 		this.currentContact = c;
-
 	}
 
 	public void setUser(JabicsUser u) {
 		this.u = u;
-
 	}
 
 	public void setEditor(Editor e) {
 		this.e = e;
-
 	}
 
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {

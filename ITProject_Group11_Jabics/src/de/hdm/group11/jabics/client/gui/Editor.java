@@ -10,11 +10,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
@@ -33,9 +31,9 @@ import de.hdm.group11.jabics.shared.bo.Type;
  * bestimmt: ContactForm, ContactListForm
  */
 public class Editor implements EntryPoint {
-
+	
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
-
+	
 	/**
 	 * Im folgenden Interface werden die Items, öffnen und schließen, hinzugefügt.
 	 */
@@ -52,7 +50,7 @@ public class Editor implements EntryPoint {
 		@Source("JabicsCellTree.css")
 		CellTree.Style cellTreeStyle();
 	}
-
+	
 	LoginServiceAsync loginService;
 	EditorServiceAsync editorAdmin;
 	LoginInfo loginfo;
@@ -62,14 +60,14 @@ public class Editor implements EntryPoint {
 	VerticalPanel mainPanel = new VerticalPanel();
 	HorizontalPanel topPanel = new HorizontalPanel();
 	HorizontalPanel widgetPanel = new HorizontalPanel();
-	//VerticalPanel menuPanel = new VerticalPanel();
-	//VerticalPanel formPanel = new VerticalPanel();
+	VerticalPanel menuPanel = new VerticalPanel();
+	HorizontalPanel formPanel = new HorizontalPanel();
 	HorizontalPanel placeholder = new HorizontalPanel();
-
+	
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an um Jabics nutzen zu k�nnen.");
 	private Anchor signInLink = new Anchor("Anmelden.");
-
+	
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
@@ -87,22 +85,26 @@ public class Editor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-
-		/*
-		 * Zunächst wird eine Editor-Instanz hinzugefügt.
+		
+		editorAdmin = ClientsideSettings.getEditorService();
+		
+		/**
+		 * Zunächst wird eine User-Instanz hinzugefügt.
+		 * Später entfernen und dies den Login übernehmen lassen
 		 */
 		currentUser = new JabicsUser();
 		currentUser.setEmail("stahl.alexander@live.de");
 		currentUser.setId(1);
 		currentUser.setUsername("Alexander Stahl");
 
-		editorAdmin = ClientsideSettings.getEditorService();
-		// loginService = ClientsideSettings.getLoginService();
+		/**
+		 * Login
+		 */
+		//loginService = ClientsideSettings.getLoginService();
 		// GWT.log(GWT.getHostPageBaseURL());
 		// loadEditor();
 		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 		loadEditor();
-
 	}
 
 	public void loadEditor() {
@@ -113,8 +115,8 @@ public class Editor implements EntryPoint {
 
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
-	//	widgetPanel.add(menuPanel);
-	//	widgetPanel.add(formPanel);
+		widgetPanel.add(menuPanel);
+		widgetPanel.add(formPanel);
 
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
@@ -122,24 +124,21 @@ public class Editor implements EntryPoint {
 		createCL.addClickHandler(new CreateCLClickHandler());
 		Button search = new Button("Suche");
 		search.addClickHandler(new SearchClickHandler());
-		Button settings = new Button("irgendwas anderes");
-		settings.addClickHandler(new SearchClickHandler());
-
+		//Button settings = new Button("irgendwas anderes");
+		//settings.addClickHandler(new SearchClickHandler());
 
 		topPanel.add(search);
-		topPanel.add(settings);
+		//topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
 
-		
-		// Menü hinzufügen
-
+		//Menu hinzufügen
 		treeViewMenu = new TreeViewMenu();
 		treeViewMenu.onLoad();
 		treeViewMenu.setEditor(this);
 		GWT.log("Editor: TreeViewMenu erstellt");
 
-		widgetPanel.add(treeViewMenu.getStackPanel());
+		menuPanel.add(treeViewMenu.getStackPanel());
 		/**
 		 * Das kann weg sobald treeview passt
 		 */
@@ -178,40 +177,37 @@ public class Editor implements EntryPoint {
 	 */
 	public void showContact(Contact c) {
 		//if (this.scForm == null) {
-
+		GWT.log("showCont");
 		scForm = new ShowContactForm();
 		scForm.setEditor(this);
 		scForm.setUser(this.currentUser);
-
-		GWT.log("showCont2");
-		scForm.setUser(currentUser);
-		scForm.showContact(c);
-		GWT.log("showCOnt4");
-		widgetPanel.remove(1);
-		widgetPanel.insert(scForm, 1);
+		scForm.setContact(c);
+		
+		//formPanel.clear();
+		formPanel.insert(scForm, 0);
+		GWT.log("ShowCont fertig");
 	}
 	
 	public void editContact(Contact c) {
 		GWT.log("editcont");
 		//if (this.cForm == null) {
-			cForm = new EditContactForm();
-			cForm.setEditor(this);
-			cForm.setUser(this.currentUser);
-		
+		cForm = new EditContactForm();
+		cForm.setEditor(this);
+		cForm.setUser(this.currentUser);
 		cForm.setContact(c);
-		GWT.log("editContact");
-		//widgetPanel.remove(1);
+
+		formPanel.clear();
 		GWT.log("AltesWidgetEntfernt");
-		widgetPanel.insert(cForm, 1);
+		formPanel.insert(cForm, 0);
 		GWT.log("editcontFertig");
 	}
 
 	public void showContactList(ContactList cl) {
 		//if (this.clForm == null) {
-			clForm = new ContactListForm();
-			clForm.setEditor(this);
+		clForm = new ContactListForm();
+		clForm.setEditor(this);
 		
-		widgetPanel.clear();
+		formPanel.clear();
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clForm.clear();
 		clForm.setCurrentList(cl);
@@ -229,14 +225,14 @@ public class Editor implements EntryPoint {
 			ccForm.setEditor(this);
 		
 		GWT.log("huhu");
-		widgetPanel.clear();
+		//formPanel.clear();
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// ccForm.clear();
 		// ccForm = new ContactCollaborationForm();
 		ccForm.setEditor(this);
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());
-		widgetPanel.insert(ccForm, 1);
+		formPanel.insert(ccForm,0);
 	}
 
 	
@@ -280,13 +276,15 @@ public class Editor implements EntryPoint {
 	
 	 public void showSearchForm(ContactList cl) {
 //		if (this.sForm == null) {
+
 		sForm = new SearchForm();
-		
 		sForm.setEditor(this);
-		widgetPanel.clear();
 		sForm.setContactList(cl);
+
+		widgetPanel.remove(1);
 		widgetPanel.add(sForm);
-	} 
+		GWT.log("#######SearchForm");
+	}
 
 	
 	public void returnToContactForm(Contact c) {
@@ -332,9 +330,7 @@ public class Editor implements EntryPoint {
 	 */
 	private class SearchClickHandler implements ClickHandler {
 		ContactList cl;
-		void setCL(ContactList cl){
-			this.cl=cl;
-		}
+		SearchClickHandler(){}
 		@Override
 		public void onClick(ClickEvent event) {
 			
@@ -348,28 +344,34 @@ public class Editor implements EntryPoint {
 			
 	//		 RootPanel.get("details").add(contactDetailPanel);
 			//TODO 
+			GWT.log("clickEventForm");
 			ContactList cl = new ContactList();
 			cl.setId(1);
-			JabicsUser u = new JabicsUser();
+			JabicsUser u = new JabicsUser(1);
 			Contact c1 = new Contact();
 			Property p = new Property();
 			p.setId(2);
+			GWT.log("clickEventForm");
 			PValue pv = new PValue(p,"Fiffi",u);
 			c1.setName("Uschi");
 			Contact c2 = new Contact();
 			c2.setName("Strolch");
 			Contact c3 = new Contact();
+			c3.setId(3);
 			c3.setName("Fiffi");
+			GWT.log("clickEventForm");
 			c3.addPValue(pv);
+			GWT.log("clickEventForm");
 			cl.setListName("Idiyets");
 			cl.addContact(c1);
 			cl.addContact(c2);
 			cl.addContact(c3);
 			showSearchForm(cl);
-
 		}
-	}/**
-	 * ClickHandler um einen neuen Kontakt zu erstellen
+	}
+	
+	/**
+	 * ClickHandler um einen neuen Kontakt zu erstellen und zu bearbeiten
 	 */
 	private class CreateCClickHandler implements ClickHandler {
 		@Override
@@ -378,7 +380,7 @@ public class Editor implements EntryPoint {
 					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
 
 			Contact newContact = new Contact();
-			showContact(newContact);
+			editContact(newContact);
 		}
 	}
 
