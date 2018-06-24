@@ -16,8 +16,8 @@ public class Filter {
 				ArrayList<PValue> pvalues = c.getValues();
 				for (PValue p : pvalues) {
 					if(p.getStringValue()!=null) {
-					if (p.getStringValue() == pv || p.getStringValue().contains(pv)){
-						// || p.getProperty().getLabel().contains(pv)
+					if (p.getStringValue() == pv || p.getStringValue().contains(pv) || p.getProperty().getLabel().contains(pv)){
+						 
 						result.add(c);	
 					} 
 				} 	
