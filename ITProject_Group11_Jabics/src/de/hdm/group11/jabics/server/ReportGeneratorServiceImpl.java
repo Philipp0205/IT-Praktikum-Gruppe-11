@@ -62,10 +62,13 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 */
 	@Override
 	public AllContactsInSystemReport createAllContactsInSystemReport() {
+		
+		System.out.println("Reporterstellt nicht befüllt");
 		AllContactsInSystemReport result = new AllContactsInSystemReport();
 		result.setHeadline(new Paragraph("Report aller Kontakte im System"));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		result.setCreationDate(new Date());
+		System.out.println("Reporterstellt nicht befüllt");
 		for (JabicsUser u: uMapper.findAllUser()) {
 			result.addReport(createAllContactsOfUserReport(u));
 		}
@@ -85,7 +88,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		// Es wird ein leerer Report angelegt.
 		AllContactsOfUserReport result = new AllContactsOfUserReport();
 		// Headline und Footline werden gesetzt.
-		result.setHeadline(new Paragraph("Report aller Kontakte f�r " + u.getUsername()));
+		result.setHeadline(new Paragraph("Report aller Kontakte für " + u.getUsername()));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		result.setCreationDate(new Date());
 		/**
