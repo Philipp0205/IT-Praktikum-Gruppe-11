@@ -15,6 +15,7 @@ public class ContactReport extends Report  implements Serializable{
 	
 	private ArrayList<PropertyView> content = new ArrayList<PropertyView>();
 	private String contactInfo;
+	public ContactReport() {}
 	
 	/**
 	 * simple constructor that needs at least one Property view in an ArrayList

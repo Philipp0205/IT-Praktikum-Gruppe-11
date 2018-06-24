@@ -135,7 +135,6 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		case STRING:
 			result.setSubReports(this.filterContactsByString(contacts, pv));
 			filtercriteria[0] = pv.getStringValue();
-			System.out.println("ok2");
 		break;
 		
 		case INT: 
@@ -159,11 +158,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		break;
 			
 		}
-		
-		System.out.println("log1");
 		result.setFiltercriteria(new Paragraph(filtercriteria));
-		System.out.println("log 2");
-		
+		System.out.println("FilteredContacts-return ");
 		return result;
 	}
 	
@@ -186,10 +182,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 				p.setProperty(pMapper.findPropertyById(p.getPropertyId()));
 				pviews.add(new PropertyView(p));
 			}
-			ContactReport cr =new ContactReport(pviews);
-			results.add(cr);
+			results.add(new ContactReport(pviews));
 		}
-		System.out.println("stringFilter-return");
 		return results; //? 
 	}
 	
