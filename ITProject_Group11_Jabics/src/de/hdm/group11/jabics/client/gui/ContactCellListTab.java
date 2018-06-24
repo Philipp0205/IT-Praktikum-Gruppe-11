@@ -47,7 +47,6 @@ public class ContactCellListTab{
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
 		GWT.log("ContactsConstructor");
-		
 	}
 
 	public CellList createContactTab() {
@@ -105,7 +104,6 @@ public class ContactCellListTab{
 	}
 
 	public CellList getCellList() {
-		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		return this.contactCell;
 	}
 	
@@ -135,8 +133,11 @@ public class ContactCellListTab{
 	
 	public void addContact(Contact c) {
 		contactDataProvider.getList().add(c);
-		contactDataProvider.flush();
 		selectionModel.setSelected(c, true);
+	}
+	public void addsearchedContact(Contact c) {
+		contactDataProvider.getList().add(c);
+		contactsProvider.flush();
 	}
 
 	public void removeContact(Contact c) {
