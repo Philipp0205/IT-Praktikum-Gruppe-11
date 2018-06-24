@@ -31,37 +31,32 @@ public class ContactCell extends AbstractCell<Contact> {
 				
 		if (c != null) {
 			
-//			switch (c.getShareStatus()) {
-//				case IS_SHARED: sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-//				break;
-//				case PARTIALLY_SHARED: sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-//				break; 
-//				case NOT_SHARED: sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-//				break;
-//				default: sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-//			}
-			//GWT.log("3.3 " + c.getShareStatus().toString());
-			
-//			if (c.getShareStatus() == BoStatus.IS_SHARED) {
-//				sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-//				
-//			} else if (c.getShareStatus() == BoStatus.PARTIALLY_SHARED) {
-//				sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-//				
-//			} else if (c.getShareStatus() == BoStatus.NOT_SHARED) {
-//				sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-//			} else  {
-//				GWT.log("Kein Bild");
-//			}
-			
-			
+			      try {
+			        switch (c.getShareStatus()) {
+			        case IS_SHARED:
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			          break;
+			        case PARTIALLY_SHARED:
+			          sb.appendHtmlConstant(
+			              AbstractImagePrototype.create(JabicsResources.INSTANCE.yellowdot()).getHTML());
+			          break;
+			        case NOT_SHARED:
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
+			          break;
+			        default:
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			        }
+			      } catch (Exception e) {
+			        GWT.log("ShareStatus undefined for Contact" + c.getName());
+			        sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			      }
+		}
 		
 			
-			sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			//sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
 			// sb.appendHtmlConstant("<div>");
 			//sb.appendHtmlConstant()
 			sb.appendEscaped(c.getName());
 			// sb.appendHtmlConstant("</div>");
-		}
 	}
 }

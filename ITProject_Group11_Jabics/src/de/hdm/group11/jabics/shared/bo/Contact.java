@@ -27,7 +27,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	 */
 	ArrayList<PValue> values = new ArrayList<PValue>();
 	private String name;
-	private BoStatus shareStatus;
+	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 	
 
 	public Contact(ArrayList<PValue> a, JabicsUser u) { 

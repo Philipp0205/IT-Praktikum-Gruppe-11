@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ContactList extends BusinessObject implements Serializable{
 	private static final long serialVersionUID = 1L;
 		private String listName; 
-	    private BoStatus shareStatus; 
+		private BoStatus shareStatus = BoStatus.NOT_SHARED;
 	    
 	    ArrayList<Contact> contacts = new ArrayList<Contact>();  
 	    
