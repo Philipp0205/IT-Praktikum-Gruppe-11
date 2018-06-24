@@ -7,7 +7,7 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-
+import com.google.gwt.thirdparty.guava.common.io.Resources;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,6 +23,7 @@ import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.resource.*;
 
 public class ContactCellListTab{
 
@@ -36,6 +37,7 @@ public class ContactCellListTab{
 	private ContactKeyProvider keyProvider = null;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
+	
 
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
 	ListDataProvider<Contact> contactsProvider;

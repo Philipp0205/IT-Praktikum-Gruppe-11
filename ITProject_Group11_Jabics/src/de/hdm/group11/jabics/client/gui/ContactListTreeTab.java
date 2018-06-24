@@ -23,6 +23,7 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.client.gui.Editor;
+import de.hdm.group11.jabics.resource.JabicsResources;
 
 public class ContactListTreeTab implements TreeViewModel {
 	
