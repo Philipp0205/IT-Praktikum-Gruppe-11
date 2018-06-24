@@ -378,7 +378,7 @@ public class Editor implements EntryPoint {
 					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
 
 			Contact newContact = new Contact();
-			showContact(newContact);
+			editContact(newContact);
 		}
 	}
 
