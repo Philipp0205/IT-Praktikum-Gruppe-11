@@ -127,6 +127,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 			Contact c = (Contact) obj;
 			if (c.getId() == this.id) {
 				boolean bol = true;
+				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
 				for(PValue pv : c.getValues()) {
 					if (!this.values.contains(pv)) {
 						bol = false;

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -182,6 +183,7 @@ public class Report implements EntryPoint {
 		}
 		@Override
 		public void onSuccess(AllContactsInSystemReport report) {
+			GWT.log("Report zurück!");
 			if (report != null) { 
 				
 				HTMLReportWriter writer = new HTMLReportWriter();
@@ -200,8 +202,8 @@ public class Report implements EntryPoint {
 		}
 		@Override
 		public void onSuccess(FilteredContactsOfUserReport report) {
-			if (report != null) { 
-				
+			GWT.log("Filtered Report zurück!");
+			if (report != null) {
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();

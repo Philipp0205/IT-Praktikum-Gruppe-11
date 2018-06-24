@@ -19,6 +19,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
@@ -43,6 +44,8 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	JabicsUser selectedUser;
 
 	Button exit, addButton, removeButton, shareContact, shareContactWUser;
+	
+	Label valueLabel;
 
 	CellTable<PValue> selValues;
 	ArrayList<PValue> selectedValues;
@@ -95,7 +98,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 
-		GWT.log("collab3");
+		valueLabel = new Label("Eigenschaften, die der ausgewählte Nutzer sehen darf");
 		createSelectionBox();
 		createPValueBox(sharedContact.getValues());
 
@@ -106,6 +109,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		grid.setWidget(0, 1, addButton);
 		grid.setWidget(1, 0, selUser);
 		grid.setWidget(2, 0, removeButton);
+		grid.setWidget(0, 2, valueLabel);
 		grid.setWidget(1, 2, selValues);
 		selValues.setColumnWidth(checkbox, 20, Unit.PX);
 		selValues.setColumnWidth(property, 20, Unit.EM);
@@ -246,8 +250,12 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		for (PValue pv : allVisibleValues) {
 			// TODO: wenn ein pv vorhanden ist, aber nicht ausgewählt, wird collab gelöscht.
 			if (multiSelectionModel.isSelected(pv)) {
+				GWT.log("Hinzugefügt wird: " + pv.toString());
 				editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
-			} else editorService.deleteCollaboration(pv, u, new AddPVCollaborationCallback());	
+			} else{
+				GWT.log("Gelöscht wird: " + pv.toString());
+				editorService.deleteCollaboration(pv, u, new AddPVCollaborationCallback());	
+			}
 		}
 	}
 

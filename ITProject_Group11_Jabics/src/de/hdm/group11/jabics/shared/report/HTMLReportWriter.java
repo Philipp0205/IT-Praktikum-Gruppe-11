@@ -3,6 +3,8 @@ package de.hdm.group11.jabics.shared.report;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 
 /**
  * Implementiert die Methoden aus ReportWriter, um Reports in das HTML-Format zu
@@ -76,6 +78,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		sb.append("</tr>");
 		// die Zeilen pro Kontakt füllen
 		for (ContactReport c : cons) {
+			GWT.log("HTML Writer: neuer Kontakt Report für " + c.getContactInfo());
 			sb.append("<tr>");
 			if (c.getContactInfo() != null) {
 				sb.append("<td> <b>" + c.getContactInfo() + "</b> </td>");
@@ -137,6 +140,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 	}
 
 	public void process(FilteredContactsOfUserReport r) {
+		GWT.log("Report zu HTML machen");
 		StringBuffer sb = new StringBuffer();
 		/**
 		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen auszugebenden Kontakten

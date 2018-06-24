@@ -47,8 +47,6 @@ public class ContactList extends BusinessObject implements Serializable{
 				if(listName != null) {
 					return listName; 
 				} else return Integer.toString(this.id);
-				
-				
 			}
 
 			/** 

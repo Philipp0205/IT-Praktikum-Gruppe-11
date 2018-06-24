@@ -50,7 +50,7 @@ public interface EditorServiceAsync {
 	
 	void deleteProperty(Property p, AsyncCallback<Void> callback);
 	
-	void deletePValue(PValue pv, AsyncCallback<Void> callback);
+	void deletePValue(PValue pv, Contact c, AsyncCallback<Void> callback);
 	
 	void updatePValue(PValue pv, AsyncCallback<PValue> callback);
 	

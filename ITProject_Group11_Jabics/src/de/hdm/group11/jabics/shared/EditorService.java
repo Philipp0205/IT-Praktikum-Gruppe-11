@@ -51,7 +51,7 @@ public interface EditorService extends RemoteService{
 	
 	public void deleteProperty(Property p);
 	
-	public void deletePValue(PValue pv);
+	public void deletePValue(PValue pv, Contact c);
 	
 	public PValue updatePValue(PValue pv);
 	
