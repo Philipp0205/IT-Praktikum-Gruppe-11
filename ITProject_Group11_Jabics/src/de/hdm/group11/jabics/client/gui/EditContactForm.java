@@ -157,8 +157,9 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 	}
-
+	
 	public void save() {
+		ArrayList<PValue> filledPV = new ArrayList<PValue>();
 		// Alle PValues aus der Tabelle ziehen
 		ArrayList<PValue> allPV = new ArrayList<PValue>();
 		for (PropForm p : val) {
@@ -198,11 +199,13 @@ public class EditContactForm extends VerticalPanel {
 					editorService.createPValue(pv.getProperty(), pv.getIntValue(), contact, u, new CreatePValueCallback());
 					break;
 				}
+			}else if (pv.containsValue()) {
+				filledPV.add(pv);
 			}
 		}
 
 		if (nameExistent) {
-			contact.setValues(allPV);
+			contact.setValues(filledPV);
 			editorService.updateContact(contact, new AsyncCallback<Contact>() {
 				@Override
 				public void onFailure(Throwable caught) {
