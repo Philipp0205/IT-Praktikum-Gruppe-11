@@ -6,6 +6,7 @@ import java.util.Date;
 import com.google.gwt.user.server.rpc.*;
 import de.hdm.group11.jabics.server.db.ContactMapper;
 import de.hdm.group11.jabics.server.db.PValueMapper;
+import de.hdm.group11.jabics.server.db.PropertyMapper;
 import de.hdm.group11.jabics.server.db.UserMapper;
 import de.hdm.group11.jabics.shared.ReportGeneratorService;
 import de.hdm.group11.jabics.shared.bo.*;
@@ -27,6 +28,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	ContactMapper cMapper;
 	UserMapper uMapper;
 	PValueMapper pvMapper;
+	PropertyMapper pMapper;
 	private static final long serialVersionUID = -4462530285584570547L;
 	
 	// Alternative Lösung die wir vorerst nicht beachten müssen
@@ -45,6 +47,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		cMapper = ContactMapper.contactMapper();
 		uMapper = UserMapper.userMapper();
 		pvMapper = PValueMapper.pValueMapper();
+		pMapper = PropertyMapper.propertyMapper();
 
 	  }
 	
@@ -106,13 +109,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 * @return FilteredContactsOfUserReport
 	 */
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u) throws IllegalArgumentException {
-		
 		/**
 		 *  Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt. 
 		 *  Aus dieser werden dann anschließend die entsprechenden Kontakte gefiltert.
 		 */
 		ArrayList<Contact> contacts = cMapper.findAllContacts(u);
-
 		// Zuerst wird ein leerer Report angelegt. 
 		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport();
 		
@@ -134,6 +135,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		case STRING:
 			result.setSubReports(this.filterContactsByString(contacts, pv));
 			filtercriteria[0] = pv.getStringValue();
+			System.out.println("ok2");
 		break;
 		
 		case INT: 
@@ -158,8 +160,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			
 		}
 		
-		
+		System.out.println("log1");
 		result.setFiltercriteria(new Paragraph(filtercriteria));
+		System.out.println("log 2");
 		
 		return result;
 	}
@@ -172,16 +175,21 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
-		
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
 		for (Contact c : Filter.filterContactsByString(contacts, pv.getStringValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
+				p.setProperty(pMapper.findPropertyById(p.getPropertyId()));
 				pviews.add(new PropertyView(p));
 			}
-			results.add(new ContactReport(pviews));
+			ContactReport cr =new ContactReport(pviews);
+			results.add(cr);
 		}
+		System.out.println("stringFilter-return");
 		return results; //? 
 	}
 	

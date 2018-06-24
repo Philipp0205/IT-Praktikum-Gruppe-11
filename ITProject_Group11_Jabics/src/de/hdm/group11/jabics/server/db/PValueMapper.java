@@ -116,7 +116,6 @@ public class PValueMapper {
 				}
 				case INT: {
 					int value = pv.getIntValue();
-					System.out.println(pv.getIntValue());
     	
 					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ "dateValue, propertyID, contactID) VALUES " 
@@ -206,12 +205,13 @@ public class PValueMapper {
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
+	    	
 	    	//Erzeugen einer ArrayList
 		    ArrayList<PValue> al = new ArrayList<PValue>();
 
 	 	   	// Füllen des Statements
-	 	   	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue WHERE contactID = " + c.getId());
-
+	 	    ResultSet rs = stmt.executeQuery("SELECT * FROM pValue  " +
+					 " WHERE contactID = " + c.getId() );
 	 	   	while (rs.next()) {
 	 	   	//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 	 	   		PValue pv = new PValue();
@@ -219,13 +219,12 @@ public class PValueMapper {
 	    		pv.setId(rs.getInt("pValueID"));
 	    		pv.setStringValue(rs.getString("stringValue"));
 	    		pv.setIntValue(rs.getInt("intValue"));
-	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setPropertyId(rs.getInt("propertyID"));
+	    		pv.setFloatValue(rs.getFloat("floatValue"));
 	    		pv.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		//Muss noch in der Apl realisiert werden
 	    		pv.setDateValue(rs.getDate("dateValue"));
-
 	    		if(pv.getStringValue()!= null) {
 	    			pv.setPointer(2);
 	    			
@@ -236,12 +235,10 @@ public class PValueMapper {
 	    		}else {
 	    			pv.setPointer(4);
 	    		}
-	    		System.out.println(pv.getPointer());
 	    		al.add(pv);
 	 	    }
-
 		    	con.close();
-
+		    	
 	 	   	return al;
 	    }
 	    catch (SQLException e) {
@@ -269,8 +266,9 @@ public class PValueMapper {
 	    	PValue pv = new PValue();
 
 	    	// Füllen des Statements
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue " + "WHERE pValueID = " + id );
-	   
+	    	
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM pValue "+
+					 " WHERE pValueID = " + id  );
 	    	if (rs.next()) {
 	    		//Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 	    		pv.setId(rs.getInt("pValueID"));

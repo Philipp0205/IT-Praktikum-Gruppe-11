@@ -190,7 +190,6 @@ public class ContactMapper{
 			+ " FROM contact"
 			+ " LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
 			+ " WHERE contactCollaboration.systemUserID = " + u.getId());
-			
 			while (rs.next()) {
 				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
@@ -202,7 +201,7 @@ public class ContactMapper{
 	    		c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
-			//con.close();
+			con.close();
 			return al;
 	    }
 	    catch (SQLException e) {

@@ -22,6 +22,7 @@ public class PropertyView implements Serializable{
 		this.pname = p;
 		this.pvalue = v;
 	}
+
 	
 	public PropertyView (PValue pv) throws IllegalArgumentException {
 		this.pname = pv.getProperty().getLabel();
