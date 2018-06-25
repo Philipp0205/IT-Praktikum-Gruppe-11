@@ -52,6 +52,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	  }
 	
 	
+	
 	/**
 	 * Diese Methode erstellt einen Report, der alle Kontakte im System wiedergibt.
 	 * Hierfür werden alle Kontakte eines Nutzers für alle Nutzer ausgegeben.
@@ -255,6 +256,18 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			results.add(new ContactReport(pviews));
 		}
 		return results; //? 				
+	}
+	
+	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u){
+		
+		ArrayList<Property> results = new ArrayList<Property>();
+		
+		for( Contact c : cMapper.findAllContacts(u)) {
+			for (PValue pv : pvMapper.findPValueForContact(c)){
+				results.add(pv.getProperty());
+			}
+		}
+		return results;
 	}
 
 	
