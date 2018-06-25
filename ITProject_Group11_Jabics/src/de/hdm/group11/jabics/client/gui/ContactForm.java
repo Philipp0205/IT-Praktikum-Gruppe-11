@@ -310,7 +310,9 @@ public class ContactForm extends VerticalPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
+			
 			Window.alert("Das Anlegen der neuen Eigenschaftsausprägung ist leider fehlgeschlagen.");
+			
 		}
 
 		@Override

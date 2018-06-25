@@ -246,16 +246,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
 
-		ArrayList<Contact> result = cMapper.findContactsOfContactList(cl);
+		//ArrayList<Contact> result = cMapper.findContactsOfContactList(cl);
+		ArrayList<Contact> result = new ArrayList<Contact>();
 		System.out.println("Got all Contacts of List " + cl.toString());
-		for (Contact c : result) {
+		for (Contact c : cMapper.findContactsOfContactList(cl)) {
 			// if(cMapper.findCollaborators(c).contains(u)) result.add(c);
 			c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
 		}
-		// for (Contact cres : result) {
-		// cres.setOwner(uMapper.findUserByContact(cres));
-		// }
+//		 for (Contact cres : result) {
+//		 cres.setOwner(uMapper.findUserByContact(cres));
+//		 }
+		System.out.println("2.1: result.toString " + result.toString());
 		return result;
 	}
 
@@ -515,6 +517,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * upgedated
 	 */
 	public Contact updateContact(Contact c) {
+		
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
