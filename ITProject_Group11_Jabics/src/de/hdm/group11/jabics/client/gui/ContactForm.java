@@ -404,7 +404,7 @@ public class ContactForm extends VerticalPanel {
 			}
 			@Override
 			public void onClick(ClickEvent event) {
-				editorService.deletePValue(result.get(i), new deletePValueCallback(result.get(i)));
+				editorService.deletePValue(result.get(i), contactToDisplay, new deletePValueCallback(result.get(i)));
 				}
 			}
 		class SaveClickHandler implements ClickHandler {

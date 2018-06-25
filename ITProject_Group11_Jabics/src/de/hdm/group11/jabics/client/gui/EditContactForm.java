@@ -159,6 +159,7 @@ public class EditContactForm extends VerticalPanel {
 	}
 
 	public void save() {
+		ArrayList<PValue> filledPV = new ArrayList<PValue>();
 		// Alle PValues aus der Tabelle ziehen
 		ArrayList<PValue> allPV = new ArrayList<PValue>();
 		for (PropForm p : val) {
@@ -186,23 +187,29 @@ public class EditContactForm extends VerticalPanel {
 				GWT.log("PVhinzugefügt: " + pv.toString());
 				switch (pv.getProperty().getType()) {
 				case STRING:
-					editorService.createPValue(pv.getProperty(), pv.getStringValue(), contact, u, new CreatePValueCallback());
+					editorService.createPValue(pv.getProperty(), pv.getStringValue(), contact, u,
+							new CreatePValueCallback());
 					break;
 				case DATE:
-					editorService.createPValue(pv.getProperty(), pv.getDateValue(), contact, u, new CreatePValueCallback());
+					editorService.createPValue(pv.getProperty(), pv.getDateValue(), contact, u,
+							new CreatePValueCallback());
 					break;
 				case FLOAT:
-					editorService.createPValue(pv.getProperty(), pv.getFloatValue(), contact, u, new CreatePValueCallback());
+					editorService.createPValue(pv.getProperty(), pv.getFloatValue(), contact, u,
+							new CreatePValueCallback());
 					break;
 				case INT:
-					editorService.createPValue(pv.getProperty(), pv.getIntValue(), contact, u, new CreatePValueCallback());
+					editorService.createPValue(pv.getProperty(), pv.getIntValue(), contact, u,
+							new CreatePValueCallback());
 					break;
 				}
+			} else if (pv.containsValue()) {
+				filledPV.add(pv);
 			}
 		}
 
 		if (nameExistent) {
-			contact.setValues(allPV);
+			contact.setValues(filledPV);
 			editorService.updateContact(contact, new AsyncCallback<Contact>() {
 				@Override
 				public void onFailure(Throwable caught) {
@@ -328,6 +335,28 @@ public class EditContactForm extends VerticalPanel {
 			if (result != null) {
 				GWT.log("PValue erstellt ");
 			}
+		}
+	}
+
+	/**
+	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer
+	 * Eigenschafts- ausprägung.
+	 */
+	class DeletePValueCallback implements AsyncCallback<Void> {
+		private PValue pvalue = null;
+		PVForm pvform;
+
+		public DeletePValueCallback(PVForm pv) {
+			this.pvform = pv;
+		}
+		public void onFailure(Throwable caugth) {
+			Window.alert("PValue konnte nicht gelöscht werden");
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			Window.alert("Erfolgreich gelöscht");
+			pvform.setVisible(false);
 		}
 	}
 
@@ -473,6 +502,7 @@ public class EditContactForm extends VerticalPanel {
 			val.setText(pv.toString());
 			val.addClickHandler(new DateClickHandler(pv));
 			val.addValueChangeHandler(new PValueChangeHandler<String>(pv));
+			delete.addClickHandler(new DeleteClickHandler(this));
 		}
 
 		class PValueChangeHandler<String> implements ValueChangeHandler {
@@ -522,6 +552,19 @@ public class EditContactForm extends VerticalPanel {
 					dp.setVisible(true);
 				}
 			}
+		}
+	}
+
+	class DeleteClickHandler implements ClickHandler {
+		PVForm pv;
+
+		DeleteClickHandler(PVForm pv) {
+			this.pv = pv;
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			editorService.deletePValue(pv.getPV(), contact, new DeletePValueCallback(pv));
+
 		}
 	}
 }

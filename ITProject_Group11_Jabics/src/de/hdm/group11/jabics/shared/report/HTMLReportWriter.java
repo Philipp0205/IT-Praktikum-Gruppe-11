@@ -3,6 +3,8 @@ package de.hdm.group11.jabics.shared.report;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
+
 
 /**
  * Implementiert die Methoden aus ReportWriter, um Reports in das HTML-Format zu
@@ -54,32 +56,41 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 	}
 
 	public String createHeadOfReport(CompositeReport r) {
+		GWT.log("HeadOfReport erstellen");
 
 		if (r.getCreator() != null && r.getHeadline() != null) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div id=\"report\">");
-			sb.append("<h3> Report für " + r.getCreator().getUsername() + "</h3");
+			sb.append("<h3> Report für " + r.getCreator().getUsername() + "</h3>");
+			sb.append("<h5> Erstellt am " + r.getCreationDate() + "</h5>");
 			return sb.toString();
 		} else
 			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report ohne Name</h3>";
 	}
 
 	public String convertContactReportsToHTML(ArrayList<ContactReport> cons) {
+		GWT.log("Tabelle erstellen");
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div id=\"reportTable\"");
 		sb.append("<table style=\"width:700px\">");
 		// Die Spaltennamen definieren
 		sb.append("<tr>");
+		GWT.log("Tabelle erstellen");
 		for (int i = 0; i < 10; i++) {
 			sb.append("<td> <b>Spalte" + i + " </b> </td>");
 		}
+		GWT.log("Tabelle erstellen");
 		sb.append("</tr>");
 		// die Zeilen pro Kontakt füllen
 		for (ContactReport c : cons) {
+			GWT.log("HTML Writer: neuer Kontakt Report für ");//) + c.getContactInfo());
 			sb.append("<tr>");
 			if (c.getContactInfo() != null) {
 				sb.append("<td> <b>" + c.getContactInfo() + "</b> </td>");
-			} else sb.append("<td> <b>kein Anzeigename</b> </td>");
+			} else {
+				GWT.log("Keinanzeigename");
+				sb.append("<td> <b>kein Anzeigename</b> </td>");
+			}
 			for (PropertyView pv : c.getContent()) {
 				int i = 0;
 				if (pv.getPname() != null && pv.getPvalue() != null && i < 10) {
@@ -96,6 +107,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		}
 		sb.append("</table>");
 		sb.append("</div>");
+		GWT.log("Tabelle erstellenfertig");
 		return sb.toString();
 
 	}
@@ -137,6 +149,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 	}
 
 	public void process(FilteredContactsOfUserReport r) {
+		GWT.log("Report zu HTML machen");
 		StringBuffer sb = new StringBuffer();
 		/**
 		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen auszugebenden Kontakten
@@ -148,6 +161,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		sb.append(paragraph2HTML(r.getFootline()));
 		sb.append("</div>");
 		this.reportText = sb.toString();
+		GWT.log("Report zu HTML machen fertig");
 	}
 
 }

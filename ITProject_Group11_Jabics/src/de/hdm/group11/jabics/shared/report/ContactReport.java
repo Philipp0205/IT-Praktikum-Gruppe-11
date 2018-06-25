@@ -15,6 +15,7 @@ public class ContactReport extends Report  implements Serializable{
 	
 	private ArrayList<PropertyView> content = new ArrayList<PropertyView>();
 	private String contactInfo;
+	public ContactReport() {}
 	
 	/**
 	 * simple constructor that needs at least one Property view in an ArrayList
@@ -32,7 +33,7 @@ public class ContactReport extends Report  implements Serializable{
 		this.content = pv;
 		try {
 			for(PropertyView p : pv) {
-				if(p.getPname() == "name") this.contactInfo = p.getPvalue();
+				if(p.getPname() == "firstname") this.contactInfo = p.getPvalue();
 			}
 		} catch (Exception e){
 			if (this.contactInfo == null) {
