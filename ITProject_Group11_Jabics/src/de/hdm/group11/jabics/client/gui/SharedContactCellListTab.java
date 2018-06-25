@@ -140,7 +140,6 @@ public class SharedContactCellListTab {
 	}
 
 	public void updateContact(Contact c) {
-
 		for (Contact ci : contactDataProvider.getList()) {
 			if (c.getId() == ci.getId()) {
 				contactDataProvider.getList().set(0, c);
