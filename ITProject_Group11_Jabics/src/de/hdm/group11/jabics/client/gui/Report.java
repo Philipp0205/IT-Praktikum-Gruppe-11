@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.client.gui;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,10 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -47,22 +51,30 @@ public class Report implements EntryPoint {
 	HorizontalPanel navPanel = new HorizontalPanel();
 	VerticalPanel verPanel1 = new VerticalPanel();
 	VerticalPanel verPanel2 = new VerticalPanel();
-	VerticalPanel verPanel3 = new VerticalPanel();
+//	VerticalPanel verPanel3 = new VerticalPanel();
 	VerticalPanel verPanel4 = new VerticalPanel();
+	Property[] userpropertys;
 
-	TextBox stringBox = new TextBox();
-	TextBox intBox = new TextBox();
-	TextBox floatBox = new TextBox();
-	TextBox dateBox = new TextBox();
+	TextBox valueBox = new TextBox();
+//	TextBox intBox = new TextBox();
+//	TextBox floatBox = new TextBox();
+//	TextBox dateBox = new TextBox();
+	ListBox datatypemenu = new ListBox();
+	
+	MultiWordSuggestOracle propertystosuggest;
+	
+	SuggestBox propertysb;
 
-	Label stringl = new Label("Text:");
-	Label intl = new Label("Ganzzahl:");
-	Label floatl = new Label("Dezimalzahl:");
-	Label db = new Label("Datum:");
+	Label datatypel = new Label("Eigenschaft:");
+	Label valuelabel = new Label("Wert:");
+//	Label floatl = new Label("Dezimalzahl:");
+//	Label db = new Label("Datum:");
 	DatePicker datepicker = new DatePicker();
 
 	@Override
 	public void onModuleLoad() {
+		
+		
 
 		if (reportGenerator == null) {
 			reportGenerator = ClientsideSettings.getReportGeneratorService();
@@ -84,13 +96,23 @@ public class Report implements EntryPoint {
 		// loadEditor();
 		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 		
+		
+		
+		
+		
 		//Übergangslösung
 		loadReport();
-
+		
 	}
+	
+	
 
 	public void loadReport() {
-
+		JabicsUser u = new JabicsUser();
+		u.setId(1);
+		u.setEmail("stahl.alexander@live.de");
+		u.setUsername("Stahlex");
+		u.setLoggedIn(true);
 		/**
 		 * Das GUI soll folgendermaßen aussehen: Oben gibt es eine Navigation mit 4
 		 * Feldern für ints, strings, floars und Dates zusätzlich gibt es einen "Suchen"
@@ -102,24 +124,31 @@ public class Report implements EntryPoint {
 		 */
 
 		// Aufbauen des NavPanels
+		
+		
+		reportGenerator.getPropertysOfJabicsUser(u, new getPropertysOfJabicsUserCallback());
 
-		verPanel1.add(stringl);
-		verPanel1.add(stringBox);
-		verPanel2.add(intl);
-		verPanel2.add(intBox);
-		verPanel3.add(floatl);
-		verPanel3.add(floatBox);
-		verPanel4.add(db);
-		String sDate1 = ("31/12/1998");
-		// Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+		
+		datatypemenu.addItem("Text");
+		datatypemenu.addItem("Datum");
+		datatypemenu.addItem("Dezimalzahl");
+		datatypemenu.addItem("Ganzzahl");
+		verPanel1.add(datatypel);
+
+		verPanel2.add(valuelabel);
+		verPanel2.add(valueBox);
+//		verPanel3.add(floatl);
+//		verPanel3.add(floatBox);
+//		verPanel4.add(db);
+		
 		datepicker.setValue(null);
-		verPanel4.add(dateBox);
+//		verPanel4.add(dateBox);
 		verPanel4.add(datepicker);
 		datepicker.setVisible(false);
 
 		navPanel.add(verPanel1);
 		navPanel.add(verPanel2);
-		navPanel.add(verPanel3);
+//		navPanel.add(verPanel3);
 		navPanel.add(verPanel4);
 		navPanel.add(filteredReportButton);
 		navPanel.add(allReportButton);
@@ -148,14 +177,16 @@ public class Report implements EntryPoint {
 			}
 		});
 
-		dateBox.addClickHandler(new ClickHandler() {
+		datatypemenu.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				if(datatypemenu.getSelectedItemText()=="Datum") {
 				datepicker.setVisible(true);
 				Button finish = new Button("Fertig");
 				verPanel4.add(finish);
 				finish.addClickHandler(new DatePickerClickHandler(finish));
+				}
 			}
 		});
 
@@ -168,7 +199,7 @@ public class Report implements EntryPoint {
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				if (datepicker != null) {
 					// pval.setDateValue(event.getValue());
-					dateBox.setText(event.getValue().toString());
+					valueBox.setText(event.getValue().toString());
 				}
 			}
 		});
@@ -177,36 +208,39 @@ public class Report implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-
 				JabicsUser u = new JabicsUser();
 				u.setId(1);
 				u.setEmail("stahl.alexander@live.de");
 				u.setUsername("Stahlex");
 				u.setLoggedIn(true);
-
-				if (stringBox.getText().isEmpty() == false) {
+				GWT.log(propertysb.getValue());
+				for (int i = 0; i< userpropertys.length; i++) {
+				
+					if(userpropertys[i].getLabel() == propertysb.getValue()) {
+				
+				if (userpropertys[i].getType() == Type.STRING) {
 					Property p = new Property(null, Type.STRING, false);
-					PValue pvalue = new PValue(p, stringBox.getText(), u);
+					PValue pvalue = new PValue(p, valueBox.getText(), u);
 					// TODO hier currentUser einfügen
 					reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
 							new CreateFilteredContactsOfUserReportCallback());
-				} else if (intBox.getText().isEmpty() == false) {
+				} else if (userpropertys[i].getType() == Type.INT) {
 					Property p = new Property(null, Type.INT, false);
-					if (stringBox.getText() != null) {
-						PValue pvalue = new PValue(p, intBox.getText(), u);
+					if (valueBox.getText() != null) {
+						PValue pvalue = new PValue(p, valueBox.getText(), u);
 						reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
 								new CreateFilteredContactsOfUserReportCallback());
 					} else
 						System.out.println("Eingegebener Wert ist nicht im korrekten Format (int).");
 
-				} else if (floatBox.getText().isEmpty() == false) {
+				} else if (userpropertys[i].getType() == Type.FLOAT) {
 					Property p = new Property(null, Type.FLOAT, false);
-					if (floatBox.getText() != null) {
-						PValue pvalue = new PValue(p, floatBox.getText(), u);
+					if (valueBox.getText() != null) {
+						PValue pvalue = new PValue(p, valueBox.getText(), u);
 						reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
 								new CreateFilteredContactsOfUserReportCallback());
 					}
-				} else if (datepicker.getValue() != null) {
+				} else if (userpropertys[i].getType() == Type.DATE) {
 					Property p = new Property(null, Type.DATE, false);
 					PValue pvalue = new PValue(p, datepicker.getValue(), u);
 					reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
@@ -215,7 +249,9 @@ public class Report implements EntryPoint {
 					Window.alert("Bitte in mindestens ein Feld ein Filterkriterium eingeben");
 
 			}
-
+				//fsklammer
+					}
+			}
 		});
 
 	}
@@ -290,4 +326,29 @@ public class Report implements EntryPoint {
 			}
 		}
 	}
-}
+	
+	private class getPropertysOfJabicsUserCallback implements AsyncCallback<ArrayList<Property>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Fehler beim Laden der Eigenschaften");
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Property> result) {
+			propertystosuggest = new MultiWordSuggestOracle();
+			userpropertys = new Property[result.size()];
+			
+			for (int i = 0; i< result.size(); i++ ) {
+				userpropertys[i] = result.get(i);
+				propertystosuggest.add(result.get(i).getLabel());
+			}
+			
+			propertysb = new SuggestBox(propertystosuggest);
+			verPanel1.add(propertysb);
+			
+			}
+		}
+	}
+
+
