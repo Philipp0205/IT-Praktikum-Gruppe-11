@@ -220,7 +220,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Property createProperty(String label, Type type) {
 		return pMapper.insertProperty(new Property(label, type));
-
 	}
 
 	/**
@@ -523,7 +522,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 */
 		if (c.equals(ctemp) == false) {
 			// c.setDateUpdated(LocalDateTime.now());
-
+			
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				if (pvMapper.findPValueById(pv.getId()) != pv) {
@@ -535,6 +534,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			// neues kontaktobjekt erstellen, damit der nickname richtig gesetzt wird
 			Contact updatedContact = new Contact(c.getValues(), c.getOwner());
 			updatedContact.setId(c.getId());
+			try {
+				updatedContact.setShareStatus(c.getShareStatus());
+			}catch(Exception e) {
+				System.err.println("Share Status des Kontakts " + c.getId() + "wurde nicht gefunden");
+			}
 			return cMapper.updateContact(updatedContact);
 		} else
 			return cMapper.findContactById(c.getId());

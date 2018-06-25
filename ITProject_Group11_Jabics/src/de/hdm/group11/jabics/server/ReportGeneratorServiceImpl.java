@@ -185,7 +185,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
-			results.add(new ContactReport(pviews));
+			JabicsUser u = uMapper.findUserByContact(c);
+			results.add(new ContactReport(pviews, c.getName(), u.getUsername()));
 		}
 		return results; //? 
 	}

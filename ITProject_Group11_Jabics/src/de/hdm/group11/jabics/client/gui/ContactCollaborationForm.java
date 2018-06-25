@@ -27,6 +27,10 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	Contact sharedContact;
+	
+	/**
+	 * TODO: all user wird nicht wirklich benötigt
+	 */
 	private ArrayList<JabicsUser> allUser;
 	ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
 	JabicsUser selectedUser;
@@ -35,19 +39,19 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	Button exit, addButton, removeButton, shareContact, shareContactWUser;
 
 	MultiWordSuggestOracle oracle;
-	SuggestBox sug;
+	SuggestBox suggestBox;
 
 	TextColumn<JabicsUser> username;
 
 	CellTable<JabicsUser> selUser;
-	ListDataProvider<JabicsUser> ldp;
+	ListDataProvider<JabicsUser> userDataProvider;
 	SingleSelectionModel<JabicsUser> selectionModel;
 	MultiSelectionModel<PValue> multiSelectionModel;
-
+	
 	HashSet<PValue> finalPV = new HashSet<PValue>();
 	CellTable<PValue> selValues;
 	ListDataProvider<PValue> valueProvider;
-
+	
 	Column<PValue, Boolean> checkbox;
 	Column<PValue, String> property;
 	Column<PValue, String> propertyvalue;
@@ -93,7 +97,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		GWT.log("collab4");
 		grid = new Grid(5, 4);
 		// grid.setSize("500px", "400px");
-		grid.setWidget(0, 0, sug);
+		grid.setWidget(0, 0, suggestBox);
 
 		grid.setWidget(0, 1, addButton);
 		grid.setWidget(1, 0, selUser);
@@ -104,7 +108,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		selValues.setColumnWidth(propertyvalue, 10, Unit.EM);
 		grid.setWidget(3, 3, shareContact);
 		grid.setWidget(3, 2, shareContactWUser);
-
+		
 		grid.setWidget(3, 0, exit);
 		GWT.log("halloattach4");
 		this.add(grid);
@@ -117,13 +121,13 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 		 */
 		GWT.log("SuggestBox");
-
-		ldp = new ListDataProvider<JabicsUser>();
+		
+		userDataProvider = new ListDataProvider<JabicsUser>();
 		selUser = new CellTable<JabicsUser>();
-
-		ldp.setList(allUser);
-		ldp.addDataDisplay(selUser);
-
+		
+		//ldp.setList(allUser);
+		userDataProvider.addDataDisplay(selUser);
+		
 		selectionModel = new SingleSelectionModel<JabicsUser>();
 
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -138,9 +142,10 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			public void onClick(ClickEvent e) {
 				if (suggestedUser != null)
 					finalUser.add(suggestedUser);
-				ldp.setList(finalUser);
-				ldp.refresh();
-				ldp.flush();
+				userDataProvider.setList(finalUser);
+				suggestBox.setText("");
+				userDataProvider.refresh();
+				userDataProvider.flush();
 			}
 		});
 		GWT.log("SuggestBox4");
@@ -149,8 +154,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			public void onClick(ClickEvent e) {
 				if (selectedUser != null) {
 					finalUser.remove(selectedUser);
-					ldp.setList(finalUser);
-					ldp.flush();
+					userDataProvider.setList(finalUser);
+					userDataProvider.flush();
 				}
 			}
 		});
@@ -166,7 +171,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		 * SuggestBox hinzufügen und mit Optionen befüllen
 		 */
 		oracle = new MultiWordSuggestOracle();
-		sug = new SuggestBox(oracle);
+		suggestBox = new SuggestBox(oracle);
 
 		for (JabicsUser u : allUser) {
 			GWT.log("SuggestBoxalluser");
@@ -183,22 +188,23 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				}
 			}
 		}
+		
 		/**
 		 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
 		 * die suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
 		 * "Nutzer hinzufügen" zur liste der zu teilenden Nutzer hinzugefügt
 		 */
-		sug.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
 				for (JabicsUser u : allUser) {
-					if (sug.getValue().contains(u.getUsername()) && sug.getValue().contains(u.getEmail())) {
+					if (suggestBox.getValue().contains(u.getUsername()) && suggestBox.getValue().contains(u.getEmail())) {
 						suggestedUser = u;
 					}
 				}
 			}
 		});
 
-		sug.setLimit(5);
+		suggestBox.setLimit(5);
 	}
 
 	public void setEditor(Editor e) {
@@ -250,10 +256,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		selValues.addColumn(propertyvalue, "Wert");
 		selValues.setColumnWidth(propertyvalue, 50, Unit.EM);
 	}
-
-	
-	
-	
 
 	/**
 	 * Führt den RPC zur freigabe einens Kontakts mit

@@ -83,14 +83,16 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		sb.append("</tr>");
 		// die Zeilen pro Kontakt füllen
 		for (ContactReport c : cons) {
-			GWT.log("HTML Writer: neuer Kontakt Report für ");//) + c.getContactInfo());
+			GWT.log("HTML Writer: neuer Kontakt Report für " + c.getContactInfo());
 			if (c.getContactInfo() != null) {
-				sb.append(" <tr> <td> <b>" + c.getContactInfo() + "</b> </td> </tr>");
+				sb.append(" <tr> <td> <b>" + c.getContactInfo() + "</b> </td>");
 			} else {
 				GWT.log("Keinanzeigename");
 				sb.append("<tr><td> <b>kein Anzeigename</b> </td> </tr>");
 			}
-			sb.append("<tr>");
+			sb.append("<td> <p>Erstellt am " + c.getCreationDate() + "</p> </td>");
+			sb.append("<td> <p>Besitzer: " + c.getUserInfo() + "</p> </td>");
+			sb.append("</tr><tr>");
 			for (PropertyView pv : c.getContent()) {
 				int i = 0;
 				if (pv.getPname() != null && pv.getPvalue() != null && i < 10) {
