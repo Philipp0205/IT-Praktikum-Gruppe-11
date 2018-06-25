@@ -154,6 +154,16 @@ public class ContactCellListTab{
 		contactDataProvider.getList().remove(c);
 		contactDataProvider.flush();
 	}
+	
+	public void updateContactList(Contact cl) {
+		for (Contact ci : contactDataProvider.getList()) {
+			if (cl.getId() == ci.getId()) {
+				contactDataProvider.getList().set(0, cl);
+				break;
+			}
+		}
+		contactDataProvider.refresh();
+	}
 
 	public void updateContact(Contact c) {
 		for (Contact ci : contactDataProvider.getList()) {

@@ -52,6 +52,8 @@ public class TreeViewMenu {
 
 	public void addContact(Contact c) {
 		contactTab.addContact(c);
+		sharedContactListTab.addContact(c);
+		
 	}
 
 	public StackPanel getStackPanel() {
