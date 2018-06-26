@@ -136,7 +136,7 @@ public class ContactListTreeTab implements TreeViewModel {
 
 	public void setSelectedContactList(ContactList cl) {
 		//selectedContactList = cl;
-		GWT.log("2.1 ausgewählt " + cl.getListName());
+		GWT.log("2.2 ausgewählt " + cl.getListName());
 		editor.showContactList(cl);
 	}
 	
@@ -147,7 +147,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	public void setSelectedContact(Contact c) {
 		//selectedContact	= c;
 		// momentan aktiver User muss angegeben werden
-		GWT.log("2.1 Zurück zum Editor: " + editor.hashCode() + c.getName());
+		GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
 		editor.showContact(c);
 	}
 
@@ -259,30 +259,30 @@ public class ContactListTreeTab implements TreeViewModel {
      */
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
-		GWT.log("2.1 TreeTab: getNodeInfo start.");
-		GWT.log("2.1 TreeTab: Value: " + value.toString());
+		GWT.log("2.2 TreeTab: getNodeInfo start.");
+		GWT.log("2.2 TreeTab: Value: " + value.toString());
 		
 		if (value.equals("Root")) {
-			GWT.log("2.1 TreeTab: value.equals");
+			GWT.log("2.2 TreeTab: value.equals");
 			
 			contactListDataProviders = new ListDataProvider<ContactList>();
 			
 			JabicsUser user2 = new JabicsUser(1);
 			//JabicsUser jabicsUser2 = new JabicsUser();
-			GWT.log("2.2 ContatListTree: User erstellen" );
+			//GWT.log("2.2 ContatListTree: User erstellen" );
 			//GWT.log(jabicsUser2.toString());
 			//Der aktuelle User wird verwendet.
-			GWT.log("2.2 Akutueller User: " + user2.getId());
+			GWT.log("2.2 aktueller User: " + user2.getId());
 			eService2.getListsOf(user2, new AsyncCallback<ArrayList<ContactList>>() {
 				
 				@Override
 				public void onFailure(Throwable caught) {
-					GWT.log("2.3 TreeTab: onFailure");
+					GWT.log("2.2 TreeTab: onFailure");
 					
 				}
 				@Override
 				public void onSuccess(ArrayList<ContactList> contactlists) {
-					GWT.log("2.4 TreeTab: onSuccess");
+					GWT.log("2.2 TreeTab: onSuccess");
 					GWT.log(contactlists.toString());
 					
 					for (ContactList cl : contactlists) {
@@ -290,7 +290,7 @@ public class ContactListTreeTab implements TreeViewModel {
 						contactListDataProviders.getList().add(cl);
 						contactListDataProviders.flush();
 					}
-					GWT.log("TreeTab onSuccess fertig");
+					GWT.log("2.2 TreeTab onSuccess fertig");
 				}
 				
 				
@@ -298,14 +298,14 @@ public class ContactListTreeTab implements TreeViewModel {
 			});
 			
 		// Return a node info that pairs the data with a cell.	
-		GWT.log("2.5 ContactTree DefaultNodeInfo1");
+		GWT.log("2.2 ContactTree DefaultNodeInfo1");
 		return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
 			
 		}
 		
 		if (value instanceof ContactList) {
-			GWT.log("TreeTab: instanceof ContactList");
-			GWT.log(currentCL.toString());
+			GWT.log("2.2 TreeTab: instanceof ContactList");
+			GWT.log("2.2 ContactList" + currentCL.toString());
 			
 			JabicsUser user2 = new JabicsUser();
 			user2.setId(1);
@@ -318,11 +318,11 @@ public class ContactListTreeTab implements TreeViewModel {
 			eService.getContactsOfList(currentCL, user2, new AsyncCallback<ArrayList<Contact>>() {
 				@Override
 				public void onFailure(Throwable caught) {
-					GWT.log("TreeTab value instanceof ContactList onFailure");	
+					GWT.log("2.2 TreeTab value instanceof ContactList onFailure");	
 				}
 				@Override
 				public void onSuccess(ArrayList<Contact> contacts) {
-					GWT.log("TreeTab value instanceof ContactList onSuccess");	
+					GWT.log("2.2 TreeTab value instanceof ContactList onSuccess");	
 					GWT.log(contacts.toString());
 					for (Contact c : contacts) {
 						contactProvider.getList().add(c);		
@@ -331,7 +331,7 @@ public class ContactListTreeTab implements TreeViewModel {
 				}		
 			});
 			
-			GWT.log("DefaultNodeInfo2");
+			GWT.log("2.2 DefaultNodeInfo2");
 			// Return a node info that pairs the data with a cell.
 			return new DefaultNodeInfo<Contact>(contactProvider, new ContactCell(), selectionModel, null);
 			
