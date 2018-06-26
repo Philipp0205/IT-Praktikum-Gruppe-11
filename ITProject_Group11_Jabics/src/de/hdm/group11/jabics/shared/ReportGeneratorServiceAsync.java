@@ -16,6 +16,9 @@ public interface ReportGeneratorServiceAsync {
 	void createFilteredContactsOfUserReport(PValue pv, JabicsUser u,
 			AsyncCallback<FilteredContactsOfUserReport> callback);
 	
+	void  createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser, 
+			AsyncCallback<FilteredContactsOfUserReport> callback);
+	
 	void getPropertysOfJabicsUser(JabicsUser u, AsyncCallback<ArrayList<Property>> callback);
 	
 	void init(AsyncCallback<Void> callback);

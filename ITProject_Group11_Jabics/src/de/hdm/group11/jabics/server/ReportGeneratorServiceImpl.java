@@ -104,6 +104,22 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		}
 		return result;
 	}
+	
+	public FilteredContactsOfUserReport createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser) {
+	
+		FilteredContactsOfUserReport report = new FilteredContactsOfUserReport();
+		String[] filtercriteria =  new String[finalUser.size()];
+		
+		report.setHeadline(new Paragraph("Alle gemeinsamen Kontakte von " + u.getUsername()));
+		report.setFootline(new Paragraph("Ende des Reports"));
+		report.setSubReports(filterContactsByCollaborators(u, finalUser));
+		for(int i= 0; i< finalUser.size(); i++) {
+			filtercriteria[i] = finalUser.get(i).getUsername();
+		}
+		
+		report.setFiltercriteria(new Paragraph(filtercriteria));
+		return report;
+	}
 
 	/**
 	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus gefilterten ContactReport zurück.
@@ -236,6 +252,29 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		return results; //? 	
 		
 	}
+	
+	public ArrayList<ContactReport> filterContactsByCollaborators(JabicsUser u, ArrayList<JabicsUser> finalUser) {
+		
+		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
+		
+		ArrayList<Contact> allUserContacts = cMapper.findAllContacts(u);
+		
+		for (Contact c : allUserContacts) {
+			ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);
+			ArrayList<Contact> matches = Filter.filterContactsByCollaborators(finalUser, collaborators, c);
+			for (Contact c2 : matches) {
+				ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
+					c2.setValues(pvMapper.findPValueForContact(c2));
+				for (PValue p : c2.getValues() ) {
+					pviews.add(new PropertyView(p));
+				}
+																	//TODO hier muss eigentlich der Owner rein: c2.getOwner().getUsername()
+				results.add(new ContactReport(pviews, c2.getName(), u.getUsername()));
+				}
+			}
+		return results;
+		}
+		
 	
 	/**
 	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Float-Value, das in einem PValue mitgegeben wird, 
