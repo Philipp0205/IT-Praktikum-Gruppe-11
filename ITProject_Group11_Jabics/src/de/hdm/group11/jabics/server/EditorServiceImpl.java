@@ -249,17 +249,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		
-		result = cMapper.findContactsOfContactList(cl);
+		//result = cMapper.findContactsOfContactList(cl);
 		System.out.println("Got all Contacts of List " + cl.toString());
 		
 		for (Contact c : cMapper.findContactsOfContactList(cl)) {
+			System.out.println("2.2 find Contact" + c.toString());
 			// if(cMapper.findCollaborators(c).contains(u)) result.add(c);
-			c.setOwner(uMapper.findUserByContact(c));
+			
+			//c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
 		}
 		// for (Contact cres : result) {
 		// cres.setOwner(uMapper.findUserByContact(cres));
 		// }
+
 		return result;
 	}
 

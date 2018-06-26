@@ -282,11 +282,11 @@ public class ContactListTreeTab implements TreeViewModel {
 				}
 				@Override
 				public void onSuccess(ArrayList<ContactList> contactlists) {
-					GWT.log("2.2 TreeTab: onSuccess");
 					GWT.log(contactlists.toString());
 					
 					for (ContactList cl : contactlists) {
 						currentCL = cl;
+						GWT.log("2.2 Add CotactList " + cl.toString());
 						contactListDataProviders.getList().add(cl);
 						contactListDataProviders.flush();
 					}
@@ -323,8 +323,9 @@ public class ContactListTreeTab implements TreeViewModel {
 				@Override
 				public void onSuccess(ArrayList<Contact> contacts) {
 					GWT.log("2.2 TreeTab value instanceof ContactList onSuccess");	
-					GWT.log(contacts.toString());
+					GWT.log("Contacts" + contacts.toString());
 					for (Contact c : contacts) {
+						GWT.log("2.2 Add Contact " + c.toString());
 						contactProvider.getList().add(c);		
 					}			
 					contactProvider.flush();
