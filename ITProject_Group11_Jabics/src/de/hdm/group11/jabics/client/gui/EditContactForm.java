@@ -60,8 +60,6 @@ public class EditContactForm extends VerticalPanel {
 		buttonPanel.add(new Button("Kontakt löschen"));
 		buttonPanel.add(save);
 		
-		
-		
 		buttonPanel.addStyleName("buttonPanel");
 
 		save.addClickHandler(new ClickHandler() {
@@ -155,13 +153,14 @@ public class EditContactForm extends VerticalPanel {
 		for (PropForm p : val) {
 			p.show();
 			for (PVForm pv : p.getPVForms()) {
+				p.setStyleName("propForm");
 				pv.show();
 			}
 			pPanel.add(p);
 			
 			pPanel.setStyleName("pPanel");
 		}
-
+		
 	}
 
 	public void save() {
@@ -416,7 +415,7 @@ public class EditContactForm extends VerticalPanel {
 			this.add(property);
 			pvPanel.setWidth("200px");
 			this.insert(pvPanel, 1);
-			addButton.setWidth("85px");
+			addButton.setWidth("100px");
 			this.add(addButton);
 
 		}

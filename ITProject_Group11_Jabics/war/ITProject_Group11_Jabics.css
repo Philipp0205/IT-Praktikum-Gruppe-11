@@ -16,10 +16,6 @@
 	width: 100%;
 }
 
-
-
-
-
 .gwt-DecoratedStackPanel {
   border-bottom: 1px solid #bbbbbb;
 }
@@ -38,12 +34,14 @@
   height: 6px;
   width: 6px;
   zoom: 1;
+  
 }
 .gwt-DecoratedStackPanel .stackItemTopLeft {
   border-left: 1px solid #bbbbbb;
   background: #d3def6 url(images/corner.png) no-repeat 0px -49px;
   -background: #d3def6 url(images/corner_ie6.png) no-repeat 0px -49px;
 }
+
 .gwt-DecoratedStackPanel .stackItemTopRight {
   border-right: 1px solid #bbbbbb;
   background: #d3def6 url(images/corner.png) no-repeat -6px -49px;
@@ -118,13 +116,13 @@ html>body .gwt-DecoratedStackPanel {
 
 .pPanel .gwt-Button {
 	margin-left: 5px;
-	margin-right: 0px;
+	margin-right: 5px;
 
 }
 
 .propForm .gwt-Button {
 	margin-left: 5px;
-	margin-right: 5px;
+	margin-right: 10px;
 }
 
 .menuPanel {
