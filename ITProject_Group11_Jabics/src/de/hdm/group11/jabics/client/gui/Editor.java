@@ -131,6 +131,8 @@ public class Editor implements EntryPoint {
 		//topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
+		
+		topPanel.addStyleName("topPanel");
 
 		//Menu hinzufügen
 		treeViewMenu = new TreeViewMenu();

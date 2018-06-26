@@ -193,12 +193,12 @@ public class ContactMapper{
 			while (rs.next()) {
 				//Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
-	      
 				//Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 	    		c.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		c.setName(rs.getString("nickname"));
+	    		
 				al.add(c);
 			}
 			con.close();
@@ -310,7 +310,7 @@ public class ContactMapper{
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 	    	// Auswählen von Usern mit einer Bestimmten ID in der contactCollaboration Tabelle.
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email"
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
 					+ " WHERE contactCollaboration.contactID = " + c.getId()  );
@@ -319,6 +319,7 @@ public class ContactMapper{
 	    		//Befüllen des User-Objekts und hinzufügen in die ArrayList.
 	    		JabicsUser u = new JabicsUser(rs.getString("email"));
 	    		u.setId(rs.getInt("systemUserID"));
+	    		u.setUsername(rs.getString("name"));
 	    		al.add(u);
 	    	}
 		con.close();
