@@ -23,6 +23,7 @@ public class TreeViewMenu {
 	Editor e;
 	
 	ContactListTreeTab contactListTab;
+	ContactListTreeTab contactListTab2;
 	SharedContactCellListTab sharedContactListTab;
 	ContactCellListTab contactTab;
 	StackPanel stackPanel;

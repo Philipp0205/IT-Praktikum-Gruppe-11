@@ -185,6 +185,7 @@ public class Editor implements EntryPoint {
 		scForm.setEditor(this);
 		scForm.setUser(this.currentUser);
 		}
+		formPanel.clear();
 		scForm.setContact(c);
 		
 		//formPanel.clear();
@@ -198,10 +199,30 @@ public class Editor implements EntryPoint {
 		cForm = new EditContactForm();
 		cForm.setEditor(this);
 		cForm.setUser(this.currentUser);
-		cForm.setContact(c);
-
+		
 		formPanel.clear();
 		GWT.log("AltesWidgetEntfernt");
+		cForm.setNewContact(false);
+		cForm.setContact(c);
+		
+		formPanel.insert(cForm, 0);
+		GWT.log("editcontFertig");
+		
+		formPanel.setStyleName("formPanel");
+	}
+	
+	public void newContact(Contact c) {
+		GWT.log("editcont");
+		//if (this.cForm == null) {
+		cForm = new EditContactForm();
+		cForm.setEditor(this);
+		cForm.setUser(this.currentUser);
+		
+		formPanel.clear();
+		GWT.log("AltesWidgetEntfernt");
+		cForm.setNewContact(true);
+		cForm.setContact(c);
+		
 		formPanel.insert(cForm, 0);
 		GWT.log("editcontFertig");
 		
@@ -390,7 +411,7 @@ public class Editor implements EntryPoint {
 					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
 
 			Contact newContact = new Contact();
-			editContact(newContact);
+			newContact(newContact);
 		}
 	}
 

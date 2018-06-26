@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
-
 import de.hdm.group11.jabics.shared.EditorService;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -233,6 +231,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		for (ContactList cl : clMapper.findContactListOfUser(u)) {
 			cl.setOwner(uMapper.findUserByContactList(cl));
+			System.out.println("2.2 getListsOf " + cl.getListName());
 			result.add(cl);
 		}
 
@@ -249,17 +248,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		
-		result = cMapper.findContactsOfContactList(cl);
+		//result = cMapper.findContactsOfContactList(cl);
 		System.out.println("Got all Contacts of List " + cl.toString());
 		
 		for (Contact c : cMapper.findContactsOfContactList(cl)) {
+			System.out.println("2.2 find Contact" + c.toString());
 			// if(cMapper.findCollaborators(c).contains(u)) result.add(c);
-			c.setOwner(uMapper.findUserByContact(c));
+			
+			//c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
 		}
 		// for (Contact cres : result) {
 		// cres.setOwner(uMapper.findUserByContact(cres));
 		// }
+
 		return result;
 	}
 
@@ -589,7 +591,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void addCollaboration(Contact c, JabicsUser u) {
 		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
 		if (!users.contains(u)) {
-			cl.setShareStatus(BoStatus.IS_SHARED);
+			c.setShareStatus(BoStatus.IS_SHARED);
 			cMapper.insertCollaboration(u, c, false);
 		} else
 			return;
@@ -607,7 +609,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void addCollaboration(PValue pv, JabicsUser u) {
 		ArrayList<JabicsUser> users = pvMapper.findCollaborators(pv);
 		if (!users.contains(u)) {
-			cl.setShareStatus(BoStatus.IS_SHARED);
+			pv.setShareStatus(BoStatus.IS_SHARED);
 			pvMapper.insertCollaboration(u, pv, false);
 		} else
 			return;
