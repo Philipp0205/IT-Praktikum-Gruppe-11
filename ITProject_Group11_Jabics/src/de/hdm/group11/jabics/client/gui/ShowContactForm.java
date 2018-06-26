@@ -32,20 +32,22 @@ public class ShowContactForm extends VerticalPanel {
 
 	CellTable<PValue> values;
 	ListDataProvider<PValue> valueProvider;
-	
+
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
-	
+
 	Button editButton = new Button("Kontakt bearbeiten");
 	Button shareContactButton = new Button("Kontakt neu teilen");
 	Button shareExistingContactButton = new Button("Teilen bearbeiten");
 	Button deleteButton = new Button("Kontakt löschen");
 
 	public ShowContactForm() {
-		
+
 		GWT.log("SHOWContact Construct");
 		values = new CellTable<PValue>();
-		
+		valueProvider = new ListDataProvider<PValue>();
+		valueProvider.addDataDisplay(values);
+
 		prop = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
 				return object.getProperty().getLabel();
@@ -56,12 +58,12 @@ public class ShowContactForm extends VerticalPanel {
 				return object.toString();
 			}
 		};
-		
+
 		values.addColumn(prop, "Eigenschaft");
 		values.setColumnWidth(prop, 50, Unit.PX);
 		values.addColumn(pval, "Ausprägung");
 		values.setColumnWidth(pval, 50, Unit.PX);
-		
+
 		try {
 			GWT.log("ShowCont panels hinzufügen");
 			this.add(editButton);
@@ -72,13 +74,10 @@ public class ShowContactForm extends VerticalPanel {
 		} catch (Exception caught) {
 			Window.alert(caught.toString());
 		}
-		
+
 	}
-	
+
 	public void onLoad() {
-		
-		valueProvider = new ListDataProvider<PValue>();
-		valueProvider.addDataDisplay(values);
 
 		editButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
@@ -110,12 +109,17 @@ public class ShowContactForm extends VerticalPanel {
 				e.showExistingContactCollab(currentContact);
 			}
 		});
+		GWT.log("Kontakte holen");
 		editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
 		GWT.log("4OnLoad SHOWContact");
 	}
 
 	public void setContact(Contact c) {
 		this.currentContact = c;
+		if (valueProvider != null) {
+			valueProvider.setList(c.getValues());
+			valueProvider.flush();
+		}
 	}
 
 	public void setUser(JabicsUser u) {

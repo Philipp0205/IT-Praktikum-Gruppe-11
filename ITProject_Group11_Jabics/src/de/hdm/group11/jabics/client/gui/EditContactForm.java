@@ -409,6 +409,8 @@ public class EditContactForm extends VerticalPanel {
 			pvPanel.setWidth("200");
 			this.insert(pvPanel, 1);
 			addButton.setWidth("40");
+			addButton.removeStyleName("gwt-Button");
+			addButton.addStyleName("btn");
 			this.add(addButton);
 
 		}
