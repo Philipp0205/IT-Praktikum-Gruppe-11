@@ -51,7 +51,7 @@ public class EditContactForm extends VerticalPanel {
 	TextBox propertyName = new TextBox();
 
 	public void onLoad() {
-
+ 
 		GWT.log("EditCont");
 		pPanel = new VerticalPanel();
 		buttonPanel = new HorizontalPanel();
@@ -59,6 +59,8 @@ public class EditContactForm extends VerticalPanel {
 
 		buttonPanel.add(new Button("Kontakt löschen"));
 		buttonPanel.add(save);
+		
+		buttonPanel.addStyleName("buttonPanel");
 
 		save.addClickHandler(new ClickHandler() {
 			@Override
@@ -154,6 +156,8 @@ public class EditContactForm extends VerticalPanel {
 				pv.show();
 			}
 			pPanel.add(p);
+			
+			pPanel.setStyleName("pPanel");
 		}
 
 	}
@@ -404,13 +408,13 @@ public class EditContactForm extends VerticalPanel {
 					pvPanel.add(pvForm);
 				}
 			}
-			property.setWidth("500");
+			// Styling Labels
+			property.setWidth("80px");
+
 			this.add(property);
-			pvPanel.setWidth("200");
+			pvPanel.setWidth("200px");
 			this.insert(pvPanel, 1);
-			addButton.setWidth("40");
-			addButton.removeStyleName("gwt-Button");
-			addButton.addStyleName("btn");
+			addButton.setWidth("85px");
 			this.add(addButton);
 
 		}

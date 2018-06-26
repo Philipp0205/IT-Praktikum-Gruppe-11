@@ -111,7 +111,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .pPanel .gwt-Label {
-	margin-right: 15px;
+	margin-left: 15px;
+	margin-right: 0px;
+
 }
 
 .propForm .gwt-Button {

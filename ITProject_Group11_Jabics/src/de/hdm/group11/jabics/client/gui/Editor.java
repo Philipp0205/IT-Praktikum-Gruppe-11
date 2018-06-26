@@ -139,6 +139,7 @@ public class Editor implements EntryPoint {
 		GWT.log("Editor: TreeViewMenu erstellt");
 
 		menuPanel.add(treeViewMenu.getStackPanel());
+		menuPanel.setStyleName("menuPanel");
 		/**
 		 * Das kann weg sobald treeview passt
 		 */
@@ -201,6 +202,8 @@ public class Editor implements EntryPoint {
 		GWT.log("AltesWidgetEntfernt");
 		formPanel.insert(cForm, 0);
 		GWT.log("editcontFertig");
+		
+		formPanel.setStyleName("formPanel");
 	}
 
 	public void showContactList(ContactList cl) {
