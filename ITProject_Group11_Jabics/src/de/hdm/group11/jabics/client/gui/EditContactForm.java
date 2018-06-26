@@ -60,6 +60,8 @@ public class EditContactForm extends VerticalPanel {
 		buttonPanel.add(new Button("Kontakt löschen"));
 		buttonPanel.add(save);
 		
+		
+		
 		buttonPanel.addStyleName("buttonPanel");
 
 		save.addClickHandler(new ClickHandler() {
@@ -90,7 +92,7 @@ public class EditContactForm extends VerticalPanel {
 		propertyAddBox.setWidget(0, 1, z2l);
 		propertyAddBox.setWidget(1, 1, formattype);
 
-		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
+		Button addPropertyButton = new Button("Hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.setWidget(1, 2, addPropertyButton);
 		addPPanel.add(propertyAddBox);
@@ -393,7 +395,7 @@ public class EditContactForm extends VerticalPanel {
 		ArrayList<PVForm> pvForms = new ArrayList<PVForm>();
 		VerticalPanel pvPanel = new VerticalPanel();
 		Label property;
-		Button addButton = new Button("Ausprägung hinzufügen");
+		Button addButton = new Button("hinzufügen");
 
 		/**
 		 * Anzeige der PForm, bzw dieser sagen, sich zu zeigen. Fügt alle Widgets in der
