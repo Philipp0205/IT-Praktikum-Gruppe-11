@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import de.hdm.group11.jabics.shared.bo.Contact;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
 public class Filter {
@@ -56,6 +57,24 @@ public class Filter {
 			} 
 			return result;
 	}
+	
+	public static ArrayList<Contact> filterContactsByCollaborators(ArrayList<JabicsUser> finalUser, ArrayList<JabicsUser> collaborators, 
+			Contact c) {
+		
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		
+		for (int z= 0; z<finalUser.size();z++) {
+			for(int i= 0; i < collaborators.size(); i++) {
+				if(finalUser.get(z).getId()==collaborators.get(i).getId()) {
+					result.add(c);
+					} 
+			}
+//			System.out.println(String.valueOf(finalUser.get(i).getId()));
+//			System.out.println(String.valueOf(collaborators.get(i).getId()));
+			
+			} 	
+		return result;
+}
 	
 	public static ArrayList<Contact> filterContactsByFloat(ArrayList<Contact> contacts, float pv) {
 		

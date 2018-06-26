@@ -79,6 +79,7 @@ public class Report implements EntryPoint {
 	SuggestBox userSuggest;
 	Button addUserButton;
 	Button removeUserButton;
+	Button sharedContactsButton;
 
 	ArrayList<JabicsUser> allUser;
 	ArrayList<JabicsUser> finalUser;
@@ -275,12 +276,15 @@ public class Report implements EntryPoint {
 	}
 
 	public void createUserSuggestMenu() {
+		
+
 		/**
 		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 		 */
 		GWT.log("SuggestBox");
 
 		//Instantitierung
+		sharedContactsButton = new Button("gemeinsame Kontakte");
 		finalUser = new ArrayList<JabicsUser>();
 		userSelectionModel = new SingleSelectionModel<JabicsUser>();
 		userDataProvider = new ListDataProvider<JabicsUser>();
@@ -289,6 +293,20 @@ public class Report implements EntryPoint {
 		userTable.setSelectionModel(userSelectionModel);
 		userDataProvider.addDataDisplay(userTable);
 		userDataProvider.setList(finalUser);
+		
+		sharedContactsButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				JabicsUser u = new JabicsUser();
+				u.setId(1);
+				u.setEmail("stahl.alexander@live.de");
+				u.setUsername("Stahlex");
+				u.setLoggedIn(true);
+				System.out.println(finalUser.get(0).getUsername());
+				reportGenerator.createAllSharedContactsReport(u, finalUser, new CreateAllSharedContactsReportCallback());
+			}
+		});
 
 		
 		userSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -372,6 +390,7 @@ public class Report implements EntryPoint {
 		navPanel.add(userTable);
 		navPanel.add(addUserButton);
 		navPanel.add(removeUserButton);
+		navPanel.add(sharedContactsButton);
 		navPanel.add(new Label("sorry kam nicht mehr dazu es alles anzuordnen (es ist voll funktional, die ausgewählten nutzer aus finalReports holen wenn es an die erstellung des reports geht), zeile 375 im Report"));
 	}
 
@@ -390,6 +409,27 @@ public class Report implements EntryPoint {
 			datepicker.setVisible(false);
 			p.setVisible(false);
 		}
+	}
+	
+	private class CreateAllSharedContactsReportCallback implements AsyncCallback<FilteredContactsOfUserReport>{
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			GWT.log(caught.toString());
+		}
+
+		@Override
+		public void onSuccess(FilteredContactsOfUserReport report) {
+			if (report != null) {
+
+				HTMLReportWriter writer = new HTMLReportWriter();
+				writer.process(report);
+				RootPanel.get("content").clear();
+				RootPanel.get("content").add(new HTML(writer.getReportText()));
+			}
+		
+		}
+		
 	}
 
 	private class CreateAllContactsInSystemReportCallback implements AsyncCallback<AllContactsInSystemReport> {
