@@ -222,7 +222,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Property createProperty(String label, Type type) {
 		return pMapper.insertProperty(new Property(label, type));
-
 	}
 
 	/**
@@ -248,18 +247,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
 
-		//ArrayList<Contact> result = cMapper.findContactsOfContactList(cl);
-		ArrayList<Contact> result = new ArrayList<Contact>();
+		ArrayList<Contact> result = cMapper.findContactsOfContactList(cl);
 		System.out.println("Got all Contacts of List " + cl.toString());
-		for (Contact c : cMapper.findContactsOfContactList(cl)) {
+		for (Contact c : result) {
 			// if(cMapper.findCollaborators(c).contains(u)) result.add(c);
 			c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
 		}
-//		 for (Contact cres : result) {
-//		 cres.setOwner(uMapper.findUserByContact(cres));
-//		 }
-		System.out.println("2.1: result.toString " + result.toString());
+		// for (Contact cres : result) {
+		// cres.setOwner(uMapper.findUserByContact(cres));
+		// }
 		return result;
 	}
 
@@ -519,6 +516,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * upgedated
 	 */
 	public Contact updateContact(Contact c) {
+
 		System.out.println("5.1 updateContact");
 		//GWT.log("5.1 Contact:" + c.getName());
 		System.out.println("5.1 Contact:" + c.getName());
@@ -532,7 +530,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println("5.1 ctemp"+ctemp.getName());
 		if (c.equals(ctemp) == false) {
 			// c.setDateUpdated(LocalDateTime.now());
-
+			
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				if (pvMapper.findPValueById(pv.getId()) != pv) {
@@ -546,6 +544,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			
 			System.out.println("5.1 updatedContact"+updatedContact.getName());
 			updatedContact.setId(c.getId());
+			try {
+				updatedContact.setShareStatus(c.getShareStatus());
+			}catch(Exception e) {
+				System.err.println("Share Status des Kontakts " + c.getId() + "wurde nicht gefunden");
+			}
 			return cMapper.updateContact(updatedContact);
 		} else
 			return cMapper.findContactById(c.getId());

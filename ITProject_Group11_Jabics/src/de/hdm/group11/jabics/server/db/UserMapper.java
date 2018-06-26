@@ -76,6 +76,11 @@ public class UserMapper {
 		return userMapper;
 	}
 	
+	/**
+	 * Gibt den Besitzer/Ersteller eines Kontakts zurück.
+	 * @param Contact c, der Kontakt für den der Besitzer gefunden werden soll
+	 * @return JabicsUser u
+	 */
 	public JabicsUser findUserByContact(Contact c) {
 		
 		// Erzeugen der Datenbankverbindung

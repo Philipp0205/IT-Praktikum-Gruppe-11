@@ -3,6 +3,8 @@ package de.hdm.group11.jabics.shared.report;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
+
 /**
  * Ein simpler Report, welcher die Superklasse Report erweitert.
  * @author Anders and Kurrle
@@ -15,12 +17,14 @@ public class ContactReport extends Report  implements Serializable{
 	
 	private ArrayList<PropertyView> content = new ArrayList<PropertyView>();
 	private String contactInfo;
+	private String userInfo;
 	public ContactReport() {}
 	
 	/**
 	 * simple constructor that needs at least one Property view in an ArrayList
 	 */
-	public ContactReport(ArrayList<PropertyView> pv, String contactInfo) {
+	public ContactReport(ArrayList<PropertyView> pv, String contactInfo, String userInfo) {
+		this.userInfo = userInfo;
 		this.content = pv;
 		this.contactInfo = contactInfo;
 	}
@@ -63,16 +67,21 @@ public class ContactReport extends Report  implements Serializable{
 		this.content = content;
 	}
 	public String getContactInfo() {
-		return contactInfo;
+		return this.contactInfo;
 	}
 	public void setContactInfo(String value) {
 		this.contactInfo = value;
+	}
+	
+	public String getUserInfo() {
+		return this.userInfo;
+	}
+	public void setUserInfo(String value) {
+		this.userInfo = value;
 	}
 
 	public ArrayList<PropertyView> getPropertyViews() {
 		return content;
 	}
-	
-	
 
 }

@@ -38,7 +38,6 @@ public class EditContactForm extends VerticalPanel {
 
 	Button deleteContact = new Button("Kontakt löschen");
 	Button save = new Button("Änderungen speichern");
-	
 	Button existingSharedContactButton;
 
 	VerticalPanel pPanel;
@@ -60,8 +59,6 @@ public class EditContactForm extends VerticalPanel {
 
 		buttonPanel.add(new Button("Kontakt löschen"));
 		buttonPanel.add(save);
-		
-		buttonPanel.setStyleName("buttonPanel");
 
 		save.addClickHandler(new ClickHandler() {
 			@Override
@@ -88,7 +85,6 @@ public class EditContactForm extends VerticalPanel {
 		formattype.addItem("Kommazahl");
 		formattype.addItem("Zahl");
 		Label z2l = new Label("Art:");
-		
 		propertyAddBox.setWidget(0, 1, z2l);
 		propertyAddBox.setWidget(1, 1, formattype);
 
@@ -101,7 +97,6 @@ public class EditContactForm extends VerticalPanel {
 		// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
 		// werden können
 		p.add(new Property("Name", Type.STRING, true, 1));
-		
 		p.add(new Property("Vorname", Type.STRING, true, 2));
 		p.add(new Property("Mail", Type.STRING, true, 3));
 		p.add(new Property("Telefon", Type.STRING, true, 4));
@@ -154,14 +149,11 @@ public class EditContactForm extends VerticalPanel {
 
 		// Alle PropForms mit allen PVForms anzeigen lassen
 		for (PropForm p : val) {
-			p.setStyleName("propForm");
 			p.show();
 			for (PVForm pv : p.getPVForms()) {
 				pv.show();
 			}
 			pPanel.add(p);
-			
-			pPanel.addStyleName("pPanel");
 		}
 
 	}
@@ -181,7 +173,7 @@ public class EditContactForm extends VerticalPanel {
 			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
 				GWT.log("Name vorhanden");
 			nameExistent = true;
-		} 
+		}
 		// alle pv aus dem PRopArray rausziehen und hier speichern
 
 		/**
@@ -218,18 +210,19 @@ public class EditContactForm extends VerticalPanel {
 
 		if (nameExistent) {
 			contact.setValues(filledPV);
-
 			editorService.updateContact(contact, new AsyncCallback<Contact>() {
-
 				@Override
 				public void onFailure(Throwable caught) {
 					
 					Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
+
 					GWT.log("5.1 onFailure"+ contact.getName());
+
 				}
 
 				@Override
 				public void onSuccess(Contact result) {
+
 					GWT.log("5.1 onSuccess");
 					GWT.log("5.1" + result.getName());
 					
@@ -240,7 +233,7 @@ public class EditContactForm extends VerticalPanel {
 					
 					
 						
-				
+	
 					GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
 					for (PValue pv : result.getValues()) {
 						GWT.log(pv.toString());
@@ -248,8 +241,6 @@ public class EditContactForm extends VerticalPanel {
 					e.showContact(result);
 				}
 			});
-		} else {
-			Window.alert("Name darf nicht leer sein.");
 		}
 		// editorService.updatePValue(val, new UpdatePValueCallback());
 	}
@@ -396,7 +387,6 @@ public class EditContactForm extends VerticalPanel {
 		Label property;
 		Button addButton = new Button("Ausprägung hinzufügen");
 
-
 		/**
 		 * Anzeige der PForm, bzw dieser sagen, sich zu zeigen. Fügt alle Widgets in der
 		 * Form dem Horizontal Panel hinzu. Durch das Hinzufügen der PVForms zum pvPanel
@@ -414,11 +404,11 @@ public class EditContactForm extends VerticalPanel {
 					pvPanel.add(pvForm);
 				}
 			}
-			property.setWidth("80px");
+			property.setWidth("500");
 			this.add(property);
-			pvPanel.setWidth("200px");
+			pvPanel.setWidth("200");
 			this.insert(pvPanel, 1);
-			addButton.setWidth("100px");
+			addButton.setWidth("40");
 			this.add(addButton);
 
 		}
@@ -525,12 +515,10 @@ public class EditContactForm extends VerticalPanel {
 			GWT.log("createPValueForm für ");
 			GWT.log(pv.toString());
 			this.pval = pv;
-			val.setWidth("250px");
 			val.setText(pv.toString());
 			val.addClickHandler(new DateClickHandler(pv));
 			val.addValueChangeHandler(new PValueChangeHandler<String>(pv));
 			delete.addClickHandler(new DeleteClickHandler(this));
-			delete.setWidth("60px");
 		}
 
 		class PValueChangeHandler<String> implements ValueChangeHandler {
