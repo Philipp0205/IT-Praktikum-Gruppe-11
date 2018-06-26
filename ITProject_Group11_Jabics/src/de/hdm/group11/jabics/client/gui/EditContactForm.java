@@ -51,7 +51,7 @@ public class EditContactForm extends VerticalPanel {
 	TextBox propertyName = new TextBox();
 
 	public void onLoad() {
-
+ 
 		GWT.log("EditCont");
 		pPanel = new VerticalPanel();
 		buttonPanel = new HorizontalPanel();
@@ -125,7 +125,6 @@ public class EditContactForm extends VerticalPanel {
 		GWT.log("EditContRender6");
 		val = new ArrayList<PropForm>();
 		for (Property pl : p) {
-
 			val.add(new PropForm(pl));
 			GWT.log("EditContRenderfuu2");
 		}
@@ -138,9 +137,6 @@ public class EditContactForm extends VerticalPanel {
 			if (pv.getProperty().isStandard()) {
 				GWT.log("Standardeigenschaft : " + pv.getPropertyId());
 				for (PropForm p : val) {
-					
-					p.setStyleName("propFrom");
-					
 					GWT.log("+++++++Suche nach richtigem+++++++++");
 					if (p.getP().getId() == pv.getProperty().getId()) {
 						GWT.log("RichtigeGefunden!");
