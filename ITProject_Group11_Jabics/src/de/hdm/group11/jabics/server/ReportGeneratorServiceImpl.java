@@ -113,8 +113,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 		report.setHeadline(new Paragraph("Alle gemeinsamen Kontakte von " + u.getUsername()));
 		report.setFootline(new Paragraph("Ende des Reports"));
 		report.setSubReports(filterContactsByCollaborators(u, finalUser));
-		for(JabicsUser user : finalUser) {
-			filtercriteria[0] = user.getUsername();
+		for(int i= 0; i< finalUser.size(); i++) {
+			filtercriteria[i] = finalUser.get(i).getUsername();
 		}
 		
 		report.setFiltercriteria(new Paragraph(filtercriteria));
