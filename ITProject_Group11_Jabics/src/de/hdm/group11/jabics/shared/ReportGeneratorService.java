@@ -60,5 +60,7 @@ public interface ReportGeneratorService extends RemoteService {
 	public void init() throws IllegalArgumentException;
 
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) throws IllegalArgumentException;
+	
+	public FilteredContactsOfUserReport createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser);
 
 }
