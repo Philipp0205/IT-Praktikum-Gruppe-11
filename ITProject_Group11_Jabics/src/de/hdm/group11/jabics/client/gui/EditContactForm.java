@@ -35,9 +35,10 @@ public class EditContactForm extends VerticalPanel {
 
 	JabicsUser u;
 	Contact contact;
+	Boolean isNewContact;
 
-	Button deleteContact = new Button("Kontakt löschen");
-	Button save = new Button("Änderungen speichern");
+	Button deleteContactButton = new Button("Kontakt löschen");
+	Button saveButton = new Button("Änderungen speichern");
 	Button existingSharedContactButton;
 
 	VerticalPanel pPanel;
@@ -56,13 +57,19 @@ public class EditContactForm extends VerticalPanel {
 		pPanel = new VerticalPanel();
 		buttonPanel = new HorizontalPanel();
 		addPPanel = new HorizontalPanel();
+		
+		if(isNewContact) {
+			saveButton.setText("Neuen Kontakt speichern");
+		}else {
+			saveButton.setText("Änderungen speichern");
+		}
 
-		buttonPanel.add(new Button("Kontakt löschen"));
-		buttonPanel.add(save);
+		buttonPanel.add(deleteContactButton);
+		buttonPanel.add(saveButton);
 		
 		buttonPanel.addStyleName("buttonPanel");
 
-		save.addClickHandler(new ClickHandler() {
+		saveButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				save();
@@ -252,6 +259,10 @@ public class EditContactForm extends VerticalPanel {
 
 	public void setContact(Contact c) {
 		this.contact = c;
+	}
+	
+	public void setNewContact(Boolean bol) {
+		this.isNewContact = bol;
 	}
 
 	public void setEditor(Editor e) {

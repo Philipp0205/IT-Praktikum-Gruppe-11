@@ -29,6 +29,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	private int propertyId;
 	private int pointer = 0;
 	private boolean contains;
+	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 
 	/**
 	 * Konstruktoren
@@ -190,6 +191,12 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 
 	public void setPointer(int pointer) {
 		this.pointer = pointer;
+	}
+	public BoStatus getShareStatus() {
+		return shareStatus;
+	}
+	public void setShareStatus(BoStatus shareStatus) {
+		this.shareStatus = shareStatus;
 	}
 
 	@Override

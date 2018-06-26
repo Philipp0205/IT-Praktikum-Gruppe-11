@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
-
 import de.hdm.group11.jabics.shared.EditorService;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -593,7 +591,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void addCollaboration(Contact c, JabicsUser u) {
 		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
 		if (!users.contains(u)) {
-			cl.setShareStatus(BoStatus.IS_SHARED);
+			c.setShareStatus(BoStatus.IS_SHARED);
 			cMapper.insertCollaboration(u, c, false);
 		} else
 			return;
@@ -611,7 +609,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void addCollaboration(PValue pv, JabicsUser u) {
 		ArrayList<JabicsUser> users = pvMapper.findCollaborators(pv);
 		if (!users.contains(u)) {
-			cl.setShareStatus(BoStatus.IS_SHARED);
+			pv.setShareStatus(BoStatus.IS_SHARED);
 			pvMapper.insertCollaboration(u, pv, false);
 		} else
 			return;

@@ -16,6 +16,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -50,25 +51,44 @@ public class ContactListForm extends VerticalPanel {
 
 	HorizontalPanel sharePanel = new HorizontalPanel();
 	HorizontalPanel editPanel = new HorizontalPanel();
-	HorizontalPanel deletePanel = new HorizontalPanel();
+	HorizontalPanel changePanel = new HorizontalPanel();
 
 	VerticalPanel addPanel = new VerticalPanel();
 	VerticalPanel removePanel = new VerticalPanel();
+	
+	TextBox listBox = new TextBox();
+	Label formName;
+	Label headline;
 
 	Button deleteButton = new Button("Liste löschen");
+	Button saveButton = new Button("Änderungen speichern");
 	Button shareButton = new Button("Liste teilen");
 	Button shareExistingButton = new Button("Teilen bearbeiten");
 	Button removeButton = new Button("Kontakte entfernen");
 	Button addButton = new Button("Kontakte hinzufügen");
 
+	public ContactListForm() {
+		
+		
+		selValues = new CellTable<Contact>();
+		valueProvider = new ListDataProvider<Contact>();
+		valueProvider.addDataDisplay(selValues);
+				// finalC;
+				// Es kann sein, dass hier noch kexprovider benötigt werden
+
+		selectionModel = new MultiSelectionModel<Contact>();
+		
+	}
+	
 	public void onLoad() {
 		super.onLoad();
 		// For Debugging
 		GWT.log("Neue CL Form");
-
-		Label formName = new Label("Listen-Editor. Kontakte in der Liste sind links im Menu zu sehen");
-		Label headline = new Label("Liste: " + currentList.getListName());
+		
+		formName = new Label("Listen-Editor. Kontakte in der Liste sind links im Menu zu sehen");
+		headline = new Label("Liste: " + currentList.getListName());
 		headline.setStyleName("contactListHeadline");
+
 		this.add(formName);
 		this.add(headline);
 
@@ -97,6 +117,11 @@ public class ContactListForm extends VerticalPanel {
 				editorService.deleteContactList(currentList, u, new DeleteContactListCallback());
 			}
 		});
+		saveButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				save();
+			}
+		});
 		addButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
@@ -112,10 +137,12 @@ public class ContactListForm extends VerticalPanel {
 		sharePanel.add(shareExistingButton);
 		editPanel.add(addButton);
 		editPanel.add(removeButton);
-		deletePanel.add(deleteButton);
+		changePanel.add(deleteButton);
+		changePanel.add(saveButton);
+		this.add(listBox);
 		this.add(sharePanel);
 		this.add(editPanel);
-		this.add(deletePanel);
+		this.add(changePanel);
 		this.add(addPanel);
 		this.add(removePanel);
 
@@ -125,6 +152,10 @@ public class ContactListForm extends VerticalPanel {
 		this.currentList = cl;
 		if (cl != null) {
 			this.currentList = cl;
+			//valueProvider.setList(cl.getContacts());
+			if(cl.getListName() != null) {
+			listBox.setText(cl.getListName());
+			}
 			// this.u = u;
 			deleteButton.setEnabled(true);
 			shareButton.setEnabled(true);
@@ -149,6 +180,13 @@ public class ContactListForm extends VerticalPanel {
 		this.remove(removePanel);
 	}
 
+	void save() {
+		/*
+		 * TODO: implement
+		 */
+		Window.alert("Not yet implemented");
+		
+	}
 	/**
 	 * Diese Methode fügt ein Auswahlfenster für alle Kontakte, die ein Nutzer sehen
 	 * kann, unter der ContactForm (bzw darin, aber unter der Anzeige der
@@ -159,14 +197,7 @@ public class ContactListForm extends VerticalPanel {
 	 *            alle Kontakte eines Nutzers
 	 */
 	public void addContactPanel(ArrayList<Contact> allC) {
-		// PValue selectedPV;
-		selValues = new CellTable<Contact>();
-		valueProvider = new ListDataProvider<Contact>(allC);
-		valueProvider.addDataDisplay(selValues);
-		// finalC;
-		// Es kann sein, dass hier noch kexprovider benötigt werden
-
-		selectionModel = new MultiSelectionModel<Contact>();
+		valueProvider.setList(allC);
 
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
@@ -223,6 +254,7 @@ public class ContactListForm extends VerticalPanel {
 		addPanel.add(selValues);
 		addPanel.add(add);
 		addPanel.add(done);
+		valueProvider.flush();
 	}
 
 	/**
@@ -237,9 +269,9 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	public void removeContactPanel(ArrayList<Contact> allC) {
 		// PValue selectedPV;
-		selValues = new CellTable<Contact>();
-		valueProvider = new ListDataProvider<Contact>(allC);
-		valueProvider.addDataDisplay(selValues);
+		//selValues = new CellTable<Contact>();
+		valueProvider.setList(allC);
+		//valueProvider.addDataDisplay(selValues);
 		// finalC;
 		// Es kann sein, dass hier noch kexprovider benötigt werden
 
@@ -300,6 +332,7 @@ public class ContactListForm extends VerticalPanel {
 		removePanel.add(selValues);
 		removePanel.add(remove);
 		removePanel.add(done);
+		valueProvider.flush();
 	}
 
 	public void setEditor(Editor e) {

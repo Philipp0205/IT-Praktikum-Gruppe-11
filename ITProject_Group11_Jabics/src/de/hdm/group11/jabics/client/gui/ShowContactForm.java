@@ -12,6 +12,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -35,6 +36,8 @@ public class ShowContactForm extends VerticalPanel {
 
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
+	
+	HorizontalPanel sharePanel = new HorizontalPanel();
 
 	Button editButton = new Button("Kontakt bearbeiten");
 	Button shareContactButton = new Button("Kontakt neu teilen");
@@ -63,13 +66,15 @@ public class ShowContactForm extends VerticalPanel {
 		values.setColumnWidth(prop, 50, Unit.PX);
 		values.addColumn(pval, "Ausprägung");
 		values.setColumnWidth(pval, 50, Unit.PX);
-
+		
+		sharePanel.add(shareContactButton);
+		sharePanel.add(shareExistingContactButton);
 		try {
 			GWT.log("ShowCont panels hinzufügen");
 			this.add(editButton);
 			this.add(values);
-			this.add(shareContactButton);
-			this.add(shareExistingContactButton);
+			this.add(sharePanel);
+
 			this.add(deleteButton);
 		} catch (Exception caught) {
 			Window.alert(caught.toString());
