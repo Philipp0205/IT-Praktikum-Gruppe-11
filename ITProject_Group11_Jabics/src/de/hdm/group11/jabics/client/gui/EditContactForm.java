@@ -59,6 +59,8 @@ public class EditContactForm extends VerticalPanel {
 
 		buttonPanel.add(new Button("Kontakt löschen"));
 		buttonPanel.add(save);
+		
+		buttonPanel.addStyleName("buttonPanel");
 
 		save.addClickHandler(new ClickHandler() {
 			@Override
@@ -121,6 +123,7 @@ public class EditContactForm extends VerticalPanel {
 		GWT.log("EditContRender6");
 		val = new ArrayList<PropForm>();
 		for (Property pl : p) {
+
 			val.add(new PropForm(pl));
 			GWT.log("EditContRenderfuu2");
 		}
@@ -133,6 +136,9 @@ public class EditContactForm extends VerticalPanel {
 			if (pv.getProperty().isStandard()) {
 				GWT.log("Standardeigenschaft : " + pv.getPropertyId());
 				for (PropForm p : val) {
+					
+					p.setStyleName("propFrom");
+					
 					GWT.log("+++++++Suche nach richtigem+++++++++");
 					if (p.getP().getId() == pv.getProperty().getId()) {
 						GWT.log("RichtigeGefunden!");
@@ -154,6 +160,8 @@ public class EditContactForm extends VerticalPanel {
 				pv.show();
 			}
 			pPanel.add(p);
+			
+			pPanel.setStyleName("pPanel");
 		}
 
 	}
@@ -404,11 +412,13 @@ public class EditContactForm extends VerticalPanel {
 					pvPanel.add(pvForm);
 				}
 			}
-			property.setWidth("500");
+			// Styling Labels
+			property.setWidth("80px");
+
 			this.add(property);
-			pvPanel.setWidth("200");
+			pvPanel.setWidth("200px");
 			this.insert(pvPanel, 1);
-			addButton.setWidth("40");
+			addButton.setWidth("85px");
 			this.add(addButton);
 
 		}
