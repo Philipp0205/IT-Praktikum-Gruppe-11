@@ -97,3 +97,44 @@ html>body .gwt-DecoratedStackPanel {
   font-weight: bold;
   font-size: 2em;
 }
+
+.topPanel {
+	
+}
+
+.topPanel .gwt-Button  {
+	margin-right: 5px;
+}
+
+.pPanel .gwt-TextBox {
+	margin-right: 5px;
+}
+
+.pPanel .gwt-Label {
+	margin-right: 15px;
+}
+
+.propForm .gwt-Button {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.menuPanel {
+	margin-top: 10px;
+	margin-bottom: 15px;
+	margin-right: 15px;
+}
+
+.formPanel {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+.buttonPanel .gwt-Button {
+	margin-left: 5px;
+}
+
+
+
+
+

@@ -7,6 +7,8 @@ import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
 
 import de.hdm.group11.jabics.shared.EditorService;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -514,12 +516,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * upgedated
 	 */
 	public Contact updateContact(Contact c) {
+
+		System.out.println("5.1 updateContact");
+		//GWT.log("5.1 Contact:" + c.getName());
+		System.out.println("5.1 Contact:" + c.getName());
+		
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
 		 * TODO: hier die !equals oder != operatoren? was ist besser um zu überprüfen,
 		 * dass pvalues gleich sind .equals in Contact noch schreiben?
 		 */
+		System.out.println("5.1 ctemp"+ctemp.getName());
 		if (c.equals(ctemp) == false) {
 			// c.setDateUpdated(LocalDateTime.now());
 			
@@ -527,12 +535,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			for (PValue pv : c.getValues()) {
 				if (pvMapper.findPValueById(pv.getId()) != pv) {
 					pvMapper.updatePValue(pv);
-					pvMapper.deleteCollaboration(pv, pv.getOwner());
-					pvMapper.insertCollaboration(u, pv, true);
+//					pvMapper.deleteCollaboration(pv, pv.getOwner());
+//					pvMapper.insertCollaboration(u, pv, true);
 				}
 			}
 			// neues kontaktobjekt erstellen, damit der nickname richtig gesetzt wird
 			Contact updatedContact = new Contact(c.getValues(), c.getOwner());
+			
+			System.out.println("5.1 updatedContact"+updatedContact.getName());
 			updatedContact.setId(c.getId());
 			try {
 				updatedContact.setShareStatus(c.getShareStatus());

@@ -213,11 +213,27 @@ public class EditContactForm extends VerticalPanel {
 			editorService.updateContact(contact, new AsyncCallback<Contact>() {
 				@Override
 				public void onFailure(Throwable caught) {
+					
 					Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
+
+					GWT.log("5.1 onFailure"+ contact.getName());
+
 				}
 
 				@Override
 				public void onSuccess(Contact result) {
+
+					GWT.log("5.1 onSuccess");
+					GWT.log("5.1" + result.getName());
+					
+					ArrayList<PValue> values = result.getValues();
+					for (PValue pv : values) {
+						GWT.log("5.1" + pv.toString());
+					}
+					
+					
+						
+	
 					GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
 					for (PValue pv : result.getValues()) {
 						GWT.log(pv.toString());
