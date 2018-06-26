@@ -274,15 +274,17 @@ public class ContactListMapper {
 			ArrayList<ContactList> al = new ArrayList<ContactList>();
 	    	
 	    	//Erzeugen eines Kontaktlisten-Objektes
-	    	ContactList cl = new ContactList();
+	    	//ContactList cl = new ContactList();
 
 	    	// Join zwischen ContactList und ContactListCollaboration und Auswählen der Stellen mit einer bestimmten User-ID.
 	    	ResultSet rs = stmt.executeQuery("SELECT contactList.contactlistID, contactList.listname, contactList.dateCreated, contactList.dateUpdated"
 	    			+ " FROM contactList"
-	    			+ " LEFT JOIN contactlistCollaboration ON contactList.contactListID = contactlistCollaboration.contactListID"
+	    			+ " LEFT JOIN contactlistCollaboration ON contactList.contactlistID = contactlistCollaboration.contactlistID"
 	    			+ " WHERE contactlistCollaboration.systemUserID =" + u.getId());
 	   
-	    	if (rs.next()) {
+	    	while (rs.next()) {
+	    		//Erzeugen eines Kontaktlisten-Objektes
+	    	  	ContactList cl = new ContactList();
 	    		//Befüllen des Kontaktlisten-Objekts
 	    		cl.setId(rs.getInt("contactListID"));
 	    		cl.setListName(rs.getString("listname"));
@@ -290,7 +292,7 @@ public class ContactListMapper {
 	    		cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		al.add(cl);
 	    	}
-	    	System.out.println(cl.getListName());
+	    	//System.out.println(cl.getListName());
 		    con.close();
 	    	return al;
 	    }

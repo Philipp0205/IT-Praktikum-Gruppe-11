@@ -233,6 +233,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		for (ContactList cl : clMapper.findContactListOfUser(u)) {
 			cl.setOwner(uMapper.findUserByContactList(cl));
+			System.out.println("2.2 getListsOf " + cl.getListName());
 			result.add(cl);
 		}
 
