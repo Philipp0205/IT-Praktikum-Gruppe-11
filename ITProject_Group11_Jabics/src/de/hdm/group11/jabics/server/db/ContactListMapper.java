@@ -1,6 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;

@@ -1,6 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -102,14 +105,16 @@ public class PValueMapper {
 					+ "( '" + value + "' , "  + " null, "  
 					+ " null, " + " null, " + pv.getProperty().getId() + ", " + c.getId() + ")" , Statement.RETURN_GENERATED_KEYS ); 
 					ResultSet rs = stmt.getGeneratedKeys();
+					
 					Statement stmt2 =  con.createStatement();
+					
 					while(rs.next()) {
 						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					
-					while(rs2.next()) {
-						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
-						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+						
+						while(rs2.next()) {
+							pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+							pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					}
 					break;
@@ -181,8 +186,9 @@ public class PValueMapper {
 			 */
 			//insertCollaboration(pv.getOwner(), pv, true);
 		
-		//Rückgabe des PValue
-		 con.close();
+		// Schließen der Connection
+		con.close();
+		// Rückgabe des PValue
 		return pv;
 		}
 	    catch (SQLException e) {
