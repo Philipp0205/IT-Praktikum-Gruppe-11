@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
 
@@ -107,7 +108,7 @@ public class PropertyMapper {
 				p.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 			}
 	    	}
-		con.close();
+	    	con.close();
 	    	return p;
 	    }
 	    catch (SQLException e) {
@@ -169,6 +170,49 @@ public class PropertyMapper {
 	    	}
 		con.close();
 	    	return p;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
+	
+	/**
+	 * Diese Methode gibt ein <code>Property</code> Objekt zurück, dass eine bestimmte ID hat.
+	 * @param id die Id nach welcher gesucht werden soll.
+	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
+	 */
+	public ArrayList<Property> findAllStandardPropertys()  {
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    int id = 1;
+
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    	
+			//Erzeugen einer ArrayList
+			ArrayList<Property> al = new ArrayList<Property>();
+	    	
+	    	// Auswählen der Eigenschaften mit einer bestimmten id. 
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE PropertyID = " + id );
+	    	
+	    	while(rs.next()) {	
+		    	//Erzeugen eines Property-Objektes
+	    		Property p = new Property();
+	    		//Befüllen des Property-Objekts
+	    		p.setId(rs.getInt("propertyID"));
+	    		p.setStandard(rs.getBoolean("isStandard"));
+	    		p.setLabel(rs.getString("name"));
+	    		p.setType(rs.getString("type"));		
+	    		p.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		p.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    		al.add(p);
+	    		id++;
+	    	}
+	    	con.close();
+	    	return al;
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
