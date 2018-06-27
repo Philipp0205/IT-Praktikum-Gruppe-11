@@ -273,27 +273,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println("Got all Contacts of User " + u.toString());
 		for (Contact c : cons) {
 
-			// ArrayList<PValue> pvtemp = pvMapper.findPValueForContact(c);
-			// Der Vorname wird in einem sBuffer abgelegt
-			// StringBuffer sBuffer = new StringBuffer();
-			// for (PValue p : pvtemp) {
-			// if (p.getProperty().getLabel() == "name") {
-			// sBuffer.append(p.getStringValue());
-			// } else {
-			// System.out.println("getContactsOf: No name in Array.");
-			// }
-			// }
-			// // Der Nachname wird im gleichen sBuffer abgelegt.
-			// for (PValue p2: pvtemp) {
-			// if (p2.getProperty().getLabel() == "lastname") {
-			// sBuffer.append(" " + p2.getStringValue());
-			// } else {
-			// System.out.println("getContactsOf: No lastname in Array");
-			// }
-			// }
-			// c.setName(sBuffer.toString());
-
 			c.setOwner(uMapper.findUserByContact(c));
+			
+			/*
+			 * !!!!!!!!!!!!!!!!!!!!! hier ist die Logik für ShareStatus
+			 * TODO: einkommentieren
+			 */
 		}
 		return cons;
 
@@ -522,6 +507,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Contact updateContact(Contact c) {
 
+		//Nickname neu setzen
+		c.updateNickname();
 		System.out.println("5.1 updateContact");
 		//GWT.log("5.1 Contact:" + c.getName());
 		System.out.println("5.1 Contact:" + c.getName());
@@ -532,9 +519,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * TODO: hier die !equals oder != operatoren? was ist besser um zu überprüfen,
 		 * dass pvalues gleich sind .equals in Contact noch schreiben?
 		 */
-		System.out.println("5.1 ctemp"+ctemp.getName());
+		for(PValue pv : c.getValues()) {
+			System.out.println("Eigenschaft angekommen: " + pv.toString());
+		}
+		System.out.println("5.1 ctemp"+ "ist kontakt gleich?" + c.equals(ctemp) + " kontaktename: " + ctemp.getName());
 		if (c.equals(ctemp) == false) {
-			// c.setDateUpdated(LocalDateTime.now());
 			
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
@@ -544,17 +533,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 //					pvMapper.insertCollaboration(u, pv, true);
 				}
 			}
-			// neues kontaktobjekt erstellen, damit der nickname richtig gesetzt wird
-			Contact updatedContact = new Contact(c.getValues(), c.getOwner());
 			
-			System.out.println("5.1 updatedContact"+updatedContact.getName());
-			updatedContact.setId(c.getId());
 			try {
-				updatedContact.setShareStatus(c.getShareStatus());
+				c.setShareStatus(c.getShareStatus());
 			}catch(Exception e) {
 				System.err.println("Share Status des Kontakts " + c.getId() + "wurde nicht gefunden");
 			}
-			return cMapper.updateContact(updatedContact);
+			c.setValues(pvMapper.findPValueForContact(c));
+			return cMapper.updateContact(c);
 		} else
 			return cMapper.findContactById(c.getId());
 	}
