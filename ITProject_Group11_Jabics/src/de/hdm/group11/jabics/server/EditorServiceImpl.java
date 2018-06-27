@@ -7,6 +7,7 @@ import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -51,7 +52,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * System.out.println(c.getDateCreated().toString());
 		 * c.setOwner(uMapper.findUserByContact(c)); return c.getOwner().getEmail();
 		 */
-		// return "halowelt";		
+		// return "halowelt";
 		ContactList cl = clMapper.findContactListById(1);
 		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
 		for (Contact cnew : c) {
@@ -83,9 +84,48 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * dem Nutzer, der den Kontakt erstellt.
 	 */
 	public Contact createContact(ArrayList<PValue> cArray, JabicsUser u) {
+		// Kontakt erstellen und Nickname setzen lassen
+		System.err.println("create COntact");
 		Contact newContact = new Contact(cArray, u);
-		cMapper.insertContact(newContact);
-		cMapper.insertCollaboration(u, newContact, true);
+		System.err.println("create COntact2");
+		// Sicherstellen, dass in demm neu erstellten Kontakt keine PValues ohne ID
+		// liegen
+		newContact.getValues().clear();
+		System.err.println("create COntact3");
+		newContact = cMapper.insertContact(newContact);
+		System.err.println("create COntact4");
+		System.out.println("Kontakt id: " + newContact.getId());
+		newContact = cMapper.insertCollaboration(u, newContact, true);
+
+		/*
+		 * neu erstellte pv von alten trennen und inserten Es wird überprüft, ob ein
+		 * pValue die standardid = 0 hat, da es dann ein durch das öffnen oder einen
+		 * Klick auf "Hinzufügen" erstelltes ist. Zusätzlich muss ein Wert in dem Feld
+		 * eingetragen worden sein, deswegen der containsValue()
+		 */
+		for (PValue pv : cArray) {
+			PValue newPVal = new PValue();
+			if (pv.getId() == 0 && pv.containsValue()) {
+				switch (pv.getProperty().getType()) {
+				case STRING:
+					newPVal = createPValue(pv.getProperty(), pv.getStringValue(), newContact, u);
+					break;
+				case DATE:
+					createPValue(pv.getProperty(), pv.getDateValue(), newContact, u);
+					break;
+				case FLOAT:
+					createPValue(pv.getProperty(), pv.getFloatValue(), newContact, u);
+					break;
+				case INT:
+					createPValue(pv.getProperty(), pv.getIntValue(), newContact, u);
+					break;
+				}
+				if(newPVal.containsValue() && pv.getId() != 0) {
+					newContact.addPValue(newPVal);
+				} else System.out.println("Beim Erstellen neuer PValues ist etwas schiefgegangen");
+			} else
+				System.out.println("Beim Erstellen eines Kontakts war eine Id oder ein Value nicht gesetzt!");
+		}
 		return newContact;
 	}
 
@@ -245,17 +285,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
-		
+
 		ArrayList<Contact> result = new ArrayList<Contact>();
-		
-		//result = cMapper.findContactsOfContactList(cl);
+
+		// result = cMapper.findContactsOfContactList(cl);
 		System.out.println("Got all Contacts of List " + cl.toString());
-		
+
 		for (Contact c : cMapper.findContactsOfContactList(cl)) {
 			System.out.println("2.2 find Contact" + c.toString());
 			// if(cMapper.findCollaborators(c).contains(u)) result.add(c);
-			
-			//c.setOwner(uMapper.findUserByContact(c));
+
+			// c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
 		}
 		// for (Contact cres : result) {
@@ -270,14 +310,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<Contact> cons = cMapper.findAllContacts(u);
 		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList
 		// gespeichert.
-		System.out.println("Got all Contacts of User " + u.toString());
+		System.out.println("Got all Contacts of User " + u.getId());
 		for (Contact c : cons) {
 
 			c.setOwner(uMapper.findUserByContact(c));
-			
+
 			/*
-			 * !!!!!!!!!!!!!!!!!!!!! hier ist die Logik für ShareStatus
-			 * TODO: einkommentieren
+			 * !!!!!!!!!!!!!!!!!!!!! hier ist die Logik für ShareStatus TODO:
+			 * einkommentieren
 			 */
 		}
 		return cons;
@@ -428,7 +468,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				if (o.getProperty().getId() == pv.getProperty().getId())
 					bol = false;
 			}
-			if(bol) pMapper.deleteProperty(pv.getProperty());
+			if (bol)
+				pMapper.deleteProperty(pv.getProperty());
 		}
 
 		/**
@@ -462,7 +503,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public ContactList updateContactList(ContactList cl) {
 		ContactList cltemp = clMapper.findContactListById(cl.getId());
-		//TODO: gescheite .equals für Kontaktlisten
+		// TODO: gescheite .equals für Kontaktlisten
 		if (cl != cltemp) {
 
 			// Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist,
@@ -507,36 +548,36 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Contact updateContact(Contact c) {
 
-		//Nickname neu setzen
+		// Nickname neu setzen
 		c.updateNickname();
 		System.out.println("5.1 updateContact");
-		//GWT.log("5.1 Contact:" + c.getName());
+		// GWT.log("5.1 Contact:" + c.getName());
 		System.out.println("5.1 Contact:" + c.getName());
-		
+
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
 		 * TODO: hier die !equals oder != operatoren? was ist besser um zu überprüfen,
 		 * dass pvalues gleich sind .equals in Contact noch schreiben?
 		 */
-		for(PValue pv : c.getValues()) {
+		for (PValue pv : c.getValues()) {
 			System.out.println("Eigenschaft angekommen: " + pv.toString());
 		}
-		System.out.println("5.1 ctemp"+ "ist kontakt gleich?" + c.equals(ctemp) + " kontaktename: " + ctemp.getName());
+		System.out.println("5.1 ctemp" + "ist kontakt gleich?" + c.equals(ctemp) + " kontaktename: " + ctemp.getName());
 		if (c.equals(ctemp) == false) {
-			
+
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				if (pvMapper.findPValueById(pv.getId()) != pv) {
 					pvMapper.updatePValue(pv);
-//					pvMapper.deleteCollaboration(pv, pv.getOwner());
-//					pvMapper.insertCollaboration(u, pv, true);
+					// pvMapper.deleteCollaboration(pv, pv.getOwner());
+					// pvMapper.insertCollaboration(u, pv, true);
 				}
 			}
-			
+
 			try {
 				c.setShareStatus(c.getShareStatus());
-			}catch(Exception e) {
+			} catch (Exception e) {
 				System.err.println("Share Status des Kontakts " + c.getId() + "wurde nicht gefunden");
 			}
 			c.setValues(pvMapper.findPValueForContact(c));
