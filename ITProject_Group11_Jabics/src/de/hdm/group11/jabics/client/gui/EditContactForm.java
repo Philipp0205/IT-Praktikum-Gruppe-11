@@ -44,6 +44,8 @@ public class EditContactForm extends VerticalPanel {
 	VerticalPanel pPanel;
 	HorizontalPanel buttonPanel;
 	HorizontalPanel addPPanel;
+	
+	ArrayList<PValue> allPV;
 
 	ArrayList<PropForm> val;
 	ArrayList<Property> p;
@@ -171,11 +173,13 @@ public class EditContactForm extends VerticalPanel {
 	}
 
 	public void save() {
+		GWT.log("6.1 Saved PValue");
 		ArrayList<PValue> filledPV = new ArrayList<PValue>();
 		// Alle PValues aus der Tabelle ziehen
-		ArrayList<PValue> allPV = new ArrayList<PValue>();
+		allPV = new ArrayList<PValue>();
 		for (PropForm p : val) {
 			for (PValue pv : p.getPV()) {
+				GWT.log("6.1 Saved PValue " + pv.toString());
 				allPV.add(pv);
 			}
 		}
@@ -183,10 +187,44 @@ public class EditContactForm extends VerticalPanel {
 		boolean nameExistent = false;
 		for (PValue pv : allPV) {
 			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
-				GWT.log("Name vorhanden");
+				GWT.log("6.2 Name vorhanden");
 			nameExistent = true;
 		}
 		// alle pv aus dem PRopArray rausziehen und hier speichern
+		
+		
+		if (nameExistent) {
+			// überprüfen, ob Kontakt ein neuer oder ein bereits bestehender ist
+			if(isNewContact) {
+				editorService.createContact(allPV, u, new AsyncCallback<Contact>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Neuer Kontakt konnte nicht angelegt werden!" + caught.getMessage());
+					}
+
+					@Override
+					public void onSuccess(Contact result) {
+
+						GWT.log("5.1 onSuccess");
+						GWT.log("5.1" + result.getName());
+						
+						ArrayList<PValue> values = result.getValues();
+						for (PValue pv : values) {
+							GWT.log("5.1" + pv.toString());
+						}
+						
+						GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
+						for (PValue pv : result.getValues()) {
+							GWT.log(pv.toString());
+						}
+						createPValues();
+	
+						return;
+
+					}
+				});
+			} 
+	} else Window.alert("Kontakt muss einen Namen haben! Bitte Name und Nachname eingeben.");
 
 		/**
 		 * neu erstellte pv von alten trennen und inserten Es wird überprüft, ob ein
@@ -195,8 +233,9 @@ public class EditContactForm extends VerticalPanel {
 		 * eingetragen worden sein, deswegen der containsValue()
 		 */
 		for (PValue pv : allPV) {
+			
 			if (pv.getId() == 0 && pv.containsValue()) {
-				GWT.log("PVhinzugefügt: " + pv.toString());
+				GWT.log("6.3 PVhinzugefügt: " + pv.toString());
 				switch (pv.getProperty().getType()) {
 				case STRING:
 					editorService.createPValue(pv.getProperty(), pv.getStringValue(), contact, u,
@@ -218,29 +257,32 @@ public class EditContactForm extends VerticalPanel {
 			} else if (pv.containsValue()) {
 				filledPV.add(pv);
 			}
-		}
 
-		if (nameExistent) {
-			contact.setValues(filledPV);
+		} 
+		
+		if(!nameExistent) {
+			
+			if (!isNewContact) {
+				contact.setValues(filledPV);
 			editorService.updateContact(contact, new AsyncCallback<Contact>() {
 				@Override
 				public void onFailure(Throwable caught) {
 					
 					Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
 
-					GWT.log("5.1 onFailure"+ contact.getName());
+					GWT.log("6.1 onFailure"+ contact.getName());
 
 				}
 
 				@Override
 				public void onSuccess(Contact result) {
 
-					GWT.log("5.1 onSuccess");
-					GWT.log("5.1" + result.getName());
+					GWT.log("6.1 onSuccess");
+					GWT.log("6.1 " + result.getName());
 					
 					ArrayList<PValue> values = result.getValues();
 					for (PValue pv : values) {
-						GWT.log("5.1" + pv.toString());
+						GWT.log("6.1 " + pv.toString());
 					}
 					
 					
@@ -250,11 +292,57 @@ public class EditContactForm extends VerticalPanel {
 					for (PValue pv : result.getValues()) {
 						GWT.log(pv.toString());
 					}
+	
+					e.updateContactInTree(result);
 					e.showContact(result);
 				}
 			});
 		}
+		
+		}
+
 		// editorService.updatePValue(val, new UpdatePValueCallback());
+	}
+	
+	public void createPValues() {
+		
+		/**
+		 * neu erstellte pv von alten trennen und inserten Es wird überprüft, ob ein
+		 * pValue die standardid = 0 hat, da es dann ein durch das öffnen oder einen
+		 * Klick auf "Hinzufügen" erstelltes ist. Zusätzlich muss ein Wert in dem Feld
+		 * eingetragen worden sein, deswegen der containsValue()
+		 */
+		for (PValue pv : allPV) {
+			
+			if (pv.getId() == 0 && pv.containsValue()) {
+				GWT.log("6.3 PVhinzugefügt: " + pv.toString());
+				switch (pv.getProperty().getType()) {
+				case STRING:
+					editorService.createPValue(pv.getProperty(), pv.getStringValue(), contact, u,
+							new CreatePValueCallback());
+					break;
+				case DATE:
+					editorService.createPValue(pv.getProperty(), pv.getDateValue(), contact, u,
+							new CreatePValueCallback());
+					break;
+				case FLOAT:
+					editorService.createPValue(pv.getProperty(), pv.getFloatValue(), contact, u,
+							new CreatePValueCallback());
+					break;
+				case INT:
+					editorService.createPValue(pv.getProperty(), pv.getIntValue(), contact, u,
+							new CreatePValueCallback());
+					break;
+				}
+			} else if (pv.containsValue()) {
+				contact.getValues().add(pv);
+			}
+		}
+	}
+	
+	public void showNewContact(Contact result) {
+		e.addContactToTree(result);
+		e.showContact(result);
 	}
 
 	public void setContact(Contact c) {

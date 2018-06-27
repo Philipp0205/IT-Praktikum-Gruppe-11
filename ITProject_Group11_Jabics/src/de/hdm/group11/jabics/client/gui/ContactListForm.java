@@ -139,6 +139,9 @@ public class ContactListForm extends VerticalPanel {
 		editPanel.add(removeButton);
 		changePanel.add(deleteButton);
 		changePanel.add(saveButton);
+		
+		sharePanel.setStyleName("sharePanel");
+		
 		this.add(listBox);
 		this.add(sharePanel);
 		this.add(editPanel);

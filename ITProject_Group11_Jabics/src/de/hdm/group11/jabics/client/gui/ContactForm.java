@@ -143,6 +143,8 @@ public class ContactForm extends VerticalPanel {
 		
 		userInformationGrid.setWidget(4, 1, deleteContactButton);
 		
+		userInformationGrid.setStyleName("userInformationGrid");
+		
 		//GRID-Zeile 5.2
 		existingSharedContactButton = new Button("Freigegeben an");
 		userInformationGrid.setWidget(5, 0, existingSharedContactButton);

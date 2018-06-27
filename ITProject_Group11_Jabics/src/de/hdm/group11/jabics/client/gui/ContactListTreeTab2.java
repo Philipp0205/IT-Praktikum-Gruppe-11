@@ -25,19 +25,18 @@ import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.client.gui.Editor;
 import de.hdm.group11.jabics.resource.JabicsResources;
 
-public class ContactListTreeTab implements TreeViewModel {
+public class ContactListTreeTab2 implements TreeViewModel {
 	
 	private Contact selectedContact;
 	private ContactList selectedContactList;
 	private EditorServiceAsync eService = ClientsideSettings.getEditorService();
 	private EditorServiceAsync eService2 = ClientsideSettings.getEditorService();
-	
 	//Instanziierung des Singelton-Objektes
 	//private LoginInfo loginfo = LoginInfo.getloginInfo();
 	JabicsUser jabicsUser;
 	Editor editor;
 	
-	//ContactList currentCL;
+	ContactList currentCL;
 	
 	/*
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer wenn etwas geändert wird. 
@@ -45,9 +44,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * 
 	 * In diesem Fall werden werden Kontaktlisten bereitgestellt. 
 	 */
-	private ListDataProvider<ContactList> contactListDataProviders;
+	private ListDataProvider<ContactList> contactListDataProviders =  new ListDataProvider<ContactList>();
 	
-	public ContactListTreeTab() {
+	public ContactListTreeTab2() {
 		GWT.log("2: Konstruktor ContactListTreeTab");
 
 		boKeyProvider = new BusinessObjectKeyProvider();
@@ -182,50 +181,6 @@ public class ContactListTreeTab implements TreeViewModel {
 			contactListDataProviders.refresh();
 	 }
 	 
-	 /* 
-	  * Ein altes Kontakt-Objekt wird durch einen neues mit der selbe Id ersetzt, die ID bleibt gleich! 
-	  * Dies ist sinnvoll, wenn sich die Eigenschafte eines Kontakts geändert haben und im Baum
-	  * noch ein veraltetets Kontaktobjekt enthalten ist.
-	  * 
-	  * Diese Methode funktioniert nocht nicht 
-	  */
-	 public void updateContact(Contact c) {
-		 //eService.getContactListById(c.getOwner().getId(), new UpdateContactCallback(c));
-		 
-		 ListDataProvider<Contact> cProvider;
-
-		 // Kontaktlisten werden durchsucht
-		 for (ContactList cl : contactListDataProviders.getList()) {
-			 cProvider = contactDataProviders.get(cl);
-			 
-			 int i = 0;
-			 for (Contact c2 : cProvider.getList()) {
-				 GWT.log("6.1 contactDataProviders " + c2.toString());
-				 // Wenn in allen Kontakten der Liste Kontakt c ist...
-				 if (c2.getId() == c.getId() ) {
-					 
-					 cProvider.getList().set(i, c);
-					 contactDataProviders.get(cl).refresh();
-					 return;
-					 
-				 } else i++;
-				 
-			 }
-			 
-			 
-			 
-//			 for (Contact c2 : cl.getContacts()) {
-//				 if (c2.getId() == c.getId()) {
-//					 contactDataProviders.replace(c, c2);
-//					 }
-//					 
-//					 
-//				 }
-			 }
-		 }
-		 
-		 
-	 
 	 public void removeContactList(Contact cl) {
 		 contactListDataProviders.getList().remove(cl);
 		 contactDataProviders.remove(cl);
@@ -255,6 +210,16 @@ public class ContactListTreeTab implements TreeViewModel {
 		 selectionModel.setSelected(cl, true);
 	 }
 	 
+	 /* 
+	  * Ein altes Kontakt-Objekt wird durch einen neues mit der selbe Id ersetzt, die ID bleibt gleich! 
+	  * Dies ist sinnvoll, wenn sich die Eigenschafte eines Kontakts geändert haben und im Baum
+	  * noch ein veraltetets Kontaktobjekt enthalten ist.
+	  * 
+	  * Diese Methode funktioniert nocht nicht 
+	  */
+	 public void updateContact(Contact c) {
+		 //eService.getContactById(c.getOwner().getId(), new UpdateAccountCallback(c));
+	 }
 	 
 	 /*
 	  *  Funktioniert so noch nicht.
@@ -298,11 +263,9 @@ public class ContactListTreeTab implements TreeViewModel {
 		GWT.log("2.2 TreeTab: Value: " + value.toString());
 		
 		if (value.equals("Root")) {
-			
 			GWT.log("2.2 TreeTab: value.equals");
-			GWT.log("2.2 value:" + value);
 			
-			contactListDataProviders =  new ListDataProvider<ContactList>();
+			contactListDataProviders = new ListDataProvider<ContactList>();
 			
 			JabicsUser user2 = new JabicsUser(1);
 			//JabicsUser jabicsUser2 = new JabicsUser();
@@ -322,13 +285,12 @@ public class ContactListTreeTab implements TreeViewModel {
 					GWT.log(contactlists.toString());
 					
 					for (ContactList cl : contactlists) {
-						//currentCL = cl;
+						currentCL = cl;
 						GWT.log("2.2 Add CotactList " + cl.toString());
 						contactListDataProviders.getList().add(cl);
-						
+						contactListDataProviders.flush();
 					}
 					GWT.log("2.2 TreeTab onSuccess fertig");
-					contactListDataProviders.flush();
 				}
 				
 				
@@ -340,21 +302,20 @@ public class ContactListTreeTab implements TreeViewModel {
 		return new DefaultNodeInfo<ContactList>(contactListDataProviders, new ContactListCell(), selectionModel, null);
 			
 		}
+		
 		if (value instanceof ContactList) {
 			GWT.log("2.2 TreeTab: instanceof ContactList");
-			//GWT.log("2.2 ContactList" + currentCL.toString());
+			GWT.log("2.2 ContactList" + currentCL.toString());
 			
 			JabicsUser user2 = new JabicsUser();
 			user2.setId(1);
 			
 			final ListDataProvider<Contact> contactProvider = new ListDataProvider<Contact>();
-			
 			contactDataProviders.put((ContactList) value, contactProvider);
 			
-			//GWT.log("CurrentCL: " + currentCL.toString());
+			GWT.log("CurrentCL: " + currentCL.toString());
 			
-			eService.getContactsOfList((ContactList) value, user2, new AsyncCallback<ArrayList<Contact>>() {
-				
+			eService.getContactsOfList(currentCL, user2, new AsyncCallback<ArrayList<Contact>>() {
 				@Override
 				public void onFailure(Throwable caught) {
 					GWT.log("2.2 TreeTab value instanceof ContactList onFailure");	
@@ -363,7 +324,6 @@ public class ContactListTreeTab implements TreeViewModel {
 				public void onSuccess(ArrayList<Contact> contacts) {
 					GWT.log("2.2 TreeTab value instanceof ContactList onSuccess");	
 					GWT.log("Contacts" + contacts.toString());
-					
 					for (Contact c : contacts) {
 						GWT.log("2.2 Add Contact " + c.toString());
 						contactProvider.getList().add(c);		

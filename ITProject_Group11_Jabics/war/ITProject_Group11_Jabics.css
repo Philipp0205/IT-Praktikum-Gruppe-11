@@ -141,6 +141,27 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 10px;
 }
 
+.sharePanel {
+	margin-left: 50px;
+	padding-top: 20px;
+
+}
+
+.sharePanel .gwt-Button {
+	margin-left: 5px;
+	padding-top: 20px;
+}
+
+.userInformationGrid .gwt-Button {
+	margin-top: 10px;
+}
+
+.scForm .gwt-Button {
+	margin-left: 5px;
+	
+}
+
+
 
 
 

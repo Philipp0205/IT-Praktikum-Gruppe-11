@@ -51,7 +51,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * System.out.println(c.getDateCreated().toString());
 		 * c.setOwner(uMapper.findUserByContact(c)); return c.getOwner().getEmail();
 		 */
-		// return "halowelt";
+		// return "halowelt";		
 		ContactList cl = clMapper.findContactListById(1);
 		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
 		for (Contact cnew : c) {
@@ -110,7 +110,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println(p.getLabel());
 		System.out.println(p.getTypeInString());
 		PValue newPValue = new PValue(p, s, u);
-		p.getId();
 
 		/*
 		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und
@@ -125,6 +124,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Zeitstempel bekommt.
 		 */
 		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		System.out.println("newPValue " + newPValue.getId());
 
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
