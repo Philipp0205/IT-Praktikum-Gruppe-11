@@ -192,27 +192,23 @@ public class ContactListTreeTab implements TreeViewModel {
 	 public void updateContact(Contact c) {
 		 //eService.getContactListById(c.getOwner().getId(), new UpdateContactCallback(c));
 		 
+		 ListDataProvider<Contact> cProvider;
+
 		 // Kontaktlisten werden durchsucht
 		 for (ContactList cl : contactListDataProviders.getList()) {
-			 for (Contact c2 : contactDataProviders.get(cl).getList()) {
+			 cProvider = contactDataProviders.get(cl);
+			 
+			 int i = 0;
+			 for (Contact c2 : cProvider.getList()) {
+				 GWT.log("6.1 contactDataProviders " + c2.toString());
 				 // Wenn in allen Kontakten der Liste Kontakt c ist...
-				 if (contactDataProviders.get(cl).getList().contains(c)) {
-					 ListDataProvider<Contact> cProvider = contactDataProviders.get(cl);
+				 if (c2.getId() == c.getId() ) {
 					 
-					 int i = 0;
-					 for (Contact c3 : cProvider.getList()) {
-							if (c3.getId() == c.getId()) {
-								cProvider.getList().set(i, c);
-								break;
-
-							} else {
-								i++;
-
-								contactDataProviders.get(cl).refresh();
-							}
-					 }
+					 cProvider.getList().set(i, c);
+					 contactDataProviders.get(cl).refresh();
+					 return;
 					 
-				 }
+				 } else i++;
 				 
 			 }
 			 
