@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.Date;
 
 import de.hdm.group11.jabics.shared.bo.*;
 
@@ -149,23 +150,24 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-				// Schließen der Datenbankverbindung
+        				// Schließen der Datenbankverbindung
 				stmt.close();
 				stmt2.close();
 				con.close();
 				break;
-			}
-			case DATE: {
-				stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
-						+ " dateValue, propertyID, contactID) VALUES " + "(, " + "null, " + "null, " + "null, " + "'"
-						+ pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"
-						+ Statement.RETURN_GENERATED_KEYS);
-				ResultSet rs = stmt.getGeneratedKeys();
-				Statement stmt2 = con.createStatement();
-				while (rs.next()) {
-					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
-					pv.setId(rs.getInt(1));
-					while (rs2.next()) {
+      }
+				case DATE: {
+					java.sql.Date x = new java.sql.Date(pv.getDateValue().getYear(),pv.getDateValue().getMonth(),pv.getDateValue().getDate());
+					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
+					+ " dateValue, propertyID, contactID) VALUES " 
+					+ "(, "  + "null, " + "null, " 
+					+ "null, " + x + ", " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
+					ResultSet rs = stmt.getGeneratedKeys();
+					Statement stmt2 =  con.createStatement();
+					while(rs.next()) {
+						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+						pv.setId(rs.getInt(1));
+					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
