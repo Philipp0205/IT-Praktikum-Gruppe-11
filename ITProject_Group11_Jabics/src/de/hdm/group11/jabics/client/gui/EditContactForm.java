@@ -181,7 +181,7 @@ public class EditContactForm extends VerticalPanel {
 		ArrayList<PValue> allPV = new ArrayList<PValue>();
 		for (PropForm p : val) {
 			for (PValue pv : p.getPV()) {
-				GWT.log("6.1 Saved PValue " + pv.toString());
+				GWT.log("6.2 Saved PValue " + pv.toString());
 				pv.setProperty(p.getProperty());
 				allPV.add(pv);
 			}
@@ -200,7 +200,7 @@ public class EditContactForm extends VerticalPanel {
 		boolean nameExistent = false;
 		for (PValue pv : allPV) {
 			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
-				GWT.log("6.2 Name vorhanden");
+				GWT.log("6.3 Name vorhanden");
 			nameExistent = true;
 		}
 
@@ -211,6 +211,7 @@ public class EditContactForm extends VerticalPanel {
 			if (isNewContact) {
 
 				// Es werden alle befüllten PValues übergeben
+				GWT.log("6.4 "+filledPV.toString());
 				editorService.createContact(filledPV, u, new AsyncCallback<Contact>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -220,12 +221,14 @@ public class EditContactForm extends VerticalPanel {
 					@Override
 					public void onSuccess(Contact result) {
 
-						GWT.log("5.1 onSuccess");
-						GWT.log("5.1" + result.getName());
+						GWT.log("6.4 onSuccess");
+						GWT.log("6.5 1" + result.getName());
 
-						ArrayList<PValue> values = result.getValues();
+						ArrayList<PValue> values =  result.getValues();
+						
+						GWT.log("6.5 2" + values.toString());
 						for (PValue pv : values) {
-							GWT.log("5.1" + pv.toString());
+							GWT.log("6.6" + pv.toString());
 						}
 
 						GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
@@ -247,19 +250,19 @@ public class EditContactForm extends VerticalPanel {
 
 						Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
 
-						GWT.log("6.1 onFailure" + contact.getName());
+						GWT.log("6.7 onFailure" + contact.getName());
 
 					}
 
 					@Override
 					public void onSuccess(Contact result) {
 
-						GWT.log("6.1 onSuccess");
-						GWT.log("6.1 " + result.getName());
+						GWT.log("6.7 onSuccess");
+						GWT.log("6.7 " + result.getName());
 
 						ArrayList<PValue> values = result.getValues();
 						for (PValue pv : values) {
-							GWT.log("6.1 " + pv.toString());
+							GWT.log("6.8 " + pv.toString());
 						}
 
 						GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
@@ -533,7 +536,7 @@ public class EditContactForm extends VerticalPanel {
 				dp = new DatePicker();
 				dp.setVisible(false);
 				dp.addValueChangeHandler(new ValChange());
-				dp.setValue(new Date(), true);
+				//dp.setValue(new Date(), true);
 				this.add(dp);
 				GWT.log("DatumEnde");
 			}

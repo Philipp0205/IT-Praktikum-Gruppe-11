@@ -84,18 +84,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * dem Nutzer, der den Kontakt erstellt.
 	 */
 	public Contact createContact(ArrayList<PValue> cArray, JabicsUser u) {
+		System.out.println(cArray);
 		// Kontakt erstellen und Nickname setzen lassen
 		System.err.println("create COntact");
 		Contact newContact = new Contact(cArray, u);
 		System.err.println("create COntact2");
+		System.out.println(cArray.toString());
+
 		// Sicherstellen, dass in demm neu erstellten Kontakt keine PValues ohne ID
-		// liegen
-		newContact.getValues().clear();
+		// liegen;
+		
 		System.err.println("create COntact3");
 		newContact = cMapper.insertContact(newContact);
 		System.err.println("create COntact4");
 		System.out.println("Kontakt id: " + newContact.getId());
 		newContact = cMapper.insertCollaboration(u, newContact, true);
+		System.out.println("Kontakt id: " + newContact.getId());
+		
+		ArrayList<PValue> testArray = cArray;
 
 		/*
 		 * neu erstellte pv von alten trennen und inserten Es wird überprüft, ob ein
@@ -103,12 +109,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Klick auf "Hinzufügen" erstelltes ist. Zusätzlich muss ein Wert in dem Feld
 		 * eingetragen worden sein, deswegen der containsValue()
 		 */
+		System.err.println("create COntact4");
 		for (PValue pv : cArray) {
+			System.out.println("PValueID 1 "+pv.getId());
 			PValue newPVal = new PValue();
 			if (pv.getId() == 0 && pv.containsValue()) {
+				System.out.println("PValueID 2"+pv.getId());
 				switch (pv.getProperty().getType()) {
 				case STRING:
 					newPVal = createPValue(pv.getProperty(), pv.getStringValue(), newContact, u);
+					System.out.println("Switch String "+pv.getId());
 					break;
 				case DATE:
 					createPValue(pv.getProperty(), pv.getDateValue(), newContact, u);
@@ -121,11 +131,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					break;
 				}
 				if(newPVal.containsValue() && pv.getId() != 0) {
-					newContact.addPValue(newPVal);
+					System.out.println("Add PValue to Contact "+pv.getId());
+					//newContact.addPValue(newPVal);
+					testArray.add(newPVal);
 				} else System.out.println("Beim Erstellen neuer PValues ist etwas schiefgegangen");
 			} else
 				System.out.println("Beim Erstellen eines Kontakts war eine Id oder ein Value nicht gesetzt!");
 		}
+		newContact.getValues().clear();
+		System.out.println("newContact " + newContact.toString());
+		
+		newContact.setValues(testArray);
 		return newContact;
 	}
 
@@ -193,6 +209,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Zeitstempel bekommt.
 		 */
 		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		System.out.println("createPValue: Neue ID: " + newPValue.getId());
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
 		return newPValue;
