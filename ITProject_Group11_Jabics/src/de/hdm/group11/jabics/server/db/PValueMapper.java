@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.Date;
 
 import de.hdm.group11.jabics.shared.bo.*;
 
@@ -146,10 +147,11 @@ public class PValueMapper {
 					break;
 				}
 				case DATE: {
+					java.sql.Date x = new java.sql.Date(pv.getDateValue().getYear(),pv.getDateValue().getMonth(),pv.getDateValue().getDate());
 					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
 					+ "(, "  + "null, " + "null, " 
-					+ "null, " + "'" + pv.getDateValue() + "', " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
+					+ "null, " + x + ", " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
 					ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
 					while(rs.next()) {
