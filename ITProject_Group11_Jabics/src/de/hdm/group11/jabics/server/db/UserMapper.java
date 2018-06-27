@@ -105,7 +105,8 @@ public class UserMapper {
 			u.setUsername(rs.getString("name"));
 			}
 			// Schließen der Datenbankverbindung
-			con.close();
+	        stmt.close();
+	        con.close();
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -136,7 +137,9 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -167,7 +170,9 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			
 		}
 		catch (SQLException e) {
@@ -200,7 +205,9 @@ public class UserMapper {
 			if(rs.next()) {
 				u.setId(rs.getInt(1));
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return u;
 		}
 		catch (SQLException e) {
@@ -224,7 +231,9 @@ public class UserMapper {
 			   
 			// Löschen des Users.
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
@@ -263,7 +272,9 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return al;
 	    }
 	    catch (SQLException e) {
@@ -296,9 +307,10 @@ public class UserMapper {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
-		        con.close();
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return u;
 		}
 		catch (SQLException e) {
@@ -333,14 +345,14 @@ public JabicsUser findUserByEmail(String email)  {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
+			// Schließen der Datenbankverbindung
+	        stmt.close();
 	        con.close();
 	        return u;
 		}else
-			con.close();
-		return null;
-	}
-	catch (SQLException e) {
-	    System.err.print(e);
+			return null;
+	} catch (SQLException e) {
+		System.err.print(e);
 	    return null;
 	}
 }	
