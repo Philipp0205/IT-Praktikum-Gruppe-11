@@ -116,7 +116,10 @@ public class ContactMapper {
 			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 		}
 		}
-		con.close();
+		// Schließen der Datenbankverbindung
+        stmt.close();
+        stmt2.close();
+        con.close();
 		return c;
 	    }
 	    catch (SQLException e) {
@@ -151,7 +154,10 @@ public class ContactMapper {
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        stmt2.close();
+	        con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;
@@ -176,7 +182,9 @@ public class ContactMapper {
 
 			// Löschen des Kontakts.
 			stmt.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId());
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -221,7 +229,9 @@ public class ContactMapper {
 
 				al.add(c);
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -257,7 +267,9 @@ public class ContactMapper {
 				c.setName(rs.getString("nickname"));
 				System.out.println(c.getName());
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -308,7 +320,9 @@ public class ContactMapper {
 				c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -349,7 +363,9 @@ public class ContactMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -383,7 +399,9 @@ public class ContactMapper {
 			stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + c.getId() + ", " + u.getId() + ")");
 
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -412,7 +430,9 @@ public class ContactMapper {
 			// Löschen der Teilhaberschaft.
 			stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= "
 					+ c.getId());
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
 		}

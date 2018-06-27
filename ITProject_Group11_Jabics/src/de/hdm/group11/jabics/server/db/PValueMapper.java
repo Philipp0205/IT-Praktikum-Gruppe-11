@@ -116,6 +116,10 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					}
+					// Schließen der Datenbankverbindung
+			        stmt.close();
+			        stmt2.close();
+			        con.close();
 					break;
 				}
 				case INT: {
@@ -135,6 +139,10 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					}
+					// Schließen der Datenbankverbindung
+			        stmt.close();
+			        stmt2.close();
+			        con.close();
 					break;
 				}
 				case DATE: {
@@ -152,6 +160,10 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					}
+					// Schließen der Datenbankverbindung
+			        stmt.close();
+			        stmt2.close();
+			        con.close();
 					break;
 				}
 				case FLOAT: {
@@ -173,18 +185,14 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					}
+					// Schließen der Datenbankverbindung
+			        stmt.close();
+			        stmt2.close();
+			        con.close();
 					break;
 				}
    			}
-
-			/**
-			 * Mit der @insertCollaboration Methode (dieser Klasse) wird der <code>Owner</code> des <code>PValue</code> festgelegt.
-			 * 
-			 */
-			//insertCollaboration(pv.getOwner(), pv, true);
 		
-		// Schließen der Connection
-		con.close();
 		// Rückgabe des PValue
 		return pv;
 		}
@@ -262,8 +270,10 @@ public class PValueMapper {
 	    		pv.setProperty(p);
 	    		al.add(pv);
 	 	    }
-		    	con.close();
 		    	
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();	
 	 	   	return al;
 	    }
 	    catch (SQLException e) {
@@ -328,7 +338,9 @@ public class PValueMapper {
 	    		p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		pv.setProperty(p);
 	    	}
-		con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 	    	return pv;
 	    }
 	    catch (SQLException e) {
@@ -384,8 +396,10 @@ public class PValueMapper {
 	    		}
 	    	}	
 
-	    		con.close();
-
+	    		
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		    return pv;
 	    }
 	    catch (SQLException e) {
@@ -410,7 +424,9 @@ public class PValueMapper {
 		   
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("DELETE FROM pValue WHERE pValueID=" + pv.getId()); 
-		    con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
@@ -446,7 +462,9 @@ public class PValueMapper {
 	    		u.setId(rs.getInt("systemUserID"));
 	    		al.add(u);
 	    	}
-		    con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 	    	return al;
 	    }
 	    catch (SQLException e) {
@@ -481,8 +499,10 @@ public class PValueMapper {
 
 	    	+ "(" + IsOwner + ", " + pv.getId() + ", " + u.getId() + ")"  );
 
-		   con.close();
-
+		   
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 	    	return pv;
 	    }
 	    catch (SQLException e) {
@@ -508,7 +528,9 @@ public class PValueMapper {
 	    	
 	    	// Füllen des Statements
 	    	stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID= " + u.getId() + " AND pValueID= " + pv.getId()); 
-	    con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e); 
