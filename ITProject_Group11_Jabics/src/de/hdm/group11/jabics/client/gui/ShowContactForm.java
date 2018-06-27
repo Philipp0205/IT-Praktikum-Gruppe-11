@@ -21,7 +21,6 @@ import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
 
 public class ShowContactForm extends VerticalPanel {
 
@@ -38,6 +37,8 @@ public class ShowContactForm extends VerticalPanel {
 	Column<PValue, String> pval;
 	
 	HorizontalPanel sharePanel = new HorizontalPanel();
+	
+	
 
 	Button editButton = new Button("Kontakt bearbeiten");
 	Button shareContactButton = new Button("Kontakt neu teilen");
@@ -61,6 +62,8 @@ public class ShowContactForm extends VerticalPanel {
 				return object.toString();
 			}
 		};
+		
+
 
 		values.addColumn(prop, "Eigenschaft");
 		values.setColumnWidth(prop, 50, Unit.PX);
@@ -69,11 +72,19 @@ public class ShowContactForm extends VerticalPanel {
 		
 		sharePanel.add(shareContactButton);
 		sharePanel.add(shareExistingContactButton);
+		
+		
+		
+		
+
+		
+
 		try {
 			GWT.log("ShowCont panels hinzufügen");
 			this.add(editButton);
 			this.add(values);
 			this.add(sharePanel);
+			sharePanel.addStyleName("sharePanel");
 
 			this.add(deleteButton);
 		} catch (Exception caught) {

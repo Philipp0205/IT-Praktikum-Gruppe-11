@@ -179,6 +179,7 @@ public class Editor implements EntryPoint {
 	 * Kontakte, Listen und CollabForms anzeigen
 	 */
 	public void showContact(Contact c) {
+		
 		GWT.log("showCont");
 		if (this.scForm == null) {
 		scForm = new ShowContactForm();
@@ -314,6 +315,7 @@ public class Editor implements EntryPoint {
 		//addContactToTree(c);
 		scForm.setContact(c);
 		formPanel.add(cForm);
+		scForm.setStyleName("scForm");
 	}
 
 	

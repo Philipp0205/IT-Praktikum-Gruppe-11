@@ -51,7 +51,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * System.out.println(c.getDateCreated().toString());
 		 * c.setOwner(uMapper.findUserByContact(c)); return c.getOwner().getEmail();
 		 */
-		// return "halowelt";
+		// return "halowelt";		
 		ContactList cl = clMapper.findContactListById(1);
 		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
 		for (Contact cnew : c) {

@@ -171,11 +171,13 @@ public class EditContactForm extends VerticalPanel {
 	}
 
 	public void save() {
+		GWT.log("6.1 Saved PValue");
 		ArrayList<PValue> filledPV = new ArrayList<PValue>();
 		// Alle PValues aus der Tabelle ziehen
 		ArrayList<PValue> allPV = new ArrayList<PValue>();
 		for (PropForm p : val) {
 			for (PValue pv : p.getPV()) {
+				GWT.log("6.1 Saved PValue " + pv.toString());
 				allPV.add(pv);
 			}
 		}
@@ -183,7 +185,7 @@ public class EditContactForm extends VerticalPanel {
 		boolean nameExistent = false;
 		for (PValue pv : allPV) {
 			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
-				GWT.log("Name vorhanden");
+				GWT.log("6.2 Name vorhanden");
 			nameExistent = true;
 		}
 		// alle pv aus dem PRopArray rausziehen und hier speichern
@@ -196,7 +198,7 @@ public class EditContactForm extends VerticalPanel {
 		 */
 		for (PValue pv : allPV) {
 			if (pv.getId() == 0 && pv.containsValue()) {
-				GWT.log("PVhinzugefügt: " + pv.toString());
+				GWT.log("6.3 PVhinzugefügt: " + pv.toString());
 				switch (pv.getProperty().getType()) {
 				case STRING:
 					editorService.createPValue(pv.getProperty(), pv.getStringValue(), contact, u,
@@ -228,19 +230,19 @@ public class EditContactForm extends VerticalPanel {
 					
 					Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
 
-					GWT.log("5.1 onFailure"+ contact.getName());
+					GWT.log("6.1 onFailure"+ contact.getName());
 
 				}
 
 				@Override
 				public void onSuccess(Contact result) {
 
-					GWT.log("5.1 onSuccess");
-					GWT.log("5.1" + result.getName());
+					GWT.log("6.1 onSuccess");
+					GWT.log("6.1 " + result.getName());
 					
 					ArrayList<PValue> values = result.getValues();
 					for (PValue pv : values) {
-						GWT.log("5.1" + pv.toString());
+						GWT.log("6.1 " + pv.toString());
 					}
 					
 					
