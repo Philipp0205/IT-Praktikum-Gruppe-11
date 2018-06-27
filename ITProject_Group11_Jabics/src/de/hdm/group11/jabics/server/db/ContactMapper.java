@@ -1,6 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
@@ -126,21 +129,23 @@ public class ContactMapper{
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
 	    	Statement stmt = con.createStatement();
-		  System.out.println(">>>>>>>>>>>"+c.getName());
+	    	Statement stmt2 = con.createStatement();
+	    	System.out.println(">>>>>>>>>>>"+c.getName());
 	    	// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-
 	    	stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP, nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
+	    	ResultSet rs = stmt2.executeQuery("SELECT dateCreated, dateUpdated FROM pValue WHERE pValueID = " + c.getId());
+	    	
+	    	if(rs.next()) {
+	    		c.setDateCreated(rs.getTimestamp("dateCreated"));
+	    		c.setDateUpdated(rs.getTimestamp("dateUpdated"));
+	    	}
 	    	con.close();
-
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
 	    	return null;
 	    }
-
-	    
 	    return c;
-	   
 	    }
 
 

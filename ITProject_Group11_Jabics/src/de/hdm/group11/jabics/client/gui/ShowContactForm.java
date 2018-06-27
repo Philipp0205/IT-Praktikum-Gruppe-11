@@ -18,9 +18,12 @@ import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.Type;
+import de.hdm.group11.jabics.shared.bo.Property;
 
 public class ShowContactForm extends VerticalPanel {
 
@@ -35,10 +38,9 @@ public class ShowContactForm extends VerticalPanel {
 
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
+	Column<PValue, String> shareStatus;
 	
 	HorizontalPanel sharePanel = new HorizontalPanel();
-	
-	
 
 	Button editButton = new Button("Kontakt bearbeiten");
 	Button shareContactButton = new Button("Kontakt neu teilen");
@@ -63,28 +65,35 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		};
 		
-
+		shareStatus = new Column<PValue, String>(new TextCell()) {
+			public String getValue(PValue object) {
+				if(object.getShareStatus() == BoStatus.IS_SHARED) {
+					return "Geteilt";
+				}
+				if(object.getShareStatus() == BoStatus.PARTIALLY_SHARED) {
+					return "Teilweise Geteilt";
+				}
+				if(object.getShareStatus() == BoStatus.NOT_SHARED) {
+					return "Nicht Geteilt";
+				}
+				return "Keine Ahnung";
+			}
+		};
 
 		values.addColumn(prop, "Eigenschaft");
 		values.setColumnWidth(prop, 50, Unit.PX);
 		values.addColumn(pval, "Ausprägung");
 		values.setColumnWidth(pval, 50, Unit.PX);
+		values.addColumn(shareStatus, "Share");
+		values.setColumnWidth(pval, 50, Unit.PX);
 		
 		sharePanel.add(shareContactButton);
 		sharePanel.add(shareExistingContactButton);
-		
-		
-		
-		
-
-		
-
 		try {
 			GWT.log("ShowCont panels hinzufügen");
 			this.add(editButton);
 			this.add(values);
 			this.add(sharePanel);
-			sharePanel.addStyleName("sharePanel");
 
 			this.add(deleteButton);
 		} catch (Exception caught) {
@@ -126,8 +135,10 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		});
 		GWT.log("Kontakte holen");
-		editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
-		GWT.log("4OnLoad SHOWContact");
+		if (valueProvider.getList().isEmpty()) {
+			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
+			GWT.log("4OnLoad SHOWContact");
+		}
 	}
 
 	public void setContact(Contact c) {
