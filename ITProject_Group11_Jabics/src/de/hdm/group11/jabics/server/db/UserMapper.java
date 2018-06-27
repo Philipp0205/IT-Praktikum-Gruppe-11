@@ -1,6 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -82,16 +85,16 @@ public class UserMapper {
 	 * @return JabicsUser u
 	 */
 	public JabicsUser findUserByContact(Contact c) {
-		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		// Erzeugen eines neuen JabicUser-Objekts
 		JabicsUser u = new JabicsUser();
-		System.out.println("m1");
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und ContactCollaboration zum Herausfinden der Userinformationen. 
+			// Join zwischen SystemUser und ContactCollaboration um den Besitzer eines Kontaktes zu finden.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
@@ -102,7 +105,6 @@ public class UserMapper {
 			u.setUsername(rs.getString("name"));
 			}
 			con.close();
-			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -115,13 +117,14 @@ public class UserMapper {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 		
+		// Erzeugen eines neuen JabicUser-Objekts
 		JabicsUser u = new JabicsUser();
 		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und ContactListCollaboration zum Herausfinden der Userinformationen. 
+			// Join zwischen SystemUser und ContactlistCollaboration um den Besitzer einer Kontaktliste zu finden. 
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
@@ -133,7 +136,6 @@ public class UserMapper {
 			u.setUsername(rs.getString("name"));
 			}
 			con.close();
-			
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -145,13 +147,15 @@ public class UserMapper {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		
+		// Erzeugen eines neuen JabicUser-Objekts
 		JabicsUser u = new JabicsUser();
 		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und PValueCollaboration zum Herausfinden der Userinformationen. 
+			// Join zwischen SystemUser und pValueCollaboration um den Besitzer einer Ausprägung zu finden.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
