@@ -104,6 +104,7 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
+			// Schließen der Datenbankverbindung
 			con.close();
 		}
 		catch (SQLException e) {
