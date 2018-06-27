@@ -32,6 +32,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 
 	public Contact(ArrayList<PValue> a, JabicsUser u) { 
 		this(a);
+		this.updateNickname();
 		this.owner = u;
 	}
 		
