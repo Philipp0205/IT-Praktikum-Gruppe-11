@@ -221,7 +221,34 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 		if (nameExistent) {
-			contact.setValues(filledPV);
+			// überprüfen, ob Kontakt ein neuer oder ein bereits bestehender ist
+			if(isNewContact) {
+				editorService.createContact(filledPV, u, new AsyncCallback<Contact>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Neuer Kontakt konnte nicht angelegt werden!" + caught.getMessage());
+					}
+
+					@Override
+					public void onSuccess(Contact result) {
+
+						GWT.log("5.1 onSuccess");
+						GWT.log("5.1" + result.getName());
+						
+						ArrayList<PValue> values = result.getValues();
+						for (PValue pv : values) {
+							GWT.log("5.1" + pv.toString());
+						}
+						
+						GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
+						for (PValue pv : result.getValues()) {
+							GWT.log(pv.toString());
+						}
+						e.showContact(result);
+					}
+				});
+			}else if(!isNewContact) {
+				contact.setValues(filledPV);
 			editorService.updateContact(contact, new AsyncCallback<Contact>() {
 				@Override
 				public void onFailure(Throwable caught) {
@@ -243,9 +270,6 @@ public class EditContactForm extends VerticalPanel {
 						GWT.log("5.1" + pv.toString());
 					}
 					
-					
-						
-	
 					GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
 					for (PValue pv : result.getValues()) {
 						GWT.log(pv.toString());
@@ -253,7 +277,8 @@ public class EditContactForm extends VerticalPanel {
 					e.showContact(result);
 				}
 			});
-		}
+		}else Window.alert("Fehler! Weder neuer noch editierbarer Kontakt. Das sollte nicht passieren"); 
+		}else Window.alert("Kontakt muss einen Namen haben! Bitte Name und Nachname eingeben.");
 		// editorService.updatePValue(val, new UpdatePValueCallback());
 	}
 

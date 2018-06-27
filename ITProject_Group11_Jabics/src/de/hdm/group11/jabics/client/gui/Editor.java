@@ -24,16 +24,15 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.bo.Type;
 
 /**
  * In der folgenden Klasse "Editor" wird die Darstellung einzelnen Klassen
  * bestimmt: ContactForm, ContactListForm
  */
 public class Editor implements EntryPoint {
-	
+
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
-	
+
 	/**
 	 * Im folgenden Interface werden die Items, öffnen und schließen, hinzugefügt.
 	 */
@@ -50,7 +49,7 @@ public class Editor implements EntryPoint {
 		@Source("JabicsCellTree.css")
 		CellTree.Style cellTreeStyle();
 	}
-	
+
 	LoginServiceAsync loginService;
 	EditorServiceAsync editorAdmin;
 	LoginInfo loginfo;
@@ -63,11 +62,11 @@ public class Editor implements EntryPoint {
 	VerticalPanel menuPanel = new VerticalPanel();
 	HorizontalPanel formPanel = new HorizontalPanel();
 	HorizontalPanel placeholder = new HorizontalPanel();
-	
+
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an um Jabics nutzen zu k�nnen.");
 	private Anchor signInLink = new Anchor("Anmelden.");
-	
+
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
@@ -85,12 +84,12 @@ public class Editor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		
+
 		editorAdmin = ClientsideSettings.getEditorService();
-		
+
 		/**
-		 * Zunächst wird eine User-Instanz hinzugefügt.
-		 * Später entfernen und dies den Login übernehmen lassen
+		 * Zunächst wird eine User-Instanz hinzugefügt. Später entfernen und dies den
+		 * Login übernehmen lassen
 		 */
 		currentUser = new JabicsUser();
 		currentUser.setEmail("stahl.alexander@live.de");
@@ -100,7 +99,7 @@ public class Editor implements EntryPoint {
 		/**
 		 * Login
 		 */
-		//loginService = ClientsideSettings.getLoginService();
+		// loginService = ClientsideSettings.getLoginService();
 		// GWT.log(GWT.getHostPageBaseURL());
 		// loadEditor();
 		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
@@ -124,17 +123,17 @@ public class Editor implements EntryPoint {
 		createCL.addClickHandler(new CreateCLClickHandler());
 		Button search = new Button("Suche");
 		search.addClickHandler(new SearchClickHandler());
-		//Button settings = new Button("irgendwas anderes");
-		//settings.addClickHandler(new SearchClickHandler());
+		// Button settings = new Button("irgendwas anderes");
+		// settings.addClickHandler(new SearchClickHandler());
 
 		topPanel.add(search);
-		//topPanel.add(settings);
+		// topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
-		
+
 		topPanel.addStyleName("topPanel");
 
-		//Menu hinzufügen
+		// Menu hinzufügen
 		treeViewMenu = new TreeViewMenu();
 		treeViewMenu.onLoad();
 		treeViewMenu.setEditor(this);
@@ -148,7 +147,7 @@ public class Editor implements EntryPoint {
 		Contact c6 = new Contact();
 		c6.setId(1);
 		editContact(c6);
-		
+
 		RootPanel.get("details").add(mainPanel);
 	}
 
@@ -175,66 +174,74 @@ public class Editor implements EntryPoint {
 		this.currentUser = u;
 	}
 
+	
+	public void showMenuOnly() {
+		if(treeViewMenu != null) {
+			formPanel.clear();
+		}
+		Label noThing = new Label("Nichts anzuzeigen.");
+		formPanel.add(noThing);
+	}
 	/**
 	 * Kontakte, Listen und CollabForms anzeigen
 	 */
 	public void showContact(Contact c) {
 		GWT.log("showCont");
 		if (this.scForm == null) {
-		scForm = new ShowContactForm();
-		scForm.setEditor(this);
-		scForm.setUser(this.currentUser);
+			scForm = new ShowContactForm();
+			scForm.setEditor(this);
+			scForm.setUser(this.currentUser);
 		}
 		formPanel.clear();
 		scForm.setContact(c);
-		
-		//formPanel.clear();
+
+		// formPanel.clear();
 		formPanel.insert(scForm, 0);
 		GWT.log("ShowCont fertig");
 	}
-	
+
 	public void editContact(Contact c) {
 		GWT.log("editcont");
-		//if (this.cForm == null) {
+		// if (this.cForm == null) {
 		cForm = new EditContactForm();
 		cForm.setEditor(this);
 		cForm.setUser(this.currentUser);
-		
+
 		formPanel.clear();
 		GWT.log("AltesWidgetEntfernt");
 		cForm.setNewContact(false);
 		cForm.setContact(c);
-		
+
 		formPanel.insert(cForm, 0);
 		GWT.log("editcontFertig");
-		
+
 		formPanel.setStyleName("formPanel");
 	}
-	
+
 	public void newContact(Contact c) {
 		GWT.log("editcont");
-		//if (this.cForm == null) {
+		// if (this.cForm == null) {
 		cForm = new EditContactForm();
 		cForm.setEditor(this);
 		cForm.setUser(this.currentUser);
-		
+
 		formPanel.clear();
 		GWT.log("AltesWidgetEntfernt");
 		cForm.setNewContact(true);
 		cForm.setContact(c);
-		
+
 		formPanel.insert(cForm, 0);
 		GWT.log("editcontFertig");
-		
+
 		formPanel.setStyleName("formPanel");
 	}
 
 	public void showContactList(ContactList cl) {
-		//if (this.clForm == null) {
-		clForm = new ContactListForm();
-		clForm.setEditor(this);
-		clForm.setUser(this.currentUser);
-		
+		if (this.clForm == null) {
+			clForm = new ContactListForm();
+			clForm.setEditor(this);
+			clForm.setUser(this.currentUser);
+		}
 		formPanel.clear();
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clForm.clear();
@@ -247,34 +254,33 @@ public class Editor implements EntryPoint {
 	public void showContactCollab(Contact c) {
 
 		GWT.log("contactCollab");
-		//if (this.ccForm == null) {
-			ccForm = new ContactCollaborationForm();
-			ccForm.setEditor(this);
-		
+		// if (this.ccForm == null) {
+		ccForm = new ContactCollaborationForm();
+		ccForm.setEditor(this);
+
 		GWT.log("huhu");
-		//formPanel.clear();
+		// formPanel.clear();
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// ccForm.clear();
 		// ccForm = new ContactCollaborationForm();
 		ccForm.setEditor(this);
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());
-		formPanel.insert(ccForm,0);
+		formPanel.insert(ccForm, 0);
 	}
 
-	
 	public void showExistingContactCollab(Contact c) {
 		GWT.log("existingContactCollab");
-		//if (this.eccForm == null) {
+		// if (this.eccForm == null) {
 		eccForm = new ExistingContactCollaborationForm();
 		eccForm.setEditor(this);
 		eccForm.setContact(c);
 		eccForm.setUser(this.currentUser);
-		
+
 		formPanel.clear();
 		formPanel.add(eccForm);
 	}
-	
+
 	public void showContactListCollab(ContactList cl) {
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
@@ -287,15 +293,14 @@ public class Editor implements EntryPoint {
 		widgetPanel.add(clcForm);
 	}
 
-	
 	public void showExistingContactListCollab(ContactList cl) {
 		/**
 		 * TODO implement
 		 */
 	}
-	
-	 public void showSearchForm(ContactList cl) {
-//		if (this.sForm == null) {
+
+	public void showSearchForm(ContactList cl) {
+		// if (this.sForm == null) {
 
 		sForm = new SearchForm();
 		sForm.setEditor(this);
@@ -306,22 +311,20 @@ public class Editor implements EntryPoint {
 		GWT.log("#######SearchForm");
 	}
 
-	
 	public void returnToContactForm(Contact c) {
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 		}
-		//addContactToTree(c);
+		// addContactToTree(c);
 		scForm.setContact(c);
 		formPanel.add(cForm);
 	}
 
-	
 	public void returnToContactListForm(ContactList cl) {
 		if (this.clForm == null) {
 			clForm = new ContactListForm();
 		}
-		//addContactListToTree(cl);
+		// addContactListToTree(cl);
 		clForm.setCurrentList(cl);
 		widgetPanel.add(clForm);
 	}
@@ -341,40 +344,39 @@ public class Editor implements EntryPoint {
 		treeViewMenu.addContactToList(cl, c);
 	}
 	/*
-	public void removeContactFromTree(Contact c) {
-		treeViewMenu.removeContact(c);
-	}
+	 * public void removeContactFromTree(Contact c) { treeViewMenu.removeContact(c);
+	 * }
+	 * 
+	 * public void removeContactListFromTree(ContactList cl) {
+	 * treeViewMenu.removeContactList(cl); }
+	 * 
+	 * public void removeContactFromListInTree(ContactList cl, Contact c) {
+	 * treeViewMenu.removeContactFromList(cl, c); }
+	 */
 
-	public void removeContactListFromTree(ContactList cl) {
-		treeViewMenu.removeContactList(cl);
-	}
-
-	public void removeContactFromListInTree(ContactList cl, Contact c) {
-		treeViewMenu.removeContactFromList(cl, c);
-	}*/
-	
-
-	
-	//+++++++++++++++++++++++++++++++ClickHandler++++++++++++++++++++++++++
+	// +++++++++++++++++++++++++++++++ClickHandler++++++++++++++++++++++++++
 	/**
 	 * ClickHandler um die SearchForm anzuzeigen
 	 */
 	private class SearchClickHandler implements ClickHandler {
 		ContactList cl;
-		SearchClickHandler(){}
+
+		SearchClickHandler() {
+		}
+
 		@Override
 		public void onClick(ClickEvent event) {
-			
-			 //treeViewMenu.setContactForm(cForm);
-			 //cForm.setTreeViewMenu(treeViewMenu);
-			
-//			 hPanel.add(contactDetailPanel);
-//			
-//			 contactDetailPanel.clear();
-//			 contactDetailPanel.add(cForm);
-			
-	//		 RootPanel.get("details").add(contactDetailPanel);
-			//TODO 
+
+			// treeViewMenu.setContactForm(cForm);
+			// cForm.setTreeViewMenu(treeViewMenu);
+
+			// hPanel.add(contactDetailPanel);
+			//
+			// contactDetailPanel.clear();
+			// contactDetailPanel.add(cForm);
+
+			// RootPanel.get("details").add(contactDetailPanel);
+			// TODO
 			GWT.log("clickEventForm");
 			ContactList cl = new ContactList();
 			cl.setId(1);
@@ -383,7 +385,7 @@ public class Editor implements EntryPoint {
 			Property p = new Property();
 			p.setId(2);
 			GWT.log("clickEventForm");
-			PValue pv = new PValue(p,"Fiffi",u);
+			PValue pv = new PValue(p, "Fiffi", u);
 			c1.setName("Uschi");
 			Contact c2 = new Contact();
 			c2.setName("Strolch");
@@ -400,7 +402,7 @@ public class Editor implements EntryPoint {
 			showSearchForm(cl);
 		}
 	}
-	
+
 	/**
 	 * ClickHandler um einen neuen Kontakt zu erstellen und zu bearbeiten
 	 */
@@ -470,7 +472,5 @@ public class Editor implements EntryPoint {
 			}
 		}
 	}
-
-	
 
 }
