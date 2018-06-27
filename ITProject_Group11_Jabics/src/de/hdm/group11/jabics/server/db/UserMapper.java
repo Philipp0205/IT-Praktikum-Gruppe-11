@@ -87,6 +87,7 @@ public class UserMapper {
 	public JabicsUser findUserByContact(Contact c) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		
 		// Erzeugen eines neuen JabicUser-Objekts
 		JabicsUser u = new JabicsUser();
 
@@ -98,12 +99,15 @@ public class UserMapper {
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
-					+ " WHERE contactCollaboration.contactID = " + c.getId() + " AND isOwner = 1" );
-			while(rs.next()) {
+					+ " WHERE contactCollaboration.contactID = " + c.getId() + " AND isOwner = 1");
+			
+			// Wenn ein Tupel mit der ContactID existiert, werden die Attribute von JabicsUser gesetzt.
+			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
+			
 			// Schließen der Datenbankverbindung
 			con.close();
 		}
@@ -113,6 +117,11 @@ public class UserMapper {
 		return u;
 	}
 	
+	/**
+	 * Gibt den Besitzer/Ersteller einer Kontaktliste zurück.
+	 * @param Contactlist cl, die Kontaktliste für den der Besitzer gefunden werden soll
+	 * @return JabicsUser u
+	 */
 	public JabicsUser findUserByContactList(ContactList cl) {
 		
 		// Erzeugen der Datenbankverbindung
@@ -131,6 +140,7 @@ public class UserMapper {
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
 					+ " WHERE contactlistCollaboration.contactListID = " + cl.getId() + " AND isOwner = 1");
 			
+			// Wenn ein Tupel mit der ContactlistID existiert, werden die Attribute von JabicsUser gesetzt.
 			if(rs.next()) {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
@@ -144,6 +154,11 @@ public class UserMapper {
 		return u;
 	}
 	
+	/**
+	 * Gibt den Besitzer/Ersteller einer Eigenschaftsauspräfung zurück.
+	 * @param PValue pv, die Kontaktliste für den der Besitzer gefunden werden soll
+	 * @return JabicsUser u
+	 */
 	public JabicsUser findUserByPValue(PValue pv) {
 		
 		// Erzeugen der Datenbankverbindung

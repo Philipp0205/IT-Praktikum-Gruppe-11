@@ -257,6 +257,7 @@ public class EditContactForm extends VerticalPanel {
 			} else if (pv.containsValue()) {
 				filledPV.add(pv);
 			}
+
 		} 
 		
 		if(!nameExistent) {
@@ -283,18 +284,21 @@ public class EditContactForm extends VerticalPanel {
 					for (PValue pv : values) {
 						GWT.log("6.1 " + pv.toString());
 					}
-
+					
+					
+						
+	
 					GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
 					for (PValue pv : result.getValues()) {
 						GWT.log(pv.toString());
 					}
-					
+	
 					e.updateContactInTree(result);
 					e.showContact(result);
 				}
 			});
 		}
-			
+		
 		}
 
 		// editorService.updatePValue(val, new UpdatePValueCallback());
