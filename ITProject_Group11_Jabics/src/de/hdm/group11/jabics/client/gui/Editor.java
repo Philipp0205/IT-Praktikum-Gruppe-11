@@ -337,7 +337,7 @@ public class Editor implements EntryPoint {
 	public void addContactToTree(Contact c) {
 		treeViewMenu.addContact(c);
 	}
-
+	
 	public void addContactListToTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
 	}
