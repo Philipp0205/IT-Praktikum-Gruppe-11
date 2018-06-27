@@ -25,7 +25,6 @@ public class DBConnection {
 	private static String localUrl = "jdbc:mysql://35.198.159.112:3306/jabics?user=root&password=ThieskesOberesDrittel!";
 	
 	public static Connection connection() {
-		 
 		if (con == null) {
 			String url = null;
 			try {
@@ -44,9 +43,9 @@ public class DBConnection {
 				System.out.println("Connected to DB");	
 			} 
 			catch (Exception e) {
-			con = null;
-			e.printStackTrace();
-			System.err.print(e);
+				con = null;
+				e.printStackTrace();
+				System.err.print(e);
 			} 
 		}
 		//Rückgabe der Verbindung
