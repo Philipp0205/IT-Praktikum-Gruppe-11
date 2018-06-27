@@ -25,7 +25,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	/**
 	 * Instanzenvariablen
 	 */
-	ArrayList<PValue> values = new ArrayList<PValue>();
+	private ArrayList<PValue> values = new ArrayList<PValue>();
 	private String name;
 	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 	
@@ -43,23 +43,6 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	public Contact(ArrayList<PValue> a) { 
 		this();
 		this.values = a;
-		StringBuffer sBuffer = new StringBuffer("Vorname");
-		for (PValue p : a) {
-			if (p.getProperty().getLabel() == "Name") {
-				sBuffer.append(p.getStringValue());					
-				} else {
-					System.out.println("Constructor in Contact: No name in Array.");
-				}
-		}
-		for (PValue p2: a) {
-			if (p2.getProperty().getLabel() == "Nachname") {
-				sBuffer.append(p2.getStringValue());				
-			} else {
-				System.out.println("No lastname in Array");
-			}
-		}
-		this.name = sBuffer.toString();
-	
 	}
 
 	//Leerer Konstruktor
@@ -110,6 +93,30 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	public void setShareStatus(BoStatus shareStatus) {
 		this.shareStatus = shareStatus;
 	}
+	
+	/**
+	 * Überprüfen, ob der Nickname dieses Kontakts noch aktuell ist und neu setzen.
+	 */
+	public void updateNickname() {
+		StringBuffer sBuffer = new StringBuffer("VornameNachname");
+		for (PValue p : values) {
+			if (p.getProperty().getId() == 1) {
+				sBuffer.replace(0, sBuffer.length(), p.getStringValue());					
+				} else {
+					System.out.println("Constructor in Contact: No name in Array.");
+				}
+		}
+		for (PValue p2: values) {
+			if (p2.getProperty().getId() == 2) {
+				sBuffer.append(" " + p2.getStringValue());				
+			} else {
+				System.out.println("No lastname in Array");
+			}
+		}
+		System.out.println("Neuer Nickname: " + sBuffer.toString());
+		this.name = sBuffer.toString();
+	}
+	
 	/*
 	 * Relevante Methoden für die spätere Anzeige mittels selectionModels und ListDataProvider
 	 */
@@ -123,9 +130,11 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	 * Check if BusinessObject is the same as transfer parameter
 	 */
 	public boolean equals(Object obj) {
+		System.out.println("equals1");
 		if (obj instanceof Contact) {
 			Contact c = (Contact) obj;
 			if (c.getId() == this.id) {
+				System.out.println("equals2");
 				boolean bol = true;
 				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
 				for(PValue pv : c.getValues()) {

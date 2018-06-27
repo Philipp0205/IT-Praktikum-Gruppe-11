@@ -24,7 +24,6 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.bo.Type;
 
 /**
  * In der folgenden Klasse "Editor" wird die Darstellung einzelnen Klassen
@@ -339,6 +338,12 @@ public class Editor implements EntryPoint {
 
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
+	}
+	public void updateContactInTree(Contact c) {
+		treeViewMenu.contactListTab.updateContact(c);
+	}
+	public void updateContactListInTree(ContactList cl) {
+		treeViewMenu.addContactList(cl);
 	}
 	/*
 	public void removeContactFromTree(Contact c) {

@@ -115,8 +115,10 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		});
 		GWT.log("Kontakte holen");
-		editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
-		GWT.log("4OnLoad SHOWContact");
+		if (valueProvider.getList().isEmpty()) {
+			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
+			GWT.log("4OnLoad SHOWContact");
+		}
 	}
 
 	public void setContact(Contact c) {
