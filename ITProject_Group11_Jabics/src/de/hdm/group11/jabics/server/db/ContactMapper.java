@@ -98,14 +98,15 @@ public class ContactMapper{
 		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
 		ResultSet rs = stmt.getGeneratedKeys();
 		Statement stmt2 =  con.createStatement();
-		ResultSet rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
+		ResultSet rs2;
 		
 		if(rs.next()) {
+			rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
 			c.setId(rs.getInt(1));
-		}
 		if(rs2.next()) {
 			c.setDateCreated(rs2.getTimestamp("dateCreated"));
 			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+		}
 		}
 		con.close();
 		return c;

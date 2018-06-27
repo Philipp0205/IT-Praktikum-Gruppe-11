@@ -5,52 +5,41 @@ import java.sql.DriverManager;
 
 import com.google.appengine.api.utils.SystemProperty;
 
-/**
- * 
- * Die DBConnection-Klasse stellt über die connection() Methode eine Verbindung mit der Datenbank zur Verfügung.
- * 
- * Struktur von
- * @author Thies
- * 
- * Angepasst von
- * @author Brase
- * @author Stahl
- *
- */
-public class DBConnection {
-	
-	private static Connection con = null;
 
-	private static String user = "root";
-	private static String password = "ThieskesOberesDrittel!";
-	private static String googleUrl = "jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?verifyServerCertificate=false&useSSL=true";
-	private static String localUrl = "jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true";
-	
-	public static Connection connection() {
-		if (con == null) {
-			String url = null;
-			try {
-				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
-					// Load the class that provides the new "jdbc:google:mysql://" prefix.
-					Class.forName("com.mysql.jdbc.GoogleDriver");
-					url = googleUrl;
-					System.out.println("googleDB!");
-				} else {
-					// Local MySQL instance to use during development.
-					Class.forName("com.mysql.jdbc.Driver");
-					url = localUrl;
-					System.out.println("localDB!");
-				}
-				con = DriverManager.getConnection(url,user,password);
-				System.out.println("Connected to DB");	
-			} 
-			catch (Exception e) {
-				con = null;
-				e.printStackTrace();
-				System.err.print(e);
-			} 
-		}
-		//Rückgabe der Verbindung
-		return con;
-	}
+public class DBConnection {
+
+
+    private static Connection con = null;
+
+    private static String user = "root";
+    private static String password = "ThieskesOberesDrittel!";
+    private static String url;
+    private static String googleUrl = "jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?user=root&password=ThieskesOberesDrittel!";
+    private static String localUrl = "jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true";
+
+    
+    public static Connection connection() {
+
+
+            try {
+                if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+                    Class.forName("com.mysql.jdbc.GoogleDriver");
+                    url = googleUrl;
+                } else {
+
+                    Class.forName("com.mysql.jdbc.Driver");
+                    url = localUrl;
+                }
+
+                con = DriverManager.getConnection(url,user,password);
+            } catch (Exception e) {
+                con = null;
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
+            }
+        
+
+        return con;
+    }
+
 }
