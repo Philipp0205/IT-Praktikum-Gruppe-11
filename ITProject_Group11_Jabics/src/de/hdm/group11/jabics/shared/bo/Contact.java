@@ -75,7 +75,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	 */
 	
 	public ArrayList<PValue> getValues() {
-		return values;
+		return this.values;
 	}
 	public void setValues(ArrayList<PValue> values) {
 		this.values = values;
