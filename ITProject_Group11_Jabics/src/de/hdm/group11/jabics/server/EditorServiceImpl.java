@@ -101,7 +101,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newContact = cMapper.insertCollaboration(u, newContact, true);
 		System.out.println("Kontakt id: " + newContact.getId());
 		
-		
 		ArrayList<PValue> testArray = cArray;
 
 		/*
@@ -210,6 +209,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 * Zeitstempel bekommt.
 		 */
 		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		System.out.println("createPValue: Neue ID: " + newPValue.getId());
 		pvMapper.insertCollaboration(u, newPValue, true);
 		cMapper.updateContact(cnew);
 		return newPValue;
