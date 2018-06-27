@@ -100,16 +100,16 @@ public class ContactListMapper {
 			stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = stmt.getGeneratedKeys();
 			Statement stmt2 =  con.createStatement();
-			ResultSet rs2 = stmt2.executeQuery("SELECT * FROM contactList WHERE contactListID = " + rs.getInt(1));
-
+			ResultSet rs2;
 			if(rs.next()) {
+				rs2 = stmt2.executeQuery("SELECT * FROM contactList WHERE contactListID = " + rs.getInt(1));
 				cl.setId(rs.getInt(1));
-			}
 			if(rs2.next()) {
 				cl.setDateCreated(rs2.getTimestamp("dateCreated"));
 				cl.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 			}
-		con.close();
+			}
+			con.close();
 	    	return cl;
 	    }
 	    catch (SQLException e) {

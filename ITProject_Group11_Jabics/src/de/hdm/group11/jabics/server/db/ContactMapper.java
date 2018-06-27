@@ -97,32 +97,32 @@ public class ContactMapper {
 	public Contact insertContact(Contact c) {
 
 		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-		try {
-			System.err.println("insert COntact3");
-			String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs = stmt.getGeneratedKeys();
-			while (rs.next()) {
-				c.setId(rs.getInt(1));
-			}
-			Statement stmt2 = con.createStatement();
-			ResultSet rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + c.getId());
-
-			while (rs2.next()) {
-				c.setDateCreated(rs2.getTimestamp("dateCreated"));
-				c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
-				// c.setId(rs2.getInt("contactID"));
-			}
-
-			con.close();
-			return c;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+		String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
+		// Erzeugen eines ungefüllten SQL-Statements
+		Statement stmt = con.createStatement();
+		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
+		ResultSet rs = stmt.getGeneratedKeys();
+		Statement stmt2 =  con.createStatement();
+		ResultSet rs2;
+		
+		if(rs.next()) {
+			rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
+			c.setId(rs.getInt(1));
+		if(rs2.next()) {
+			c.setDateCreated(rs2.getTimestamp("dateCreated"));
+			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 		}
+		}
+		con.close();
+		return c;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
 	}
 
 	/**

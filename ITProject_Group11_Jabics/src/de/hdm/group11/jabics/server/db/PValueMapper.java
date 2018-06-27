@@ -111,10 +111,9 @@ public class PValueMapper {
 					while(rs.next()) {
 						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-						
-						while(rs2.next()) {
-							pv.setDateCreated(rs2.getTimestamp("dateCreated"));
-							pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+					while(rs2.next()) {
+						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
+						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 					}
 					break;
@@ -131,7 +130,6 @@ public class PValueMapper {
 					while(rs.next()) {
 						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					
 					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
@@ -149,7 +147,6 @@ public class PValueMapper {
 					while(rs.next()) {
 						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
-					
 					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
