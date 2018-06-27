@@ -536,7 +536,7 @@ public class EditContactForm extends VerticalPanel {
 				dp = new DatePicker();
 				dp.setVisible(false);
 				dp.addValueChangeHandler(new ValChange());
-				dp.setValue(new Date(), true);
+				//dp.setValue(new Date(), true);
 				this.add(dp);
 				GWT.log("DatumEnde");
 			}
