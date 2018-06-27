@@ -18,6 +18,7 @@ import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
@@ -37,6 +38,7 @@ public class ShowContactForm extends VerticalPanel {
 
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
+	Column<PValue, String> shareStatus;
 	
 	HorizontalPanel sharePanel = new HorizontalPanel();
 
@@ -81,6 +83,8 @@ public class ShowContactForm extends VerticalPanel {
 		values.addColumn(prop, "Eigenschaft");
 		values.setColumnWidth(prop, 50, Unit.PX);
 		values.addColumn(pval, "Ausprägung");
+		values.setColumnWidth(pval, 50, Unit.PX);
+		values.addColumn(shareStatus, "Share");
 		values.setColumnWidth(pval, 50, Unit.PX);
 		
 		sharePanel.add(shareContactButton);
@@ -131,8 +135,10 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		});
 		GWT.log("Kontakte holen");
-		editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
-		GWT.log("4OnLoad SHOWContact");
+		if (valueProvider.getList().isEmpty()) {
+			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
+			GWT.log("4OnLoad SHOWContact");
+		}
 	}
 
 	public void setContact(Contact c) {
