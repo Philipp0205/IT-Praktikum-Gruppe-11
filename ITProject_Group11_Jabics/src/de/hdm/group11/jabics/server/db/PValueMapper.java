@@ -558,4 +558,42 @@ public class PValueMapper {
 			System.err.print(e);
 		}
 	}
+	
+	public ArrayList<BoStatus> findShareStatus(ArrayList<PValue> alPValue){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    	
+	    	ArrayList<BoStatus> al = new ArrayList<BoStatus>();
+
+	    	StringBuffer s = new StringBuffer();
+ 	
+	    	for(PValue pv : alPValue){
+	    		s.append(pv.getId());
+	    		s.append(",");
+	    	}
+	    	s.deleteCharAt(s.lastIndexOf(","));
+    		
+    		ResultSet rs = stmt.executeQuery("SELECT pValueID "
+	    		+ " FROM pValueCollaboration "
+	   			+ " WHERE isOwner = 0 AND pValueID IN (" + s + ")");
+ 	    	
+	    	
+	    	for(PValue pv : alPValue) {
+	    		if (rs.next()) {
+	    			al.add(BoStatus.IS_SHARED);
+	    		} else {
+	    			al.add(BoStatus.NOT_SHARED);
+	    		}
+	        }
+    		return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
 }
