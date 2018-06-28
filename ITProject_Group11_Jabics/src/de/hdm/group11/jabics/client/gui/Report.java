@@ -41,6 +41,8 @@ import de.hdm.group11.jabics.shared.bo.Type;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
 import de.hdm.group11.jabics.shared.report.AllContactsOfUserReport;
+import de.hdm.group11.jabics.shared.report.CompositeReport;
+import de.hdm.group11.jabics.shared.report.ContactReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
 import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
 
@@ -391,7 +393,6 @@ public class Report implements EntryPoint {
 		navPanel.add(addUserButton);
 		navPanel.add(removeUserButton);
 		navPanel.add(sharedContactsButton);
-		navPanel.add(new Label("sorry kam nicht mehr dazu es alles anzuordnen (es ist voll funktional, die ausgewählten nutzer aus finalReports holen wenn es an die erstellung des reports geht), zeile 375 im Report"));
 	}
 
 	public void setAllUser(ArrayList<JabicsUser> u) {
@@ -437,6 +438,7 @@ public class Report implements EntryPoint {
 		@Override
 		public void onFailure(Throwable caught) {
 			// Fehler werden gelogt.
+			GWT.log(caught.toString());
 			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
 		}
 
@@ -457,6 +459,7 @@ public class Report implements EntryPoint {
 
 		@Override
 		public void onFailure(Throwable caught) {
+			GWT.log(caught.toString());
 			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
 		}
 
@@ -495,6 +498,10 @@ public class Report implements EntryPoint {
 		@Override
 		public void onSuccess(AllContactsOfUserReport report) {
 			if (report != null) {
+				for(ContactReport c : report.getSubReports()) {
+					GWT.log(c.getContactInfo().getContent());
+				}
+				
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();

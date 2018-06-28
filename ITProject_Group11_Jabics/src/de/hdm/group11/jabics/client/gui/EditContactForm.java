@@ -36,6 +36,7 @@ public class EditContactForm extends VerticalPanel {
 	JabicsUser u;
 	Contact contact;
 	Boolean isNewContact;
+	Boolean userIsOwner;
 
 	Button deleteContactButton = new Button("Kontakt löschen");
 	Button saveButton = new Button("Änderungen speichern");
@@ -55,80 +56,90 @@ public class EditContactForm extends VerticalPanel {
 
 	public void onLoad() {
 
-		GWT.log("EditCont");
-		pPanel = new VerticalPanel();
-		buttonPanel = new HorizontalPanel();
-		addPPanel = new HorizontalPanel();
+		if (contact != null) {
+			GWT.log("EditCont");
+			pPanel = new VerticalPanel();
+			buttonPanel = new HorizontalPanel();
+			addPPanel = new HorizontalPanel();
 
-		if (isNewContact) {
-			saveButton.setText("Neuen Kontakt speichern");
-		} else {
-			saveButton.setText("Änderungen speichern");
-		}
+			buttonPanel.add(deleteContactButton);
+			buttonPanel.add(saveButton);
+			buttonPanel.addStyleName("buttonPanel");
 
-		buttonPanel.add(deleteContactButton);
-		buttonPanel.add(saveButton);
+			// Checks, die beim Laden der Form durchgeführt werrden müssen, um die richtige
+			// UI anzuzeigen
 
-		buttonPanel.addStyleName("buttonPanel");
-
-		saveButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				save();
+			if (isNewContact) {
+				saveButton.setText("Neuen Kontakt speichern");
+			} else {
+				saveButton.setText("Änderungen speichern");
 			}
-		});
+			
 
-		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
-		// Die gesamte Zeile (4) wird ein HorizontalPanel
-		Grid propertyAddBox = new Grid(2, 5);
+			saveButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					save();
+				}
+			});
 
-		// in diesem Horizontal Panel gibt es 4 Felder
-		// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
-		Label z1l = new Label("Eigenschaftsname:");
-		propertyAddBox.setWidget(0, 0, z1l);
-		propertyAddBox.setWidget(1, 0, propertyName);
-		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
-		// deklariert.)
+			// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
+			// Die gesamte Zeile (4) wird ein HorizontalPanel
+			Grid propertyAddBox = new Grid(2, 5);
 
-		// 1.1 eine Listbox zum Setzen des Formats
-		formattype.addItem("Text");
-		formattype.addItem("Datum");
-		formattype.addItem("Kommazahl");
-		formattype.addItem("Zahl");
-		Label z2l = new Label("Art:");
-		propertyAddBox.setWidget(0, 1, z2l);
-		propertyAddBox.setWidget(1, 1, formattype);
+			// in diesem Horizontal Panel gibt es 4 Felder
+			// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
+			Label z1l = new Label("Eigenschaftsname:");
+			propertyAddBox.setWidget(0, 0, z1l);
+			propertyAddBox.setWidget(1, 0, propertyName);
+			// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
+			// deklariert.)
 
-		Button addPropertyButton = new Button("Hinzufügen");
-		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
-		propertyAddBox.setWidget(1, 2, addPropertyButton);
-		addPPanel.add(propertyAddBox);
+			// 1.1 eine Listbox zum Setzen des Formats
+			formattype.addItem("Text");
+			formattype.addItem("Datum");
+			formattype.addItem("Kommazahl");
+			formattype.addItem("Zahl");
+			Label z2l = new Label("Art:");
+			propertyAddBox.setWidget(0, 1, z2l);
+			propertyAddBox.setWidget(1, 1, formattype);
 
-		p = new ArrayList<Property>();
-		// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
-		// werden können
-		p.add(new Property("Name", Type.STRING, true, 1));
-		p.add(new Property("Vorname", Type.STRING, true, 2));
-		p.add(new Property("Mail", Type.STRING, true, 3));
-		p.add(new Property("Telefon", Type.STRING, true, 4));
-		p.add(new Property("Geburtstag", Type.DATE, true, 5));
-		p.add(new Property("Straße", Type.STRING, true, 6));
-		p.add(new Property("Haus", Type.STRING, true, 7));
-		p.add(new Property("PLZ", Type.STRING, true, 8));
-		p.add(new Property("Test", Type.STRING, true, 9));
-		p.add(new Property("Test", Type.STRING, true, 10));
+			Button addPropertyButton = new Button("Hinzufügen");
+			addPropertyButton.addClickHandler(new AddPropertyClickHandler());
+			propertyAddBox.setWidget(1, 2, addPropertyButton);
+			addPPanel.add(propertyAddBox);
 
-		GWT.log("EditContPErstellt");
+			p = new ArrayList<Property>();
+			// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
+			// werden können
+			p.add(new Property("Name", Type.STRING, true, 1));
+			p.add(new Property("Vorname", Type.STRING, true, 2));
+			p.add(new Property("Mail", Type.STRING, true, 3));
+			p.add(new Property("Telefon", Type.STRING, true, 4));
+			p.add(new Property("Geburtstag", Type.DATE, true, 5));
+			p.add(new Property("Straße", Type.STRING, true, 6));
+			p.add(new Property("Haus", Type.STRING, true, 7));
+			p.add(new Property("PLZ", Type.STRING, true, 8));
+			p.add(new Property("Test", Type.STRING, true, 9));
+			p.add(new Property("Test", Type.STRING, true, 10));
 
-		this.insert(pPanel, 0);
-		this.insert(buttonPanel, 1);
-		if (isNewContact) {
-			addPPanel.setVisible(false);
+			GWT.log("EditContPErstellt");
+
+			this.insert(pPanel, 0);
+			this.insert(buttonPanel, 1);
+			if (isNewContact) {
+				addPPanel.setVisible(false);
+			}
+			this.insert(addPPanel, 2);
+			renderContact(this.contact.getValues());
+		} else {
+			Label errorLabel = new Label("Kein Kontakt anzuzeigen");
+			this.add(errorLabel);
 		}
-		this.insert(addPPanel, 2);
-		renderContact(this.contact.getValues());
 
 	}
+
+	
 
 	public void renderContact(ArrayList<PValue> values) {
 		GWT.log("EditContRender6");
@@ -211,7 +222,7 @@ public class EditContactForm extends VerticalPanel {
 			if (isNewContact) {
 
 				// Es werden alle befüllten PValues übergeben
-				GWT.log("6.4 "+filledPV.toString());
+				GWT.log("6.4 " + filledPV.toString());
 				editorService.createContact(filledPV, u, new AsyncCallback<Contact>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -220,6 +231,7 @@ public class EditContactForm extends VerticalPanel {
 
 					@Override
 					public void onSuccess(Contact result) {
+
 						if (result != null) {
 							GWT.log("6.4 onSuccess");
 							GWT.log("6.5 1" + result.getName());
@@ -554,7 +566,7 @@ public class EditContactForm extends VerticalPanel {
 				dp = new DatePicker();
 				dp.setVisible(false);
 				dp.addValueChangeHandler(new ValChange());
-				//dp.setValue(new Date(), true);
+				// dp.setValue(new Date(), true);
 				this.add(dp);
 				GWT.log("DatumEnde");
 			}

@@ -32,7 +32,7 @@ import de.hdm.group11.jabics.shared.bo.Property;
 public class Editor implements EntryPoint {
 
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
-
+	
 	/**
 	 * Im folgenden Interface werden die Items, öffnen und schließen, hinzugefügt.
 	 */
@@ -196,9 +196,10 @@ public class Editor implements EntryPoint {
 		}
 		formPanel.clear();
 		scForm.setContact(c);
-
-		// formPanel.clear();
+		currentUser.setId(1);
+		GWT.log("form einfügen");
 		formPanel.insert(scForm, 0);
+		//formPanel.add(scForm);
 		GWT.log("ShowCont fertig");
 	}
 

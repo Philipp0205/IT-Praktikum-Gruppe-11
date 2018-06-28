@@ -16,16 +16,26 @@ public class ContactReport extends Report  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList<PropertyView> content = new ArrayList<PropertyView>();
-	private String contactInfo;
-	private String userInfo;
+	private Paragraph contactInfo;
+	private Paragraph userInfo;
+	private Paragraph collaboratonInfo;
+	
 	public ContactReport() {}
 	
 	/**
 	 * simple constructor that needs at least one Property view in an ArrayList
 	 */
-	public ContactReport(ArrayList<PropertyView> pv, String contactInfo, String userInfo) {
+	public ContactReport(ArrayList<PropertyView> pv, Paragraph contactInfo, Paragraph userInfo) {
+		this(pv);
 		this.userInfo = userInfo;
-		this.content = pv;
+		this.contactInfo = contactInfo;
+	}
+	
+	/**
+	 * Konstruktor der nur eine Kontaktinfo und einen Nutzer erhält
+	 */
+	public ContactReport(Paragraph contactInfo, Paragraph userInfo) {
+		this.userInfo = userInfo;
 		this.contactInfo = contactInfo;
 	}
 	
@@ -34,8 +44,11 @@ public class ContactReport extends Report  implements Serializable{
 	 * Only the last name is set as contactInfo, surnames are not searched for. Only use this Constructor if contactName cannot be determined.
 	 */
 	public ContactReport(ArrayList<PropertyView> pv) {
-		this.content = pv;
-		try {
+		if(!pv.isEmpty()) {
+			this.content = pv;
+		} else System.out.println("Beim Erstellen des ContactReports waren keine PValues vorhanden");
+
+	/*	try {
 			for(PropertyView p : pv) {
 				if(p.getPname() == "firstname") this.contactInfo = p.getPvalue();
 			}
@@ -45,7 +58,7 @@ public class ContactReport extends Report  implements Serializable{
 				System.out.println("A Contact name in a Report could not be determined."
 						+ "This should not have happend, as all Contacts must have at least a name.");
 			}
-		}
+		} */
 	}
 	
 	public void addLine(PropertyView pv) { 
@@ -66,17 +79,23 @@ public class ContactReport extends Report  implements Serializable{
 	public void setContent(ArrayList<PropertyView> content) {
 		this.content = content;
 	}
-	public String getContactInfo() {
+	public Paragraph getContactInfo() {
 		return this.contactInfo;
 	}
-	public void setContactInfo(String value) {
+	public void setContactInfo(Paragraph value) {
+		this.contactInfo = value;
+	}
+	public Paragraph getCollaboratorInfo() {
+		return this.contactInfo;
+	}
+	public void setCollaboratorInfo(Paragraph value) {
 		this.contactInfo = value;
 	}
 	
-	public String getUserInfo() {
+	public Paragraph getUserInfo() {
 		return this.userInfo;
 	}
-	public void setUserInfo(String value) {
+	public void setUserInfo(Paragraph value) {
 		this.userInfo = value;
 	}
 

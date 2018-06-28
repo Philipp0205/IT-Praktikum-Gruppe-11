@@ -344,7 +344,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for (Contact c : getContactsOf(u)) {
-			if (!c.getOwner().equals(u))
+			if (c.getOwner().getId() != u.getId())
 				result.add(c);
 		}
 		return result;
@@ -788,6 +788,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		}
 		return res;
 	}
+	
+	/**
+	 * Den Besitzer eines Kontakt-Objekts ermitteln und zurückgeben
+	 */
+	public JabicsUser getOwnerOfContact(Contact c) {
+		return uMapper.findUserByContact(c);
+	}
 
 	/**
 	 * Erhalten aller kollaborierenden Nutzer für einen Kontakt
@@ -882,4 +889,5 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// TODO Auto-generated method stub
 
 	}
+
 }

@@ -203,6 +203,7 @@ public class ContactMapper {
 	public ArrayList<Contact> findAllContacts(JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		System.out.println("Alle Kontakte Finden");
 
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -232,6 +233,11 @@ public class ContactMapper {
 			// Schließen der Datenbankverbindung
 	        stmt.close();
 	        con.close();
+	        
+	        for(Contact c : al) {
+	        	System.out.println("Alle Kontakte Finden " + c.getName() + c.getId());
+	        }
+	        
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);

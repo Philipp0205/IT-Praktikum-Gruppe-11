@@ -6,10 +6,14 @@ import java.util.ArrayList;
 public class AllContactsInSystemReport extends CompositeReport implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	public AllContactsInSystemReport() {
+		subReports = new ArrayList<AllContactsOfUserReport>();
+	}
+	
 	private ArrayList<AllContactsOfUserReport> subReports;
 	
 	public void addReport(AllContactsOfUserReport cr) {
-		subReports.add(cr);
+		this.subReports.add(cr);
 	}
 	
 	public ArrayList<AllContactsOfUserReport> getSubReports(){

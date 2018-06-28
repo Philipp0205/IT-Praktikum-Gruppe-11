@@ -21,9 +21,7 @@ public class FilteredContactsOfUserReport extends CompositeReport implements Ser
 	Paragraph filtercriteria; // String, float, int oder Contact
 
 
-	public FilteredContactsOfUserReport() {	
-		
-	}
+	public FilteredContactsOfUserReport() {	}
 
 	public Paragraph getFiltercriteria() {
 		return filtercriteria;
