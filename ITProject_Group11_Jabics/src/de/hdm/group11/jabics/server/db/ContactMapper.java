@@ -458,4 +458,33 @@ public class ContactMapper {
 			System.err.print(e);
 		}
 	}
+	
+	public ArrayList<BoStatus> findShareStatus(ArrayList<Contact> alContact){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+	    	
+	    	ArrayList<BoStatus> al = new ArrayList<BoStatus>();
+
+    		for(Contact c : alContact) {
+    			ResultSet rs = stmt.executeQuery("SELECT contactID "
+	    			+ " FROM contactCollaboration "
+	    			+ " WHERE isOwner = 0 AND contactID = " + c.getId() );
+    			if (rs.next()) {
+    				al.add(BoStatus.IS_SHARED);
+    			} else {
+    				al.add(BoStatus.NOT_SHARED);
+    			}
+	        }
+    		
+    		return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
 }
