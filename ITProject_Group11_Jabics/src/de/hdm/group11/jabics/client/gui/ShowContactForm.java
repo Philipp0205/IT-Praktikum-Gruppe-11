@@ -128,7 +128,10 @@ public class ShowContactForm extends VerticalPanel {
 					}
 
 					public void onSuccess(Void v) {
-						GWT.log("Löschen fehlgeschlagen");
+						if (v != null) {
+							GWT.log("Löschen fehlgeschlagen");
+						}
+
 					}
 				});
 			}
@@ -208,10 +211,13 @@ public class ShowContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			currentContact.setValues(result);
-			valueProvider.setList(result);
-			GWT.log(result.get(0).getStringValue());
-			valueProvider.flush();
+
+			if (result != null) {
+				currentContact.setValues(result);
+				valueProvider.setList(result);
+				GWT.log(result.get(1).getStringValue());
+				valueProvider.flush();
+			}
 		}
 	}
 

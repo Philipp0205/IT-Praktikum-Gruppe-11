@@ -232,23 +232,27 @@ public class EditContactForm extends VerticalPanel {
 					@Override
 					public void onSuccess(Contact result) {
 
-						GWT.log("6.4 onSuccess");
-						GWT.log("6.5 1" + result.getName());
+						if (result != null) {
+							GWT.log("6.4 onSuccess");
+							GWT.log("6.5 1" + result.getName());
 
-						ArrayList<PValue> values = result.getValues();
+							ArrayList<PValue> values =  result.getValues();
+							
+							GWT.log("6.5 2" + values.toString());
+							for (PValue pv : values) {
+								GWT.log("6.6" + pv.toString());
+							}
 
-						GWT.log("6.5 2" + values.toString());
-						for (PValue pv : values) {
-							GWT.log("6.6" + pv.toString());
+							GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
+							for (PValue pv : result.getValues()) {
+								GWT.log(pv.toString());
+							}
+							setContact(result);
+							e.addContactToTree(result);
+							addPPanel.setVisible(true);
 						}
 
-						GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
-						for (PValue pv : result.getValues()) {
-							GWT.log(pv.toString());
-						}
-						setContact(result);
-						e.addContactToTree(result);
-						addPPanel.setVisible(true);
+
 					}
 				});
 			} else if (!isNewContact) {
@@ -267,23 +271,26 @@ public class EditContactForm extends VerticalPanel {
 
 					@Override
 					public void onSuccess(Contact result) {
+						if (result != null) {
 
-						GWT.log("6.7 onSuccess");
-						GWT.log("6.7 " + result.getName());
+							GWT.log("6.7 onSuccess");
+							GWT.log("6.7 " + result.getName());
 
-						ArrayList<PValue> values = result.getValues();
-						for (PValue pv : values) {
-							GWT.log("6.8 " + pv.toString());
+							ArrayList<PValue> values = result.getValues();
+							for (PValue pv : values) {
+								GWT.log("6.8 " + pv.toString());
+							}
+
+							GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
+							for (PValue pv : result.getValues()) {
+								GWT.log(pv.toString());
+							}
+
+							e.updateContactInTree(result);
+							GWT.log("Show Contact aufrufen");
+							e.showContact(result);
 						}
 
-						GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
-						for (PValue pv : result.getValues()) {
-							GWT.log(pv.toString());
-						}
-
-						e.updateContactInTree(result);
-						GWT.log("Show Contact aufrufen");
-						e.showContact(result);
 					}
 				});
 			}
@@ -345,7 +352,10 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			renderContact(result);
+			if (result != null) {
+				renderContact(result);
+			}
+
 		}
 
 	}
@@ -362,11 +372,14 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Property result) {
-			GWT.log(result.getTypeInString() + "Hinzufügen neue Property zur Tabelle");
-			PropForm pform = new PropForm(result);
-			pform.show();
-			val.add(pform);
-			pPanel.add(pform);
+			if (result != null) {
+				GWT.log(result.getTypeInString() + "Hinzufügen neue Property zur Tabelle");
+				PropForm pform = new PropForm(result);
+				pform.show();
+				val.add(pform);
+				pPanel.add(pform);
+			}
+
 		}
 	}
 
@@ -382,9 +395,12 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(PValue result) {
-			// Contacttree muss aktualisiert werden .
-			// Conacttree.refresh();
-			Window.alert("Wert geändert");
+			if (result != null) {
+				// Contacttree muss aktualisiert werden .
+				// Conacttree.refresh();
+				Window.alert("Wert geändert");
+			}
+
 		}
 	}
 
@@ -425,8 +441,11 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Void result) {
-			Window.alert("Erfolgreich gelöscht");
-			pvform.setVisible(false);
+			if (result !=  null) {
+				Window.alert("Erfolgreich gelöscht");
+				pvform.setVisible(false);
+			}
+
 		}
 	}
 

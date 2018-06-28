@@ -370,8 +370,12 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(Void v) {
+			
+			if (v != null) {
+				e.onModuleLoad();
+			}
 
-			e.onModuleLoad();
+
 		}
 	}
 
@@ -381,12 +385,17 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ContactList cl) {
-			/**
-			 * TODO: die geupdatete ContactList in den TreeView wieder einfügen bzw
-			 * anzeigen?
-			 */
-			setCurrentList(cl);
-			onLoad();
+			
+			if (cl != null) {
+				
+				/**
+				 * TODO: die geupdatete ContactList in den TreeView wieder einfügen bzw
+				 * anzeigen?
+				 */
+				setCurrentList(cl);
+				onLoad();	
+			}
+
 
 		}
 	}
@@ -398,8 +407,13 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<Contact> al) {
-			currentList.addContacts(al);
-			removeContactPanel(al);
+			
+			if (al != null) {
+				currentList.addContacts(al);
+				removeContactPanel(al);
+				
+			}
+
 		}
 	}
 
@@ -410,7 +424,10 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<Contact> al) {
-			addContactPanel(al);
+			if (al != null) {
+				addContactPanel(al);
+			}
+
 		}
 	}
 
@@ -421,12 +438,18 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ContactList list) {
-			Window.alert("Kontakte hinzugefügt");
-			/**
-			 * TODO: diese liste auch in dem TreeViewModel updaten!
-			 */
-			setCurrentList(list);
-			onLoad();
+				
+			if (list != null) {
+				
+				Window.alert("Kontakte hinzugefügt");
+				/**
+				 * TODO: diese liste auch in dem TreeViewModel updaten!
+				 */
+				setCurrentList(list);
+				onLoad();
+				
+			}
+
 		}
 	}
 }

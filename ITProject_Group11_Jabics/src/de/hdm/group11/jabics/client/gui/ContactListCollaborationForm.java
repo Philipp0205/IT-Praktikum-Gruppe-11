@@ -235,10 +235,13 @@ public class ContactListCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("Kontakt erolgreich geteilt!");
-			/**
-			 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
-			 */
+			if (v != null) {
+				Window.alert("Kontakt erolgreich geteilt!");
+				/**
+				 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
+				 */
+			}
+
 		}
 	}
 
@@ -248,10 +251,13 @@ public class ContactListCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("Kontaktliste erolgreich geteilt!");
-			/**
-			 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
-			 */
+			if (v != null) {
+				Window.alert("Kontaktliste erolgreich geteilt!");
+				/**
+				 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
+				 */
+			}
+
 		}
 	}
 
@@ -262,8 +268,11 @@ public class ContactListCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
+			if (user != null) {
+				setAllUser(user);
+			}
 
-			setAllUser(user);
+
 		}
 	}
 }

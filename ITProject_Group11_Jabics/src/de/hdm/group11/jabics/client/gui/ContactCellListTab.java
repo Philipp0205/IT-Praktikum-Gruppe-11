@@ -84,11 +84,15 @@ public class ContactCellListTab{
 			}
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
-				GWT.log("3.1 CellList onSuccess");
 				
-				for (Contact c : contacts) {
-					contactDataProvider.getList().add(c);
+				if (contacts != null) {
+					GWT.log("3.1 CellList onSuccess");
+					
+					for (Contact c : contacts) {
+						contactDataProvider.getList().add(c);
+					}
 				}
+
 
 			}
 		});
