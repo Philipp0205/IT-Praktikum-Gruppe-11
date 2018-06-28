@@ -60,7 +60,7 @@ public class Report implements EntryPoint {
 	HorizontalPanel navPanel = new HorizontalPanel();
 	VerticalPanel verPanel1 = new VerticalPanel();
 	VerticalPanel verPanel2 = new VerticalPanel();
-	// VerticalPanel verPanel3 = new VerticalPanel();
+	VerticalPanel verPanel3 = new VerticalPanel();
 	VerticalPanel verPanel4 = new VerticalPanel();
 	Property[] userpropertys;
 
@@ -73,8 +73,10 @@ public class Report implements EntryPoint {
 	// Die mit der PropertySuggestBox zusammenhängenden Variablen
 	MultiWordSuggestOracle propertyToSuggest;
 	SuggestBox propertySuggest;
-	Label datatypel = new Label("Eigenschaft:");
+	Label datatypel = new Label("Datentyp:");
 	Label valuelabel = new Label("Wert:");
+	Label propertyl = new Label("Eigenschaft:");
+	
 
 	// Alle mit der Suggest Box zusammenhängenden Variablen
 	MultiWordSuggestOracle userToSuggest;
@@ -147,11 +149,11 @@ public class Report implements EntryPoint {
 		datatypemenu.addItem("Datum");
 		datatypemenu.addItem("Dezimalzahl");
 		datatypemenu.addItem("Ganzzahl");
-		verPanel1.add(datatypel);
+		verPanel1.add(propertyl);
 		verPanel2.add(valuelabel);
 		verPanel2.add(valueBox);
-		// verPanel3.add(floatl);
-		// verPanel3.add(floatBox);
+		 verPanel3.add(datatypel);
+		 verPanel3.add(datatypemenu);
 		// verPanel4.add(db);
 
 		datepicker.setValue(null);
@@ -161,7 +163,7 @@ public class Report implements EntryPoint {
 
 		navPanel.add(verPanel1);
 		navPanel.add(verPanel2);
-		// navPanel.add(verPanel3);
+		navPanel.add(verPanel3);
 		navPanel.add(verPanel4);
 		navPanel.add(filteredReportButton);
 		//navPanel.add(allReportsInSystemButton);
@@ -194,11 +196,14 @@ public class Report implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				Button finish = new Button("Fertig");
 				if (datatypemenu.getSelectedItemText() == "Datum") {
 					datepicker.setVisible(true);
-					Button finish = new Button("Fertig");
 					verPanel4.add(finish);
 					finish.addClickHandler(new DatePickerClickHandler(finish));
+				}else {
+					datepicker.setVisible(false);
+					finish.setVisible(false);
 				}
 			}
 		});
