@@ -195,9 +195,10 @@ public class Editor implements EntryPoint {
 		}
 		formPanel.clear();
 		scForm.setContact(c);
-
-		// formPanel.clear();
+		currentUser.setId(1);
+		GWT.log("form einfügen");
 		formPanel.insert(scForm, 0);
+		//formPanel.add(scForm);
 		GWT.log("ShowCont fertig");
 	}
 

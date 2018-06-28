@@ -81,6 +81,8 @@ public interface EditorServiceAsync {
 	void searchInList(float f, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 	
 	void searchInList(JabicsUser u, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
+	
+	void getOwnerOfContact(Contact c, AsyncCallback<JabicsUser> callback);
 
 	void getCollaborators(Contact c, AsyncCallback<ArrayList<JabicsUser>> callback);
 	

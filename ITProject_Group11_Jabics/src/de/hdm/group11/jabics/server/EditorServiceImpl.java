@@ -788,6 +788,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		}
 		return res;
 	}
+	
+	/**
+	 * Den Besitzer eines Kontakt-Objekts ermitteln und zurückgeben
+	 */
+	public JabicsUser getOwnerOfContact(Contact c) {
+		return uMapper.findUserByContact(c);
+	}
 
 	/**
 	 * Erhalten aller kollaborierenden Nutzer für einen Kontakt
@@ -882,4 +889,5 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// TODO Auto-generated method stub
 
 	}
+
 }

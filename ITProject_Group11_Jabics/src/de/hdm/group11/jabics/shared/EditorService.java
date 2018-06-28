@@ -84,6 +84,8 @@ public interface EditorService extends RemoteService{
 	public ArrayList<Contact> searchInList(float f, ContactList cl );
 	
 	public ArrayList<Contact> searchInList(JabicsUser u, ContactList cl);
+	
+	public JabicsUser getOwnerOfContact(Contact c);
 
 	public ArrayList<JabicsUser> getCollaborators(Contact c);
 	
