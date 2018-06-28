@@ -62,7 +62,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div id=\"report\">");
 			sb.append("<h3> Report für " + r.getCreator().getUsername() + "</h3>");
-			sb.append("<h5> Erstellt am " + r.getCreationDate() + "</h5>");
+			//sb.append("<h5> Erstellt am " + r.getCreationDateAsString() + "</h5>");
 			return sb.toString();
 		} else
 			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report ohne Name</h3>";
@@ -90,8 +90,10 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 				GWT.log("Keinanzeigename");
 				sb.append("<tr><td> <b>kein Anzeigename</b> </td> </tr>");
 			}
-			sb.append("<td> <p>Erstellt am " + c.getCreationDate() + "</p> </td>");
-			sb.append("<td> <p>Besitzer: " + c.getUserInfo() + "</p> </td>");
+			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
+			sb.append("<td> <p>Besitzer: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
+			//sb.append("<td> <p>Erstellt am " + c.getCreationDateAsString() + "</p> </td>");
+			//sb.append("<td> <p>Zuletzt geändert: " + c.getCreationDateAsString() + "</p> </td>");
 			sb.append("</tr><tr>");
 			for (PropertyView pv : c.getContent()) {
 				int i = 0;
@@ -111,9 +113,8 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		sb.append("</div>");
 		GWT.log("Tabelle erstellenfertig" + sb.toString());
 		return sb.toString();
-
 	}
-
+	
 	public void process(AllContactsInSystemReport r) {
 		StringBuffer sb = new StringBuffer();
 		/**

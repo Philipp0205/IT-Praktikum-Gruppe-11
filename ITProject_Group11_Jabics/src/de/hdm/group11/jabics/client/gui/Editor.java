@@ -32,7 +32,7 @@ import de.hdm.group11.jabics.shared.bo.Property;
 public class Editor implements EntryPoint {
 
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
-
+	
 	/**
 	 * Im folgenden Interface werden die Items, öffnen und schließen, hinzugefügt.
 	 */

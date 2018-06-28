@@ -28,8 +28,11 @@ public abstract class Report implements Serializable {
 	/*
 	 * Getters and Setters
 	 */
-	public Date getCreationDate() {
+	public Date getCreationDateasString() {
 		return creationDate;
+	}
+	public String getCreationDateAsString() {
+		return creationDate.toString();
 	}
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;

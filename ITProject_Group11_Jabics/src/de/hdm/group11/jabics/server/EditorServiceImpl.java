@@ -344,7 +344,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for (Contact c : getContactsOf(u)) {
-			if (!c.getOwner().equals(u))
+			if (c.getOwner().getId() != u.getId())
 				result.add(c);
 		}
 		return result;

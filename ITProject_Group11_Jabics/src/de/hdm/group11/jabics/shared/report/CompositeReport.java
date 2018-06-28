@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 
  */
 
-public class CompositeReport<T> extends Report implements Serializable {
+public class CompositeReport<T extends Report> extends Report implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -19,17 +19,15 @@ public class CompositeReport<T> extends Report implements Serializable {
 	/**
 	 * Ein CompositeReport besteht aus subReports und einer Kopf und Fußzeile, in denen Informationen gegeben werden
 	 */
-	private ArrayList<T> subReports = new ArrayList<T>();
-	Paragraph headline; 
-	Paragraph footline; 
-	
+	private ArrayList<T> subReports;
+	Paragraph headline;
+	Paragraph footline;
 	
 	/**
 	 * Constructors:
 	 */
-	public CompositeReport() {
-		super();
-	}
+	public CompositeReport() {}
+	
 	public CompositeReport(ArrayList<T> reports, Paragraph head, Paragraph foot) {
 		this.subReports = reports;
 		/**
@@ -52,6 +50,7 @@ public class CompositeReport<T> extends Report implements Serializable {
 		this.headline.setContent("Report for unknownUser, containing " + reports.size() + " subreports");
 		this.footline.setContent("End of Report");
 	}
+	
 	/**
 	 * Eine toString(), die als Ergebnis einen String mit eine textuellen Ausgabe des Reports hat. Eine Ausgabe erfolgt in dieser Art:
 	 * "Report for User, containing XX subreports: Created on Date YYYY-MM-DD by name"
@@ -64,7 +63,6 @@ public class CompositeReport<T> extends Report implements Serializable {
 	 * Hinzufügen und Entfernen eines Reports zu einem CompositeReport
 	 * @param r
 	 */
-	
 	public void addReport(T report) { 
 		subReports.add(report);
 	}
@@ -83,7 +81,7 @@ public class CompositeReport<T> extends Report implements Serializable {
 		this.headline = headline;
 	}
 
-	// Methode �berladen damit auch nur ein String mitgegeben werden kann. 
+	// Methode überladen, damit auch nur ein String mitgegeben werden kann. 
 	public void setHeadline(String s) {
 		this.headline = new Paragraph(s);
 	}
@@ -93,12 +91,12 @@ public class CompositeReport<T> extends Report implements Serializable {
 	public void setFootline(Paragraph footline) {
 		this.footline = footline;
 	}
-	// Ebenfalls �berladen
+	// Ebenfalls überladen
 	public void setFootline(String s) {
 		this.footline = new Paragraph(s);
 	}
 	public ArrayList<T> getSubReports() {
-		return subReports;
+		return this.subReports;
 	}
 	public void setSubReports(ArrayList<T> subReports) {
 		this.subReports = subReports;
