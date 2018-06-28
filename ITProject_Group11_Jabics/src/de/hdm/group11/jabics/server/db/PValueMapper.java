@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -157,15 +158,20 @@ public class PValueMapper {
 				break;
       }
 				case DATE: {
-					java.sql.Date x = new java.sql.Date(pv.getDateValue().getYear(),pv.getDateValue().getMonth(),pv.getDateValue().getDate());
-					stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
+					
+					SimpleDateFormat sdf = 
+						     new SimpleDateFormat("yyyy-MM-dd");
+					String currentDate = sdf.format(pv.getDateValue());
+					String query = ("INSERT INTO pValue (stringValue, intValue, floatValue, "
 					+ " dateValue, propertyID, contactID) VALUES " 
-					+ "(, "  + "null, " + "null, " 
-					+ "null, " + x + ", " + pv.getProperty().getId() + " , " + c.getId() + " )"  + Statement.RETURN_GENERATED_KEYS);
-					ResultSet rs = stmt.getGeneratedKeys();
+					+ "( "  + "NULL, " + "NULL, " 
+					+ "NULL,'" + currentDate + "', " + pv.getProperty().getId() + " , " + c.getId() + " ) " );
+					stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS );
+			    	ResultSet rs = stmt.getGeneratedKeys();
 					Statement stmt2 =  con.createStatement();
+					ResultSet rs2;
 					while(rs.next()) {
-						ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
+						rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 						pv.setId(rs.getInt(1));
 					while(rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
