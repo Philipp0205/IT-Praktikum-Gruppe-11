@@ -189,7 +189,8 @@ public class ContactListMapper {
 			Statement stmt = con.createStatement();
 			   
 			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
-			stmt.executeUpdate("INSERT INTO contactContactLists (contactID,contactlistID) VALUES " + c.getId() + cl.getId());
+			stmt.executeUpdate("INSERT INTO contactContactLists (contactID,contactListID) VALUES " + c.getId() + cl.getId());
+			System.out.println("insertContactIntoContactList: ContactID " + c.getName() + "into " + cl.getListName() );
 	    	
 	    	// Erzeugen eines zweiten ungefüllten SQL-Statements
 	    	Statement stmt2 = con.createStatement();
@@ -197,8 +198,9 @@ public class ContactListMapper {
 	    	//Update des letzten Updates der Kontaktliste.
 	    	stmt2.executeUpdate("UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactlistID = " + cl.getId()); 
 			// Schließen der Datenbankverbindung
-	        stmt.close();
 	        stmt2.close();
+	    	stmt.close();
+
 	        con.close();
 	    	return cl;
 	    }  
@@ -397,7 +399,7 @@ public class ContactListMapper {
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 	    	// Auswählen von Tupeln mit einer bestimmten User-Id. 
-	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.mail "
+	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email "
 	    			+ " FROM systemUser " 
 	    			+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
 	    			+ " WHERE contactListID = " + cl.getId());

@@ -72,7 +72,7 @@ public class Editor implements EntryPoint {
 	 */
 	EditContactForm cForm;
 	ShowContactForm scForm;
-	ContactListForm clForm = new ContactListForm();
+	ContactListForm clForm;
 	ContactCollaborationForm ccForm;
 	ContactListCollaborationForm clcForm;
 	ExistingContactCollaborationForm eccForm;
@@ -84,7 +84,6 @@ public class Editor implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-
 
 		editorAdmin = ClientsideSettings.getEditorService();
 
@@ -175,19 +174,19 @@ public class Editor implements EntryPoint {
 		this.currentUser = u;
 	}
 
-	
 	public void showMenuOnly() {
-		if(treeViewMenu != null) {
+		if (treeViewMenu != null) {
 			formPanel.clear();
 		}
 		Label noThing = new Label("Nichts anzuzeigen.");
 		formPanel.add(noThing);
 	}
+
 	/**
 	 * Kontakte, Listen und CollabForms anzeigen
 	 */
 	public void showContact(Contact c) {
-		
+
 		GWT.log("showCont");
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
@@ -237,14 +236,33 @@ public class Editor implements EntryPoint {
 
 		formPanel.setStyleName("formPanel");
 	}
+	
+	public void newContactList(ContactList cl) {
+		// if (this.cForm == null) {
+		clForm = new ContactListForm();
+		clForm.setEditor(this);
+		clForm.setUser(this.currentUser);
+
+		formPanel.clear();
+		clForm.setIsNewList(true);
+		clForm.setContactList(cl);
+
+		formPanel.insert(cForm, 0);
+
+		formPanel.setStyleName("formPanel");
+	}
 
 	public void showContactList(ContactList cl) {
+
 		if (this.clForm == null) {
 			clForm = new ContactListForm();
-			clForm.setEditor(this);
 			clForm.setUser(this.currentUser);
+
+			clForm.setEditor(this);
+
 		}
 		formPanel.clear();
+
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clForm.clear();
 		clForm.setCurrentList(cl);
@@ -315,6 +333,8 @@ public class Editor implements EntryPoint {
 
 	public void returnToContactForm(Contact c) {
 		if (this.scForm == null) {
+			clForm.setUser(this.currentUser);
+			clForm.setEditor(this);
 			scForm = new ShowContactForm();
 		}
 		// addContactToTree(c);
@@ -338,7 +358,7 @@ public class Editor implements EntryPoint {
 	public void addContactToTree(Contact c) {
 		treeViewMenu.addContact(c);
 	}
-	
+
 	public void addContactListToTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
 	}
@@ -346,9 +366,11 @@ public class Editor implements EntryPoint {
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
 	}
+
 	public void updateContactInTree(Contact c) {
 		treeViewMenu.contactListTab.updateContact(c);
 	}
+
 	public void updateContactListInTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
 	}

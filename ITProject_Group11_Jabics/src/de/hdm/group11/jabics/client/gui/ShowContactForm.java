@@ -39,7 +39,7 @@ public class ShowContactForm extends VerticalPanel {
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
 	Column<PValue, String> shareStatus;
-	
+
 	HorizontalPanel sharePanel = new HorizontalPanel();
 
 	Button editButton = new Button("Kontakt bearbeiten");
@@ -64,16 +64,16 @@ public class ShowContactForm extends VerticalPanel {
 				return object.toString();
 			}
 		};
-		
+
 		shareStatus = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
-				if(object.getShareStatus() == BoStatus.IS_SHARED) {
+				if (object.getShareStatus() == BoStatus.IS_SHARED) {
 					return "Geteilt";
 				}
-				if(object.getShareStatus() == BoStatus.PARTIALLY_SHARED) {
+				if (object.getShareStatus() == BoStatus.PARTIALLY_SHARED) {
 					return "Teilweise Geteilt";
 				}
-				if(object.getShareStatus() == BoStatus.NOT_SHARED) {
+				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
 					return "Nicht Geteilt";
 				}
 				return "Keine Ahnung";
@@ -86,7 +86,7 @@ public class ShowContactForm extends VerticalPanel {
 		values.setColumnWidth(pval, 50, Unit.PX);
 		values.addColumn(shareStatus, "Share");
 		values.setColumnWidth(pval, 50, Unit.PX);
-		
+
 		sharePanel.add(shareContactButton);
 		sharePanel.add(shareExistingContactButton);
 		try {

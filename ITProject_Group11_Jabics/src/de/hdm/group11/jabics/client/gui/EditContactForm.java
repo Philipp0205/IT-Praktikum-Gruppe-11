@@ -74,6 +74,7 @@ public class EditContactForm extends VerticalPanel {
 		saveButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				GWT.log("6.0 saveButton");
 				save();
 			}
 		});
