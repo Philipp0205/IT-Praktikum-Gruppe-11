@@ -225,7 +225,10 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 
 			public void onSuccess(ArrayList<PValue> pv) {
-				setSelectedValues(pv);
+				if (pv != null) {
+					setSelectedValues(pv);
+				}
+
 			}
 		});
 
@@ -306,8 +309,11 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 
 			public void onSuccess(ArrayList<JabicsUser> user) {
-				setSharedUser(user);
-				continueOnLoad();
+				if (user != null) {
+					setSharedUser(user);
+					continueOnLoad();
+				}
+
 			}
 		});
 		GWT.log("allUserfetisch");
@@ -326,7 +332,10 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("PV erfolgreich geteilt!");
+			if (v != null) {
+				Window.alert("PV erfolgreich geteilt!");
+			}
+
 		}
 	}
 
@@ -336,8 +345,12 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("Kontakt erolgreich geteilt!");
-			// e.returnToContact();
+			if (v != null) {
+				Window.alert("Kontakt erolgreich geteilt!");
+				// e.returnToContact();
+			}
+			
+
 		}
 	}
 
@@ -347,7 +360,10 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("PV erfolgreich entteilt!");
+			if (v != null) {
+				Window.alert("PV erfolgreich entteilt!");
+			}
+
 		}
 	}
 
@@ -357,8 +373,11 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("Kontakt erolgreich entteilt!");
-			// e.returnToContact();
+			if (v != null) {
+				Window.alert("Kontakt erolgreich entteilt!");
+				// e.returnToContact();
+			}
+
 		}
 	}
 

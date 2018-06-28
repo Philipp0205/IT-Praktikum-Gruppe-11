@@ -70,11 +70,14 @@ public class SharedContactCellListTab {
 			}
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
-				GWT.log("4.1 CellList onSuccess");
-				
-				for (Contact c : contacts) {
-					contactDataProvider.getList().add(c);
+				if (contacts != null) {
+					GWT.log("4.1 CellList onSuccess");
+					
+					for (Contact c : contacts) {
+						contactDataProvider.getList().add(c);
+					}
 				}
+
 
 			}
 		});
