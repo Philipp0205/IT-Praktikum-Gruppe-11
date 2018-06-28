@@ -85,13 +85,14 @@ public class Editor implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
+
 		editorAdmin = ClientsideSettings.getEditorService();
 
 		/**
 		 * Zunächst wird eine User-Instanz hinzugefügt. Später entfernen und dies den
 		 * Login übernehmen lassen
 		 */
-		currentUser = new JabicsUser();
+		currentUser = new JabicsUser(1);
 		currentUser.setEmail("stahl.alexander@live.de");
 		currentUser.setId(1);
 		currentUser.setUsername("Alexander Stahl");
@@ -469,15 +470,18 @@ public class Editor implements EntryPoint {
 
 		@Override
 		public void onSuccess(LoginInfo logon) {
-			currentUser = logon.getCurrentUser();
-			setLoginInfo(logon);
+			if (logon != null) {
+				currentUser = logon.getCurrentUser();
+				setLoginInfo(logon);
 
-			if (currentUser.getIsLoggedIn()) {
-				setJabicsUser(logon.getCurrentUser());
-				loadEditor();
-			} else {
-				Window.alert("User not logged in");
+				if (currentUser.getIsLoggedIn()) {
+					setJabicsUser(logon.getCurrentUser());
+					loadEditor();
+				} else {
+					Window.alert("User not logged in");
+				}
 			}
+
 		}
 	}
 
