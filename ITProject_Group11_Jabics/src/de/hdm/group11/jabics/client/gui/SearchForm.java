@@ -75,13 +75,16 @@ public class SearchForm extends VerticalPanel{
  		}
  		@Override
  		public void onSuccess(ArrayList<Contact> result) {
- 			GWT.log("OnSuccess");
- 			for(Contact c : result) {
- 			GWT.log(c.getValues().get(0).getStringValue());
- 			ct.addsearchedContact(c);
+ 			if (result != null) {
+ 	 			GWT.log("OnSuccess");
+ 	 			for(Contact c : result) {
+ 	 			GWT.log(c.getValues().get(0).getStringValue());
+ 	 			ct.addsearchedContact(c);
+ 	 			}
+ 	 			GWT.log("halloeinTest");
+ 	 			sp.add(list, "Ausgabe");
+ 	 			
  			}
- 			GWT.log("halloeinTest");
- 			sp.add(list, "Ausgabe");
- 			}
+}
  		}
 	}

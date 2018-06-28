@@ -62,7 +62,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div id=\"report\">");
 			sb.append("<h3> Report für " + r.getCreator().getUsername() + "</h3>");
-			sb.append("<h5> Erstellt am " + r.getCreationDate() + "</h5>");
+			//sb.append("<h5> Erstellt am " + r.getCreationDateAsString() + "</h5>");
 			return sb.toString();
 		} else
 			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report ohne Name</h3>";
@@ -71,30 +71,34 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 	public String convertContactReportsToHTML(ArrayList<ContactReport> cons) {
 		GWT.log("Tabelle erstellen");
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div id=\"reportTable\"");
-		sb.append("<table style=\"width:700px\">");
+		sb.append("<div id=\"reportTable\">");
+		sb.append("<table style=\"width:700px; border: 1px solid black;\">");
 		// Die Spaltennamen definieren
 		sb.append("<tr>");
 		GWT.log("Tabelle erstellen");
 		for (int i = 0; i < 10; i++) {
-			sb.append("<td> <b>Spalte" + i + " </b> </td>");
+			sb.append("<th> <b>Spalte" + i + " </b> </th>");
 		}
 		GWT.log("Tabelle erstellen");
 		sb.append("</tr>");
 		// die Zeilen pro Kontakt füllen
 		for (ContactReport c : cons) {
-			GWT.log("HTML Writer: neuer Kontakt Report für ");//) + c.getContactInfo());
-			sb.append("<tr>");
+			GWT.log("HTML Writer: neuer Kontakt Report für " + c.getContactInfo());
 			if (c.getContactInfo() != null) {
-				sb.append("<td> <b>" + c.getContactInfo() + "</b> </td>");
+				sb.append(" <tr> <td> <b>" + c.getContactInfo() + "</b> </td>");
 			} else {
 				GWT.log("Keinanzeigename");
-				sb.append("<td> <b>kein Anzeigename</b> </td>");
+				sb.append("<tr><td> <b>kein Anzeigename</b> </td> </tr>");
 			}
+			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
+			sb.append("<td> <p>Besitzer: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
+			//sb.append("<td> <p>Erstellt am " + c.getCreationDateAsString() + "</p> </td>");
+			//sb.append("<td> <p>Zuletzt geändert: " + c.getCreationDateAsString() + "</p> </td>");
+			sb.append("</tr><tr>");
 			for (PropertyView pv : c.getContent()) {
 				int i = 0;
 				if (pv.getPname() != null && pv.getPvalue() != null && i < 10) {
-					sb.append("<td> <p>" + pv.getPname() + "\n" + pv.getPvalue() + " </p> </td>");
+					sb.append("<td> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue() + " </p> </td>");
 					i++;
 				} else {
 					if (i < 10) {
@@ -107,11 +111,10 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		}
 		sb.append("</table>");
 		sb.append("</div>");
-		GWT.log("Tabelle erstellenfertig");
+		GWT.log("Tabelle erstellenfertig" + sb.toString());
 		return sb.toString();
-
 	}
-
+	
 	public void process(AllContactsInSystemReport r) {
 		StringBuffer sb = new StringBuffer();
 		/**

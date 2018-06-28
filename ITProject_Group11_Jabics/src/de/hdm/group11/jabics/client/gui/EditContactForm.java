@@ -35,14 +35,18 @@ public class EditContactForm extends VerticalPanel {
 
 	JabicsUser u;
 	Contact contact;
+	Boolean isNewContact;
+	Boolean userIsOwner;
 
-	Button deleteContact = new Button("Kontakt löschen");
-	Button save = new Button("Änderungen speichern");
+	Button deleteContactButton = new Button("Kontakt löschen");
+	Button saveButton = new Button("Änderungen speichern");
 	Button existingSharedContactButton;
 
 	VerticalPanel pPanel;
 	HorizontalPanel buttonPanel;
 	HorizontalPanel addPPanel;
+
+	ArrayList<PValue> allPV;
 
 	ArrayList<PropForm> val;
 	ArrayList<Property> p;
@@ -52,70 +56,90 @@ public class EditContactForm extends VerticalPanel {
 
 	public void onLoad() {
 
-		GWT.log("EditCont");
-		pPanel = new VerticalPanel();
-		buttonPanel = new HorizontalPanel();
-		addPPanel = new HorizontalPanel();
+		if (contact != null) {
+			GWT.log("EditCont");
+			pPanel = new VerticalPanel();
+			buttonPanel = new HorizontalPanel();
+			addPPanel = new HorizontalPanel();
 
-		buttonPanel.add(new Button("Kontakt löschen"));
-		buttonPanel.add(save);
+			buttonPanel.add(deleteContactButton);
+			buttonPanel.add(saveButton);
+			buttonPanel.addStyleName("buttonPanel");
 
-		save.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				save();
+			// Checks, die beim Laden der Form durchgeführt werrden müssen, um die richtige
+			// UI anzuzeigen
+
+			if (isNewContact) {
+				saveButton.setText("Neuen Kontakt speichern");
+			} else {
+				saveButton.setText("Änderungen speichern");
 			}
-		});
+			
 
-		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
-		// Die gesamte Zeile (4) wird ein HorizontalPanel
-		Grid propertyAddBox = new Grid(2, 5);
+			saveButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					save();
+				}
+			});
 
-		// in diesem Horizontal Panel gibt es 4 Felder
-		// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
-		Label z1l = new Label("Eigenschaftsname:");
-		propertyAddBox.setWidget(0, 0, z1l);
-		propertyAddBox.setWidget(1, 0, propertyName);
-		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
-		// deklariert.)
+			// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
+			// Die gesamte Zeile (4) wird ein HorizontalPanel
+			Grid propertyAddBox = new Grid(2, 5);
 
-		// 1.1 eine Listbox zum Setzen des Formats
-		formattype.addItem("Text");
-		formattype.addItem("Datum");
-		formattype.addItem("Kommazahl");
-		formattype.addItem("Zahl");
-		Label z2l = new Label("Art:");
-		propertyAddBox.setWidget(0, 1, z2l);
-		propertyAddBox.setWidget(1, 1, formattype);
+			// in diesem Horizontal Panel gibt es 4 Felder
+			// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
+			Label z1l = new Label("Eigenschaftsname:");
+			propertyAddBox.setWidget(0, 0, z1l);
+			propertyAddBox.setWidget(1, 0, propertyName);
+			// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
+			// deklariert.)
 
-		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
-		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
-		propertyAddBox.setWidget(1, 2, addPropertyButton);
-		addPPanel.add(propertyAddBox);
+			// 1.1 eine Listbox zum Setzen des Formats
+			formattype.addItem("Text");
+			formattype.addItem("Datum");
+			formattype.addItem("Kommazahl");
+			formattype.addItem("Zahl");
+			Label z2l = new Label("Art:");
+			propertyAddBox.setWidget(0, 1, z2l);
+			propertyAddBox.setWidget(1, 1, formattype);
 
-		p = new ArrayList<Property>();
-		// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
-		// werden können
-		p.add(new Property("Name", Type.STRING, true, 1));
-		p.add(new Property("Vorname", Type.STRING, true, 2));
-		p.add(new Property("Mail", Type.STRING, true, 3));
-		p.add(new Property("Telefon", Type.STRING, true, 4));
-		p.add(new Property("Geburtstag", Type.DATE, true, 5));
-		p.add(new Property("Straße", Type.STRING, true, 6));
-		p.add(new Property("Haus", Type.STRING, true, 7));
-		p.add(new Property("PLZ", Type.STRING, true, 8));
-		p.add(new Property("Test", Type.STRING, true, 9));
-		p.add(new Property("Test", Type.STRING, true, 10));
+			Button addPropertyButton = new Button("Hinzufügen");
+			addPropertyButton.addClickHandler(new AddPropertyClickHandler());
+			propertyAddBox.setWidget(1, 2, addPropertyButton);
+			addPPanel.add(propertyAddBox);
 
-		GWT.log("EditContPErstellt");
+			p = new ArrayList<Property>();
+			// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
+			// werden können
+			p.add(new Property("Name", Type.STRING, true, 1));
+			p.add(new Property("Vorname", Type.STRING, true, 2));
+			p.add(new Property("Mail", Type.STRING, true, 3));
+			p.add(new Property("Telefon", Type.STRING, true, 4));
+			p.add(new Property("Geburtstag", Type.DATE, true, 5));
+			p.add(new Property("Straße", Type.STRING, true, 6));
+			p.add(new Property("Haus", Type.STRING, true, 7));
+			p.add(new Property("PLZ", Type.STRING, true, 8));
+			p.add(new Property("Test", Type.STRING, true, 9));
+			p.add(new Property("Test", Type.STRING, true, 10));
 
-		this.insert(pPanel, 0);
-		this.insert(buttonPanel, 1);
-		this.insert(addPPanel, 2);
+			GWT.log("EditContPErstellt");
 
-		renderContact(this.contact.getValues());
+			this.insert(pPanel, 0);
+			this.insert(buttonPanel, 1);
+			if (isNewContact) {
+				addPPanel.setVisible(false);
+			}
+			this.insert(addPPanel, 2);
+			renderContact(this.contact.getValues());
+		} else {
+			Label errorLabel = new Label("Kein Kontakt anzuzeigen");
+			this.add(errorLabel);
+		}
 
 	}
+
+	
 
 	public void renderContact(ArrayList<PValue> values) {
 		GWT.log("EditContRender6");
@@ -134,7 +158,7 @@ public class EditContactForm extends VerticalPanel {
 				GWT.log("Standardeigenschaft : " + pv.getPropertyId());
 				for (PropForm p : val) {
 					GWT.log("+++++++Suche nach richtigem+++++++++");
-					if (p.getP().getId() == pv.getProperty().getId()) {
+					if (p.getProperty().getId() == pv.getProperty().getId()) {
 						GWT.log("RichtigeGefunden!");
 						p.replacePValue(pv);
 						GWT.log("PValue zugeordnet");
@@ -151,86 +175,138 @@ public class EditContactForm extends VerticalPanel {
 		for (PropForm p : val) {
 			p.show();
 			for (PVForm pv : p.getPVForms()) {
+				p.setStyleName("propForm");
 				pv.show();
 			}
 			pPanel.add(p);
+
+			pPanel.setStyleName("pPanel");
 		}
 
 	}
 
 	public void save() {
-		ArrayList<PValue> filledPV = new ArrayList<PValue>();
+		GWT.log("6.1 Save Contact");
+
 		// Alle PValues aus der Tabelle ziehen
 		ArrayList<PValue> allPV = new ArrayList<PValue>();
 		for (PropForm p : val) {
 			for (PValue pv : p.getPV()) {
+				GWT.log("6.2 Saved PValue " + pv.toString());
+				pv.setProperty(p.getProperty());
 				allPV.add(pv);
 			}
 		}
-		// Überprüfen, ob der Name noch gesetzt ist
-		boolean nameExistent = false;
-		for (PValue pv : allPV) {
-			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
-				GWT.log("Name vorhanden");
-			nameExistent = true;
-		}
-		// alle pv aus dem PRopArray rausziehen und hier speichern
 
-		/**
-		 * neu erstellte pv von alten trennen und inserten Es wird überprüft, ob ein
-		 * pValue die standardid = 0 hat, da es dann ein durch das öffnen oder einen
-		 * Klick auf "Hinzufügen" erstelltes ist. Zusätzlich muss ein Wert in dem Feld
-		 * eingetragen worden sein, deswegen der containsValue()
-		 */
+		// Alle befüllten PValues erstellen
+		ArrayList<PValue> filledPV = new ArrayList<PValue>();
 		for (PValue pv : allPV) {
-			if (pv.getId() == 0 && pv.containsValue()) {
-				GWT.log("PVhinzugefügt: " + pv.toString());
-				switch (pv.getProperty().getType()) {
-				case STRING:
-					editorService.createPValue(pv.getProperty(), pv.getStringValue(), contact, u,
-							new CreatePValueCallback());
-					break;
-				case DATE:
-					editorService.createPValue(pv.getProperty(), pv.getDateValue(), contact, u,
-							new CreatePValueCallback());
-					break;
-				case FLOAT:
-					editorService.createPValue(pv.getProperty(), pv.getFloatValue(), contact, u,
-							new CreatePValueCallback());
-					break;
-				case INT:
-					editorService.createPValue(pv.getProperty(), pv.getIntValue(), contact, u,
-							new CreatePValueCallback());
-					break;
-				}
-			} else if (pv.containsValue()) {
+			if (pv.containsValue()) {
+				contact.getValues().add(pv);
 				filledPV.add(pv);
 			}
 		}
 
-		if (nameExistent) {
-			contact.setValues(filledPV);
-			editorService.updateContact(contact, new AsyncCallback<Contact>() {
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
-				}
-
-				@Override
-				public void onSuccess(Contact result) {
-					GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
-					for (PValue pv : result.getValues()) {
-						GWT.log(pv.toString());
-					}
-					e.showContact(result);
-				}
-			});
+		// Überprüfen, ob der Name vollständig gesetzt ist
+		boolean nameExistent = false;
+		for (PValue pv : allPV) {
+			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
+				GWT.log("6.3 Name vorhanden");
+			nameExistent = true;
 		}
+
+		// alle pv aus dem PRopArray rausziehen und hier speichern
+
+		if (nameExistent) {
+			// überprüfen, ob Kontakt ein neuer oder ein bereits bestehender ist
+			if (isNewContact) {
+
+				// Es werden alle befüllten PValues übergeben
+				GWT.log("6.4 " + filledPV.toString());
+				editorService.createContact(filledPV, u, new AsyncCallback<Contact>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Neuer Kontakt konnte nicht angelegt werden!" + caught.getMessage());
+					}
+
+					@Override
+					public void onSuccess(Contact result) {
+
+						if (result != null) {
+							GWT.log("6.4 onSuccess");
+							GWT.log("6.5 1" + result.getName());
+
+							ArrayList<PValue> values =  result.getValues();
+							
+							GWT.log("6.5 2" + values.toString());
+							for (PValue pv : values) {
+								GWT.log("6.6" + pv.toString());
+							}
+
+							GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
+							for (PValue pv : result.getValues()) {
+								GWT.log(pv.toString());
+							}
+							setContact(result);
+							e.addContactToTree(result);
+							addPPanel.setVisible(true);
+						}
+
+
+					}
+				});
+			} else if (!isNewContact) {
+
+				contact.setValues(filledPV);
+				editorService.updateContact(contact, new AsyncCallback<Contact>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+
+						Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
+
+						GWT.log("6.7 onFailure" + contact.getName());
+
+					}
+
+					@Override
+					public void onSuccess(Contact result) {
+						if (result != null) {
+
+							GWT.log("6.7 onSuccess");
+							GWT.log("6.7 " + result.getName());
+
+							ArrayList<PValue> values = result.getValues();
+							for (PValue pv : values) {
+								GWT.log("6.8 " + pv.toString());
+							}
+
+							GWT.log("Kontakt erfolgreich gespeichert mit diesen PV:");
+							for (PValue pv : result.getValues()) {
+								GWT.log(pv.toString());
+							}
+
+							e.updateContactInTree(result);
+							GWT.log("Show Contact aufrufen");
+							e.showContact(result);
+						}
+
+					}
+				});
+			}
+		} else if (!nameExistent) {
+			Window.alert("Kontakt muss einen Namen haben! Bitte Name und Nachname eingeben.");
+		} else
+			Window.alert("Massiver Fehler! Das sollte nicht passieren. Kontakt ist weder neu noch alt");
 		// editorService.updatePValue(val, new UpdatePValueCallback());
 	}
 
 	public void setContact(Contact c) {
 		this.contact = c;
+	}
+
+	public void setNewContact(Boolean bol) {
+		this.isNewContact = bol;
 	}
 
 	public void setEditor(Editor e) {
@@ -276,7 +352,10 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			renderContact(result);
+			if (result != null) {
+				renderContact(result);
+			}
+
 		}
 
 	}
@@ -293,11 +372,14 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Property result) {
-			GWT.log(result.getTypeInString() + "Hinzufügen neue Property zur Tabelle");
-			PropForm pform = new PropForm(result);
-			pform.show();
-			val.add(pform);
-			pPanel.add(pform);
+			if (result != null) {
+				GWT.log(result.getTypeInString() + "Hinzufügen neue Property zur Tabelle");
+				PropForm pform = new PropForm(result);
+				pform.show();
+				val.add(pform);
+				pPanel.add(pform);
+			}
+
 		}
 	}
 
@@ -313,9 +395,12 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(PValue result) {
-			// Contacttree muss aktualisiert werden .
-			// Conacttree.refresh();
-			Window.alert("Wert geändert");
+			if (result != null) {
+				// Contacttree muss aktualisiert werden .
+				// Conacttree.refresh();
+				Window.alert("Wert geändert");
+			}
+
 		}
 	}
 
@@ -349,14 +434,18 @@ public class EditContactForm extends VerticalPanel {
 		public DeletePValueCallback(PVForm pv) {
 			this.pvform = pv;
 		}
+
 		public void onFailure(Throwable caugth) {
 			Window.alert("PValue konnte nicht gelöscht werden");
 		}
 
 		@Override
 		public void onSuccess(Void result) {
-			Window.alert("Erfolgreich gelöscht");
-			pvform.setVisible(false);
+			if (result !=  null) {
+				Window.alert("Erfolgreich gelöscht");
+				pvform.setVisible(false);
+			}
+
 		}
 	}
 
@@ -369,7 +458,7 @@ public class EditContactForm extends VerticalPanel {
 		ArrayList<PVForm> pvForms = new ArrayList<PVForm>();
 		VerticalPanel pvPanel = new VerticalPanel();
 		Label property;
-		Button addButton = new Button("Ausprägung hinzufügen");
+		Button addButton = new Button("hinzufügen");
 
 		/**
 		 * Anzeige der PForm, bzw dieser sagen, sich zu zeigen. Fügt alle Widgets in der
@@ -388,11 +477,13 @@ public class EditContactForm extends VerticalPanel {
 					pvPanel.add(pvForm);
 				}
 			}
-			property.setWidth("500");
+			// Styling Labels
+			property.setWidth("80px");
+
 			this.add(property);
-			pvPanel.setWidth("200");
+			pvPanel.setWidth("200px");
 			this.insert(pvPanel, 1);
-			addButton.setWidth("40");
+			addButton.setWidth("100px");
 			this.add(addButton);
 
 		}
@@ -440,7 +531,7 @@ public class EditContactForm extends VerticalPanel {
 			addPValue(pv);
 		}
 
-		Property getP() {
+		Property getProperty() {
 			return this.p;
 		}
 
@@ -475,7 +566,7 @@ public class EditContactForm extends VerticalPanel {
 				dp = new DatePicker();
 				dp.setVisible(false);
 				dp.addValueChangeHandler(new ValChange());
-				dp.setValue(new Date(), true);
+				// dp.setValue(new Date(), true);
 				this.add(dp);
 				GWT.log("DatumEnde");
 			}
@@ -561,6 +652,7 @@ public class EditContactForm extends VerticalPanel {
 		DeleteClickHandler(PVForm pv) {
 			this.pv = pv;
 		}
+
 		@Override
 		public void onClick(ClickEvent event) {
 			editorService.deletePValue(pv.getPV(), contact, new DeletePValueCallback(pv));

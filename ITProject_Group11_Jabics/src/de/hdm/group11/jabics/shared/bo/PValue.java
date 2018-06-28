@@ -29,6 +29,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	private int propertyId;
 	private int pointer = 0;
 	private boolean contains;
+	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 
 	/**
 	 * Konstruktoren
@@ -120,6 +121,27 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	public boolean containsValue() {
 		return this.contains;
 	}
+	
+	/**
+	 * Check if BusinessObject is the same as transfer parameter
+	 */
+	public boolean equals(Object obj) {
+		System.out.println("equals1");
+		if (obj instanceof PValue) {
+			PValue pv = (PValue) obj;
+			if (pv.getId() == this.id) {
+				System.out.println("equals2");
+				boolean bol = true;
+				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
+				if(pv.toString() != this.toString()) bol = false;
+				if(pv.containsValue() != this.containsValue()) bol = false;
+				if(!pv.getProperty().equals(this.getProperty())) bol = false;
+				return bol;
+			}
+			return false;
+		}
+		return false;
+	}
 
 	/**
 	 * Getter und Setter. DateUpdated wird bei allen substantiellen
@@ -191,6 +213,12 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	public void setPointer(int pointer) {
 		this.pointer = pointer;
 	}
+	public BoStatus getShareStatus() {
+		return shareStatus;
+	}
+	public void setShareStatus(BoStatus shareStatus) {
+		this.shareStatus = shareStatus;
+	}
 
 	@Override
 	// das mit dem implements comparable und compare to nochmal überlgen
@@ -209,5 +237,6 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 			return (Integer) pv.getId();
 		}
 	};
+
 
 }

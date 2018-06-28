@@ -13,14 +13,13 @@ import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.report.*;
 
 /**
- * Implementierung des <code>ReportGeneratorService</code>-Interface. 
+ * Implementierung des <code>ReportGeneratorService</code>-Interface.
  * 
  * @see ReportGeneratorService
  * @author Kurrle und Anders
  */
 
-public class ReportGeneratorServiceImpl extends RemoteServiceServlet 
-	implements ReportGeneratorService {
+public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements ReportGeneratorService {
 
 	/**
 	 * Instanzenvariablen
@@ -30,177 +29,246 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 	PValueMapper pvMapper;
 	PropertyMapper pMapper;
 	private static final long serialVersionUID = -4462530285584570547L;
-	
+
 	// Alternative Lösung die wir vorerst nicht beachten müssen
-	//private EditorServiceImpl eService = null;
-	// 
-	
-	
+	// private EditorServiceImpl eService = null;
+
 	public ReportGeneratorServiceImpl() throws IllegalArgumentException {
-	  }
-	
+	}
+
 	/**
-	 * Diese Methode wird aufgerufen, wenn der ReportGeneratorImpl instantiiert werden soll
+	 * Diese Methode wird aufgerufen, wenn der ReportGeneratorImpl instantiiert
+	 * werden soll
 	 */
 	public void init() throws IllegalArgumentException {
-	    
+
 		cMapper = ContactMapper.contactMapper();
 		uMapper = UserMapper.userMapper();
 		pvMapper = PValueMapper.pValueMapper();
 		pMapper = PropertyMapper.propertyMapper();
 
-	  }
-	
-	
+	}
+
 	/**
 	 * Diese Methode erstellt einen Report, der alle Kontakte im System wiedergibt.
-	 * Hierfür werden alle Kontakte eines Nutzers für alle Nutzer ausgegeben.
-	 * Der Report besteht aus einem Paragraphen am Anfang und einem Paragraphen am Ende und vielen 
-	 * <code>AllContactsOfUserReport</code> in einer ArrayList. 
+	 * Hierfür werden alle Kontakte eines Nutzers für alle Nutzer ausgegeben. Der
+	 * Report besteht aus einem Paragraphen am Anfang und einem Paragraphen am Ende
+	 * und vielen <code>AllContactsOfUserReport</code> in einer ArrayList.
 	 * 
-	 * @return: AllContactsInSystemReport 
+	 * @return: AllContactsInSystemReport
 	 */
 	@Override
 	public AllContactsInSystemReport createAllContactsInSystemReport() {
-		
+
 		System.out.println("Reporterstellt nicht befüllt");
 		AllContactsInSystemReport result = new AllContactsInSystemReport();
 		result.setHeadline(new Paragraph("Report aller Kontakte im System"));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		result.setCreationDate(new Date());
 		System.out.println("Reporterstellt nicht befüllt");
-		for (JabicsUser u: uMapper.findAllUser()) {
-			result.addReport(createAllContactsOfUserReport(u));
+		for (JabicsUser u : uMapper.findAllUser()) {
+			if (u.getId() != 0) {
+				AllContactsOfUserReport newACU = createAllContactsOfUserReport(u);
+				result.addReport(newACU);
+			}
 		}
 		return result;
-	}	
-	
+	}
+
 	/**
-	 * Diese Methode erstellt einen Report, der alle Kontakte für den übergebenen Nutzer wiedergibt.
-	 * Es werden nur Kontakte wiedergegeben, die der Nutzer erstellt hat, von welchen er also der Eigentümer ist.
-	 * Der Report besteht aus einem Paragraphen am Anfang und einem Paragraphen am Ende und vielen 
+	 * Diese Methode erstellt einen Report, der alle Kontakte für den übergebenen
+	 * Nutzer wiedergibt. Es werden nur Kontakte wiedergegeben, die der Nutzer
+	 * erstellt hat, von welchen er also der Eigentümer ist. Der Report besteht aus
+	 * einem Paragraphen am Anfang und einem Paragraphen am Ende und vielen
 	 * <code>ContactReport</code> in einer ArrayList.
 	 * 
 	 * @return AllContactsOfUserReport mit allen Kontakten des übergebenen Nutzers
 	 */
 	public AllContactsOfUserReport createAllContactsOfUserReport(JabicsUser u) {
-		
+
 		// Es wird ein leerer Report angelegt.
 		AllContactsOfUserReport result = new AllContactsOfUserReport();
 		// Headline und Footline werden gesetzt.
 		result.setHeadline(new Paragraph("Report aller Kontakte für " + u.getUsername()));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		result.setCreationDate(new Date());
+		result.setCreator(u);
+
 		/**
-		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue von diesem erstellen 
+		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue
+		 * von diesem erstellen
 		 */
-		for (Contact c : cMapper.findAllContacts(u)) {
+		ArrayList<Contact> allContactsOfUser = cMapper.findAllContacts(u);
+		if (allContactsOfUser.isEmpty())
+			System.err.println("Keine Kontakte");
+		for (Contact c : allContactsOfUser) {
+			c.setOwner(uMapper.findUserByContact(c));
+			System.err.println("Nutzer geadded: " + c.getOwner().getId());
+		}
+		for (Contact c : allContactsOfUser) {
 			ArrayList<PropertyView> pval = new ArrayList<PropertyView>();
-			for (PValue pv : pvMapper.findPValueForContact(c)) {
-				pval.add(new PropertyView(pv));
+			ArrayList<JabicsUser> allCollaborators = cMapper.findCollaborators(c);
+			ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
+			if (allPV.isEmpty())
+				System.err.println("keine PValues");
+			for (PValue pv : allPV) {
+				PropertyView newPV = new PropertyView(pv);
+				pval.add(newPV);
 			}
-			result.addReport(new ContactReport(pval));
+			Paragraph contactInfo = new Paragraph("Kein Kontaktname");
+			Paragraph userInfo = new Paragraph("Kein Nutzername");
+			Paragraph collaborationInfo = new Paragraph("Keine Teilhaberschaften");
+			if (c.getName() != null) {
+				contactInfo.setContent(c.getName());
+			}
+			if (c.getOwner().getUsername() != null) {
+				contactInfo.setContent(c.getOwner().getUsername());
+			}
+			if (!allCollaborators.isEmpty()) {
+				String info = "Teilhaber: "; 
+				for (JabicsUser collaborator : allCollaborators) {
+					info = info + " " + collaborator.getUsername() + ",";
+				}
+				info.substring(0, info.length() - 1);
+				collaborationInfo.setContent(info);
+			}
+			if (!pval.isEmpty()) {
+				ContactReport newRP = new ContactReport(pval, contactInfo, userInfo);
+				System.err.println("CR add: " + newRP.getContactInfo());
+				result.addReport(newRP);
+			} else {
+				ContactReport newRP = new ContactReport(contactInfo, userInfo);
+				result.addReport(newRP);
+			}
 		}
 		return result;
 	}
 
+	public FilteredContactsOfUserReport createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser) {
+
+		FilteredContactsOfUserReport report = new FilteredContactsOfUserReport();
+		String[] filtercriteria = new String[finalUser.size()];
+
+		report.setHeadline(new Paragraph("Alle gemeinsamen Kontakte von " + u.getUsername()));
+		report.setFootline(new Paragraph("Ende des Reports"));
+		report.setSubReports(filterContactsByCollaborators(u, finalUser));
+		for (int i = 0; i < finalUser.size(); i++) {
+			filtercriteria[i] = finalUser.get(i).getUsername();
+		}
+
+		report.setFiltercriteria(new Paragraph(filtercriteria));
+		return report;
+	}
+
 	/**
-	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus gefilterten ContactReport zurück.
+	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus
+	 * gefilterten ContactReport zurück.
+	 * 
 	 * @param ArrayList mit Contact-Objekten "contacts"
-	 * @param Ein PValue-Objekt pv
+	 * @param Ein       PValue-Objekt pv
 	 * 
 	 * @return FilteredContactsOfUserReport
 	 */
-	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u) throws IllegalArgumentException {
+	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u)
+			throws IllegalArgumentException {
 		/**
-		 *  Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt. 
-		 *  Aus dieser werden dann anschließend die entsprechenden Kontakte gefiltert.
+		 * Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt.
+		 * Aus dieser werden dann anschließend die entsprechenden Kontakte gefiltert.
 		 */
 		ArrayList<Contact> contacts = cMapper.findAllContacts(u);
-		// Zuerst wird ein leerer Report angelegt. 
+		// Zuerst wird ein leerer Report angelegt.
 		FilteredContactsOfUserReport result = new FilteredContactsOfUserReport();
-		
-		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche hier headline und footline genannt werden.
+
+		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche
+		// hier headline und footline genannt werden.
 		result.setHeadline("Gefilterter Report für Nutzer " + u.getUsername());
 		result.setFootline("Ende des Reports.");
-		
-		// Erstellungsdatum des Reports auf "jetzt" stellen. 
+
+		// Erstellungsdatum des Reports auf "jetzt" stellen.
 		result.setCreationDate(new Date());
-		
-		
+
 		String[] filtercriteria = new String[4];
-			
-		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle passenden Report Objekte mit, welche dann den results mitgegeben werden.
+
+		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle
+		// passenden Report Objekte mit, welche dann den results mitgegeben werden.
 		/**
-		 * TODO: zu einem späteren Zeitpunkt, wenn nach mehreren Punkten gefiltert werden kann, die breaks entfernen und immer das vorergebnis einspeisen!
+		 * TODO: zu einem späteren Zeitpunkt, wenn nach mehreren Punkten gefiltert
+		 * werden kann, die breaks entfernen und immer das vorergebnis einspeisen!
 		 */
-		switch (pv.getProperty().getType())  {
+		switch (pv.getProperty().getType()) {
 		case STRING:
 			result.setSubReports(this.filterContactsByString(contacts, pv));
 			filtercriteria[0] = pv.getStringValue();
-		break;
-		
-		case INT: 
+			break;
+
+		case INT:
 			result.setSubReports(this.filterContactsByInt(contacts, pv));
-			Integer integ = (Integer)pv.getIntValue();
+			Integer integ = (Integer) pv.getIntValue();
 			filtercriteria[1] = integ.toString();
-		break; 
-		
+			break;
+
 		case FLOAT:
 			result.setSubReports(this.filterContactsByDate(contacts, pv));
 			Date dt = pv.getDateValue();
-			filtercriteria[2] = dt.toString();	
-		break;
-		
-		case DATE: 
+			filtercriteria[2] = dt.toString();
+			break;
+
+		case DATE:
 			result.setSubReports(this.filterContactsByFloat(contacts, pv));
-			Float fl = (Float)pv.getFloatValue();
+			Float fl = (Float) pv.getFloatValue();
 			filtercriteria[3] = fl.toString();
-		break;
-		default: System.out.println("Switch statement in FiltertContactReport failed.");
-		break;
-			
+			break;
+		default:
+			System.out.println("Switch statement in FiltertContactReport failed.");
+			break;
+
 		}
 		result.setFiltercriteria(new Paragraph(filtercriteria));
 		System.out.println("FilteredContacts-return ");
 		return result;
 	}
-	
+
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem StringValue, das in einem PValue mitgegeben wird, 
-	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
-	 * @param ArrayList<Contact> contacts
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem StringValue,
+	 * das in einem PValue mitgegeben wird, und gibt eine fertige ArrayList,
+	 * bestehend aus ContactReports, zurück.
+	 * 
+	 * @param        ArrayList<Contact> contacts
 	 * @param PValue pv
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-		
+
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
-			}
+		}
 		for (Contact c : Filter.filterContactsByString(contacts, pv.getStringValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
-			results.add(new ContactReport(pviews));
+			JabicsUser u = uMapper.findUserByContact(c);
+			results.add(new ContactReport(pviews, new Paragraph(c.getName()), new Paragraph(u.getUsername())));
 		}
-		return results; //? 
+		return results; // ?
 	}
-	
+
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Int-Value, das in einem PValue mitgegeben wird, 
-	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
-	 * @param ArrayList<Contact> contacts
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Int-Value, das
+	 * in einem PValue mitgegeben wird, und gibt eine fertige ArrayList, bestehend
+	 * aus ContactReports, zurück.
+	 * 
+	 * @param        ArrayList<Contact> contacts
 	 * @param PValue pv
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByInt(ArrayList<Contact> contacts, PValue pv) {
-		
+
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));}
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
 		for (Contact c : Filter.filterContactsByInt(contacts, pv.getIntValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -208,22 +276,25 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			}
 			results.add(new ContactReport(pviews));
 		}
-		return results; //? 		
-		
+		return results; // ?
+
 	}
-	
+
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem LocalDateTime-Value, das in einem PValue mitgegeben wird, 
-	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
-	 * @param ArrayList<Contact> contacts
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem
+	 * LocalDateTime-Value, das in einem PValue mitgegeben wird, und gibt eine
+	 * fertige ArrayList, bestehend aus ContactReports, zurück.
+	 * 
+	 * @param        ArrayList<Contact> contacts
 	 * @param PValue pv
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByDate(ArrayList<Contact> contacts, PValue pv) {
-		
+
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));}
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
 		for (Contact c : Filter.filterContactsByDate(contacts, pv.getDateValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -231,22 +302,47 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			}
 			results.add(new ContactReport(pviews));
 		}
-		return results; //? 	
-		
+		return results; // ?
+
 	}
-	
+
+	public ArrayList<ContactReport> filterContactsByCollaborators(JabicsUser u, ArrayList<JabicsUser> finalUser) {
+
+		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
+
+		ArrayList<Contact> allUserContacts = cMapper.findAllContacts(u);
+
+		for (Contact c : allUserContacts) {
+			ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);
+			ArrayList<Contact> matches = Filter.filterContactsByCollaborators(finalUser, collaborators, c);
+			for (Contact c2 : matches) {
+				ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
+				c2.setValues(pvMapper.findPValueForContact(c2));
+				for (PValue p : c2.getValues()) {
+					pviews.add(new PropertyView(p));
+				}
+				// TODO hier muss eigentlich der Owner rein: c2.getOwner().getUsername()
+				results.add(new ContactReport(pviews, new Paragraph(c2.getName()), new Paragraph(u.getUsername())));
+			}
+		}
+		return results;
+	}
+
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Float-Value, das in einem PValue mitgegeben wird, 
-	 * und gibt eine fertige ArrayList, bestehend aus ContactReports, zurück.
-	 * @param ArrayList<Contact> contacts
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Float-Value,
+	 * das in einem PValue mitgegeben wird, und gibt eine fertige ArrayList,
+	 * bestehend aus ContactReports, zurück.
+	 * 
+	 * @param        ArrayList<Contact> contacts
 	 * @param PValue pv
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByFloat(ArrayList<Contact> contacts, PValue pv) {
-		
+
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));}
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
 		for (Contact c : Filter.filterContactsByFloat(contacts, pv.getFloatValue())) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -254,10 +350,21 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 			}
 			results.add(new ContactReport(pviews));
 		}
-		return results; //? 				
+		return results; // ?
 	}
 
-	
+	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
+
+		ArrayList<Property> results = new ArrayList<Property>();
+
+		for (Contact c : cMapper.findAllContacts(u)) {
+			for (PValue pv : pvMapper.findPValueForContact(c)) {
+				results.add(pv.getProperty());
+			}
+		}
+		return results;
+	}
+
 //	public ArrayList<ContactReport> filterContractsByStringAndFirstLetter(ArrayList<Contact> contacts, PValue pv, String search) {
 //		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 //		ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
@@ -274,4 +381,3 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet
 //		} 
 //	} 	
 }
-

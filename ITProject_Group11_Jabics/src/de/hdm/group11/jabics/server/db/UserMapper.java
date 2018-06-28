@@ -1,6 +1,9 @@
 package de.hdm.group11.jabics.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
@@ -76,17 +79,22 @@ public class UserMapper {
 		return userMapper;
 	}
 	
+	/**
+	 * Gibt den Besitzer/Ersteller eines Kontakts zurück.
+	 * @param Contact c, der Kontakt für den der Besitzer gefunden werden soll
+	 * @return JabicsUser u
+	 */
 	public JabicsUser findUserByContact(Contact c) {
-		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		// Erzeugen eines neuen JabicUser-Objekts
 		JabicsUser u = new JabicsUser();
-		System.out.println("m1");
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und ContactCollaboration zum Herausfinden der Userinformationen. 
+			// Join zwischen SystemUser und ContactCollaboration um den Besitzer eines Kontaktes zu finden.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
@@ -96,8 +104,9 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
-			con.close();
-			
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -110,13 +119,14 @@ public class UserMapper {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 		
+		// Erzeugen eines neuen JabicUser-Objekts
 		JabicsUser u = new JabicsUser();
 		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und ContactListCollaboration zum Herausfinden der Userinformationen. 
+			// Join zwischen SystemUser und ContactlistCollaboration um den Besitzer einer Kontaktliste zu finden. 
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
@@ -127,8 +137,9 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
-			con.close();
-			
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		}
 		catch (SQLException e) {
 		    System.err.print(e);  
@@ -140,13 +151,15 @@ public class UserMapper {
 		
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		
+		// Erzeugen eines neuen JabicUser-Objekts
 		JabicsUser u = new JabicsUser();
 		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Join zwischen SystemUserID und PValueCollaboration zum Herausfinden der Userinformationen. 
+			// Join zwischen SystemUser und pValueCollaboration um den Besitzer einer Ausprägung zu finden.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
@@ -157,7 +170,9 @@ public class UserMapper {
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			
 		}
 		catch (SQLException e) {
@@ -190,7 +205,9 @@ public class UserMapper {
 			if(rs.next()) {
 				u.setId(rs.getInt(1));
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return u;
 		}
 		catch (SQLException e) {
@@ -214,7 +231,9 @@ public class UserMapper {
 			   
 			// Löschen des Users.
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 		}
 		catch (SQLException e) {
 		    System.err.print(e);
@@ -253,7 +272,9 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return al;
 	    }
 	    catch (SQLException e) {
@@ -286,9 +307,10 @@ public class UserMapper {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
-		        con.close();
 			}
-			con.close();
+			// Schließen der Datenbankverbindung
+	        stmt.close();
+	        con.close();
 			return u;
 		}
 		catch (SQLException e) {
@@ -323,14 +345,14 @@ public JabicsUser findUserByEmail(String email)  {
 			u.setId(rs.getInt("systemUserID"));
 			u.setEmail(rs.getString("email"));
 			u.setUsername(rs.getString("name"));
+			// Schließen der Datenbankverbindung
+	        stmt.close();
 	        con.close();
 	        return u;
 		}else
-			con.close();
-		return null;
-	}
-	catch (SQLException e) {
-	    System.err.print(e);
+			return null;
+	} catch (SQLException e) {
+		System.err.print(e);
 	    return null;
 	}
 }	
