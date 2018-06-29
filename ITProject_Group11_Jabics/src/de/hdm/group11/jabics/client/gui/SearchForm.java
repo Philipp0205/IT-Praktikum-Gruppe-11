@@ -37,27 +37,27 @@ import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.Type;
 
-public class SearchForm extends VerticalPanel{
-	
+public class SearchForm extends VerticalPanel {
+
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
-	
+
 	StackPanel sp;
 	ContactCellListTab ct;
 	CellList<Contact> list;
 	TextBox valueBox;
 	Button sb;
 	Label listInfoLabel;
-	ContactList cl ;
+	ContactList cl;
 	Editor e;
-	
+
 	DatePicker datepicker;
-	
+
 	Label ausgabeLabel;
 	Label pvalueLabel;
 	Label propertyLabel;
 	Label datatypeLabel;
 	ListBox datatypemenu;
-	
+
 	MultiWordSuggestOracle propertyToSuggest;
 	SuggestBox propertySuggest;
 	PValue finalPVal;
@@ -68,7 +68,7 @@ public class SearchForm extends VerticalPanel{
 	VerticalPanel verPanel5;
 	JabicsUser currentUser;
 	HorizontalPanel mainpanel = new HorizontalPanel();
-	
+
 	public void onLoad() {
 		ct = new ContactCellListTab();
 		list = ct.createContactTabForSearchForm();
@@ -84,16 +84,16 @@ public class SearchForm extends VerticalPanel{
 		datatypemenu = new ListBox();
 		datatypeLabel = new Label("Datentyp:");
 		datepicker = new DatePicker();
-		
-		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() +"'." );
-		
+
+		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
+
 		verPanel1.add(propertyLabel);
 		mainpanel.add(verPanel1);
-		
+
 		verPanel2.add(pvalueLabel);
 		verPanel2.add(valueBox);
 		mainpanel.add(verPanel2);
-		
+
 		verPanel3.add(datatypeLabel);
 		verPanel3.add(datatypemenu);
 		datatypemenu.addItem("Text");
@@ -102,26 +102,24 @@ public class SearchForm extends VerticalPanel{
 		datatypemenu.addItem("Ganzzahl");
 		datatypemenu.setSelectedIndex(4);
 		mainpanel.add(verPanel3);
-		
+
 		verPanel4.add(datepicker);
 		datepicker.setVisible(false);
 		mainpanel.add(verPanel4);
-		
+
 		verPanel5.add(sb);
 		mainpanel.add(verPanel5);
-		
+
 		this.add(listInfoLabel);
 		this.add(mainpanel);
 		this.add(sp);
-		
+
 		ausgabeLabel.setVisible(false);
-		
+
 		ct.setEditor(e);
-		
-		
-		
+
 		sb.addClickHandler((new ClickHandler() {
-			
+
 			public void onClick(ClickEvent event) {
 				sp.setVisible(false);
 				ausgabeLabel.setVisible(false);
@@ -129,10 +127,11 @@ public class SearchForm extends VerticalPanel{
 			}
 		}));
 		editorService.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
-		
+
 		datatypemenu.addChangeHandler(new ChangeHandler() {
 
 			Button finish = new Button("Fertig");
+
 			@Override
 			public void onChange(ChangeEvent event) {
 				finalPVal = new PValue();
@@ -149,13 +148,13 @@ public class SearchForm extends VerticalPanel{
 					datepicker.setVisible(true);
 					finish.setVisible(true);
 					verPanel4.add(finish);
-					
+
 					finish.addClickHandler(new ClickHandler() {
-						  public void onClick(ClickEvent event) {
-							    datepicker.setVisible(false);
-							    finish.setVisible(false);
-							  }
-							});
+						public void onClick(ClickEvent event) {
+							datepicker.setVisible(false);
+							finish.setVisible(false);
+						}
+					});
 					finalPVal.setPointer(3);
 					finalPVal.getProperty().setType(Type.DATE);
 					break;
@@ -175,7 +174,7 @@ public class SearchForm extends VerticalPanel{
 				}
 			}
 		});
-		
+
 		datepicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
@@ -186,47 +185,49 @@ public class SearchForm extends VerticalPanel{
 			}
 		});
 	}
-	
+
 	public SearchForm() {
 		sp = new StackPanel();
 
 		sb = new Button("Finden");
 		valueBox = new TextBox();
 	}
-	
+
 	void setContactList(ContactList cl) {
-		this.cl =cl;
+		this.cl = cl;
 	}
+
 	void setEditor(Editor e) {
-		this.e=e;
+		this.e = e;
 	}
+
 	void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
 	}
-	
+
 	class SearchInListCallback implements AsyncCallback<ArrayList<Contact>> {
-		@Override 
-		
- 		public void onFailure(Throwable caugth) {
+		@Override
+
+		public void onFailure(Throwable caugth) {
 			Window.alert("Der angegebene Wert wurde nicht gefunden");
- 		}
- 		@Override
- 		public void onSuccess(ArrayList<Contact> result) {
- 			if (result != null) {
- 	 			for(Contact c : result) {
- 	 			ct.addsearchedContact(c);
- 	 			}
- 	 			sp.setVisible(true);
- 	 			sp.add(list, "Ausgabe");
- 	 			ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
- 	 			ausgabeLabel.setVisible(true);
- 	 			valueBox.setText("");
- 	 			
- 	 			
- 			}
-}
- 		}
-	
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Contact> result) {
+			if (result != null) {
+				for (Contact c : result) {
+					ct.addsearchedContact(c);
+				}
+				sp.setVisible(true);
+				sp.add(list, "Ausgabe");
+				ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
+				ausgabeLabel.setVisible(true);
+				valueBox.setText("");
+
+			}
+		}
+	}
+
 	private class getPropertysOfJabicsUserCallback implements AsyncCallback<ArrayList<Property>> {
 
 		@Override
@@ -262,4 +263,4 @@ public class SearchForm extends VerticalPanel{
 
 		}
 	}
-	}
+}
