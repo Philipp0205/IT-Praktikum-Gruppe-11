@@ -112,6 +112,7 @@ public class SearchForm extends VerticalPanel{
 		
 		this.add(listInfoLabel);
 		this.add(mainpanel);
+		this.add(sp);
 		
 		ausgabeLabel.setVisible(false);
 		
@@ -124,7 +125,7 @@ public class SearchForm extends VerticalPanel{
 			public void onClick(ClickEvent event) {
 				sp.setVisible(false);
 				ausgabeLabel.setVisible(false);
-				editorService.searchInList(valueBox.getText(), cl, new SearchInListCallback());
+				editorService.searchInList(valueBox.getText(), cl, finalPVal, new SearchInListCallback());
 			}
 		}));
 		editorService.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
@@ -132,9 +133,9 @@ public class SearchForm extends VerticalPanel{
 		datatypemenu.addChangeHandler(new ChangeHandler() {
 
 			Button finish = new Button("Fertig");
-
 			@Override
 			public void onChange(ChangeEvent event) {
+				finalPVal = new PValue();
 				switch (datatypemenu.getSelectedItemText()) {
 				case "Text":
 					finalPVal.setPointer(2);
