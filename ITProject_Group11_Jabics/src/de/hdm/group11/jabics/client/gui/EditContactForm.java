@@ -75,7 +75,6 @@ public class EditContactForm extends VerticalPanel {
 				saveButton.setText("Änderungen speichern");
 			}
 			
-
 			saveButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -129,6 +128,7 @@ public class EditContactForm extends VerticalPanel {
 			this.insert(buttonPanel, 1);
 			if (isNewContact) {
 				addPPanel.setVisible(false);
+
 			}
 			this.insert(addPPanel, 2);
 			renderContact(this.contact.getValues());
