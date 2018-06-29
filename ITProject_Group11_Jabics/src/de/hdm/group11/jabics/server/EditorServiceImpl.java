@@ -749,7 +749,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return result;
 	}
 
-	/*
+	/**
 	 * Eine Kontaktliste nach String-Values durchsuchen Diese Methode wird bei
 	 * deutlich konkreteren Suchvorhaben oder Kriterien verwendet. Für eine
 	 * allgemeine Suche siehe searchExpressionInList
