@@ -121,12 +121,12 @@ public class Editor implements EntryPoint {
 		createC.addClickHandler(new CreateCClickHandler());
 		Button createCL = new Button("Neue Liste");
 		createCL.addClickHandler(new CreateCLClickHandler());
-		Button search = new Button("Suche");
-		search.addClickHandler(new SearchClickHandler());
+//		Button search = new Button("Suche");
+//		search.addClickHandler(new SearchClickHandler());
 		// Button settings = new Button("irgendwas anderes");
 		// settings.addClickHandler(new SearchClickHandler());
 
-		topPanel.add(search);
+//		topPanel.add(search);
 		// topPanel.add(settings);
 		topPanel.add(createC);
 		topPanel.add(createCL);
@@ -391,50 +391,50 @@ public class Editor implements EntryPoint {
 	/**
 	 * ClickHandler um die SearchForm anzuzeigen
 	 */
-	private class SearchClickHandler implements ClickHandler {
-		ContactList cl;
-
-		SearchClickHandler() {
-		}
-
-		@Override
-		public void onClick(ClickEvent event) {
-
-			// treeViewMenu.setContactForm(cForm);
-			// cForm.setTreeViewMenu(treeViewMenu);
-
-			// hPanel.add(contactDetailPanel);
-			//
-			// contactDetailPanel.clear();
-			// contactDetailPanel.add(cForm);
-
-			// RootPanel.get("details").add(contactDetailPanel);
-			// TODO
-			GWT.log("clickEventForm");
-			ContactList cl = new ContactList();
-			cl.setId(1);
-			JabicsUser u = new JabicsUser(1);
-			Contact c1 = new Contact();
-			Property p = new Property();
-			p.setId(2);
-			GWT.log("clickEventForm");
-			PValue pv = new PValue(p, "Fiffi", u);
-			c1.setName("Uschi");
-			Contact c2 = new Contact();
-			c2.setName("Strolch");
-			Contact c3 = new Contact();
-			c3.setId(3);
-			c3.setName("Fiffi");
-			GWT.log("clickEventForm");
-			c3.addPValue(pv);
-			GWT.log("clickEventForm");
-			cl.setListName("Idiyets");
-			cl.addContact(c1);
-			cl.addContact(c2);
-			cl.addContact(c3);
-			showSearchForm(cl);
-		}
-	}
+//	private class SearchClickHandler implements ClickHandler {
+//		ContactList cl;
+//
+//		SearchClickHandler() {
+//		}
+//
+//		@Override
+//		public void onClick(ClickEvent event) {
+//
+//			// treeViewMenu.setContactForm(cForm);
+//			// cForm.setTreeViewMenu(treeViewMenu);
+//
+//			// hPanel.add(contactDetailPanel);
+//			//
+//			// contactDetailPanel.clear();
+//			// contactDetailPanel.add(cForm);
+//
+//			// RootPanel.get("details").add(contactDetailPanel);
+//			// TODO
+//			GWT.log("clickEventForm");
+//			ContactList cl = new ContactList();
+//			cl.setId(1);
+//			JabicsUser u = new JabicsUser(1);
+//			Contact c1 = new Contact();
+//			Property p = new Property();
+//			p.setId(2);
+//			GWT.log("clickEventForm");
+//			PValue pv = new PValue(p, "Fiffi", u);
+//			c1.setName("Uschi");
+//			Contact c2 = new Contact();
+//			c2.setName("Strolch");
+//			Contact c3 = new Contact();
+//			c3.setId(3);
+//			c3.setName("Fiffi");
+//			GWT.log("clickEventForm");
+//			c3.addPValue(pv);
+//			GWT.log("clickEventForm");
+//			cl.setListName("Idiyets");
+//			cl.addContact(c1);
+//			cl.addContact(c2);
+//			cl.addContact(c3);
+//			showSearchForm(cl);
+//		}
+//	}
 
 	/**
 	 * ClickHandler um einen neuen Kontakt zu erstellen und zu bearbeiten
