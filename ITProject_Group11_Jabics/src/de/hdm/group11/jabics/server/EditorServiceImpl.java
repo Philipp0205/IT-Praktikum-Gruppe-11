@@ -411,13 +411,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * 
 	 * @return Die ContactList ohne den zu entfernenden Contact
 	 */
-	public ContactList removeContactFromList(Contact c, ContactList cl) {
+	public Contact removeContactFromList(Contact c, ContactList cl) {
 		cl.removeContact(c);
 		for (JabicsUser u : clMapper.findCollaborators(cl)) {
 			deleteCollaboration(c, u);
 		}
 		clMapper.deleteContactfromContactList(cl, c);
-		return cl;
+		return c;
 	}
 
 	/**

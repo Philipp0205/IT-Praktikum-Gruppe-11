@@ -274,10 +274,20 @@ public class ContactListTreeTab implements TreeViewModel {
 	}
 
 	public void removeContactOfContactList(ContactList cl, Contact c) {
-		if (!contactDataProviders.containsKey(cl)) {
-			return;
-		}
-		contactDataProviders.get(cl).getList().remove(c);
+//		if (!contactDataProviders.containsKey(cl)) {
+//			return;
+//		}
+		GWT.log("Kontakt zaus Liste entfernen");
+		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
+		
+		GWT.log("Folgende Kontakte in Liste " + cl.getListName());
+		GWT.log(cl.getContacts().toString());
+		
+		GWT.log("Kontakt entfernen: " + c.getName());
+		contactsProvider.getList().remove(c);
+		
+		contactsProvider.flush();
+
 		selectionModel.setSelected(cl, true);
 	}
 
