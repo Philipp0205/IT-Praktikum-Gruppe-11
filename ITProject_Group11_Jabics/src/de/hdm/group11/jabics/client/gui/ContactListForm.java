@@ -56,6 +56,7 @@ public class ContactListForm extends VerticalPanel {
 	HorizontalPanel sharePanel = new HorizontalPanel();
 	HorizontalPanel editPanel = new HorizontalPanel();
 	HorizontalPanel changePanel = new HorizontalPanel();
+	HorizontalPanel searchPanel = new HorizontalPanel();
 
 	VerticalPanel addPanel = new VerticalPanel();
 	VerticalPanel removePanel = new VerticalPanel();
@@ -70,6 +71,7 @@ public class ContactListForm extends VerticalPanel {
 	Button shareExistingButton = new Button("Teilen bearbeiten");
 	Button removeButton = new Button("Kontakte entfernen");
 	Button addButton = new Button("Kontakte hinzufügen");
+	Button searchInListButton = new Button("Liste durchsuchen");
 	
 	ArrayList<Contact> cArray;
 
@@ -172,6 +174,12 @@ public class ContactListForm extends VerticalPanel {
 		editPanel.add(removeButton);
 		changePanel.add(deleteButton);
 		changePanel.add(saveButton);
+		searchPanel.add(searchInListButton);
+		searchInListButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				e.showSearchForm(currentList);
+			}
+		});
 
 		sharePanel.setStyleName("sharePanel");
 
@@ -181,6 +189,7 @@ public class ContactListForm extends VerticalPanel {
 		this.add(changePanel);
 		this.add(addPanel);
 		this.add(removePanel);
+		this.add(searchPanel);
 
 	}
 
