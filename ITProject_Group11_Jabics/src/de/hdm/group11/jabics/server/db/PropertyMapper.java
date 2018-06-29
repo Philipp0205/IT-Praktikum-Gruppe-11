@@ -192,8 +192,6 @@ public class PropertyMapper {
 	public ArrayList<Property> findAllStandardPropertys()  {
 		// Erzeugen der Datenbankverbindung
 	    Connection con = DBConnection.connection();
-	    
-	    int id = 1;
 
 	    try {
 	    	// Erzeugen eines ungefüllten SQL-Statements
@@ -203,7 +201,7 @@ public class PropertyMapper {
 			ArrayList<Property> al = new ArrayList<Property>();
 	    	
 	    	// Auswählen der Eigenschaften mit einer bestimmten id. 
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE PropertyID = " + id );
+	    	ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE isStandard = 1 ");
 	    	
 	    	while(rs.next()) {	
 		    	//Erzeugen eines Property-Objektes
@@ -216,7 +214,6 @@ public class PropertyMapper {
 	    		p.setDateCreated(rs.getTimestamp("dateCreated"));
 	    		p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 	    		al.add(p);
-	    		id++;
 	    	}
 			// Schließen der Datenbankverbindung
 	        stmt.close();

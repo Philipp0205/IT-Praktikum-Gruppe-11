@@ -148,7 +148,7 @@ public class ContactListMapper {
 
 			// Update des Namens der Kontaktliste und des letzten Updates
 			stmt.executeUpdate(
-					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactlistID = " + cl.getId());
+					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
 			// Schließen der Datenbankverbindung
 			stmt.close();
 			con.close();

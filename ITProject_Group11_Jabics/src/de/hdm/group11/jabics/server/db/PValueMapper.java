@@ -580,17 +580,17 @@ public class PValueMapper {
     		ResultSet rs = stmt.executeQuery("SELECT pValueID "
 	    		+ " FROM pValueCollaboration "
 	   			+ " WHERE isOwner = 0 AND pValueID IN (" + s + ")");
- 	    	
-	    	
+ 	    	    	
 	    	for(PValue pv : alPValue) {
 	    		while (rs.next()) {
 	    			if(rs.getInt("pValueID")==pv.getId()) {
-	    			al.add(BoStatus.IS_SHARED);
+	    				al.add(BoStatus.IS_SHARED);
 	    		} else {
 	    			al.add(BoStatus.NOT_SHARED);
 	    		}
 	    		}
 	        }
+	    	
     		return al;
 	    }
 	    catch (SQLException e) {
