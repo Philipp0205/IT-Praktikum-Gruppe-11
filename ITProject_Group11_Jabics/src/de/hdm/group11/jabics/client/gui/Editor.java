@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -326,9 +327,8 @@ public class Editor implements EntryPoint {
 		sForm = new SearchForm();
 		sForm.setEditor(this);
 		sForm.setContactList(cl);
-
-		widgetPanel.remove(1);
-		widgetPanel.add(sForm);
+		formPanel.clear();
+		formPanel.add(sForm);
 		GWT.log("#######SearchForm");
 	}
 
