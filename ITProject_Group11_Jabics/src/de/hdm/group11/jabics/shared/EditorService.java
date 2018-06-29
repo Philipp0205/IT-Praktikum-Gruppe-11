@@ -77,7 +77,7 @@ public interface EditorService extends RemoteService{
 	
 	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl);
 	
-	public ArrayList<Contact> searchInList(String s, ContactList cl);
+	public ArrayList<Contact> searchInList(String s, ContactList cl, PValue pv);
 	
 	public ArrayList<Contact> searchInList(int i, ContactList cl);
 	

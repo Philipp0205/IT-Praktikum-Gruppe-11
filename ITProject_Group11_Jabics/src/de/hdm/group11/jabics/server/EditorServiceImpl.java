@@ -767,16 +767,44 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * deutlich konkreteren Suchvorhaben oder Kriterien verwendet. Für eine
 	 * allgemeine Suche siehe searchExpressionInList
 	 */
-	public ArrayList<Contact> searchInList(String s, ContactList cl) {	
+	public ArrayList<Contact> searchInList(String s, ContactList cl, PValue pv) {	
+		
+		//Wenn die PValue leer ist, wird lediglich nach dem String-Wert in Labels und Werten der Kontakte gesucht.
+		if(pv.getStringValue() == null && pv.getProperty() ==null) {
+			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contacts) {
+				c.setValues(pvMapper.findPValueForContact(c));
+			}
+			ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
+			for (Contact c : alc) {
+				System.out.println(c.getName());
+			}
+			return alc;
+		}else {
+		
 		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
-		ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
-		for (Contact c : alc) {
-			System.out.println(c.getName());
+
+		// Kontakte nach Property filtern, falls gesetzt
+		if (pv.getProperty().getLabel() != null) {
+			System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
+			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
 		}
-		return alc;
+		System.err.println("Gefundene kontakte: ");
+		for(Contact c : contacts) {
+			System.err.println("Contact : " + c.getName());
+		}
+		// Kontakte nach PropertyValue filtern, falls gesetzt
+		if (pv.getStringValue() != null) {
+			System.err.println("Nach PVal filtern");
+			contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+		}
+		return contacts;
+		}
+		
+		
 	}
 
 	/**
