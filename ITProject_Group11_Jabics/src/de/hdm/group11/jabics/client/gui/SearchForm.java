@@ -215,10 +215,12 @@ public class SearchForm extends VerticalPanel {
 		@Override
 		public void onSuccess(ArrayList<Contact> result) {
 			if (result != null) {
+				list = ct.createContactTabForSearchForm();
 				for (Contact c : result) {
 					ct.addsearchedContact(c);
 				}
 				sp.setVisible(true);
+				sp.clear();
 				sp.add(list, "Ausgabe");
 				ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
 				ausgabeLabel.setVisible(true);
