@@ -773,21 +773,21 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * deutlich konkreteren Suchvorhaben oder Kriterien verwendet. Für eine
 	 * allgemeine Suche siehe searchExpressionInList
 	 */
-	public ArrayList<Contact> searchInList(String s, ContactList cl, PValue pv) {
+	public ArrayList<Contact> searchInList(ContactList cl, PValue pv) {
 
 		// Wenn die PValue leer ist, wird lediglich nach dem String-Wert in Labels und
 		// Werten der Kontakte gesucht.
-		if (pv.getStringValue() == null && pv.getProperty() == null) {
-			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-			for (Contact c : contacts) {
-				c.setValues(pvMapper.findPValueForContact(c));
-			}
-			ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
-			for (Contact c : alc) {
-				System.out.println(c.getName());
-			}
-			return alc;
-		} else {
+//		if (pv.getStringValue() == null && pv.getProperty() == null) {
+//			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+//			for (Contact c : contacts) {
+//				c.setValues(pvMapper.findPValueForContact(c));
+//			}
+//			ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
+//			for (Contact c : alc) {
+//				System.out.println(c.getName());
+//			}
+//			return alc;
+//		} else {
 
 			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
 			for (Contact c : contacts) {
@@ -808,10 +808,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				System.err.println("Nach PVal filtern");
 				contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
 			}
+			System.out.println("kukuk");
 			return contacts;
 		}
 
-	}
+	
 
 	/**
 	 * Eine Kontaktliste nach Int-Values durchsuchen
