@@ -44,13 +44,14 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 
 	public String paragraphWithFilter2HTML(Paragraph p) {
 		StringBuffer filt = new StringBuffer();
-		filt.append("<p>Es wurde nach ");
+		filt.append("<p>Es wurde nach \"");
 		for (String s : p.getFiltercriteria()) {
 			if (s != null) {
 				filt.append(s + ", ");
 			}
 		}
-		filt.append(" gefiltert. </p>");
+		filt.replace(0, filt.length(), filt.substring(0, filt.length() - 2));
+		filt.append("\" gefiltert. </p>");
 		return filt.toString();
 	}
 
@@ -84,17 +85,18 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 		for (ContactReport c : cons) {
 			GWT.log("HTML Writer: neuer Kontakt Report für " + c.getContactInfo());
 			if (c.getContactInfo() != null) {
-				sb.append(" <tr> <td> <b>" + c.getContactInfo() + "</b> </td>");
+				sb.append(" <tr> <td> <b>" + c.getContactInfo().getContent() + "</b> </td>");
 			} else {
 				GWT.log("Keinanzeigename");
 				sb.append("<tr><td> <b>Kein Anzeigename</b> </td> </tr>");
 			}
 			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
-			sb.append("<td> <p>Besitzer: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
-			//sb.append("<td> <p>Erstellt am " + c.getCreationDateAsString() + "</p>" +
-			//"</td>");
-			//sb.append("<td> <p>Zuletzt geändert: " + c.getCreationDateAsString() + "</p>" +
-			//"</td>");
+			sb.append("<td> <p>Teilhaber: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
+			sb.append("<td> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" +
+			"</td>");
+			sb.append("<td> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>" +
+			"</td>");
+			
 			sb.append("</tr><tr>");
 			for (PropertyView pv : c.getContent()) {
 				// int i = 0;
@@ -109,7 +111,9 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 					// i++;
 				}
 			}
+			sb.append("</tr><tr> <td> <b>&nbsp</b> </td>");
 		}
+		
 		sb.append("</tr>");
 		sb.append("</table>");
 		sb.append("</div>");
