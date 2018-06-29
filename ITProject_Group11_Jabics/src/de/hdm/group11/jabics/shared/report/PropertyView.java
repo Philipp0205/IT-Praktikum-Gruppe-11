@@ -25,25 +25,20 @@ public class PropertyView implements Serializable {
 
 	public PropertyView(PValue pv) throws IllegalArgumentException {
 		this.pname = pv.getProperty().getLabel();
-		System.err.println("KontsruktorPropView");
 		switch (pv.getPointer()) {
 
 		case 1:
-			System.err.println("KontsruktorPropView1");
 			Integer i = pv.getIntValue();
 			this.pvalue = i.toString();
 			break;
 		case 2:
-			System.err.println("KontsruktorPropView2");
 			this.pvalue = pv.getStringValue();
 			break;
 		case 3:
-			System.err.println("KontsruktorPropView3");
 			Date dt = pv.getDateValue();
 			this.pvalue = dt.toString();
 			break;
 		case 4:
-			System.err.println("KontsruktorPropView4");
 			Float f = pv.getFloatValue();
 			this.pvalue = f.toString();
 			break;

@@ -24,6 +24,9 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Callback;
+import com.google.gwt.user.client.ui.SuggestOracle.Request;
+import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -34,6 +37,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.GetAllNotCollaboratingUserCallback;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
@@ -50,7 +54,9 @@ public class Report implements EntryPoint {
 	JabicsUser currentUser;
 
 	ReportGeneratorServiceAsync reportGenerator = null;
+	LoginServiceAsync loginService = null;
 	EditorServiceAsync editorService = null;
+
 	Button allReportsInSystemButton = new Button("Alle Kontakte aller Nutzer im System");
 	Button filteredReportButton = new Button("Alle Kontakte mit diesen Filterkriterien");
 	Button allReportButton = new Button("Alle meine Kontakte");
@@ -62,29 +68,28 @@ public class Report implements EntryPoint {
 	VerticalPanel verPanel2 = new VerticalPanel();
 	VerticalPanel verPanel3 = new VerticalPanel();
 	VerticalPanel verPanel4 = new VerticalPanel();
-	Property[] userpropertys;
 
 	TextBox valueBox = new TextBox();
-	// TextBox intBox = new TextBox();
-	// TextBox floatBox = new TextBox();
-	// TextBox dateBox = new TextBox();
 	ListBox datatypemenu = new ListBox();
+	DatePicker datepicker = new DatePicker();
 
 	// Die mit der PropertySuggestBox zusammenhängenden Variablen
 	MultiWordSuggestOracle propertyToSuggest;
 	SuggestBox propertySuggest;
+	PValue finalPVal;
 	Label datatypel = new Label("Datentyp:");
 	Label valuelabel = new Label("Wert:");
 	Label propertyl = new Label("Eigenschaft:");
-	
 
-	// Alle mit der Suggest Box zusammenhängenden Variablen
+	// Alle mit der UserSuggestBox zusammenhängenden Variablen
 	MultiWordSuggestOracle userToSuggest;
 	SuggestBox userSuggest;
 	Button addUserButton;
 	Button removeUserButton;
 	Button sharedContactsButton;
 
+	// Alle Variablen, die ein editieren der entstehenden Liste an Nutzern
+	// ermöglichen
 	ArrayList<JabicsUser> allUser;
 	ArrayList<JabicsUser> finalUser;
 	ListDataProvider<JabicsUser> userDataProvider;
@@ -93,14 +98,11 @@ public class Report implements EntryPoint {
 	JabicsUser suggestedUser;
 	JabicsUser selectedUser;
 
-	// Label floatl = new Label("Dezimalzahl:");
-	// Label db = new Label("Datum:");
-	DatePicker datepicker = new DatePicker();
-
 	@Override
 	public void onModuleLoad() {
-		if (reportGenerator == null || editorService == null) {
+		if (reportGenerator == null || loginService == null) {
 			reportGenerator = ClientsideSettings.getReportGeneratorService();
+			loginService = ClientsideSettings.getLoginService();
 			editorService = ClientsideSettings.getEditorService();
 		}
 
@@ -121,6 +123,8 @@ public class Report implements EntryPoint {
 		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 
 		// Übergangslösung
+		retrieveUser();
+		
 		loadReport();
 
 	}
@@ -152,8 +156,8 @@ public class Report implements EntryPoint {
 		verPanel1.add(propertyl);
 		verPanel2.add(valuelabel);
 		verPanel2.add(valueBox);
-		 verPanel3.add(datatypel);
-		 verPanel3.add(datatypemenu);
+		verPanel3.add(datatypel);
+		verPanel3.add(datatypemenu);
 		// verPanel4.add(db);
 
 		datepicker.setValue(null);
@@ -166,7 +170,7 @@ public class Report implements EntryPoint {
 		navPanel.add(verPanel3);
 		navPanel.add(verPanel4);
 		navPanel.add(filteredReportButton);
-		//navPanel.add(allReportsInSystemButton);
+		// navPanel.add(allReportsInSystemButton);
 
 		mainPanel.add(navPanel);
 		otherReportsPanel.add(allReportsInSystemButton);
@@ -192,20 +196,85 @@ public class Report implements EntryPoint {
 			}
 		});
 
+		finalPVal = new PValue();
+		Property finalProp = new Property();
+		finalPVal.setProperty(finalProp);
+		
+		valueBox.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if (finalPVal.getPointer() == 0) {
+					Window.alert("Bitte zuerst Datentyp auswählen!");
+				}
+				
+			}
+		});
+		
+		
+		valueBox.addValueChangeHandler(new PValueChangeHandler<String>());
+
 		datatypemenu.addClickHandler(new ClickHandler() {
+
+			Button finish = new Button("Fertig");
 
 			@Override
 			public void onClick(ClickEvent event) {
-				Button finish = new Button("Fertig");
-				if (datatypemenu.getSelectedItemText() == "Datum") {
+				switch (datatypemenu.getSelectedItemText()) {
+				case "Text":
+					finalPVal.setPointer(2);
+					finalPVal.getProperty().setType(Type.STRING);
+					break;
+				case "Ganzzahl":
+					finalPVal.setPointer(1);
+					finalPVal.getProperty().setType(Type.INT);
+					break;
+				case "Datum":
 					datepicker.setVisible(true);
+					finish.setVisible(true);
 					verPanel4.add(finish);
 					finish.addClickHandler(new DatePickerClickHandler(finish));
-				}else {
+					finalPVal.setPointer(3);
+					finalPVal.getProperty().setType(Type.DATE);
+					break;
+				case "Dezimalzahl":
+					finalPVal.setPointer(4);
+					finalPVal.getProperty().setType(Type.FLOAT);
+					break;
+				default:
+					finalPVal.setPointer(0);
+					finalPVal.getProperty().setType(Type.STRING);
+					break;
+				}
+
+				if (datatypemenu.getSelectedItemText() != "Datum") {
 					datepicker.setVisible(false);
 					finish.setVisible(false);
 				}
 			}
+		});
+
+		/**
+		 * Dem Button, der ein Filtern des Reports ermöglicht, seine Funktion zuweisen
+		 */
+		filteredReportButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO: folgende Zeilen ersetzen
+				JabicsUser u = new JabicsUser();
+				u.setId(1);
+				u.setEmail("stahl.alexander@live.de");
+				u.setUsername("Stahlex");
+				u.setLoggedIn(true);
+
+				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
+
+					GWT.log("Gefilterten Report erstellen");
+					reportGenerator.createFilteredContactsOfUserReport(finalPVal, u,
+							new CreateFilteredContactsOfUserReportCallback());
+				} else
+					Window.alert("Bitte in mindestens ein Feld ein Filterkriterium eingeben");
+			}
+
 		});
 
 		/**
@@ -222,58 +291,37 @@ public class Report implements EntryPoint {
 			}
 		});
 
-		filteredReportButton.addClickHandler(new ClickHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				JabicsUser u = new JabicsUser();
-				u.setId(1);
-				u.setEmail("stahl.alexander@live.de");
-				u.setUsername("Stahlex");
-				u.setLoggedIn(true);
-				GWT.log(propertySuggest.getValue());
-				for (int i = 0; i < userpropertys.length; i++) {
 
-					if (userpropertys[i].getLabel() == propertySuggest.getValue()) {
+	}
 
-						if (userpropertys[i].getType() == Type.STRING) {
-							Property p = new Property(null, Type.STRING, false);
-							PValue pvalue = new PValue(p, valueBox.getText(), u);
-							// TODO hier currentUser einfügen
-							reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
-									new CreateFilteredContactsOfUserReportCallback());
-						} else if (userpropertys[i].getType() == Type.INT) {
-							Property p = new Property(null, Type.INT, false);
-							if (valueBox.getText() != null) {
-								PValue pvalue = new PValue(p, valueBox.getText(), u);
-								reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
-										new CreateFilteredContactsOfUserReportCallback());
-							} else
-								System.out.println("Eingegebener Wert ist nicht im korrekten Format (int).");
-
-						} else if (userpropertys[i].getType() == Type.FLOAT) {
-							Property p = new Property(null, Type.FLOAT, false);
-							if (valueBox.getText() != null) {
-								PValue pvalue = new PValue(p, valueBox.getText(), u);
-								reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
-										new CreateFilteredContactsOfUserReportCallback());
-							}
-						} else if (userpropertys[i].getType() == Type.DATE) {
-							Property p = new Property(null, Type.DATE, false);
-							PValue pvalue = new PValue(p, datepicker.getValue(), u);
-							reportGenerator.createFilteredContactsOfUserReport(pvalue, u,
-									new CreateFilteredContactsOfUserReportCallback());
-						} else
-							Window.alert("Bitte in mindestens ein Feld ein Filterkriterium eingeben");
-
-					}
-					// fsklammer
+	class PValueChangeHandler<String> implements ValueChangeHandler {
+		@Override
+		public void onValueChange(ValueChangeEvent event) {
+			GWT.log("Änderungen in pValue: " + event.getValue());
+			try {
+				GWT.log("Pointer: " + finalPVal.getPointer());
+				switch (finalPVal.getPointer()) {
+				case 1:
+					finalPVal.setIntValue(Integer.parseInt((java.lang.String) event.getValue()));
+					break;
+				case 2:
+					finalPVal.setStringValue((java.lang.String) event.getValue());
+					break;
+				case 3:
+					GWT.log("Datum wird durch DatePicker gesetzt");
+					break;
+				case 4:
+					finalPVal.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));
+					break;
+				default:
+					Window.alert("Bitte Datentyp angeben und erneut versuchen");
 				}
+			} catch (Exception e) {
+				Window.alert("Konnte Wert nicht lesen, bitte im richtigen Format eingeben! (Kommazahlen mit Punkten!) "
+						+ e.toString());
 			}
-		});
-
-		retrieveUser();
-
+		}
 	}
 
 	private void retrieveUser() {
@@ -283,26 +331,25 @@ public class Report implements EntryPoint {
 	}
 
 	public void createUserSuggestMenu() {
-		
 
 		/**
 		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 		 */
 		GWT.log("SuggestBox");
 
-		//Instantitierung
+		// Instantitierung
 		sharedContactsButton = new Button("gemeinsame Kontakte");
 		finalUser = new ArrayList<JabicsUser>();
 		userSelectionModel = new SingleSelectionModel<JabicsUser>();
 		userDataProvider = new ListDataProvider<JabicsUser>();
 		userTable = new CellTable<JabicsUser>();
-		
+
 		userTable.setSelectionModel(userSelectionModel);
 		userDataProvider.addDataDisplay(userTable);
 		userDataProvider.setList(finalUser);
-		
+
 		sharedContactsButton.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				JabicsUser u = new JabicsUser();
@@ -311,17 +358,17 @@ public class Report implements EntryPoint {
 				u.setUsername("Stahlex");
 				u.setLoggedIn(true);
 				System.out.println(finalUser.get(0).getUsername());
-				reportGenerator.createAllSharedContactsReport(u, finalUser, new CreateAllSharedContactsReportCallback());
+				reportGenerator.createAllSharedContactsReport(u, finalUser,
+						new CreateAllSharedContactsReportCallback());
 			}
 		});
 
-		
 		userSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				selectedUser = userSelectionModel.getSelectedObject();
 			}
 		});
-		
+
 		addUserButton = new Button("Nutzer hinzufügen");
 		addUserButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
@@ -345,12 +392,14 @@ public class Report implements EntryPoint {
 				}
 			}
 		});
+
 		GWT.log("SuggestBox5");
 		TextColumn<JabicsUser> username = new TextColumn<JabicsUser>() {
 			public String getValue(JabicsUser u) {
 				return u.getUsername();
 			}
 		};
+
 		userTable.addColumn(username, "Nutzer");
 
 		/**
@@ -416,9 +465,8 @@ public class Report implements EntryPoint {
 			p.setVisible(false);
 		}
 	}
-	
-	private class CreateAllSharedContactsReportCallback implements AsyncCallback<FilteredContactsOfUserReport>{
-		
+
+	private class CreateAllSharedContactsReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
 		@Override
 		public void onFailure(Throwable caught) {
 			GWT.log(caught.toString());
@@ -427,15 +475,12 @@ public class Report implements EntryPoint {
 		@Override
 		public void onSuccess(FilteredContactsOfUserReport report) {
 			if (report != null) {
-
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();
 				RootPanel.get("content").add(new HTML(writer.getReportText()));
 			}
-		
 		}
-		
 	}
 
 	private class CreateAllContactsInSystemReportCallback implements AsyncCallback<AllContactsInSystemReport> {
@@ -503,10 +548,10 @@ public class Report implements EntryPoint {
 		@Override
 		public void onSuccess(AllContactsOfUserReport report) {
 			if (report != null) {
-				for(ContactReport c : report.getSubReports()) {
+				for (ContactReport c : report.getSubReports()) {
 					GWT.log(c.getContactInfo().getContent());
 				}
-				
+
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();
@@ -525,16 +570,48 @@ public class Report implements EntryPoint {
 		@Override
 		public void onSuccess(ArrayList<Property> result) {
 			propertyToSuggest = new MultiWordSuggestOracle();
-			userpropertys = new Property[result.size()];
 
-			for (int i = 0; i < result.size(); i++) {
-				userpropertys[i] = result.get(i);
-				propertyToSuggest.add(result.get(i).getLabel());
+			ArrayList<Property> userproperties = result;
+
+			for (Property p : userproperties) {
+				propertyToSuggest.add(p.getLabel());
 			}
 
 			propertySuggest = new SuggestBox(propertyToSuggest);
+
+			/**
+			 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
+			 * die suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
+			 * "Nutzer hinzufügen" zur liste der zu teilenden Nutzer hinzugefügt
+			 */
+			propertySuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
+
+					finalPVal.getProperty().setLabel(propertySuggest.getValue());
+					GWT.log("Wert geändert " + finalPVal.getProperty().getLabel());
+				}
+			});
 			verPanel1.add(propertySuggest);
 
 		}
 	}
+
 }
+
+/*
+ * private class customPropertySuggest implements SuggestOracle{
+ * 
+ * public void add(Property p) {
+ * 
+ * }
+ * 
+ * public void requestSugestions(Request request, Callback callback) {
+ * 
+ * Collection<Suggestion> suggestions = new ArrayList<Suggestion>;
+ * 
+ * 
+ * Response response = new Response(); response.setSuggestions(suggestions);
+ * callback.onSuggestionsReady(request, response);
+ * 
+ * } }
+ */
