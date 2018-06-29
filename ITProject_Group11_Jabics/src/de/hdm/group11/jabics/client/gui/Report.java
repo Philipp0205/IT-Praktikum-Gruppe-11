@@ -5,6 +5,8 @@ import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -124,7 +126,7 @@ public class Report implements EntryPoint {
 
 		// Übergangslösung
 		retrieveUser();
-		
+
 		loadReport();
 
 	}
@@ -154,7 +156,7 @@ public class Report implements EntryPoint {
 		datatypemenu.addItem("Dezimalzahl");
 		datatypemenu.addItem("Ganzzahl");
 		datatypemenu.setSelectedIndex(4);
-		
+
 		verPanel1.add(propertyl);
 		verPanel2.add(valuelabel);
 		verPanel2.add(valueBox);
@@ -201,25 +203,24 @@ public class Report implements EntryPoint {
 		finalPVal = new PValue();
 		Property finalProp = new Property();
 		finalPVal.setProperty(finalProp);
-		
+
 		valueBox.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (finalPVal.getPointer() == 0) {
 					Window.alert("Bitte zuerst Datentyp auswählen!");
 				}
-				
+
 			}
 		});
-		
-		
+
 		valueBox.addValueChangeHandler(new PValueChangeHandler<String>());
 
-		datatypemenu.addClickHandler(new ClickHandler() {
+		datatypemenu.addChangeHandler(new ChangeHandler() {
 
 			Button finish = new Button("Fertig");
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onChange(ChangeEvent event) {
 				switch (datatypemenu.getSelectedItemText()) {
 				case "Text":
 					finalPVal.setPointer(2);
@@ -292,8 +293,6 @@ public class Report implements EntryPoint {
 				}
 			}
 		});
-
-
 
 	}
 
