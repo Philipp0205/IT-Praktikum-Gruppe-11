@@ -615,11 +615,22 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public void addCollaboration(ContactList cl, JabicsUser u) {
 		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
-		if (!users.contains(u)) {
+		Boolean bol = true;
+		for (JabicsUser user : users) {
+			if (user.getId() == u.getId()) {
+				bol = false;
+			}
+		}
+		// Wenn die Liste dem Nutzer noch nicht freigegeben ist
+		if(bol) {
 			cl.setShareStatus(BoStatus.IS_SHARED);
 			clMapper.insertCollaboration(u, cl, false);
-		} else
-			return;
+			ArrayList<Contact> contactsInList = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contactsInList) {
+				addCollaboration(c, u);
+			}
+		}
+		return;
 	}
 
 	/**
