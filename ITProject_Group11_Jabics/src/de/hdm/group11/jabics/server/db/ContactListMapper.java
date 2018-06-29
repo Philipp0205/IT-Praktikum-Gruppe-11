@@ -519,7 +519,7 @@ public class ContactListMapper {
 	public ArrayList<BoStatus> findShareStatus(ArrayList<ContactList> alContactList) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
+		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();

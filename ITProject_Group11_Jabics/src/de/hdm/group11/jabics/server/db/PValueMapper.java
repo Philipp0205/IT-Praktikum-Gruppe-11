@@ -591,6 +591,28 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValueID " + " FROM pValueCollaboration "
 					+ " WHERE isOwner = 0 AND pValueID IN (" + pValueIDs + ")");
 
+			
+			//Das Resultset in ein Array aus BoStatus überführen
+			ArrayList<Integer> ids = new ArrayList<Integer>();
+
+			while (rs.next()) {
+				ids.add(new Integer(rs.getInt("pValueID")));
+			}
+
+			for (PValue p : alPValue) {
+				Boolean bol = false;
+				for (Integer i : ids) {
+					if (i.equals(p.getId())) {
+						bol = true;
+					} 
+				}
+				if (bol) {
+					al.add(BoStatus.IS_SHARED);
+				}else {
+					al.add(BoStatus.NOT_SHARED);
+				}
+			}
+			/*
 			for (PValue pv : alPValue) {
 				while (rs.next()) {
 					if (rs.getInt("pValueID") == pv.getId()) {
@@ -599,7 +621,8 @@ public class PValueMapper {
 						al.add(BoStatus.NOT_SHARED);
 					}
 				}
-			}
+
+			}*/
 
 			// Schließen des SQL-Statements
 			stmt.close();

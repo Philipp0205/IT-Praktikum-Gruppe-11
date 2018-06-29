@@ -7,7 +7,6 @@ import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -17,16 +16,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * 
  * @author Anders
  * @author Kurrle
+ * @author Brase
  */
 public class EditorServiceImpl extends RemoteServiceServlet implements EditorService {
-	/**
-	 * Testobjekte
-	 */
-	JabicsUser u;
-	Property p1, p2, p3, p4, p5, p6, p7;
-	PValue pv1, pv2, pv3, pv4, pv5, pv6, pv7;
-	Contact c1, c2, c3;
-	ContactList cl;
 
 	private static final long serialVersionUID = 1L;
 
@@ -176,9 +168,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newPValue = pvMapper.insertPValue(newPValue, c);
 		System.out.println("newPValue " + newPValue.getId());
 		pvMapper.insertCollaboration(u, newPValue, true);
-		
+
 		JabicsUser usertemp = uMapper.findUserByContact(c);
-		if(u.getId() != usertemp.getId()){
+		if (u.getId() != usertemp.getId()) {
 			pvMapper.insertCollaboration(usertemp, newPValue, false);
 		}
 		cMapper.updateContact(c);
@@ -203,7 +195,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println("createPValue: Neue ID: " + newPValue.getId());
 		pvMapper.insertCollaboration(u, newPValue, true);
 		JabicsUser usertemp = uMapper.findUserByContact(c);
-		if(u.getId() != usertemp.getId()){
+		if (u.getId() != usertemp.getId()) {
 			pvMapper.insertCollaboration(usertemp, newPValue, false);
 		}
 		cMapper.updateContact(c);
@@ -227,7 +219,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newPValue = pvMapper.insertPValue(newPValue, c);
 		pvMapper.insertCollaboration(u, newPValue, true);
 		JabicsUser usertemp = uMapper.findUserByContact(c);
-		if(u.getId() != usertemp.getId()){
+		if (u.getId() != usertemp.getId()) {
 			pvMapper.insertCollaboration(usertemp, newPValue, false);
 		}
 		cMapper.updateContact(c);
@@ -251,7 +243,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newPValue = pvMapper.insertPValue(newPValue, c);
 		pvMapper.insertCollaboration(u, newPValue, true);
 		JabicsUser usertemp = uMapper.findUserByContact(c);
-		if(u.getId() != usertemp.getId()){
+		if (u.getId() != usertemp.getId()) {
 			pvMapper.insertCollaboration(usertemp, newPValue, false);
 		}
 		cMapper.updateContact(c);
@@ -272,20 +264,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
 
 		ArrayList<ContactList> result = new ArrayList<ContactList>();
+		// ArrayList<BoStatus> status = clMapper.findShareStatus(result);
 
+		int i = 0;
 		for (ContactList cl : clMapper.findContactListOfUser(u)) {
 			cl.setOwner(uMapper.findUserByContactList(cl));
 			System.out.println("2.2 getListsOf " + cl.getListName());
 			result.add(cl);
+
+//			if (status.size() == result.size()) {
+//				System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
+//
+//				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+//				c.setShareStatus(status.get(i));
+//				i++;
+//			}
 		}
 
 		return result;
-		// temporär: kann gelöscht werden
-
-		// ArrayList<ContactList> cl = new ArrayList<ContactList>();
-		// cl.add(this.cl);
-		// return cl;
-
 	}
 
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
@@ -302,49 +298,68 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
 
+		ArrayList<Contact> allC = cMapper.findContactsOfContactList(cl);
 		ArrayList<Contact> result = new ArrayList<Contact>();
-
-		// result = cMapper.findContactsOfContactList(cl);
 		System.out.println("Got all Contacts of List " + cl.toString());
 
-		for (Contact c : cMapper.findContactsOfContactList(cl)) {
-			System.out.println("2.2 find Contact" + c.toString());
-			// if(cMapper.findCollaborators(c).contains(u)) result.add(c);
+		ArrayList<BoStatus> status = cMapper.findShareStatus(allC);
+		int i = 0;
 
-			// c.setOwner(uMapper.findUserByContact(c));
+		for (Contact c : allC) {
+			System.out.println("2.2 find Contact" + c.toString());
+			// Eine Liste ist immer komplett geteilt oder nicht geteilt
+			// ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);
+
+			if (status.size() == allC.size()) {
+				System.out.println("BOStatus für Kontakt: " + c.getId() + status.get(i).toString());
+
+				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+				c.setShareStatus(status.get(i));
+				i++;
+			}
+			c.setOwner(uMapper.findUserByContact(c));
 			result.add(c);
 		}
-		// for (Contact cres : result) {
-		// cres.setOwner(uMapper.findUserByContact(cres));
-		// }
-
 		return result;
 	}
 
 	// Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
 	public ArrayList<Contact> getContactsOf(JabicsUser u) {
 		ArrayList<Contact> cons = cMapper.findAllContacts(u);
+		// ArrayList<Contact> result = new ArrayList<Contact>();
 		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList
 		// gespeichert.
 		System.out.println("Got all Contacts of User " + u.getId());
-		for (Contact c : cons) {
-
-			c.setOwner(uMapper.findUserByContact(c));
-
-			/*
-			 * !!!!!!!!!!!!!!!!!!!!! hier ist die Logik für ShareStatus TODO:
-			 * einkommentieren
-			 */
+		// Besitzer und ShareStatus setzen
+		ArrayList<BoStatus> status = cMapper.findShareStatus(cons);
+		if (status.size() == cons.size()) {
+			int i = 1;
+			for (Contact c : cons) {
+				System.out.println("BOStatus für Kontakt: " + c.getId() + status.get(i).toString());
+				c.setOwner(uMapper.findUserByContact(c));
+				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+				
+				c.setShareStatus(status.get(i));
+				if (i == 1) {
+					c.setShareStatus(status.get(i));
+				}
+				i++;
+			}
+			// result.add(c);
 		}
 		return cons;
-
 	}
 
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
+		System.err.println("Alle Geteilten Kontakte");
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for (Contact c : getContactsOf(u)) {
-			if (c.getOwner().getId() != u.getId())
+			// nicht notwendig, da in getContacsOf() schon gesetzt:
+			// c.setOwner(uMapper.findUserByContact(c));
+			if (c.getOwner().getId() != u.getId()) {
 				result.add(c);
+				System.err.println("Geteilter Kontakt 1:" + c.getId());
+			}
 		}
 		return result;
 	}
@@ -724,6 +739,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			return;
 	}
 
+	/**
+	 * Die Freigabe zwischen einem Nutzer und einem Kontakt entfernen. Wenn die
+	 * Freigabe für einen Kontakt entfernt wird, der in einer geteilten Liste
+	 * enthalten ist, wird die Freigabe der Liste ebenfalls entfernt
+	 */
 	public void deleteCollaboration(Contact c, JabicsUser u) {
 		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
 		if (users.isEmpty() || (users.size() == 1 && (users.get(0).getId() == u.getId()))) {
@@ -786,7 +806,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Eine Kontaktliste nach String-Values durchsuchen Diese Methode wird bei
+	 * Eine Kontaktliste nach String-Values durchsuchen. Diese Methode wird bei
 	 * deutlich konkreteren Suchvorhaben oder Kriterien verwendet. Für eine
 	 * allgemeine Suche siehe searchExpressionInList
 	 */
