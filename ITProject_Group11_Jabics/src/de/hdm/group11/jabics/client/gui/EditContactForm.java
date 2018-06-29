@@ -698,7 +698,7 @@ public class EditContactForm extends VerticalPanel {
 		DeleteClickHandler(PVForm pv) {
 			this.pv = pv;
 		}
-
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			editorService.deletePValue(pv.getPV(), contact, new DeletePValueCallback(pv));

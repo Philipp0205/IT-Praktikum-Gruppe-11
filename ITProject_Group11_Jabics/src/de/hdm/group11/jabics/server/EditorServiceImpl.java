@@ -93,14 +93,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		// Sicherstellen, dass in demm neu erstellten Kontakt keine PValues ohne ID
 		// liegen;
-		
+
 		System.err.println("create COntact3");
 		newContact = cMapper.insertContact(newContact);
 		System.err.println("create COntact4");
 		System.out.println("Kontakt id: " + newContact.getId());
 		newContact = cMapper.insertCollaboration(u, newContact, true);
 		System.out.println("Kontakt id: " + newContact.getId());
-		
+
 		ArrayList<PValue> testArray = cArray;
 
 		/*
@@ -111,14 +111,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		 */
 		System.err.println("create COntact4");
 		for (PValue pv : cArray) {
-			System.out.println("PValueID 1 "+pv.getId());
+			System.out.println("PValueID 1 " + pv.getId());
 			PValue newPVal = new PValue();
 			if (pv.getId() == 0 && pv.containsValue()) {
-				System.out.println("PValueID 2"+pv.getId());
+				System.out.println("PValueID 2" + pv.getId());
 				switch (pv.getProperty().getType()) {
 				case STRING:
 					newPVal = createPValue(pv.getProperty(), pv.getStringValue(), newContact, u);
-					System.out.println("Switch String "+pv.getId());
+					System.out.println("Switch String " + pv.getId());
 					break;
 				case DATE:
 					createPValue(pv.getProperty(), pv.getDateValue(), newContact, u);
@@ -130,17 +130,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					createPValue(pv.getProperty(), pv.getIntValue(), newContact, u);
 					break;
 				}
-				if(newPVal.containsValue() && pv.getId() != 0) {
-					System.out.println("Add PValue to Contact "+pv.getId());
-					//newContact.addPValue(newPVal);
+				if (newPVal.containsValue() && pv.getId() != 0) {
+					System.out.println("Add PValue to Contact " + pv.getId());
+					// newContact.addPValue(newPVal);
 					testArray.add(newPVal);
-				} else System.out.println("Beim Erstellen neuer PValues ist etwas schiefgegangen");
+				} else
+					System.out.println("Beim Erstellen neuer PValues ist etwas schiefgegangen");
 			} else
 				System.out.println("Beim Erstellen eines Kontakts war eine Id oder ein Value nicht gesetzt!");
 		}
 		newContact.getValues().clear();
 		System.out.println("newContact " + newContact.toString());
-		
+
 		newContact.setValues(testArray);
 		return newContact;
 	}
@@ -358,19 +359,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * This Method inserts a specified <code>Contact</code> into a list
 	 * 
-	 * @param Contact
-	 *            c
-	 * @param ContactList
-	 *            cl
+	 * @param Contact     c
+	 * @param ContactList cl
 	 * @return updated contact list
 	 */
-	public ContactList addContactToList(Contact c, ContactList cl) {
+	public Contact addContactToList(Contact c, ContactList cl) {
+		System.err.println("Liste ändern: " + cl.getListName());
 		cl.addContact(c);
+		// Für alle Nutzer, mit denen der Kontakt geteilt ist, eine Collab einfügen. Die
+		// überprüfung, ob der Kontakt bereits geteilt ist, passiert in
+		// addCollaboration()
+		System.err.println("Kollaboratoren finden:");
 		for (JabicsUser u : clMapper.findCollaborators(cl)) {
+			System.err.println("Kollaborator:" + u.getUsername());
 			addCollaboration(c, u);
 		}
+		System.err.println("Liste den Kontakt hinzufügen: " + c.getName());
 		clMapper.insertContactIntoContactList(cl, c);
-		return clMapper.updateContactList(cl);
+		return c;
 	}
 
 	/*
@@ -391,7 +397,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * 
 	 * @return Eine ArrayList mit allen Contacts, die dem Suchkriterium entsprechen
 	 */
-	
+
 	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u) {
 		// neue Kontaktliste, um bereits implementierte Methode verwenden zu können
 		ContactList cl = new ContactList(getContactsOf(u));
@@ -416,8 +422,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Löscht einen <code>Contact</code> aus der Datenbank. Löscht den Contact für
 	 * alle Nutzer permanent. Kann nicht rückgängig gemacht werden.
 	 * 
-	 * @param Contact,
-	 *            der gelöscht werden soll
+	 * @param Contact, der gelöscht werden soll
 	 */
 	public void deleteContact(Contact c, JabicsUser ju) {
 		if (uMapper.findUserByContact(c).getId() == ju.getId()) {
@@ -445,8 +450,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Eine <code>ContactList</code> aus der DB löschen. Löscht die Liste für alle
 	 * Nutzer permanent. Kann nicht rückgängig gemacht werden.
 	 * 
-	 * @param cl
-	 *            ContactList, die gelöscht werden soll
+	 * @param cl ContactList, die gelöscht werden soll
 	 */
 	public void deleteContactList(ContactList cl, JabicsUser ju) {
 		if (clMapper.findContactListById(cl.getId()).getOwner().getId() == ju.getId()) {
@@ -465,8 +469,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Eine Property aus der Datenbank löschen. Es wird überprüft, ob die
 	 * Eigenschaft gelöscht werden darf.
 	 * 
-	 * @param Property,
-	 *            die gelöscht werden soll
+	 * @param Property, die gelöscht werden soll
 	 */
 	public void deleteProperty(Property p) {
 		if (!p.isStandard()) {
@@ -503,8 +506,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Ein <code>PValue</code> aktualisieren, sodass es in der Datenbank konsitent
 	 * gespeichert wird.
 	 * 
-	 * @param Ein
-	 *            PropertyValue, das aktualisiert werden soll
+	 * @param Ein PropertyValue, das aktualisiert werden soll
 	 */
 	public PValue updatePValue(PValue pv) {
 		System.out.println(pv.getId());
@@ -609,18 +611,28 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Methode nicht! beim Erstellen eines Objekts aufrufen, da isOwner false
 	 * gesetzt wird.
 	 * 
-	 * @param ContactList,
-	 *            um die es sich handelt
-	 * @param Nutzer,
-	 *            dem die Liste freigegeben werden soll
+	 * @param ContactList, um die es sich handelt
+	 * @param Nutzer, dem die Liste freigegeben werden soll
 	 */
 	public void addCollaboration(ContactList cl, JabicsUser u) {
 		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
-		if (!users.contains(u)) {
+		Boolean bol = true;
+		// Überprüfen, ob die Liste bereits freigegeben ist
+		for (JabicsUser user : users) {
+			if (user.getId() == u.getId()) {
+				bol = false;
+			}
+		}
+		// Wenn die Liste dem Nutzer noch nicht freigegeben ist
+		if (bol) {
 			cl.setShareStatus(BoStatus.IS_SHARED);
 			clMapper.insertCollaboration(u, cl, false);
-		} else
-			return;
+			ArrayList<Contact> contactsInList = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contactsInList) {
+				addCollaboration(c, u);
+			}
+		}
+		return;
 	}
 
 	/**
@@ -628,15 +640,23 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Methode nicht! beim Erstellen eines Objekts aufrufen, da isOwner false
 	 * gesetzt wird.
 	 * 
-	 * @param ContactList,
-	 *            für den eine Collaboration hinzugefügt werden soll
-	 * @param Nutzer,
-	 *            dem der Contact freigegeben werden soll
+	 * @param ContactList, für den eine Collaboration hinzugefügt werden soll
+	 * @param Nutzer, dem der Contact freigegeben werden soll
 	 */
 	public void addCollaboration(Contact c, JabicsUser u) {
+		System.err.println("Kollab: " + c.getName() + u.getUsername());
 		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
-		if (!users.contains(u)) {
+		Boolean bol = true;
+		// Überprüfen, ob der Kontakt bereits freigegeben ist
+		for (JabicsUser user : users) {
+			if (user.getId() == u.getId()) {
+				bol = false;
+			}
+		}
+		// Wenn der Kontakt dem Nutzer noch nicht freigegeben ist
+		if (bol) {
 			c.setShareStatus(BoStatus.IS_SHARED);
+			System.err.println("Kollab einfügen: " + c.getName() + u.getUsername());
 			cMapper.insertCollaboration(u, c, false);
 		} else
 			return;
@@ -646,14 +666,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Eine Freigabe zwischen einem Nutzer und einem PValue einfügen. Diese Methode
 	 * nicht! beim Erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
 	 * 
-	 * @param PValue,
-	 *            für den eine Collaboration hinzugefügt werden soll
-	 * @param Nutzer,
-	 *            dem das PValue freigegeben werden soll
+	 * @param PValue, für den eine Collaboration hinzugefügt werden soll
+	 * @param Nutzer, dem das PValue freigegeben werden soll
 	 */
 	public void addCollaboration(PValue pv, JabicsUser u) {
 		ArrayList<JabicsUser> users = pvMapper.findCollaborators(pv);
-		if (!users.contains(u)) {
+		Boolean bol = true;
+		// Überprüfen, ob der Kontakt bereits freigegeben ist
+		for (JabicsUser user : users) {
+			if (user.getId() == u.getId()) {
+				bol = false;
+			}
+		}
+		// Wenn das PValue dem Nutzer noch nicht freigegeben ist
+		if (bol) {
 			pv.setShareStatus(BoStatus.IS_SHARED);
 			pvMapper.insertCollaboration(u, pv, false);
 		} else
@@ -789,7 +815,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		}
 		return res;
 	}
-	
+
 	/**
 	 * Den Besitzer eines Kontakt-Objekts ermitteln und zurückgeben
 	 */

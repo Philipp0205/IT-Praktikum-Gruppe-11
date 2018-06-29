@@ -25,6 +25,10 @@ import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.client.gui.Editor;
 import de.hdm.group11.jabics.resource.JabicsResources;
 
+/**
+ * 
+ * @author Kurrle, oririentiert an @Rathke und @Thies
+ */
 public class ContactListTreeTab implements TreeViewModel {
 
 	private Contact selectedContact;
@@ -36,9 +40,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	// private LoginInfo loginfo = LoginInfo.getloginInfo();
 	JabicsUser jabicsUser;
 	Editor editor;
-
+	
 	// ContactList currentCL;
-
+	
 	/*
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer
 	 * wenn etwas geändert wird. Also Controller (m-v-c-Modell), zwischen der
@@ -47,7 +51,25 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * In diesem Fall werden werden Kontaktlisten bereitgestellt.
 	 */
 	private ListDataProvider<ContactList> contactListDataProviders;
+	
+	/*
+	 * In der Map werden die ListDataProviders für die expandierten Kontakte
+	 * gepespeichert.
+	 * 
+	 * Das Java Map Interface "mappt" einzigartige Schlüssel (keys) und den
+	 * zugehörigen Wert (value), vergleichbar mit einem Wörterbuch oder
+	 * Zuweisungstabellen in der DB. Die values können jeder Zeit anhand der Keys
+	 * aufgerufen werden. Also ein Assoziativspeicher.
+	 * 
+	 * Beispiel: key: 1234 --> Value: Kontakt (Max, Mustermann, 1990, ...)
+	 */
+	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
+	
+	private BusinessObjectKeyProvider boKeyProvider;
 
+	private SingleSelectionModel<BusinessObject> selectionModel;
+
+	
 	public ContactListTreeTab() {
 		GWT.log("2: Konstruktor ContactListTreeTab");
 
@@ -84,20 +106,6 @@ public class ContactListTreeTab implements TreeViewModel {
 
 	}
 
-	/*
-	 * In der Map werden die ListDataProviders f�r die expandierten Kontakte
-	 * gepespeichert.
-	 * 
-	 * Das Java Map Interface "mappt" einzigartige Schl�ssel (keys) und den
-	 * zugeh�rigen Wert (value), vergleichbar mit einem W�rterbuch oder
-	 * Zuweisungstabellen in der DB. Die values k�nnen jeder Zeit anhand der Keys
-	 * aufgerufen werden. Also ein Assoziativspeicher.
-	 * 
-	 * Beispiel: key: 1234 --> Value: Kontakt (Max, Mustermann, 1990, ...)
-	 * 
-	 */
-	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
-
 	/**
 	 * In folgender Klasse werden BusinessObjects auf eindeutige Zahlenobjekte
 	 * abgebildet, die als Schl�ssel f�r Baumknoten dienen. Dadurch werden im
@@ -125,9 +133,7 @@ public class ContactListTreeTab implements TreeViewModel {
 
 	}
 
-	private BusinessObjectKeyProvider boKeyProvider;
-
-	private SingleSelectionModel<BusinessObject> selectionModel;
+	
 
 	/**
 	 * Implementation der GWT Klasse SelectionsChangeEvent. Diese Methode regelt,
@@ -167,10 +173,16 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Erstellen einer neuen Kontaktliste.
 	 */
 	public void addContactList(ContactList cl) {
-		// Neue Kontaktliste wird dem DataProvider hinzugef�gt.
+		// Neue Kontaktliste wird dem DataProvider hinzugefügt.
+		GWT.log("Cpntaktliste hinzufügen");
 		contactListDataProviders.getList().add(cl);
+		GWT.log("Cpntaktliste hinzufügen2");
+		contactDataProviders.put((ContactList) cl, new ListDataProvider<Contact>());
+		GWT.log("Cpntaktliste hinzufügen3" + cl.getListName());
 		// Die neue Liste wird ausgew�hlt.
 		selectionModel.setSelected(cl, true);
+		contactListDataProviders.flush();
+		contactDataProviders.get(cl).flush();
 
 	}
 
@@ -186,6 +198,7 @@ public class ContactListTreeTab implements TreeViewModel {
 			}
 		}
 		contactListDataProviders.refresh();
+		contactDataProviders.get(cl).flush();
 	}
 
 	/*
@@ -241,15 +254,20 @@ public class ContactListTreeTab implements TreeViewModel {
 	 */
 	public void addContactOfList(ContactList cl, Contact c) {
 		// wenn es noch keinen Kontaktlisten Provider f�r den Kontakt gitb, dann wurde
-		// der Baum noch nicht ge�ffnet und es passiert nichts.
-		if (!contactDataProviders.containsKey(cl)) {
-			return;
-		}
+		// der Baum noch nicht geöffnet und es passiert nichts.
+//		if (!contactDataProviders.containsKey(cl)) {
+//			return;
+//		}
+		GWT.log("Kontakt zu Liste hinzufügen");
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
-		if (!contactsProvider.getList().contains(c)) {
-			contactsProvider.getList().add(c);
+		
+		GWT.log("Folgende Kontakte in Liste " + cl.getListName());
+		GWT.log(cl.getContacts().toString());
 
-		}
+		GWT.log("Kontakt hinzufügen: " + c.getName());
+		contactsProvider.getList().add(c);
+		
+		contactsProvider.flush();
 		selectionModel.setSelected(c, true);
 	}
 
