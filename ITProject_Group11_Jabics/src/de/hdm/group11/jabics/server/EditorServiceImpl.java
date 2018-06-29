@@ -760,6 +760,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
 		ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
+		for (Contact c : alc) {
+			System.out.println(c.getName());
+		}
 		return alc;
 	}
 
@@ -769,7 +772,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return ArrayList<Contact>
 	 */
 	public ArrayList<Contact> searchInList(int i, ContactList cl) {
-		return Filter.filterContactsByInt(cl.getContacts(), i);
+		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
+		ArrayList<Contact> alc = Filter.filterContactsByInt(contacts, i);
+		return alc;
 	}
 
 	/**
@@ -778,7 +786,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return ArrayList<Contact>
 	 */
 	public ArrayList<Contact> searchInList(float f, ContactList cl) {
-		return Filter.filterContactsByFloat(cl.getContacts(), f);
+		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
+		ArrayList<Contact> alc = Filter.filterContactsByFloat(contacts, f);
+		return alc;
 	}
 
 	/**

@@ -31,23 +31,28 @@ public class SearchForm extends VerticalPanel{
 	Label l;
 	ContactList cl ;
 	Editor e;
+	Label ausgabeLabel;
 	
 	public void onLoad() {
 		ct = new ContactCellListTab();
 		list = ct.createContactTabForSearchForm();
+		ausgabeLabel = new Label();
 		this.add(l);
 		this.add(tb);
 		this.add(sb);
 		this.add(sp);
 		this.add(list);
+		this.add(ausgabeLabel);
+		ausgabeLabel.setVisible(false);
 		ct.setEditor(e);
 		l.setText("Durchsuche Liste \"" + cl.getListName() + "\" nach Wert: ");
 		
 		sb.addClickHandler((new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
-				GWT.log("Suche für " + cl.getListName() + " nach  " + tb.getValue());
-				editorService.searchInList(tb.getValue(), cl, new SearchInListCallback());
+				sp.setVisible(false);
+				ausgabeLabel.setVisible(false);
+				editorService.searchInList(tb.getText(), cl, new SearchInListCallback());
 			}
 		}));
 	}
@@ -76,13 +81,15 @@ public class SearchForm extends VerticalPanel{
  		@Override
  		public void onSuccess(ArrayList<Contact> result) {
  			if (result != null) {
- 	 			GWT.log("OnSuccess");
  	 			for(Contact c : result) {
- 	 			GWT.log(c.getValues().get(0).getStringValue());
  	 			ct.addsearchedContact(c);
  	 			}
- 	 			GWT.log("halloeinTest");
+ 	 			sp.setVisible(true);
  	 			sp.add(list, "Ausgabe");
+ 	 			ausgabeLabel.setText("Es wurde nach '" + tb.getValue() + "' gesucht.");
+ 	 			ausgabeLabel.setVisible(true);
+ 	 			tb.setText("");
+ 	 			
  	 			
  			}
 }
