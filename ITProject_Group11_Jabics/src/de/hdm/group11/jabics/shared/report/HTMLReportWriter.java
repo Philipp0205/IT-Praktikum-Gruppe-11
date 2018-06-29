@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 
-
 /**
  * Implementiert die Methoden aus ReportWriter, um Reports in das HTML-Format zu
  * übersetzen.
@@ -13,7 +12,7 @@ import com.google.gwt.core.client.GWT;
  * @author Anders
  *
  */
-public class HTMLReportWriter extends ReportWriter implements Serializable{
+public class HTMLReportWriter extends ReportWriter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -27,7 +26,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 	public void resetReportText() {
 		this.reportText = "";
 	}
-	
+
 	public String getReportText() {
 		return this.reportText;
 	}
@@ -62,7 +61,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div id=\"report\">");
 			sb.append("<h3> Report für " + r.getCreator().getUsername() + "</h3>");
-			sb.append("<h5> Erstellt am " + r.getCreationDate() + "</h5>");
+			// sb.append("<h5> Erstellt am " + r.getCreationDateAsString() + "</h5>");
 			return sb.toString();
 		} else
 			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report ohne Name</h3>";
@@ -74,13 +73,13 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		sb.append("<div id=\"reportTable\">");
 		sb.append("<table style=\"width:700px; border: 1px solid black;\">");
 		// Die Spaltennamen definieren
-		sb.append("<tr>");
+		// sb.append("<tr>");
 		GWT.log("Tabelle erstellen");
-		for (int i = 0; i < 10; i++) {
-			sb.append("<th> <b>Spalte" + i + " </b> </th>");
-		}
-		GWT.log("Tabelle erstellen");
-		sb.append("</tr>");
+		/*
+		 * for (int i = 0; i < 10; i++) { sb.append("<th> <b>Spalte" + i +
+		 * " </b> </th>"); }
+		 */
+		// sb.append("</tr>");
 		// die Zeilen pro Kontakt füllen
 		for (ContactReport c : cons) {
 			GWT.log("HTML Writer: neuer Kontakt Report für " + c.getContactInfo());
@@ -88,48 +87,53 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 				sb.append(" <tr> <td> <b>" + c.getContactInfo() + "</b> </td>");
 			} else {
 				GWT.log("Keinanzeigename");
-				sb.append("<tr><td> <b>kein Anzeigename</b> </td> </tr>");
+				sb.append("<tr><td> <b>Kein Anzeigename</b> </td> </tr>");
 			}
-			sb.append("<td> <p>Erstellt am " + c.getCreationDate() + "</p> </td>");
-			sb.append("<td> <p>Besitzer: " + c.getUserInfo() + "</p> </td>");
+			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
+			sb.append("<td> <p>Besitzer: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
+			// sb.append("<td> <p>Erstellt am " + c.getCreationDateAsString() + "</p>
+			// </td>");
+			// sb.append("<td> <p>Zuletzt geändert: " + c.getCreationDateAsString() + "</p>
+			// </td>");
 			sb.append("</tr><tr>");
 			for (PropertyView pv : c.getContent()) {
-				int i = 0;
-				if (pv.getPname() != null && pv.getPvalue() != null && i < 10) {
+				// int i = 0;
+				if (pv.getPname() != null && pv.getPvalue() != null) {
 					sb.append("<td> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue() + " </p> </td>");
-					i++;
-				} else {
-					if (i < 10) {
-						sb.append("<td> <p>leer</p> </td>");
-						i++;
-					}
+					// i++;
+				} else if (pv.getPname() != null) {
+					sb.append("<td> <p> " + pv.getPname() + "</p> </td>");
+					// i++;
+				} else if (pv.getPvalue() != null) {
+					sb.append("<td> <p> " + pv.getPvalue() + "</p> </td>");
+					// i++;
 				}
 			}
-			sb.append("</tr>");
 		}
+		sb.append("</tr>");
 		sb.append("</table>");
 		sb.append("</div>");
 		GWT.log("Tabelle erstellenfertig" + sb.toString());
 		return sb.toString();
-
 	}
 
 	public void process(AllContactsInSystemReport r) {
 		StringBuffer sb = new StringBuffer();
 		/**
-		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, Tabelle mit allen auszugebenden Kontakten
-		 * und eine Fußzeile hinzufügen
+		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, Tabelle mit allen
+		 * auszugebenden Kontakten und eine Fußzeile hinzufügen
 		 */
 		sb.append(createHeadOfReport(r));
 		sb.append(paragraph2HTML(r.getHeadline()));
 		/**
-		 * Da ein AllContactsInSystem Report viele UserReports speichert, diese durchlaufen und für jeden 
-		 * die Tabelle mit allen Kontakten ausgeben
+		 * Da ein AllContactsInSystem Report viele UserReports speichert, diese
+		 * durchlaufen und für jeden die Tabelle mit allen Kontakten ausgeben
 		 */
-		for(AllContactsOfUserReport acur : r.getSubReports()) {
+		for (AllContactsOfUserReport acur : r.getSubReports()) {
 			sb.append("<p style=\"margin-bottom: 8px\">Alle Kontakte von " + acur.getCreator().getUsername() + "</p>");
 			sb.append(convertContactReportsToHTML(acur.getSubReports()));
-			sb.append("<p style=\"margin-bottom: 16px\">Ende des Reports von " + acur.getCreator().getUsername() + "</p>");
+			sb.append("<p style=\"margin-bottom: 16px\">Ende des Reports von " + acur.getCreator().getUsername()
+					+ "</p>");
 		}
 		sb.append(paragraph2HTML(r.getFootline()));
 		sb.append("</div>");
@@ -139,8 +143,8 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 	public void process(AllContactsOfUserReport r) {
 		StringBuffer sb = new StringBuffer();
 		/**
-		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen auszugebenden Kontakten
-		 * und eine Fußzeile hinzufügen
+		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen
+		 * auszugebenden Kontakten und eine Fußzeile hinzufügen
 		 */
 		sb.append(createHeadOfReport(r));
 		sb.append(paragraph2HTML(r.getHeadline()));
@@ -154,8 +158,8 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		GWT.log("Report zu HTML machen");
 		StringBuffer sb = new StringBuffer();
 		/**
-		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen auszugebenden Kontakten
-		 * und eine Fußzeile hinzufügen
+		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen
+		 * auszugebenden Kontakten und eine Fußzeile hinzufügen
 		 */
 		sb.append(createHeadOfReport(r));
 		sb.append(paragraphWithFilter2HTML(r.getFiltercriteria()));

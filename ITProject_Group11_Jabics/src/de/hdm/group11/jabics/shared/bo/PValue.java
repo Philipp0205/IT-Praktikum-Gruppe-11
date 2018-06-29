@@ -195,7 +195,6 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 
 	public void setProperty(Property property) {
 		this.property = property;
-		// this.dateUpdated = LocalDateTime.now();
 	}
 
 	public int getPropertyId() {

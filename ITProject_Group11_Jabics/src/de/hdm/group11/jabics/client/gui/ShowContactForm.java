@@ -32,6 +32,7 @@ public class ShowContactForm extends VerticalPanel {
 	Editor e;
 	JabicsUser u;
 	Contact currentContact;
+	Boolean userIsOwner = false;
 
 	CellTable<PValue> values;
 	ListDataProvider<PValue> valueProvider;
@@ -104,6 +105,16 @@ public class ShowContactForm extends VerticalPanel {
 
 	public void onLoad() {
 
+		// den Status des Boolschen Werts userIsOwner ermitteln
+		u.setId(1);
+		userIsOwner();
+
+		if (userIsOwner) {
+			sharePanel.setVisible(true);
+		} else {
+			sharePanel.setVisible(false);
+		}
+
 		editButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				e.editContact(currentContact);
@@ -143,6 +154,26 @@ public class ShowContactForm extends VerticalPanel {
 			GWT.log("4OnLoad SHOWContact");
 		}
 	}
+	
+	public void userIsOwner() {
+		GWT.log("userIsOwner");
+		try {
+			GWT.log("userIsOwner1");
+			if (currentContact.getOwner() != null) {
+				GWT.log("userIsOwner2");
+				if (currentContact.getOwner().getId() == u.getId()) {
+					userIsOwner = true;
+					GWT.log("userIsOwner3");
+				} else
+					userIsOwner = false;
+				GWT.log("userIsOwner4");
+			} else editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
+			GWT.log("userIsOwner fertig");
+		} catch (Exception e) {
+			GWT.log("Besitzer in Kontakt nicht gesetzt");
+			editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
+		}
+	}
 
 	public void setContact(Contact c) {
 		this.currentContact = c;
@@ -160,19 +191,33 @@ public class ShowContactForm extends VerticalPanel {
 		this.e = e;
 	}
 
+
+	class GetOwnerOfContactCallback implements AsyncCallback<JabicsUser> {
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.toString());
+		}
+
+		public void onSuccess(JabicsUser result) {
+			GWT.log("Besitzer geholt!");
+			currentContact.setOwner(result);
+			userIsOwner();
+		}
+	}
+
+	
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
+
 			if (result != null) {
 				currentContact.setValues(result);
 				valueProvider.setList(result);
 				GWT.log(result.get(1).getStringValue());
 				valueProvider.flush();
 			}
-
 		}
 	}
 

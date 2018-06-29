@@ -203,6 +203,7 @@ public class ContactMapper {
 	public ArrayList<Contact> findAllContacts(JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		System.out.println("Alle Kontakte Finden");
 
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -232,6 +233,11 @@ public class ContactMapper {
 			// Schließen der Datenbankverbindung
 	        stmt.close();
 	        con.close();
+	        
+	        for(Contact c : al) {
+	        	System.out.println("Alle Kontakte Finden " + c.getName() + c.getId());
+	        }
+	        
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -320,9 +326,13 @@ public class ContactMapper {
 				c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
+			
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        con.close();
+			con.close();
+			
+			// Rückgabe der mit Contact-Objekten befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -363,9 +373,13 @@ public class ContactMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
+			
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        con.close();
+			con.close();
+			
+			// Rückgabe der mit JabicsUsern befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -399,9 +413,13 @@ public class ContactMapper {
 			stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + c.getId() + ", " + u.getId() + ")");
 
+			// Schließen des SQL-Statements
+			stmt.close();
+			
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        con.close();
+			con.close();
+			
+			// Rückgabe des Contact-Objekts
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -430,9 +448,12 @@ public class ContactMapper {
 			// Löschen der Teilhaberschaft.
 			stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= "
 					+ c.getId());
+
+			// Schließen des SQL-Statements
+			stmt.close();
+			
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        con.close();
+			con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
 		}

@@ -11,6 +11,8 @@ import com.google.gwt.core.client.GWT;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.BoStatus;
 
 /**
  * @author Brase
@@ -399,7 +401,9 @@ public class ContactListMapper {
 	    	ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 	    
 	    	// Auswählen von Tupeln mit einer bestimmten User-Id. 
+
 	    	ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email "
+
 	    			+ " FROM systemUser " 
 	    			+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
 	    			+ " WHERE contactListID = " + cl.getId());
@@ -414,6 +418,43 @@ public class ContactListMapper {
 	        stmt.close();
 	        con.close();
 	    	return al;
+	    }
+	    catch (SQLException e) {
+	    	System.err.print(e);
+	    	return null;
+	    }
+	}
+	
+	public BoStatus findShareStatus(ContactList cl){
+		// Erzeugen der Datenbankverbindung
+	    Connection con = DBConnection.connection();
+	    
+	    try {
+	    	// Erzeugen eines ungefüllten SQL-Statements
+	    	Statement stmt = con.createStatement();
+
+	    	// Auswählen von Tupeln mit einer bestimmten User-Id. 
+	    	ResultSet rs = stmt.executeQuery("SELECT contactlistID"
+	    			+ " FROM contactlistCollaboration "
+	    			+ " WHERE isOwner = 0 AND contactListID = " + cl.getId());
+
+	    	if (rs.next()) {
+		    	// Schließen des SQL-Statements
+		        stmt.close();
+		        
+				// Schließen der Datenbankverbindung
+		        con.close();
+		        
+	    		return BoStatus.IS_SHARED;
+	        } else {
+	        	// Schließen des SQL-Statements
+	        	stmt.close();
+	        	
+	        	// Schließen der Datenbankverbindung
+	        	con.close();
+	        
+	        	return BoStatus.NOT_SHARED;
+	        }
 	    }
 	    catch (SQLException e) {
 	    	System.err.print(e);
