@@ -13,7 +13,6 @@ import de.hdm.group11.jabics.shared.bo.*;
  * @author Brase
  * @author Stahl
  * 
- * 
  *         Diese Mapper-Klasse realisiert die Abbildung von <code>PValue</code>
  *         Objekten auf die relationale Datenbank. Sie stellt alle notwendigen
  *         Methoden zur Verwaltung der Eigenschaftsausprägungen in der Datenbank
@@ -253,28 +252,17 @@ public class PValueMapper {
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE contactID = "
 					+ c.getId());
 			while (rs.next()) {
-				// Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
+
 				PValue pv = new PValue();
 				Property p = new Property();
-
+				// Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 				pv.setId(rs.getInt("pValueID"));
 				pv.setStringValue(rs.getString("stringValue"));
 				pv.setIntValue(rs.getInt("intValue"));
 				pv.setFloatValue(rs.getFloat("floatValue"));
 				pv.setDateCreated(rs.getTimestamp("dateCreated"));
 				pv.setDateUpdated(rs.getTimestamp("dateUpdated"));
-				// Muss noch in der Apl realisiert werden
 				pv.setDateValue(rs.getDate("dateValue"));
-				if (pv.getStringValue() != null) {
-					pv.setPointer(2);
-
-				} else if (pv.getDateValue() != null) {
-					pv.setPointer(3);
-				} else if (Integer.valueOf(pv.getIntValue()) != null) {
-					pv.setPointer(1);
-				} else {
-					pv.setPointer(4);
-				}
 				p.setId(rs.getInt("propertyID"));
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
@@ -282,6 +270,15 @@ public class PValueMapper {
 				p.setDateCreated(rs.getTimestamp("dateCreated"));
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				pv.setProperty(p);
+				if (p.getType().equals("STRING")) {
+					pv.setPointer(2);
+				} else if (p.getType().equals("DATE")) {
+					pv.setPointer(3);
+				} else if (p.getType().equals("INT")) {
+					pv.setPointer(1);
+				} else {
+					pv.setPointer(4);
+				}
 				al.add(pv);
 			}
 
@@ -576,18 +573,23 @@ public class PValueMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
+			// Deklaration und Initialisierung einer ArrayList<BoStatus>
 			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
 
-			StringBuffer s = new StringBuffer();
+			// Deklaration und Initialisierung eines StringBuffers
+			StringBuffer pValueIDs = new StringBuffer();
 
+			// pValueIDs an den StringBuffer anhängen
 			for (PValue pv : alPValue) {
-				s.append(pv.getId());
-				s.append(",");
+				pValueIDs.append(pv.getId());
+				pValueIDs.append(",");
 			}
-			s.deleteCharAt(s.lastIndexOf(","));
+
+			// Letztes Komma im StringBuffer löschen
+			pValueIDs.deleteCharAt(pValueIDs.lastIndexOf(","));
 
 			ResultSet rs = stmt.executeQuery("SELECT pValueID " + " FROM pValueCollaboration "
-					+ " WHERE isOwner = 0 AND pValueID IN (" + s + ")");
+					+ " WHERE isOwner = 0 AND pValueID IN (" + pValueIDs + ")");
 
 			for (PValue pv : alPValue) {
 				while (rs.next()) {
@@ -598,12 +600,14 @@ public class PValueMapper {
 					}
 				}
 			}
+
 			// Schließen des SQL-Statements
 			stmt.close();
 
 			// Schließen der Datenbankverbindung
 			con.close();
 
+			// Rückgabe der ArrayList<BoStatus>
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);

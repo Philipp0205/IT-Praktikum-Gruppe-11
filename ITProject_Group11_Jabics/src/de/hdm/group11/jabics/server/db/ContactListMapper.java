@@ -6,12 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.google.gwt.core.client.GWT;
-
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
-import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
 
 /**
@@ -519,7 +516,7 @@ public class ContactListMapper {
 		}
 	}
 
-	public BoStatus findShareStatus(ContactList cl) {
+	public ArrayList<BoStatus> findShareStatus(ArrayList<ContactList> alContactList) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
@@ -527,27 +524,42 @@ public class ContactListMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Auswählen von Tupeln mit einer bestimmten User-Id.
-			ResultSet rs = stmt.executeQuery("SELECT contactListID" + " FROM contactlistCollaboration "
-					+ " WHERE isOwner = 0 AND contactListID = " + cl.getId());
+			// Deklaration und Initialisierung einer ArrayList<BoStatus>
+			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
 
-			if (rs.next()) {
-				// Schließen des SQL-Statements
-				stmt.close();
+			// Deklaration und Initialisierung eines StringBuffers
+			StringBuffer contactListIDs = new StringBuffer();
 
-				// Schließen der Datenbankverbindung
-				con.close();
-
-				return BoStatus.IS_SHARED;
-			} else {
-				// Schließen des SQL-Statements
-				stmt.close();
-
-				// Schließen der Datenbankverbindung
-				con.close();
-
-				return BoStatus.NOT_SHARED;
+			// pValueIDs an den StringBuffer anhängen
+			for (ContactList cl : alContactList) {
+				contactListIDs.append(cl.getId());
+				contactListIDs.append(",");
 			}
+
+			// Letztes Komma im StringBuffer löschen
+			contactListIDs.deleteCharAt(contactListIDs.lastIndexOf(","));
+
+			ResultSet rs = stmt.executeQuery("SELECT contactListID " + " FROM contactlistCollaboration "
+					+ " WHERE isOwner = 0 AND contactListID IN (" + contactListIDs + ")");
+
+			for (ContactList cl : alContactList) {
+				while (rs.next()) {
+					if (rs.getInt("contactListID") == cl.getId()) {
+						al.add(BoStatus.IS_SHARED);
+					} else {
+						al.add(BoStatus.NOT_SHARED);
+					}
+				}
+			}
+
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
+
+			// Rückgabe der ArrayList<BoStatus>
+			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;
