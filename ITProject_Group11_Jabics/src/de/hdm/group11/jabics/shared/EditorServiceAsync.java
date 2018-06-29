@@ -42,7 +42,7 @@ public interface EditorServiceAsync {
 	
 	void searchForContactByExpression(String s, JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 	
-	void removeContactFromList(Contact c, ContactList cl, AsyncCallback<ContactList> callback);
+	void removeContactFromList(Contact c, ContactList cl, AsyncCallback<Contact> callback);
 	
 	void deleteContact(Contact c, JabicsUser u, AsyncCallback<Void> callback);
 	

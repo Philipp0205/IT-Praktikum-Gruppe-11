@@ -55,6 +55,10 @@ public class TreeViewMenu {
 	public void addContactToList(ContactList cl, Contact c) {
 		contactListTab.addContactOfList(cl, c);
 	}
+	
+	public void removeContactFromList(ContactList cl, Contact c) {
+		contactListTab.removeContactOfContactList(cl, c);
+	}
 
 	public void addContact(Contact c) {
 		contactTab.addContact(c);

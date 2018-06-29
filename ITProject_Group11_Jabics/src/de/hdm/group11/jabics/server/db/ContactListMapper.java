@@ -221,6 +221,9 @@ public class ContactListMapper {
 			con.close();
 			return cl;
 		} catch (SQLException e) {
+			System.out.println("Kontakt: " + c.getId());
+			System.out.println("KontaktList: " + cl.getId());
+			
 			System.err.print("Verkackt");
 			System.err.print(e);
 			return null;
