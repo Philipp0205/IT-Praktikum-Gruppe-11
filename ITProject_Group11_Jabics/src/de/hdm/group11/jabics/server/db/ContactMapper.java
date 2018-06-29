@@ -89,9 +89,8 @@ public class ContactMapper {
 	/**
 	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
 	 * 
-	 * @param c
-	 *            das <code>Contact</code> Objekt, dass in die Datenbank eingetragen
-	 *            werden soll.
+	 * @param c das <code>Contact</code> Objekt, dass in die Datenbank eingetragen
+	 *          werden soll.
 	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
 	 */
 	public Contact insertContact(Contact c) {
@@ -130,8 +129,7 @@ public class ContactMapper {
 	/**
 	 * Diese Methode aktualisiert ein <code>Contact</code> Objekt in der Datenbank.
 	 * 
-	 * @param c
-	 *            das <code>Contact</code> Objekt, dass aktualisiert werden soll.
+	 * @param c das <code>Contact</code> Objekt, dass aktualisiert werden soll.
 	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
 	 */
 	public Contact updateContact(Contact c) {
@@ -167,8 +165,7 @@ public class ContactMapper {
 	/**
 	 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
 	 * 
-	 * @param c
-	 *            das <code>Contact</code> Objekt, dass gelöscht werden soll.
+	 * @param c das <code>Contact</code> Objekt, dass gelöscht werden soll.
 	 * 
 	 */
 	public void deleteContact(Contact c) {
@@ -193,9 +190,8 @@ public class ContactMapper {
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code>
 	 * Objekten eines <code>User</code> Objekts aus der Datenbank zurück.
 	 * 
-	 * @param u
-	 *            das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
-	 *            sollen.
+	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
+	 *          sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des
 	 *         <code>User</code> Objekts.
 	 */
@@ -248,8 +244,7 @@ public class ContactMapper {
 	 * Diese Methode gibt ein <code>Contact</code> Objekt zurück, dass eine
 	 * bestimmte ID hat.
 	 * 
-	 * @param id
-	 *            die Id nach welcher gesucht werden soll.
+	 * @param id die Id nach welcher gesucht werden soll.
 	 * @return Das <code>Contact</code> Objekt mit der gesuchten id.
 	 */
 	public Contact findContactById(int id) {
@@ -286,9 +281,8 @@ public class ContactMapper {
 	 * Mit dieser Methode werden alle <code>Contact</code> Objekte einer bestimmten
 	 * Liste aus der Datenbank abgerufen.
 	 *
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt aus welchem alle Kontakte
-	 *            ermittelt werden sollen.
+	 * @param cl das <code>ContactList</code> Objekt aus welchem alle Kontakte
+	 *           ermittelt werden sollen.
 	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
 	 */
 
@@ -342,8 +336,7 @@ public class ContactMapper {
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code>
 	 * Objekten die eine Teilhaberschaft an einem bestimmten Kontakt besitzen.
 	 * 
-	 * @param c
-	 *            das <code>Contact</code> Objekt, dessen Teilhaber gesucht werden.
+	 * @param c das <code>Contact</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
 	public ArrayList<JabicsUser> findCollaborators(Contact c) {
@@ -389,14 +382,11 @@ public class ContactMapper {
 	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
 	 * einem <code>Contact</code> Objekt in die Datenbank ein.
 	 * 
-	 * @param u
-	 *            der User der an einem Kontakt Teilhaberschaftsrechte erlangen
-	 *            soll.
-	 * @param c
-	 *            der Kontakt an dem ein User Teilhaberschaft haben soll.
-	 * @param IsOwner
-	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
-	 *            zuzuweisende Teilhaber auch der Owner ist.
+	 * @param u       der User der an einem Kontakt Teilhaberschaftsrechte erlangen
+	 *                soll.
+	 * @param c       der Kontakt an dem ein User Teilhaberschaft haben soll.
+	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der
+	 *                zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>Contact</code> Objekt
 	 */
 	public Contact insertCollaboration(JabicsUser u, Contact c, boolean IsOwner) {
@@ -429,11 +419,9 @@ public class ContactMapper {
 	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code>
 	 * Objekt und einem <code>Contact</code> Objekt.
 	 * 
-	 * @param c
-	 *            der ausgewählte Kontakt.
-	 * @param u
-	 *            der Nutzer der die Teilhaberschaft zu dem <code>Contact</code>
-	 *            Objekt verlieren soll.
+	 * @param c der ausgewählte Kontakt.
+	 * @param u der Nutzer der die Teilhaberschaft zu dem <code>Contact</code>
+	 *          Objekt verlieren soll.
 	 */
 	public void deleteCollaboration(Contact c, JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -478,13 +466,24 @@ public class ContactMapper {
 			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "
 					+ " WHERE isOwner = 0 AND contactID IN (" + s + ")");
 
+			//Das Resultset in ein Array aus BoStatus überführen
+			ArrayList<Integer> ids = new ArrayList<Integer>();
+
+			while (rs.next()) {
+				ids.add(new Integer(rs.getInt("contactID")));
+			}
+
 			for (Contact c : alContact) {
-				while (rs.next()) {
-					if (rs.getInt("contactID") == c.getId()) {
-						al.add(BoStatus.IS_SHARED);
-					} else {
-						al.add(BoStatus.NOT_SHARED);
-					}
+				Boolean bol = false;
+				for (Integer i : ids) {
+					if (i.equals(c.getId())) {
+						bol = true;
+					} 
+				}
+				if (bol) {
+					al.add(BoStatus.IS_SHARED);
+				}else {
+					al.add(BoStatus.NOT_SHARED);
 				}
 			}
 

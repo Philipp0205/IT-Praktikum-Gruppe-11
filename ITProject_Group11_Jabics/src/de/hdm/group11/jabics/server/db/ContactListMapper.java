@@ -504,7 +504,7 @@ public class ContactListMapper {
 	public BoStatus findShareStatus(ContactList cl) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
+		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
