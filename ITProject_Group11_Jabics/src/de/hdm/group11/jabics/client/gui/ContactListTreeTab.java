@@ -253,6 +253,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Weiter zu den Kontakten
 	 */
 	public void addContactOfList(ContactList cl, Contact c) {
+
 		// wenn es noch keinen Kontaktlisten Provider f�r den Kontakt gitb, dann wurde
 		// der Baum noch nicht geöffnet und es passiert nichts.
 //		if (!contactDataProviders.containsKey(cl)) {
@@ -268,6 +269,7 @@ public class ContactListTreeTab implements TreeViewModel {
 		contactsProvider.getList().add(c);
 		
 		contactsProvider.flush();
+
 		selectionModel.setSelected(c, true);
 	}
 

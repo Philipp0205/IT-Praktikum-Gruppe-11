@@ -45,6 +45,11 @@ public class TreeViewMenu {
 
 	public void addContactList(ContactList cl) {
 		contactListTab.addContactList(cl);
+		for (Contact c : cl.getContacts()) {
+			GWT.log("8.1 add Contact " + c.getName() + "to List " + cl.getListName());
+			contactListTab.addContactOfList(cl, c);
+		}
+
 	}
 
 	public void addContactToList(ContactList cl, Contact c) {

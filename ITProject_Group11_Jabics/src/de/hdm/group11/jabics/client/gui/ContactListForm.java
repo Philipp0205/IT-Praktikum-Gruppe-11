@@ -293,11 +293,14 @@ public class ContactListForm extends VerticalPanel {
 				for (Contact c : selectionModel.getSelectedSet()) {
 					
 					GWT.log("7.4 Add Contact " + c.getName() + "to List " + currentList.getId()+ " " + currentList.getListName() + " " +
-				currentList.getContacts().toString());
+					currentList.getContacts().toString());
+					
+					GWT.log("7.4 Contact " + c.getId() + " " + c.getName() + " " + c.getValues() + " " + c.getOwner());
+					
 					/*
 					 * TODO hier gibt es zwei möglichkeiten der Implementierung: nummer 2 ist
 					 * auskommatiert, noch entscheiden welhes besser ist!
-					 */
+					 */		
 					editorService.addContactToList(c, currentList, new AddContactToListCallback());
 					
 					
@@ -512,9 +515,11 @@ public class ContactListForm extends VerticalPanel {
 				 */
 				GWT.log("7.5  " + "add " + contact.getName() + " to "+ currentList.getListName() + " to Tree" + 
 				 currentList.getContacts().toString());
+
 				currentList.addContact(contact);
 				e.addContactToListInTree(currentList, contact);
 				//e.updateContactListInTree(list);
+
 
 				//onLoad();
 

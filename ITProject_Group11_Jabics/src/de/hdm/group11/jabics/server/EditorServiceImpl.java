@@ -363,8 +363,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @param ContactList cl
 	 * @return updated contact list
 	 */
+
 	public Contact addContactToList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
+
 		cl.addContact(c);
 		// Für alle Nutzer, mit denen der Kontakt geteilt ist, eine Collab einfügen. Die
 		// überprüfung, ob der Kontakt bereits geteilt ist, passiert in
