@@ -104,6 +104,8 @@ public interface EditorService extends RemoteService{
 	public ArrayList<Property> getStandardProperties() throws IllegalArgumentException;
 	
 	public void initialise();
+	
+	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) throws IllegalArgumentException;
 
 
 }

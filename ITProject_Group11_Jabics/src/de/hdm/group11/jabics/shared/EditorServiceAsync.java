@@ -102,6 +102,8 @@ public interface EditorServiceAsync {
 	
 	void initialise(AsyncCallback<Void> callback);
 	
+	void getPropertysOfJabicsUser(JabicsUser u, AsyncCallback<ArrayList<Property>> callback);
+	
 	
 
 }
