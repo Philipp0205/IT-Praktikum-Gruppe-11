@@ -583,10 +583,12 @@ public class PValueMapper {
  	    	
 	    	
 	    	for(PValue pv : alPValue) {
-	    		if (rs.next()) {
+	    		while (rs.next()) {
+	    			if(rs.getInt("pValueID")==pv.getId()) {
 	    			al.add(BoStatus.IS_SHARED);
 	    		} else {
 	    			al.add(BoStatus.NOT_SHARED);
+	    		}
 	    		}
 	        }
     		return al;
