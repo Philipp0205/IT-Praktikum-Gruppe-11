@@ -296,7 +296,6 @@ public class ContactMapper {
 
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
