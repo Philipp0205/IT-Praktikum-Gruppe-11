@@ -240,14 +240,27 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Weiter zu den Kontakten
 	 */
 	public void addContactOfList(ContactList cl, Contact c) {
-		// wenn es noch keinen Kontaktlisten Provider f�r den Kontakt gitb, dann wurde
+		GWT.log("6.1 addContactOfList ");
+		// wenn es noch keinen KontaktlistenProvider f�r den Kontakt gitb, dann wurde
 		// der Baum noch nicht ge�ffnet und es passiert nichts.
+		
 		if (!contactDataProviders.containsKey(cl)) {
+			GWT.log("6.1 contansKeyFehler ");
 			return;
 		}
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
-		if (!contactsProvider.getList().contains(c)) {
-			contactsProvider.getList().add(c);
+		//if (!contactsProvider.getList().contains(c)) {
+		List<Contact> contacts = contactsProvider.getList();
+		for (Contact c2 : contacts) {
+			GWT.log("6.2 for Contact " + c2.getName() + " in List" );
+
+			if (c2.getId() == c.getId()) {
+				GWT.log("6.3 Contact found in List " + c2.getName() );
+				
+				GWT.log("6.1 Contact to List" );
+				contactsProvider.getList().add(c);
+			}
+
 
 		}
 		selectionModel.setSelected(c, true);

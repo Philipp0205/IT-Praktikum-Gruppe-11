@@ -365,6 +365,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return updated contact list
 	 */
 	public ContactList addContactToList(Contact c, ContactList cl) {
+		System.out.println("3.1 addContact " + c.getName() + " to List " + cl.getListName());
+		
 		cl.addContact(c);
 		for (JabicsUser u : clMapper.findCollaborators(cl)) {
 			addCollaboration(c, u);
