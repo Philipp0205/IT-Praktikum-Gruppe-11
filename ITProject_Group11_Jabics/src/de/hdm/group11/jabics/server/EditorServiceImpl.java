@@ -754,8 +754,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * deutlich konkreteren Suchvorhaben oder Kriterien verwendet. Für eine
 	 * allgemeine Suche siehe searchExpressionInList
 	 */
-	public ArrayList<Contact> searchInList(String s, ContactList cl) {
-		return Filter.filterContactsByString(cl.getContacts(), s);
+	public ArrayList<Contact> searchInList(String s, ContactList cl) {	
+		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
+		ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
+		System.out.println(">>>>>>>>>>>>>>"+alc.get(0).getName());
+		return alc;
 	}
 
 	/**

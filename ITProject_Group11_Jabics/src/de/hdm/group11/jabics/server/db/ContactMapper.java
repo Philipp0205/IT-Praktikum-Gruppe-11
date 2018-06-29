@@ -297,7 +297,6 @@ public class ContactMapper {
 
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -331,7 +330,6 @@ public class ContactMapper {
 			
 			// Schließen der Datenbankverbindung
 			con.close();
-			
 			// Rückgabe der mit Contact-Objekten befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
