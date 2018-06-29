@@ -1,23 +1,41 @@
 package de.hdm.group11.jabics.client.gui;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.StackPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.Report.DatePickerClickHandler;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
+import de.hdm.group11.jabics.shared.bo.PValue;
+import de.hdm.group11.jabics.shared.bo.Property;
+import de.hdm.group11.jabics.shared.bo.Type;
 
 public class SearchForm extends VerticalPanel{
 	
@@ -26,43 +44,153 @@ public class SearchForm extends VerticalPanel{
 	StackPanel sp;
 	ContactCellListTab ct;
 	CellList<Contact> list;
-	TextBox tb;
+	TextBox valueBox;
 	Button sb;
-	Label l;
+	Label listInfoLabel;
 	ContactList cl ;
 	Editor e;
+	
+	DatePicker datepicker;
+	
 	Label ausgabeLabel;
+	Label pvalueLabel;
+	Label propertyLabel;
+	Label datatypeLabel;
+	ListBox datatypemenu;
+	
+	MultiWordSuggestOracle propertyToSuggest;
+	SuggestBox propertySuggest;
+	PValue finalPVal;
+	VerticalPanel verPanel1;
+	VerticalPanel verPanel2;
+	VerticalPanel verPanel3;
+	VerticalPanel verPanel4;
+	VerticalPanel verPanel5;
+	JabicsUser currentUser;
+	HorizontalPanel mainpanel = new HorizontalPanel();
 	
 	public void onLoad() {
 		ct = new ContactCellListTab();
 		list = ct.createContactTabForSearchForm();
+		listInfoLabel = new Label();
 		ausgabeLabel = new Label();
-		this.add(l);
-		this.add(tb);
-		this.add(sb);
-		this.add(sp);
-		this.add(list);
-		this.add(ausgabeLabel);
+		verPanel1 = new VerticalPanel();
+		verPanel2 = new VerticalPanel();
+		verPanel3 = new VerticalPanel();
+		verPanel4 = new VerticalPanel();
+		verPanel5 = new VerticalPanel();
+		pvalueLabel = new Label("Wert:");
+		propertyLabel = new Label("Eigenschaft:");
+		datatypemenu = new ListBox();
+		datatypeLabel = new Label("Datentyp:");
+		datepicker = new DatePicker();
+		
+		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() +"'." );
+		
+		verPanel1.add(propertyLabel);
+		mainpanel.add(verPanel1);
+		
+		verPanel2.add(pvalueLabel);
+		verPanel2.add(valueBox);
+		mainpanel.add(verPanel2);
+		
+		verPanel3.add(datatypeLabel);
+		verPanel3.add(datatypemenu);
+		datatypemenu.addItem("Text");
+		datatypemenu.addItem("Datum");
+		datatypemenu.addItem("Dezimalzahl");
+		datatypemenu.addItem("Ganzzahl");
+		datatypemenu.setSelectedIndex(4);
+		mainpanel.add(verPanel3);
+		
+		verPanel4.add(datepicker);
+		datepicker.setVisible(false);
+		mainpanel.add(verPanel4);
+		
+		verPanel5.add(sb);
+		mainpanel.add(verPanel5);
+		
+		this.add(listInfoLabel);
+		this.add(mainpanel);
+		
 		ausgabeLabel.setVisible(false);
+		
 		ct.setEditor(e);
-		l.setText("Durchsuche Liste \"" + cl.getListName() + "\" nach Wert: ");
+		
+		
 		
 		sb.addClickHandler((new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
 				sp.setVisible(false);
 				ausgabeLabel.setVisible(false);
-				editorService.searchInList(tb.getText(), cl, new SearchInListCallback());
+				editorService.searchInList(valueBox.getText(), cl, new SearchInListCallback());
 			}
 		}));
+		editorService.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
+		
+		datatypemenu.addChangeHandler(new ChangeHandler() {
+
+			Button finish = new Button("Fertig");
+
+			@Override
+			public void onChange(ChangeEvent event) {
+				switch (datatypemenu.getSelectedItemText()) {
+				case "Text":
+					finalPVal.setPointer(2);
+					finalPVal.getProperty().setType(Type.STRING);
+					break;
+				case "Ganzzahl":
+					finalPVal.setPointer(1);
+					finalPVal.getProperty().setType(Type.INT);
+					break;
+				case "Datum":
+					datepicker.setVisible(true);
+					finish.setVisible(true);
+					verPanel4.add(finish);
+					
+					finish.addClickHandler(new ClickHandler() {
+						  public void onClick(ClickEvent event) {
+							    datepicker.setVisible(false);
+							    finish.setVisible(false);
+							  }
+							});
+					finalPVal.setPointer(3);
+					finalPVal.getProperty().setType(Type.DATE);
+					break;
+				case "Dezimalzahl":
+					finalPVal.setPointer(4);
+					finalPVal.getProperty().setType(Type.FLOAT);
+					break;
+				default:
+					finalPVal.setPointer(0);
+					finalPVal.getProperty().setType(Type.STRING);
+					break;
+				}
+
+				if (datatypemenu.getSelectedItemText() != "Datum") {
+					datepicker.setVisible(false);
+					finish.setVisible(false);
+				}
+			}
+		});
+		
+		datepicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				if (datepicker != null) {
+					// pval.setDateValue(event.getValue());
+					valueBox.setText(event.getValue().toString());
+				}
+			}
+		});
 	}
 	
 	public SearchForm() {
 		sp = new StackPanel();
 
 		sb = new Button("Finden");
-		tb = new TextBox();
-		l = new Label("Durchsuche Liste:");
+		valueBox = new TextBox();
 	}
 	
 	void setContactList(ContactList cl) {
@@ -70,6 +198,9 @@ public class SearchForm extends VerticalPanel{
 	}
 	void setEditor(Editor e) {
 		this.e=e;
+	}
+	void setJabicsUser(JabicsUser u) {
+		this.currentUser = u;
 	}
 	
 	class SearchInListCallback implements AsyncCallback<ArrayList<Contact>> {
@@ -86,12 +217,48 @@ public class SearchForm extends VerticalPanel{
  	 			}
  	 			sp.setVisible(true);
  	 			sp.add(list, "Ausgabe");
- 	 			ausgabeLabel.setText("Es wurde nach '" + tb.getValue() + "' gesucht.");
+ 	 			ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
  	 			ausgabeLabel.setVisible(true);
- 	 			tb.setText("");
+ 	 			valueBox.setText("");
  	 			
  	 			
  			}
 }
  		}
+	
+	private class getPropertysOfJabicsUserCallback implements AsyncCallback<ArrayList<Property>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			ClientsideSettings.getLogger().severe("Fehler beim Laden der Eigenschaften");
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Property> result) {
+			propertyToSuggest = new MultiWordSuggestOracle();
+
+			ArrayList<Property> userproperties = result;
+
+			for (Property p : userproperties) {
+				propertyToSuggest.add(p.getLabel());
+			}
+
+			propertySuggest = new SuggestBox(propertyToSuggest);
+
+			/**
+			 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
+			 * die suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
+			 * "Nutzer hinzufügen" zur liste der zu teilenden Nutzer hinzugefügt
+			 */
+			propertySuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
+
+					finalPVal.getProperty().setLabel(propertySuggest.getValue());
+					GWT.log("Wert geändert " + finalPVal.getProperty().getLabel());
+				}
+			});
+			verPanel1.add(propertySuggest);
+
+		}
+	}
 	}

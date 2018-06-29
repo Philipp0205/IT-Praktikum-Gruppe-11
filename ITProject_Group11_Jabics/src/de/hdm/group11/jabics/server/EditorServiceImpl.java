@@ -301,6 +301,19 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// return cl;
 
 	}
+	
+	
+	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
+
+		ArrayList<Property> results = new ArrayList<Property>();
+
+		for (Contact c : cMapper.findAllContacts(u)) {
+			for (PValue pv : pvMapper.findPValueForContact(c)) {
+				results.add(pv.getProperty());
+			}
+		}
+		return results;
+	}
 
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
 
@@ -886,5 +899,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// TODO Auto-generated method stub
 
 	}
+	
+	
 
 }
