@@ -30,21 +30,19 @@ public class Filter {
 
 	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv) {
 		ArrayList<Contact> result = new ArrayList<Contact>();
+		
 		for (Contact c : contacts) {
-			System.out.println("kukuk");
+			Boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
-				System.out.println("kukuk2");
 				if (p.getStringValue() != null) {
-					if (pv != null && (p.getStringValue() == pv || p.getStringValue().contains(pv))) { // zu definiert:
-																										// ||
-						System.out.println("kukuk3");																				// p.getProperty().getLabel().contains(pv)){
-						result.add(c);
+					if (pv != null && (p.getStringValue() == pv || p.getStringValue().contains(pv))) { // zu definiert:	// p.getProperty().getLabel().contains(pv)){
+						bol=true;	
 					}
 				}
 			}
+			if((!result.contains(c))&&bol)result.add(c);
 		}
-		System.out.println("kukuk4");
 		return result;
 	}
 

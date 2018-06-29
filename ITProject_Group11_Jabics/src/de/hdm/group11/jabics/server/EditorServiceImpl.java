@@ -121,13 +121,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					System.out.println("Switch String " + pv.getId());
 					break;
 				case DATE:
-					createPValue(pv.getProperty(), pv.getDateValue(), newContact, u);
+					newPVal = createPValue(pv.getProperty(), pv.getDateValue(), newContact, u);
 					break;
 				case FLOAT:
-					createPValue(pv.getProperty(), pv.getFloatValue(), newContact, u);
+					newPVal = createPValue(pv.getProperty(), pv.getFloatValue(), newContact, u);
 					break;
 				case INT:
-					createPValue(pv.getProperty(), pv.getIntValue(), newContact, u);
+					newPVal = createPValue(pv.getProperty(), pv.getIntValue(), newContact, u);
 					break;
 				}
 				if (newPVal.containsValue() && pv.getId() != 0) {
@@ -167,24 +167,21 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println(p.getLabel());
 		System.out.println(p.getTypeInString());
 		PValue newPValue = new PValue(p, s, u);
-
 		/*
-		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und
-		 * DateUpdated auf jetzt stellen.
-		 */
-		Contact cnew = cMapper.findContactById(c.getId());
-
-		// cnew.setDateUpdated(LocalDateTime.now());
-		/*
-		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit
-		 * isOwner = true und zuletzt den Contact updaten, damit dieser einen neuen
+		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
+		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
 		 * Zeitstempel bekommt.
 		 */
-		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		newPValue = pvMapper.insertPValue(newPValue, c);
 		System.out.println("newPValue " + newPValue.getId());
-
 		pvMapper.insertCollaboration(u, newPValue, true);
-		cMapper.updateContact(cnew);
+		
+		JabicsUser usertemp = uMapper.findUserByContact(c);
+		if(u.getId() != usertemp.getId()){
+			pvMapper.insertCollaboration(usertemp, newPValue, false);
+		}
+		cMapper.updateContact(c);
 		return newPValue;
 	}
 
@@ -197,22 +194,19 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public PValue createPValue(Property p, int i, Contact c, JabicsUser u) {
 		PValue newPValue = new PValue(p, i, u);
 		/*
-		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und
-		 * DateUpdated auf jetzt stellen.
-		 */
-		Contact cnew = cMapper.findContactById(c.getId());
-
-		// cnew.setDateUpdated(LocalDateTime.now());
-
-		/*
-		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit
-		 * isOwner = true und zuletzt den Contact updaten, damit dieser einen neuen
+		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
+		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
 		 * Zeitstempel bekommt.
 		 */
-		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		newPValue = pvMapper.insertPValue(newPValue, c);
 		System.out.println("createPValue: Neue ID: " + newPValue.getId());
 		pvMapper.insertCollaboration(u, newPValue, true);
-		cMapper.updateContact(cnew);
+		JabicsUser usertemp = uMapper.findUserByContact(c);
+		if(u.getId() != usertemp.getId()){
+			pvMapper.insertCollaboration(usertemp, newPValue, false);
+		}
+		cMapper.updateContact(c);
 		return newPValue;
 	}
 
@@ -225,21 +219,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public PValue createPValue(Property p, Date dt, Contact c, JabicsUser u) {
 		PValue newPValue = new PValue(p, dt, u);
 		/*
-		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und
-		 * DateUpdated auf jetzt stellen.
-		 */
-		Contact cnew = cMapper.findContactById(c.getId());
-
-		// cnew.setDateUpdated(LocalDateTime.now());
-
-		/*
-		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit
-		 * isOwner = true und zuletzt den Contact updaten, damit dieser einen neuen
+		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
+		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
 		 * Zeitstempel bekommt.
 		 */
-		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		newPValue = pvMapper.insertPValue(newPValue, c);
 		pvMapper.insertCollaboration(u, newPValue, true);
-		cMapper.updateContact(cnew);
+		JabicsUser usertemp = uMapper.findUserByContact(c);
+		if(u.getId() != usertemp.getId()){
+			pvMapper.insertCollaboration(usertemp, newPValue, false);
+		}
+		cMapper.updateContact(c);
 		return newPValue;
 	}
 
@@ -250,25 +241,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return das neu erstellte PValue Objekt
 	 */
 	public PValue createPValue(Property p, float f, Contact c, JabicsUser u) {
-		System.out.println("start");
 		PValue newPValue = new PValue(p, f, u);
-		System.out.println("ende");
 		/*
-		 * Contact aus der Datenbank abrufen, um Datenkonsistenz sicherzustellen und
-		 * DateUpdated auf jetzt stellen.
-		 */
-		Contact cnew = cMapper.findContactById(c.getId());
-
-		// cnew.setDateUpdated(LocalDateTime.now());
-
-		/*
-		 * erst erstellen des PValue Objektes in der db, dann die Collaboration mit
-		 * isOwner = true und zuletzt den Contact updaten, damit dieser einen neuen
+		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
+		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
 		 * Zeitstempel bekommt.
 		 */
-		newPValue = pvMapper.insertPValue(newPValue, cnew);
+		newPValue = pvMapper.insertPValue(newPValue, c);
 		pvMapper.insertCollaboration(u, newPValue, true);
-		cMapper.updateContact(cnew);
+		JabicsUser usertemp = uMapper.findUserByContact(c);
+		if(u.getId() != usertemp.getId()){
+			pvMapper.insertCollaboration(usertemp, newPValue, false);
+		}
+		cMapper.updateContact(c);
 		return newPValue;
 	}
 
@@ -300,6 +286,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// cl.add(this.cl);
 		// return cl;
 
+	}
+
+	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
+
+		ArrayList<Property> results = new ArrayList<Property>();
+
+		for (Contact c : cMapper.findAllContacts(u)) {
+			for (PValue pv : pvMapper.findPValueForContact(c)) {
+				results.add(pv.getProperty());
+			}
+		}
+		return results;
 	}
 
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
@@ -585,7 +583,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * ist, wenn nicht wird alles auf Konsitenz geprüft und fehlende Inhalte werden
 	 * upgedated
 	 */
-	public Contact updateContact(Contact c) {
+	public Contact updateContact(Contact c, JabicsUser u) {
 
 		// Nickname neu setzen
 		c.updateNickname();
@@ -607,17 +605,38 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
-				if (pvMapper.findPValueById(pv.getId()) != pv) {
-					pvMapper.updatePValue(pv);
+				Boolean bol = false;
+				for (PValue pvtemp : ctemp.getValues()) {
+					// Wenn das gleiche PValue gemeint ist, es sich aber geändert hat, updaten
+					if (pvtemp.getId() == pv.getId() && (!pvtemp.equals(pv))) {
+						pvMapper.updatePValue(pv);
+						bol = true;
+						// Wenn die PValue schon existiert, aber nicht geändert wurde, merken
+					} else if (pvtemp.getId() == pv.getId() && (pvtemp.equals(pv))) {
+						bol = true;
+					}
 					// pvMapper.deleteCollaboration(pv, pv.getOwner());
 					// pvMapper.insertCollaboration(u, pv, true);
 				}
-			}
-
-			try {
-				c.setShareStatus(c.getShareStatus());
-			} catch (Exception e) {
-				System.err.println("Share Status des Kontakts " + c.getId() + "wurde nicht gefunden");
+				// Wenn die PValue neu ist, dann neu erstellen
+				if (!bol) {
+					switch (pv.getProperty().getType()) {
+					case STRING:
+						pv = createPValue(pv.getProperty(), pv.getStringValue(), c, u);
+						System.out.println("Switch String " + pv.getId());
+						break;
+					case DATE:
+						pv = createPValue(pv.getProperty(), pv.getDateValue(), c, u);
+						break;
+					case FLOAT:
+						pv = createPValue(pv.getProperty(), pv.getFloatValue(), c, u);
+						break;
+					case INT:
+						pv = createPValue(pv.getProperty(), pv.getIntValue(), c, u);
+						break;
+					}
+					System.err.println("PValue einfügen: " + pv.toString());
+				}
 			}
 			c.setValues(pvMapper.findPValueForContact(c));
 			return cMapper.updateContact(c);
@@ -766,18 +785,49 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return result;
 	}
 
-	/*
+	/**
 	 * Eine Kontaktliste nach String-Values durchsuchen Diese Methode wird bei
 	 * deutlich konkreteren Suchvorhaben oder Kriterien verwendet. Für eine
 	 * allgemeine Suche siehe searchExpressionInList
 	 */
-	public ArrayList<Contact> searchInList(String s, ContactList cl) {	
-		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
+	public ArrayList<Contact> searchInList(String s, ContactList cl, PValue pv) {
+
+		// Wenn die PValue leer ist, wird lediglich nach dem String-Wert in Labels und
+		// Werten der Kontakte gesucht.
+		if (pv.getStringValue() == null && pv.getProperty() == null) {
+			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contacts) {
+				c.setValues(pvMapper.findPValueForContact(c));
+			}
+			ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
+			for (Contact c : alc) {
+				System.out.println(c.getName());
+			}
+			return alc;
+		} else {
+
+			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contacts) {
+				c.setValues(pvMapper.findPValueForContact(c));
+			}
+
+			// Kontakte nach Property filtern, falls gesetzt
+			if (pv.getProperty().getLabel() != null) {
+				System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
+				contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+			}
+			System.err.println("Gefundene kontakte: ");
+			for (Contact c : contacts) {
+				System.err.println("Contact : " + c.getName());
+			}
+			// Kontakte nach PropertyValue filtern, falls gesetzt
+			if (pv.getStringValue() != null) {
+				System.err.println("Nach PVal filtern");
+				contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+			}
+			return contacts;
 		}
-		ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
-		return alc;
+
 	}
 
 	/**
@@ -786,7 +836,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return ArrayList<Contact>
 	 */
 	public ArrayList<Contact> searchInList(int i, ContactList cl) {
-		return Filter.filterContactsByInt(cl.getContacts(), i);
+		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
+		ArrayList<Contact> alc = Filter.filterContactsByInt(contacts, i);
+		return alc;
 	}
 
 	/**
@@ -795,7 +850,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return ArrayList<Contact>
 	 */
 	public ArrayList<Contact> searchInList(float f, ContactList cl) {
-		return Filter.filterContactsByFloat(cl.getContacts(), f);
+		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
+		ArrayList<Contact> alc = Filter.filterContactsByFloat(contacts, f);
+		return alc;
 	}
 
 	/**
@@ -881,11 +941,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return jabicsUser;
 	}
 
-	public ArrayList<Property> getStandardProperties(){
+	public ArrayList<Property> getStandardProperties() {
 		return pMapper.findAllStandardPropertys();
 	}
-	
-	
+
 	public void initialise() {
 		// TODO Auto-generated method stub
 

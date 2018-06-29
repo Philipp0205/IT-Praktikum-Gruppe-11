@@ -34,7 +34,7 @@ public class Paragraph implements Serializable{
 		this.filtercriteria = filtercriteria;
 	}
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 	public void setContent(String content) {
 		this.content = content;

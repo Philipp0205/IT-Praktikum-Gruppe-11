@@ -58,6 +58,7 @@ public class EditContactForm extends VerticalPanel {
 	TextBox pValueTextBox = new TextBox();
 	DatePicker dp;
 	DatePicker dp2;
+	Button done2;
 	Date tempDate;
 
 	public void onLoad() {
@@ -100,21 +101,31 @@ public class EditContactForm extends VerticalPanel {
 			formattype.addItem("Kommazahl");
 			formattype.addItem("Zahl");
 			dp2 = new DatePicker();
-			
+			dp2.setVisible(false);
+			done2 = new Button("Fertig");
+			done2.setVisible(false);
+			done2.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent e) {
+					dp2.setVisible(false);
+					done2.setVisible(false);
+				}
+			});
 			dp2.addValueChangeHandler(new ValueChangeHandler<Date>() {
 				public void onValueChange(ValueChangeEvent<Date> event) {
 						tempDate = event.getValue();
-						pValueTextBox.setText(event.toString());
+						pValueTextBox.setText(event.getValue().toString());
 				}
 			});
-			formattype.addChangeHandler(new ChangeHandler() {
-				public void onChange(ChangeEvent event) {
+			pValueTextBox.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
 					if (formattype.getSelectedValue() == "Datum") {
 						tempDate = new Date();
 						dp2.setVisible(true);
+						done2.setVisible(true);
 					}
 				}
 			});
+			
 
 			Label type = new Label("Art:");
 			Label pvaluelabel = new Label("Wert:");
@@ -128,14 +139,17 @@ public class EditContactForm extends VerticalPanel {
 			propertyAddBox.setWidget(0, 2, pvaluelabel);
 			propertyAddBox.setWidget(1, 2, pValueTextBox);
 			propertyAddBox.setWidget(1, 3, addPropertyButton);
+			propertyAddBox.setWidget(2, 4, dp2);
+			propertyAddBox.setWidget(1, 4, done2);
 			addPPanel.add(propertyAddBox);
 
 			this.insert(pPanel, 0);
-			this.insert(buttonPanel, 1);
+			this.insert(addPPanel, 1);
+			this.insert(buttonPanel, 2);
 			if (isNewContact) {
 				addPPanel.setVisible(false);
 			}
-			this.insert(addPPanel, 2);
+			
 
 			/*
 			 * // Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
@@ -214,9 +228,9 @@ public class EditContactForm extends VerticalPanel {
 		ArrayList<PValue> allPV = new ArrayList<PValue>();
 		for (PropForm p : val) {
 			for (PValue pv : p.getPV()) {
-				GWT.log("6.2 Saved PValue " + pv.toString());
 				pv.setProperty(p.getProperty());
 				allPV.add(pv);
+				GWT.log("6.2 Saved PValue " + pv.toString() + "PropId: " + pv.getProperty().getId());
 			}
 		}
 
@@ -225,6 +239,7 @@ public class EditContactForm extends VerticalPanel {
 		for (PValue pv : allPV) {
 			if (pv.containsValue()) {
 				contact.getValues().add(pv);
+				GWT.log("Hinzugefügt: " + pv.toString());
 				filledPV.add(pv);
 			}
 		}
@@ -279,7 +294,7 @@ public class EditContactForm extends VerticalPanel {
 			} else if (!isNewContact) {
 
 				contact.setValues(filledPV);
-				editorService.updateContact(contact, new AsyncCallback<Contact>() {
+				editorService.updateContact(contact, u, new AsyncCallback<Contact>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -404,7 +419,6 @@ public class EditContactForm extends VerticalPanel {
 					editorService.createPValue(result, pValueTextBox.getText(), contact, u, new CreatePValueCallback());
 					break;
 				case "Datum":
-					Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
 					editorService.createPValue(result, tempDate , contact, u, new CreatePValueCallback());
 					break;
 				case "Kommazahl":
@@ -574,7 +588,7 @@ public class EditContactForm extends VerticalPanel {
 
 		/**
 		 * Löschen des initial erstellten PVForms und ersetzen durch ein befülltes. Darf
-		 * nur von renderContact aufgerufen werden
+		 * nur von renderContact() aufgerufen werden
 		 * 
 		 * @param PValue pv
 		 */
@@ -610,12 +624,14 @@ public class EditContactForm extends VerticalPanel {
 	private class PVForm extends HorizontalPanel {
 		PValue pval;
 		Button delete = new Button("löschen");
+		Button done = new Button("Fertig");
 		TextBox val = new TextBox();
 
 		public void show() {
-			this.add(val);
-			this.add(delete);
+			this.insert(val, 0);
+			this.insert(delete, 1);
 		}
+		
 
 		PVForm(PValue pv) {
 			create(pv);
@@ -623,13 +639,21 @@ public class EditContactForm extends VerticalPanel {
 				GWT.log("Datum!");
 				dp = new DatePicker();
 				dp.setVisible(false);
+				done.setVisible(false);
 				dp.addValueChangeHandler(new ValChange());
+				done.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent e) {
+						dp.setVisible(false);
+						done.setVisible(false);
+					}
+				});
 				try {
-					pValueTextBox.setText(pv.getDateValue().toString());
+					val.setText(pv.getDateValue().toString());
 				} catch (Exception e) {
 					GWT.log("Fehler: " + e.toString());
 				}
 				this.add(dp);
+				this.add(done);
 				GWT.log("DatumEnde");
 			}
 			show();
@@ -653,7 +677,7 @@ public class EditContactForm extends VerticalPanel {
 			GWT.log(pv.toString());
 			this.pval = pv;
 			val.setText(pv.toString());
-			val.addClickHandler(new DateClickHandler(pv));
+			val.addClickHandler(new DateClickHandler(pv, done));
 			val.addValueChangeHandler(new PValueChangeHandler<String>(pv));
 			delete.addClickHandler(new DeleteClickHandler(this));
 		}
@@ -673,6 +697,7 @@ public class EditContactForm extends VerticalPanel {
 					switch (pv.getPointer()) {
 					case 1:
 						pv.setIntValue(Integer.parseInt((java.lang.String) event.getValue()));
+						Window.alert("Int registriert");
 						break;
 					case 2:
 						pv.setStringValue((java.lang.String) event.getValue());
@@ -694,15 +719,18 @@ public class EditContactForm extends VerticalPanel {
 
 		class DateClickHandler implements ClickHandler {
 			PValue pv;
+			Button done;
 
-			DateClickHandler(PValue pv) {
+			DateClickHandler(PValue pv, Button done) {
 				this.pv = pv;
+				this.done = done;
 			}
 
 			@Override
 			public void onClick(ClickEvent event) {
 				if (pv.getPointer() == 3) {
 					dp.setVisible(true);
+					done.setVisible(true);
 				}
 			}
 		}

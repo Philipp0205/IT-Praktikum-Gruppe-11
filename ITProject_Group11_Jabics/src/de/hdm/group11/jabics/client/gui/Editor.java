@@ -333,6 +333,7 @@ public class Editor implements EntryPoint {
 		sForm = new SearchForm();
 		sForm.setEditor(this);
 		sForm.setContactList(cl);
+		sForm.setJabicsUser(currentUser);
 		formPanel.clear();
 		formPanel.add(sForm);
 		GWT.log("#######SearchForm");
