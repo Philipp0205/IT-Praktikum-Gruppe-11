@@ -46,7 +46,9 @@ public interface EditorServiceAsync {
 
 	void deleteContact(Contact c, JabicsUser u, AsyncCallback<Void> callback);
 
-	void deleteContactList(ContactList cl, JabicsUser u, AsyncCallback<Void> callback);
+	
+	void deleteContactList(ContactList cl, JabicsUser u, AsyncCallback<ContactList> callback);
+	
 
 	void deleteProperty(Property p, AsyncCallback<Void> callback);
 
@@ -74,7 +76,7 @@ public interface EditorServiceAsync {
 
 	void searchExpressionInList(String s, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 
-	void searchInList(String s, ContactList cl, PValue pv, AsyncCallback<ArrayList<Contact>> callback);
+	void searchInList(ContactList cl, PValue pv, AsyncCallback<ArrayList<Contact>> callback);
 
 	void searchInList(int i, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 

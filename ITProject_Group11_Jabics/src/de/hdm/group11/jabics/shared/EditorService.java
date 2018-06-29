@@ -45,8 +45,8 @@ public interface EditorService extends RemoteService {
 	public Contact removeContactFromList(Contact c, ContactList cl);
 
 	public void deleteContact(Contact c, JabicsUser u);
-
-	public void deleteContactList(ContactList cl, JabicsUser u);
+	
+	public ContactList deleteContactList(ContactList cl, JabicsUser u);
 
 	public void deleteProperty(Property p);
 
@@ -76,7 +76,7 @@ public interface EditorService extends RemoteService {
 
 	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl);
 
-	public ArrayList<Contact> searchInList(String s, ContactList cl, PValue pv);
+	public ArrayList<Contact> searchInList(ContactList cl, PValue pv);
 
 	public ArrayList<Contact> searchInList(int i, ContactList cl);
 

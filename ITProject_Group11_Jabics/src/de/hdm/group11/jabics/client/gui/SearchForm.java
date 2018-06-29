@@ -61,12 +61,14 @@ public class SearchForm extends VerticalPanel {
 	MultiWordSuggestOracle propertyToSuggest;
 	SuggestBox propertySuggest;
 	PValue finalPVal;
+	Property finalProperty;
 	VerticalPanel verPanel1;
 	VerticalPanel verPanel2;
 	VerticalPanel verPanel3;
 	VerticalPanel verPanel4;
 	VerticalPanel verPanel5;
 	JabicsUser currentUser;
+	ArrayList<Property> PropertyArrayList;
 	HorizontalPanel mainpanel = new HorizontalPanel();
 
 	public void onLoad() {
@@ -84,6 +86,7 @@ public class SearchForm extends VerticalPanel {
 		datatypemenu = new ListBox();
 		datatypeLabel = new Label("Datentyp:");
 		datepicker = new DatePicker();
+		finalPVal = new PValue();
 
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
 
@@ -123,9 +126,40 @@ public class SearchForm extends VerticalPanel {
 			public void onClick(ClickEvent event) {
 				sp.setVisible(false);
 				ausgabeLabel.setVisible(false);
-				editorService.searchInList(valueBox.getText(), cl, finalPVal, new SearchInListCallback());
-			}
-		}));
+//			}
+//		}));
+//		
+//		valueBox.addValueChangeHandler(new ValueChangeHandler<String>() {
+//			   @Override
+//			   public void onValueChange(ValueChangeEvent<String> event) {
+				   GWT.log("kukuk");
+				   
+				   switch (datatypemenu.getSelectedItemText()) {
+					case "Text":
+						finalPVal.setStringValue(valueBox.getValue()); 
+						finalPVal.setProperty(finalProperty);
+						break;
+					case "Ganzzahl":
+						finalPVal.setIntValue(Integer.valueOf(valueBox.getValue())); 
+						finalPVal.setProperty(finalProperty);
+						break;
+					case "Datum":
+						finalPVal.setFloatValue(Float.valueOf(valueBox.getValue())); 
+						finalPVal.setProperty(finalProperty);
+						break;
+					case "Dezimalzahl":
+						finalPVal.setDateValue(datepicker.getValue()); 
+						finalPVal.setProperty(finalProperty);
+						break;
+					default:
+						break;
+						
+			  }
+
+					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+			  }
+			}));
+		
 		editorService.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
 
 		datatypemenu.addChangeHandler(new ChangeHandler() {
@@ -134,7 +168,6 @@ public class SearchForm extends VerticalPanel {
 
 			@Override
 			public void onChange(ChangeEvent event) {
-				finalPVal = new PValue();
 				switch (datatypemenu.getSelectedItemText()) {
 				case "Text":
 					finalPVal.setPointer(2);
@@ -225,7 +258,6 @@ public class SearchForm extends VerticalPanel {
 				ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
 				ausgabeLabel.setVisible(true);
 				valueBox.setText("");
-
 			}
 		}
 	}
@@ -242,7 +274,6 @@ public class SearchForm extends VerticalPanel {
 			propertyToSuggest = new MultiWordSuggestOracle();
 
 			ArrayList<Property> userproperties = result;
-
 			for (Property p : userproperties) {
 				propertyToSuggest.add(p.getLabel());
 			}
@@ -256,9 +287,9 @@ public class SearchForm extends VerticalPanel {
 			 */
 			propertySuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
-
-					finalPVal.getProperty().setLabel(propertySuggest.getValue());
-					GWT.log("Wert geändert " + finalPVal.getProperty().getLabel());
+								finalProperty= new Property();
+								finalProperty.setLabel(propertySuggest.getText());
+								finalPVal.setProperty(finalProperty);
 				}
 			});
 			verPanel1.add(propertySuggest);

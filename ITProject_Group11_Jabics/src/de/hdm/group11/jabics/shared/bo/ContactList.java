@@ -59,6 +59,13 @@ public class ContactList extends BusinessObject implements Serializable{
 				//this.setDateUpdated(LocalDateTime.now());
 			}
 			
+			/**
+			 * Entfernen eines Kontakts aus der Liste
+			 */
+			public void removeContact(Contact c) {
+				contacts.remove(c);
+			}
+			
 			/** 
 			 * Fügt alle Kontakte in einer ArrayList<Contact> zur Liste hinzu
 			 */
@@ -67,12 +74,7 @@ public class ContactList extends BusinessObject implements Serializable{
 				this.contacts.addAll(conts);
 			}
 			
-			/**
-			 * Entfernen eines Kontakts aus der Liste
-			 */
-			public void removeContact(Contact c) {
-				this.contacts.remove(c);
-			}
+
 			
 			/**
 			 * Getters und Setter. DateUpdated wird wann immer sinvoll auf "jetzt" gesetzt.

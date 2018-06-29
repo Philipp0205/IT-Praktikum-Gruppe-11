@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.google.gwt.core.client.GWT;
-
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
@@ -34,6 +32,7 @@ public class ContactMapper {
 	 *         Die Klasse ContactMapper wird nur einmal instantiiert. Man spricht
 	 *         hierbei von einem sogenannten <b>Singleton</b>.
 	 *         <p>
+	 * 
 	 *         Diese Variable ist durch den Bezeichner <code>static</code> nur
 	 *         einmal für sämtliche eventuellen Instanzen dieser Klasse vorhanden.
 	 *         Sie speichert die einzige Instanz dieser Klasse.
@@ -89,8 +88,9 @@ public class ContactMapper {
 	/**
 	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
 	 * 
-	 * @param c das <code>Contact</code> Objekt, dass in die Datenbank eingetragen
-	 *          werden soll.
+	 * @param c
+	 *            Das <code>Contact</code> Objekt, dass in die Datenbank eingetragen
+	 *            werden soll.
 	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
 	 */
 	public Contact insertContact(Contact c) {
@@ -99,14 +99,22 @@ public class ContactMapper {
 		Connection con = DBConnection.connection();
 
 		try {
+			// Deklaration und Initialisierung eines
 			String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
+
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
+
+			//
 			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
 			ResultSet rs = stmt.getGeneratedKeys();
+
 			Statement stmt2 = con.createStatement();
+
 			ResultSet rs2;
 
+			// Ergebnis-Tupel in Objekt überführen
 			if (rs.next()) {
 				rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
 				c.setId(rs.getInt(1));
@@ -115,10 +123,14 @@ public class ContactMapper {
 					c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 				}
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
+			// Rückgabe des <code>Contact</code> Objekts.
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -142,8 +154,7 @@ public class ContactMapper {
 			Statement stmt2 = con.createStatement();
 			System.out.println(">>>>>>>>>>>" + c.getName());
 			// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-			stmt.executeUpdate("UPDATE contact SET dateUpdated = CURRENT_TIMESTAMP, nickname = '" + c.getName()
-					+ "' WHERE contactID = " + c.getId());
+			stmt.executeUpdate("UPDATE contact SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
 			ResultSet rs = stmt2
 					.executeQuery("SELECT dateCreated, dateUpdated FROM pValue WHERE pValueID = " + c.getId());
 
@@ -151,21 +162,26 @@ public class ContactMapper {
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen der SQL-Statements
 			stmt.close();
 			stmt2.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;
 		}
+		// Rückgabe des <code>Contact</code> Objekts.
 		return c;
 	}
 
 	/**
 	 * Diese Methode löscht ein <code>Contact</code> Objekt aus der Datenbank.
 	 * 
-	 * @param c das <code>Contact</code> Objekt, dass gelöscht werden soll.
+	 * @param c
+	 *            Das <code>Contact</code> Objekt, dass gelöscht werden soll.
 	 * 
 	 */
 	public void deleteContact(Contact c) {
@@ -178,9 +194,13 @@ public class ContactMapper {
 
 			// Löschen des Kontakts.
 			stmt.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId());
-			// Schließen der Datenbankverbindung
+
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -190,8 +210,9 @@ public class ContactMapper {
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code>
 	 * Objekten eines <code>User</code> Objekts aus der Datenbank zurück.
 	 * 
-	 * @param u das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
-	 *          sollen.
+	 * @param u
+	 *            Das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
+	 *            sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des
 	 *         <code>User</code> Objekts.
 	 */
@@ -225,14 +246,16 @@ public class ContactMapper {
 
 				al.add(c);
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
 
 			for (Contact c : al) {
 				System.out.println("Alle Kontakte Finden " + c.getName() + c.getId());
 			}
-
+			// Rückgabe der mit <code>Contact</code>-Objekt befüllten ArrayList.
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -244,7 +267,8 @@ public class ContactMapper {
 	 * Diese Methode gibt ein <code>Contact</code> Objekt zurück, dass eine
 	 * bestimmte ID hat.
 	 * 
-	 * @param id die Id nach welcher gesucht werden soll.
+	 * @param id
+	 *            Die Id nach welcher gesucht werden soll.
 	 * @return Das <code>Contact</code> Objekt mit der gesuchten id.
 	 */
 	public Contact findContactById(int id) {
@@ -254,6 +278,7 @@ public class ContactMapper {
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
+
 			// Auswählen eines Kontakts mit einer bestimmten ID.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM contact WHERE contactID = " + id);
 
@@ -267,9 +292,12 @@ public class ContactMapper {
 				c.setName(rs.getString("nickname"));
 				System.out.println(c.getName());
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -445,6 +473,13 @@ public class ContactMapper {
 		}
 	}
 
+	/**
+	 * Diese Methode ermittelt den Share-Status von übergeben
+	 * 
+	 * @param alContact
+	 *            ArrayList mit Contact-Objekten
+	 * @return ArrayList, welche den BoStatus der erhaltenen Kontakte enthält
+	 */
 	public ArrayList<BoStatus> findShareStatus(ArrayList<Contact> alContact) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -453,18 +488,25 @@ public class ContactMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
+			// Deklaration und Initialisierung einer ArrayList<BoStatus>
 			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
 
-			StringBuffer s = new StringBuffer();
+			// Deklaration und Initialisierung eines StringBuffers
+			StringBuffer contactIDs = new StringBuffer();
 
+			// contactIDs an den StringBuffer anhängen
 			for (Contact c : alContact) {
-				s.append(c.getId());
-				s.append(",");
+				contactIDs.append(c.getId());
+				contactIDs.append(",");
 			}
-			s.deleteCharAt(s.lastIndexOf(","));
 
+			// Letztes Komma im StringBuffer löschen
+			contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
+
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "
-					+ " WHERE isOwner = 0 AND contactID IN (" + s + ")");
+					+ " WHERE isOwner = 0 AND contactID IN (" + contactIDs + ")");
+
 
 			//Das Resultset in ein Array aus BoStatus überführen
 			ArrayList<Integer> ids = new ArrayList<Integer>();
@@ -473,6 +515,7 @@ public class ContactMapper {
 				ids.add(new Integer(rs.getInt("contactID")));
 			}
 
+			// Setzen des Shared Status für jeden Contact in ArrayList<Contact>
 			for (Contact c : alContact) {
 				Boolean bol = false;
 				for (Integer i : ids) {
@@ -493,6 +536,7 @@ public class ContactMapper {
 			// Schließen der Datenbankverbindung
 			con.close();
 
+			// Rückgabe der ArrayList<BoStatus>
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
