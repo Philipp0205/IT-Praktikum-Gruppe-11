@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
-import de.hdm.group11.jabics.client.gui.ContactForm.CreatePValueCallback;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
@@ -52,12 +51,14 @@ public class EditContactForm extends VerticalPanel {
 	ArrayList<PValue> allPV;
 
 	ArrayList<PropForm> val;
-	ArrayList<Property> p;
+	ArrayList<Property> standardProperties;
 
 	ListBox formattype = new ListBox();
 	TextBox propertyName = new TextBox();
-	TextBox pvalueTextBox = new TextBox();
+	TextBox pValueTextBox = new TextBox();
 	DatePicker dp;
+	DatePicker dp2;
+	Date tempDate;
 
 	public void onLoad() {
 
@@ -79,7 +80,7 @@ public class EditContactForm extends VerticalPanel {
 			} else {
 				saveButton.setText("Änderungen speichern");
 			}
-			
+
 			saveButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -87,69 +88,72 @@ public class EditContactForm extends VerticalPanel {
 				}
 			});
 
-			// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
-			// Die gesamte Zeile (4) wird ein HorizontalPanel
+			// Optionen zum Hinzufügen einer Eigenschaft
 			Grid propertyAddBox = new Grid(3, 5);
 
-			// in diesem Horizontal Panel gibt es 4 Felder
-			// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
-			Label z1l = new Label("Eigenschaftsname:");
-			propertyAddBox.setWidget(0, 0, z1l);
-			propertyAddBox.setWidget(1, 0, propertyName);
-			// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
-			// deklariert.)
+			// Eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
+			Label prop = new Label("Eigenschaftsname:");
 
-			// 1.1 eine Listbox zum Setzen des Formats
+			// Eine Listbox zum Setzen des Formats
 			formattype.addItem("Text");
 			formattype.addItem("Datum");
 			formattype.addItem("Kommazahl");
 			formattype.addItem("Zahl");
+			dp2 = new DatePicker();
+			
+			dp2.addValueChangeHandler(new ValueChangeHandler<Date>() {
+				public void onValueChange(ValueChangeEvent<Date> event) {
+						tempDate = event.getValue();
+						pValueTextBox.setText(event.toString());
+				}
+			});
 			formattype.addChangeHandler(new ChangeHandler() {
+				public void onChange(ChangeEvent event) {
+					if (formattype.getSelectedValue() == "Datum") {
+						tempDate = new Date();
+						dp2.setVisible(true);
+					}
+				}
+			});
 
-		        @Override
-		        public void onChange(ChangeEvent event) {
-		            dp.setVisible(true);
-		        }
-		    });
-			Label z2l = new Label("Art:");
-			propertyAddBox.setWidget(0, 1, z2l);
-			propertyAddBox.setWidget(1, 1, formattype);
-			
+			Label type = new Label("Art:");
 			Label pvaluelabel = new Label("Wert:");
-			
-			
-			propertyAddBox.setWidget(0, 2, pvaluelabel);
-			propertyAddBox.setWidget(1, 2, pvalueTextBox);
-
 			Button addPropertyButton = new Button("Hinzufügen");
 			addPropertyButton.addClickHandler(new AddPropertyClickHandler());
+
+			propertyAddBox.setWidget(0, 0, prop);
+			propertyAddBox.setWidget(1, 0, propertyName);
+			propertyAddBox.setWidget(0, 1, type);
+			propertyAddBox.setWidget(1, 1, formattype);
+			propertyAddBox.setWidget(0, 2, pvaluelabel);
+			propertyAddBox.setWidget(1, 2, pValueTextBox);
 			propertyAddBox.setWidget(1, 3, addPropertyButton);
 			addPPanel.add(propertyAddBox);
-
-			p = new ArrayList<Property>();
-			// Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
-			// werden können
-			p.add(new Property("Name", Type.STRING, true, 1));
-			p.add(new Property("Vorname", Type.STRING, true, 2));
-			p.add(new Property("Mail", Type.STRING, true, 3));
-			p.add(new Property("Telefon", Type.STRING, true, 4));
-			p.add(new Property("Geburtstag", Type.DATE, true, 5));
-			p.add(new Property("Straße", Type.STRING, true, 6));
-			p.add(new Property("Haus", Type.STRING, true, 7));
-			p.add(new Property("PLZ", Type.STRING, true, 8));
-			p.add(new Property("Test", Type.STRING, true, 9));
-			p.add(new Property("Test", Type.STRING, true, 10));
-
-			GWT.log("EditContPErstellt");
 
 			this.insert(pPanel, 0);
 			this.insert(buttonPanel, 1);
 			if (isNewContact) {
 				addPPanel.setVisible(false);
-
 			}
 			this.insert(addPPanel, 2);
-			renderContact(this.contact.getValues());
+
+			/*
+			 * // Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
+			 * // werden können p.add(new Property("Name", Type.STRING, true, 1)); p.add(new
+			 * Property("Vorname", Type.STRING, true, 2)); p.add(new Property("Mail",
+			 * Type.STRING, true, 3)); p.add(new Property("Telefon", Type.STRING, true, 4));
+			 * p.add(new Property("Geburtstag", Type.DATE, true, 5)); p.add(new
+			 * Property("Straße", Type.STRING, true, 6)); p.add(new Property("Haus",
+			 * Type.STRING, true, 7)); p.add(new Property("PLZ", Type.STRING, true, 8));
+			 * p.add(new Property("Test", Type.STRING, true, 9)); p.add(new Property("Test",
+			 * Type.STRING, true, 10));
+			 */
+
+			standardProperties = new ArrayList<Property>();
+
+			// Im Callback dieser Methode geht das Rendern des Kontakts los
+			editorService.getStandardProperties(new GetStandardPropertiesCallback());
+
 		} else {
 			Label errorLabel = new Label("Kein Kontakt anzuzeigen");
 			this.add(errorLabel);
@@ -157,34 +161,34 @@ public class EditContactForm extends VerticalPanel {
 
 	}
 
-	
-
-	public void renderContact(ArrayList<PValue> values) {
+	public void renderContact() {
 		GWT.log("EditContRender6");
 		val = new ArrayList<PropForm>();
-		for (Property pl : p) {
+		for (Property pl : standardProperties) {
 			val.add(new PropForm(pl));
 			GWT.log("EditContRenderfuu2");
 		}
 
 		GWT.log("EditContRender7");
 
-		// PValues, die Standardeigenschaften sind, den entsprechenden PropForms
-		// zuordnen, ansonsten eine neue PropForm erstellen
-		for (PValue pv : values) {
-			if (pv.getProperty().isStandard()) {
-				GWT.log("Standardeigenschaft : " + pv.getPropertyId());
-				for (PropForm p : val) {
-					GWT.log("+++++++Suche nach richtigem+++++++++");
-					if (p.getProperty().getId() == pv.getProperty().getId()) {
-						GWT.log("RichtigeGefunden!");
-						p.replacePValue(pv);
-						GWT.log("PValue zugeordnet");
+		if (this.contact != null) {
+			// PValues, die Standardeigenschaften sind, den entsprechenden PropForms
+			// zuordnen, ansonsten eine neue PropForm erstellen
+			for (PValue pv : this.contact.getValues()) {
+				if (pv.getProperty().isStandard()) {
+					GWT.log("Standardeigenschaft : " + pv.getPropertyId());
+					for (PropForm p : val) {
+						GWT.log("+++++++Suche nach richtigem+++++++++");
+						if (p.getProperty().getId() == pv.getProperty().getId()) {
+							GWT.log("RichtigeGefunden!");
+							p.replacePValue(pv);
+							GWT.log("PValue zugeordnet");
+						}
 					}
+				} else {
+					PropForm pnew = new PropForm(pv);
+					val.add(pnew);
 				}
-			} else {
-				PropForm pnew = new PropForm(pv);
-				val.add(pnew);
 			}
 		}
 		GWT.log("EditContRender8");
@@ -254,8 +258,8 @@ public class EditContactForm extends VerticalPanel {
 							GWT.log("6.4 onSuccess");
 							GWT.log("6.5 1" + result.getName());
 
-							ArrayList<PValue> values =  result.getValues();
-							
+							ArrayList<PValue> values = result.getValues();
+
 							GWT.log("6.5 2" + values.toString());
 							for (PValue pv : values) {
 								GWT.log("6.6" + pv.toString());
@@ -269,7 +273,6 @@ public class EditContactForm extends VerticalPanel {
 							e.addContactToTree(result);
 							addPPanel.setVisible(true);
 						}
-
 
 					}
 				});
@@ -371,11 +374,10 @@ public class EditContactForm extends VerticalPanel {
 
 		public void onSuccess(ArrayList<PValue> result) {
 			if (result != null) {
-				renderContact(result);
+				contact.setValues(result);
+				renderContact();
 			}
-
 		}
-
 	}
 
 	/**
@@ -392,34 +394,29 @@ public class EditContactForm extends VerticalPanel {
 		public void onSuccess(Property result) {
 			if (result != null) {
 				GWT.log(result.getTypeInString() + "Hinzufügen neue Property zur Tabelle");
-				
+
 			}
-			
+
 			if (result != null) {
 				GWT.log(result.getTypeInString());
 				switch (formattype.getSelectedItemText()) {
 				case "Text":
-					editorService.createPValue(result, pvalueTextBox.getText(), contact, u,
-							new CreatePValueCallback());
+					editorService.createPValue(result, pValueTextBox.getText(), contact, u, new CreatePValueCallback());
 					break;
 				case "Datum":
 					Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
-					
-					// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
-					editorService.createPValue(result,  pvalueTextBox.getText(), contact, u, new CreatePValueCallback());
+					editorService.createPValue(result, tempDate , contact, u, new CreatePValueCallback());
 					break;
 				case "Kommazahl":
-					editorService.createPValue(result, Float.valueOf(pvalueTextBox.getText()), contact, u,
+					editorService.createPValue(result, Float.valueOf(pValueTextBox.getText()), contact, u,
 							new CreatePValueCallback());
 					break;
 				case "Zahl":
-					editorService.createPValue(result, Integer.valueOf(pvalueTextBox.getText()), contact, u,
+					editorService.createPValue(result, Integer.valueOf(pValueTextBox.getText()), contact, u,
 							new CreatePValueCallback());
 					break;
 				}
-
 			}
-
 		}
 	}
 
@@ -463,7 +460,7 @@ public class EditContactForm extends VerticalPanel {
 				pform.show();
 				val.add(pform);
 				pPanel.add(pform);
-				pvalueTextBox.setText("");
+				pValueTextBox.setText("");
 				propertyName.setText("");
 			}
 		}
@@ -487,11 +484,29 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Void result) {
-			if (result !=  null) {
+			if (result != null) {
 				Window.alert("Erfolgreich gelöscht");
 				pvform.setVisible(false);
 			}
 
+		}
+	}
+
+	/**
+	 * Diese Callback-Klasse erhält alle Standardeigenschaften und setzt diese im
+	 * p-Array
+	 */
+	class GetStandardPropertiesCallback implements AsyncCallback<ArrayList<Property>> {
+		public void onFailure(Throwable caugth) {
+			Window.alert("Standardeigenschaften wurden nicht geladen");
+		}
+
+		public void onSuccess(ArrayList<Property> result) {
+			if (result != null) {
+				GWT.log("Standardeigenschaften sind da!");
+				standardProperties = result;
+				renderContact();
+			}
 		}
 	}
 
@@ -549,8 +564,7 @@ public class EditContactForm extends VerticalPanel {
 		/**
 		 * Hinzufügen eines PValues zur Form.
 		 * 
-		 * @param PValue
-		 *            pv
+		 * @param PValue pv
 		 */
 		void addPValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -562,8 +576,7 @@ public class EditContactForm extends VerticalPanel {
 		 * Löschen des initial erstellten PVForms und ersetzen durch ein befülltes. Darf
 		 * nur von renderContact aufgerufen werden
 		 * 
-		 * @param PValue
-		 *            pv
+		 * @param PValue pv
 		 */
 		void replacePValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -598,7 +611,6 @@ public class EditContactForm extends VerticalPanel {
 		PValue pval;
 		Button delete = new Button("löschen");
 		TextBox val = new TextBox();
-		
 
 		public void show() {
 			this.add(val);
@@ -612,7 +624,11 @@ public class EditContactForm extends VerticalPanel {
 				dp = new DatePicker();
 				dp.setVisible(false);
 				dp.addValueChangeHandler(new ValChange());
-				pvalueTextBox.setText(dp.getValue().toString());
+				try {
+					pValueTextBox.setText(pv.getDateValue().toString());
+				} catch (Exception e) {
+					GWT.log("Fehler: " + e.toString());
+				}
 				this.add(dp);
 				GWT.log("DatumEnde");
 			}
@@ -698,7 +714,7 @@ public class EditContactForm extends VerticalPanel {
 		DeleteClickHandler(PVForm pv) {
 			this.pv = pv;
 		}
-		
+
 		@Override
 		public void onClick(ClickEvent event) {
 			editorService.deletePValue(pv.getPV(), contact, new DeletePValueCallback(pv));
