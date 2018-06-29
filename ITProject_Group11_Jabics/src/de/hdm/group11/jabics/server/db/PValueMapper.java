@@ -122,7 +122,7 @@ public class PValueMapper {
 				while (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					System.err.println("propertyID " + pv.getId());
+					System.err.println("PValID " + pv.getId());
 					while (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
@@ -141,7 +141,7 @@ public class PValueMapper {
 				stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 						+ "dateValue, propertyID, contactID) VALUES " + "(" + "null, " + pv.getIntValue() + ", "
 						+ "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")"
-						+ Statement.RETURN_GENERATED_KEYS);
+						, Statement.RETURN_GENERATED_KEYS);
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
 				while (rs.next()) {
@@ -195,7 +195,7 @@ public class PValueMapper {
 				stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 						+ " dateValue, propertyID, contactID) VALUES " + "( " + "null, " + "null, " + pv.getFloatValue()
 						+ ", " + "null" + ", " + pv.getProperty().getId() + ", " + c.getId() + ")"
-						+ Statement.RETURN_GENERATED_KEYS);
+						, Statement.RETURN_GENERATED_KEYS);
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
 				while (rs.next()) {
@@ -515,6 +515,9 @@ public class PValueMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
+			System.err.println("pvid" + pv.getId());
+			System.err.println("uid" + u.getId());
+			System.err.println("tbool: " + IsOwner);
 			// Füllen des Statements
 			stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + pv.getId() + ", " + u.getId() + ")");

@@ -54,7 +54,7 @@ public interface EditorServiceAsync {
 
 	void updatePValue(PValue pv, AsyncCallback<PValue> callback);
 
-	void updateContact(Contact c, AsyncCallback<Contact> callback);
+	void updateContact(Contact c, JabicsUser u, AsyncCallback<Contact> callback);
 
 	void updateContactList(ContactList cl, AsyncCallback<ContactList> callback);
 

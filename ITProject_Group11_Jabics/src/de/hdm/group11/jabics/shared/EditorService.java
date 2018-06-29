@@ -54,7 +54,7 @@ public interface EditorService extends RemoteService {
 
 	public PValue updatePValue(PValue pv);
 
-	public Contact updateContact(Contact c);
+	public Contact updateContact(Contact c, JabicsUser u);
 
 	public ContactList updateContactList(ContactList cl);
 
