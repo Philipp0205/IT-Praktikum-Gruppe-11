@@ -377,7 +377,7 @@ public class Editor implements EntryPoint {
 	}
 	
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
-		treeViewMenu.removeContactFromList(cl, c);
+		treeViewMenu.removeContactOfContactList(cl, c);
 	}
 
 	public void updateContactInTree(Contact c) {
@@ -387,6 +387,16 @@ public class Editor implements EntryPoint {
 	public void updateContactListInTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
 	}
+	
+	public void removeContactListFromTree(ContactList cl) {
+		treeViewMenu.removeContactListFromTree(cl);
+	}
+	
+	public void flushContactLists() {
+		treeViewMenu.flushContactListsProvider();
+	}
+	
+	
 	/*
 	 * public void removeContactFromTree(Contact c) { treeViewMenu.removeContact(c);
 	 * }

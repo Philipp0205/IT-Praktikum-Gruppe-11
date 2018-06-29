@@ -207,7 +207,7 @@ public class ContactListMapper {
 	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList insertContactIntoContactList(ContactList cl, Contact c) {
-		System.err.println("insertContactIntoContactList: ContactID " + c.getName() + "into " + cl.getListName());
+		System.err.println("insertContactIntoContactList: ContactID " + c.getName() + " into " + cl.getListName());
 
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -217,10 +217,21 @@ public class ContactListMapper {
 
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
+			
+			System.out.println("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
+					+ ", " + cl.getId() + ")");
 
 			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
 			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
 					+ ", " + cl.getId() + ")");
+			
+			
+			
+//			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + c.getId()
+//			+ ", " + cl.getId());
+			
+			//String query = ("INSERT INTO contactList (listname) VALUES ('" + cl.getListName() + "')");
+			
 			System.out.println("insertedContactIntoContactList: ContactID " + c.getName() + "into " + cl.getListName());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
@@ -258,15 +269,19 @@ public class ContactListMapper {
 	 *            werden soll.
 	 */
 	public void deleteContactfromContactList(ContactList cl, Contact c) {
+		System.err.println("deleteContactfromContactList: ContactID " + c.getName() + "into " + cl.getListName());
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 		try {
+			System.err.println("try");
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
 			// Löschen des Kontakts aus der Liste.
-			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID= " + cl.getId()
+			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID = " + c.getId()
 					+ " AND contactListID = " + cl.getId());
+			
+			System.out.println("DeletedContactFromContactList: ContactID " + c.getName() + "from " + cl.getListName());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
 			Statement stmt2 = con.createStatement();
@@ -295,10 +310,12 @@ public class ContactListMapper {
 	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
 	 */
 	public ContactList findContactListById(int id) {
+		System.err.println("findContactListById ID " + id);
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
 		try {
+			System.err.println("try");
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 			// Erzeugen eines Kontaktlisten-Objektes
@@ -307,7 +324,7 @@ public class ContactListMapper {
 			// Auswählen eines Contaktlistenobjekts mit einer bestimmten ID.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM contactList " + "WHERE contactListID = " + id);
 
-			if (rs.next()) {
+			while (rs.next()) {
 				// Befüllen des Kontaktlisten-Objekts
 				cl.setId(rs.getInt("contactListID"));
 				cl.setListName(rs.getString("listname"));
@@ -322,6 +339,7 @@ public class ContactListMapper {
 
 			return cl;
 		} catch (SQLException e) {
+			System.err.println("Verkackt2 ");
 
 			System.err.print(e);
 			return null;

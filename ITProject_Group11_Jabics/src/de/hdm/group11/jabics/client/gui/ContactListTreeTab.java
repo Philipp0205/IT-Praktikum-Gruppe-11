@@ -40,9 +40,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	// private LoginInfo loginfo = LoginInfo.getloginInfo();
 	JabicsUser jabicsUser;
 	Editor editor;
-	
+
 	// ContactList currentCL;
-	
+
 	/*
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer
 	 * wenn etwas geändert wird. Also Controller (m-v-c-Modell), zwischen der
@@ -51,7 +51,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * In diesem Fall werden werden Kontaktlisten bereitgestellt.
 	 */
 	private ListDataProvider<ContactList> contactListDataProviders;
-	
+
 	/*
 	 * In der Map werden die ListDataProviders für die expandierten Kontakte
 	 * gepespeichert.
@@ -64,12 +64,11 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Beispiel: key: 1234 --> Value: Kontakt (Max, Mustermann, 1990, ...)
 	 */
 	private Map<ContactList, ListDataProvider<Contact>> contactDataProviders = null;
-	
+
 	private BusinessObjectKeyProvider boKeyProvider;
 
 	private SingleSelectionModel<BusinessObject> selectionModel;
 
-	
 	public ContactListTreeTab() {
 		GWT.log("2: Konstruktor ContactListTreeTab");
 
@@ -133,8 +132,6 @@ public class ContactListTreeTab implements TreeViewModel {
 
 	}
 
-	
-
 	/**
 	 * Implementation der GWT Klasse SelectionsChangeEvent. Diese Methode regelt,
 	 * was passiert, wenn ein Objekt im Baum ausgew�hlt wird. Es wird zwischen
@@ -146,6 +143,10 @@ public class ContactListTreeTab implements TreeViewModel {
 		GWT.log("Editor setzen in contactlisttree");
 		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;
+	}
+	
+	public void flushContactListProvider() {
+		contactListDataProviders.refresh();
 	}
 
 	public void setSelectedContactList(ContactList cl) {
@@ -184,6 +185,19 @@ public class ContactListTreeTab implements TreeViewModel {
 		contactListDataProviders.flush();
 		contactDataProviders.get(cl).flush();
 
+	}
+
+	public void removeContactList(ContactList cl) {
+
+		GWT.log("Kontaktliste hinzufügen");
+		contactListDataProviders.getList().remove(cl);
+		GWT.log("Kontaktliste hinzufügen2");
+		contactDataProviders.put((ContactList) cl, new ListDataProvider<Contact>());
+		GWT.log("Kontaktliste hinzufügen3" + cl.getListName());
+		// Die neue Liste wird ausgew�hlt.
+		selectionModel.setSelected(cl, true);
+		contactListDataProviders.flush();
+		contactDataProviders.get(cl).flush();
 	}
 
 	public void updateContactList(ContactList cl) {
@@ -244,10 +258,14 @@ public class ContactListTreeTab implements TreeViewModel {
 		}
 	}
 
-	public void removeContactList(Contact cl) {
-		contactListDataProviders.getList().remove(cl);
-		contactDataProviders.remove(cl);
-	}
+//	public void removeContactList(Contact cl) {
+//		contactListDataProviders.getList().remove(cl);
+//		
+//		for (ContactList cl2 : contactListDataProviders.getList()) {
+//			contactListDataProviders.getList().remove(cl2);
+//		}
+//
+//	}
 
 	/*
 	 * Weiter zu den Kontakten
@@ -256,39 +274,39 @@ public class ContactListTreeTab implements TreeViewModel {
 
 		// wenn es noch keinen Kontaktlisten Provider f�r den Kontakt gitb, dann wurde
 		// der Baum noch nicht geöffnet und es passiert nichts.
-//		if (!contactDataProviders.containsKey(cl)) {
-//			return;
-//		}
+		// if (!contactDataProviders.containsKey(cl)) {
+		// return;
+		// }
 		GWT.log("Kontakt zu Liste hinzufügen");
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
-		
+
 		GWT.log("Folgende Kontakte in Liste " + cl.getListName());
 		GWT.log(cl.getContacts().toString());
 
 		GWT.log("Kontakt hinzufügen: " + c.getName());
 		contactsProvider.getList().add(c);
-		
+
 		contactsProvider.flush();
 
 		selectionModel.setSelected(c, true);
 	}
 
 	public void removeContactOfContactList(ContactList cl, Contact c) {
-//		if (!contactDataProviders.containsKey(cl)) {
-//			return;
-//		}
+		// if (!contactDataProviders.containsKey(cl)) {
+		// return;
+		// }
 		GWT.log("Kontakt zaus Liste entfernen");
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
-		
+
 		GWT.log("Folgende Kontakte in Liste " + cl.getListName());
 		GWT.log(cl.getContacts().toString());
-		
+
 		GWT.log("Kontakt entfernen: " + c.getName());
 		contactsProvider.getList().remove(c);
+
+		selectionModel.setSelected(c, true);
 		
 		contactsProvider.flush();
-
-		selectionModel.setSelected(cl, true);
 	}
 
 	/*

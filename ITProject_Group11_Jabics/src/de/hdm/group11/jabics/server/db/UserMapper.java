@@ -143,7 +143,7 @@ public class UserMapper {
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
 					+ " WHERE contactlistCollaboration.contactListID = " + cl.getId() + " AND isOwner = 1");
 
-			if (rs.next()) {
+			while (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));

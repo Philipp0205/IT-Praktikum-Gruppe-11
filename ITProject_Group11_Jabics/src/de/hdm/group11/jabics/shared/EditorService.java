@@ -45,8 +45,8 @@ public interface EditorService extends RemoteService {
 	public Contact removeContactFromList(Contact c, ContactList cl);
 
 	public void deleteContact(Contact c, JabicsUser u);
-
-	public void deleteContactList(ContactList cl, JabicsUser u);
+	
+	public ContactList deleteContactList(ContactList cl, JabicsUser u);
 
 	public void deleteProperty(Property p);
 

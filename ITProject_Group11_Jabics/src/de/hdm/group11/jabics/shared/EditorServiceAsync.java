@@ -46,7 +46,9 @@ public interface EditorServiceAsync {
 
 	void deleteContact(Contact c, JabicsUser u, AsyncCallback<Void> callback);
 
-	void deleteContactList(ContactList cl, JabicsUser u, AsyncCallback<Void> callback);
+	
+	void deleteContactList(ContactList cl, JabicsUser u, AsyncCallback<ContactList> callback);
+	
 
 	void deleteProperty(Property p, AsyncCallback<Void> callback);
 
