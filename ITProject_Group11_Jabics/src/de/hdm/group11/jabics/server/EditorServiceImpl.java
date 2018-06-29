@@ -760,7 +760,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
 		ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
-		System.out.println(">>>>>>>>>>>>>>"+alc.get(0).getName());
 		return alc;
 	}
 
