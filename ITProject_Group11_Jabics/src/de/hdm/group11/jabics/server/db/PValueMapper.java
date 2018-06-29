@@ -595,6 +595,11 @@ public class PValueMapper {
 					}
 				}
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return al;
 		} catch (SQLException e) {

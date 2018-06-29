@@ -114,10 +114,13 @@ public class PropertyMapper {
 					p.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 				}
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return p;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -141,9 +144,12 @@ public class PropertyMapper {
 
 			// Löschen der Eigenschaft aus der Datenbank.
 			stmt.executeUpdate("DELETE FROM property WHERE propertyID = " + p.getId());
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -181,9 +187,12 @@ public class PropertyMapper {
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return p;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -225,9 +234,12 @@ public class PropertyMapper {
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(p);
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);

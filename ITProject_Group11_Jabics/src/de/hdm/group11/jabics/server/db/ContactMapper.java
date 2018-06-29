@@ -489,6 +489,12 @@ public class ContactMapper {
 				}
 			}
 
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
+
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
