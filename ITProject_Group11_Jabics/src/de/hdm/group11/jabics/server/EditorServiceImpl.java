@@ -391,6 +391,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * 
 	 * @return Eine ArrayList mit allen Contacts, die dem Suchkriterium entsprechen
 	 */
+	
 	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u) {
 		// neue Kontaktliste, um bereits implementierte Methode verwenden zu können
 		ContactList cl = new ContactList(getContactsOf(u));

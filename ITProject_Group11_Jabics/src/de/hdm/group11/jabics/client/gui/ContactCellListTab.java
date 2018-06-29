@@ -25,7 +25,7 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.resource.*;
 
-public class ContactCellListTab{
+public class ContactCellListTab {
 
 	private Contact selectedContact;
 	Editor editor;
@@ -37,35 +37,35 @@ public class ContactCellListTab{
 	private ContactKeyProvider keyProvider = null;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
-	
 
-	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
-	
+	// private final ArrayList<Contact> allcontacts =
+	// cMapper.findAllContacts(loginfo.getCurrentUser());
+
 	public ContactCellListTab() {
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		
+
 	}
 
 	public CellList<Contact> createContactTabForSearchForm() {
 
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
-		
+
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
-		
+
 		contactDataProvider.flush();
 		contactCell.redraw();
 		return contactCell;
 	}
-	
+
 	public CellList<Contact> createContactTab() {
 		GWT.log("3.1 createContactTab");
 		eService = ClientsideSettings.getEditorService();
-		
+
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
 		user = new JabicsUser(1);
@@ -73,26 +73,26 @@ public class ContactCellListTab{
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		//JabicsUser user2 = new JabicsUser(1);
+		// JabicsUser user2 = new JabicsUser(1);
 		GWT.log("2.1 User: " + user.getId());
-		
+
 		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				GWT.log("3.1 CellList onFailure" + caught.toString());
 			}
+
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
-				
+
 				if (contacts != null) {
 					GWT.log("3.1 CellList onSuccess");
-					
+
 					for (Contact c : contacts) {
 						contactDataProvider.getList().add(c);
 					}
 				}
-
 
 			}
 		});
@@ -121,7 +121,6 @@ public class ContactCellListTab{
 	public CellList getCellList() {
 		return this.contactCell;
 	}
-	
 
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
 		@Override
@@ -129,6 +128,7 @@ public class ContactCellListTab{
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
 		}
+
 		private void setSelectedContact(Contact c) {
 			GWT.log("3.1 Kontakt anzeigen " + c.getName());
 			editor.showContact(c);
@@ -140,15 +140,17 @@ public class ContactCellListTab{
 		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;
 	}
+
 	public void setUser(JabicsUser u) {
 		GWT.log("User setzen in contactCellListTab");
 		this.user = u;
 	}
-	
+
 	public void addContact(Contact c) {
 		contactDataProvider.getList().add(c);
 		selectionModel.setSelected(c, true);
 	}
+
 	public void addsearchedContact(Contact c) {
 		contactDataProvider.getList().add(c);
 		contactDataProvider.flush();
@@ -168,15 +170,19 @@ public class ContactCellListTab{
 		}
 		contactDataProvider.refresh();
 	}
-	
+
+	public ListDataProvider<Contact> getContactDataProvider() {
+		return this.contactDataProvider;
+	}
+
 	public class AsyncDataProvider extends AbstractCell<Contact> {
 
 		@Override
 		public void render(Context context, Contact value, SafeHtmlBuilder sb) {
 			if (value == null) {
-				//sb.appendHtmlConstant("<div>");
+				// sb.appendHtmlConstant("<div>");
 				sb.appendEscaped(value.getName());
-				//sb.appendHtmlConstant("</div>");
+				// sb.appendHtmlConstant("</div>");
 			}
 		}
 

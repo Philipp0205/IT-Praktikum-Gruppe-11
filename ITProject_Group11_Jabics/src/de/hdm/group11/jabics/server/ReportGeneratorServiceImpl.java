@@ -125,7 +125,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 				contactInfo.setContent(c.getOwner().getUsername());
 			}
 			if (!allCollaborators.isEmpty()) {
-				String info = "Teilhaber: "; 
+				String info = "Teilhaber: ";
 				for (JabicsUser collaborator : allCollaborators) {
 					info = info + " " + collaborator.getUsername() + ",";
 				}
@@ -171,6 +171,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 */
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u)
 			throws IllegalArgumentException {
+		
+		System.out.println("Filtern nach " + pv.toString() + pv.getProperty().getLabel());
 		/**
 		 * Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt.
 		 * Aus dieser werden dann anschließend die entsprechenden Kontakte gefiltert.
@@ -238,12 +240,31 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
+		ArrayList<Contact> contactRes = new ArrayList<Contact>();
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
+		System.err.println("Filterkriterium PVAL: " + pv.getStringValue());
 
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
-		for (Contact c : Filter.filterContactsByString(contacts, pv.getStringValue())) {
+
+		// Kontakte nach Property filtern, falls gesetzt
+		if (pv.getProperty().getLabel() != null) {
+			System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
+			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+		}
+		System.err.println("Gefundene kontakte: ");
+		for(Contact c : contacts) {
+			System.err.println("Contact : " + c.getName());
+		}
+		// Kontakte nach PropertyValue filtern, falls gesetzt
+		if (pv.getStringValue() != null) {
+			System.err.println("Nach PVal filtern");
+			contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+		}
+		System.err.println("Zurückgeben");
+		// Reports für die gefilterten Kontakte erstellen
+		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
@@ -251,7 +272,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			JabicsUser u = uMapper.findUserByContact(c);
 			results.add(new ContactReport(pviews, new Paragraph(c.getName()), new Paragraph(u.getUsername())));
 		}
-		return results; // ?
+		return results;
 	}
 
 	/**
@@ -269,14 +290,24 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
-		for (Contact c : Filter.filterContactsByInt(contacts, pv.getIntValue())) {
+		// Kontakte nach Property filtern, falls gesetzt
+		if (pv.getProperty().getLabel() != null) {
+			System.out.println("Filtern nach Property");
+			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+		}
+		// Kontakte nach PropertyValue filtern, falls gesetzt
+		if (pv.getIntValue() != 0) {
+			contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
+		}
+
+		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
 			results.add(new ContactReport(pviews));
 		}
-		return results; // ?
+		return results;
 
 	}
 
@@ -295,7 +326,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
-		for (Contact c : Filter.filterContactsByDate(contacts, pv.getDateValue())) {
+		// Kontakte nach Property filtern, falls gesetzt
+		if (pv.getProperty().getLabel() != null) {
+			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+		}
+		// Kontakte nach PropertyValue filtern, falls gesetzt
+		if (pv.getDateValue() != null) {
+			contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+		}
+		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
@@ -343,7 +382,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
-		for (Contact c : Filter.filterContactsByFloat(contacts, pv.getFloatValue())) {
+		// Kontakte nach Property filtern, falls gesetzt
+		if (pv.getProperty().getLabel() != null) {
+			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+		}
+		// Kontakte nach PropertyValue filtern, falls gesetzt
+		if (pv.getFloatValue() != 0.0f) {
+			contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
+		}
+		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
