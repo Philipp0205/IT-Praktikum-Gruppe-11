@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -20,6 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactForm.CreatePValueCallback;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
@@ -53,6 +56,8 @@ public class EditContactForm extends VerticalPanel {
 
 	ListBox formattype = new ListBox();
 	TextBox propertyName = new TextBox();
+	TextBox pvalueTextBox = new TextBox();
+	DatePicker dp;
 
 	public void onLoad() {
 
@@ -84,7 +89,7 @@ public class EditContactForm extends VerticalPanel {
 
 			// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 			// Die gesamte Zeile (4) wird ein HorizontalPanel
-			Grid propertyAddBox = new Grid(2, 5);
+			Grid propertyAddBox = new Grid(3, 5);
 
 			// in diesem Horizontal Panel gibt es 4 Felder
 			// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
@@ -99,13 +104,26 @@ public class EditContactForm extends VerticalPanel {
 			formattype.addItem("Datum");
 			formattype.addItem("Kommazahl");
 			formattype.addItem("Zahl");
+			formattype.addChangeHandler(new ChangeHandler() {
+
+		        @Override
+		        public void onChange(ChangeEvent event) {
+		            dp.setVisible(true);
+		        }
+		    });
 			Label z2l = new Label("Art:");
 			propertyAddBox.setWidget(0, 1, z2l);
 			propertyAddBox.setWidget(1, 1, formattype);
+			
+			Label pvaluelabel = new Label("Wert:");
+			
+			
+			propertyAddBox.setWidget(0, 2, pvaluelabel);
+			propertyAddBox.setWidget(1, 2, pvalueTextBox);
 
 			Button addPropertyButton = new Button("Hinzufügen");
 			addPropertyButton.addClickHandler(new AddPropertyClickHandler());
-			propertyAddBox.setWidget(1, 2, addPropertyButton);
+			propertyAddBox.setWidget(1, 3, addPropertyButton);
 			addPPanel.add(propertyAddBox);
 
 			p = new ArrayList<Property>();
@@ -374,10 +392,32 @@ public class EditContactForm extends VerticalPanel {
 		public void onSuccess(Property result) {
 			if (result != null) {
 				GWT.log(result.getTypeInString() + "Hinzufügen neue Property zur Tabelle");
-				PropForm pform = new PropForm(result);
-				pform.show();
-				val.add(pform);
-				pPanel.add(pform);
+				
+			}
+			
+			if (result != null) {
+				GWT.log(result.getTypeInString());
+				switch (formattype.getSelectedItemText()) {
+				case "Text":
+					editorService.createPValue(result, pvalueTextBox.getText(), contact, u,
+							new CreatePValueCallback());
+					break;
+				case "Datum":
+					Window.alert("Datum auf Standardwert gesetzt, DatePicker noch einfügen");
+					
+					// Datum muss im folgenden Format eingegeben werden: 2018-06-15;
+					editorService.createPValue(result,  pvalueTextBox.getText(), contact, u, new CreatePValueCallback());
+					break;
+				case "Kommazahl":
+					editorService.createPValue(result, Float.valueOf(pvalueTextBox.getText()), contact, u,
+							new CreatePValueCallback());
+					break;
+				case "Zahl":
+					editorService.createPValue(result, Integer.valueOf(pvalueTextBox.getText()), contact, u,
+							new CreatePValueCallback());
+					break;
+				}
+
 			}
 
 		}
@@ -419,6 +459,12 @@ public class EditContactForm extends VerticalPanel {
 		public void onSuccess(PValue result) {
 			if (result != null) {
 				GWT.log("PValue erstellt ");
+				PropForm pform = new PropForm(result);
+				pform.show();
+				val.add(pform);
+				pPanel.add(pform);
+				pvalueTextBox.setText("");
+				propertyName.setText("");
 			}
 		}
 	}
@@ -552,7 +598,7 @@ public class EditContactForm extends VerticalPanel {
 		PValue pval;
 		Button delete = new Button("löschen");
 		TextBox val = new TextBox();
-		DatePicker dp;
+		
 
 		public void show() {
 			this.add(val);
@@ -566,7 +612,7 @@ public class EditContactForm extends VerticalPanel {
 				dp = new DatePicker();
 				dp.setVisible(false);
 				dp.addValueChangeHandler(new ValChange());
-				// dp.setValue(new Date(), true);
+				pvalueTextBox.setText(dp.getValue().toString());
 				this.add(dp);
 				GWT.log("DatumEnde");
 			}

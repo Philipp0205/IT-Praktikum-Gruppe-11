@@ -313,7 +313,7 @@ public class ContactForm extends VerticalPanel {
 	 * Diese Callback-Klasse aktualisiert die Ansicht nach erfolgreichem Erstellen
 	 * einer Eigenschaftsausprägung..
 	 */
-	private class CreatePValueCallback implements AsyncCallback<PValue> {
+	public class CreatePValueCallback implements AsyncCallback<PValue> {
 
 		@Override
 		public void onFailure(Throwable caught) {
