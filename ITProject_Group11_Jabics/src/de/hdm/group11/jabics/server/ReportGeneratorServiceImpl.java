@@ -1,5 +1,9 @@
 package de.hdm.group11.jabics.server;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,7 +22,6 @@ import de.hdm.group11.jabics.shared.report.*;
  * @see ReportGeneratorService
  * @author Kurrle und Anders
  */
-
 public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements ReportGeneratorService {
 
 	/**
@@ -41,12 +44,10 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * werden soll
 	 */
 	public void init() throws IllegalArgumentException {
-
 		cMapper = ContactMapper.contactMapper();
 		uMapper = UserMapper.userMapper();
 		pvMapper = PValueMapper.pValueMapper();
 		pMapper = PropertyMapper.propertyMapper();
-
 	}
 
 	/**
@@ -115,33 +116,54 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 				PropertyView newPV = new PropertyView(pv);
 				pval.add(newPV);
 			}
-			Paragraph contactInfo = new Paragraph("Kein Kontaktname");
-			Paragraph userInfo = new Paragraph("Kein Nutzername");
-			Paragraph collaborationInfo = new Paragraph("Keine Teilhaberschaften");
-			if (c.getName() != null) {
-				contactInfo.setContent(c.getName());
-			}
-			if (c.getOwner().getUsername() != null) {
-				contactInfo.setContent(c.getOwner().getUsername());
-			}
-			if (!allCollaborators.isEmpty()) {
-				String info = "Teilhaber: ";
-				for (JabicsUser collaborator : allCollaborators) {
-					info = info + " " + collaborator.getUsername() + ",";
-				}
-				info.substring(0, info.length() - 1);
-				collaborationInfo.setContent(info);
-			}
 			if (!pval.isEmpty()) {
-				ContactReport newRP = new ContactReport(pval, contactInfo, userInfo);
-				System.err.println("CR add: " + newRP.getContactInfo());
-				result.addReport(newRP);
+				//Hier wird der Report letztendlich erstellt
+				System.err.println("CR add: ");
+				result.addReport(createContactReport(pval, c, allCollaborators));
 			} else {
-				ContactReport newRP = new ContactReport(contactInfo, userInfo);
+				ContactReport newRP = new ContactReport(new Paragraph(c.getName()),
+						new Paragraph(c.getOwner().getUsername()));
 				result.addReport(newRP);
 			}
 		}
 		return result;
+	}
+
+	public ContactReport createContactReport(ArrayList<PropertyView> pv, Contact contact, ArrayList<JabicsUser> collaborators) {
+		Paragraph contactInfo = new Paragraph("Kein Kontaktname");
+		Paragraph userInfo = new Paragraph("Kein Nutzername");
+		Paragraph creationInfo = new Paragraph("Kein Erstelldatum");
+		Paragraph updateInfo = new Paragraph("Kein Updatedatum");
+		Paragraph collaborationInfo = new Paragraph("Keine Teilhaberschaften");
+
+		if (contact.getName() != null) {
+			contactInfo.setContent(contact.getName());
+		}
+		if (contact.getOwner() != null) {
+			userInfo.setContent(contact.getOwner().getUsername());
+		}else {
+			userInfo.setContent(uMapper.findUserByContact(contact).getUsername());
+		}
+		// Datum formattieren
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+		if (contact.getDateCreated() != null) {
+			creationInfo.setContent(contact.getDateCreated().toLocalDateTime().format(formatter));
+		}
+		if (contact.getDateUpdated() != null) {
+			updateInfo.setContent(contact.getDateUpdated().toLocalDateTime().format(formatter));
+		}
+		//Teilhaber setzen
+		if (!collaborators.isEmpty()) {
+			String info = new String();
+			for (JabicsUser collaborator : collaborators) {
+				info = info + " " + collaborator.getUsername() + ",";
+			}
+			info = info.substring(0, info.length() - 1);
+			collaborationInfo.setContent(info);
+		}
+		ContactReport newRP = new ContactReport(pv, contactInfo, userInfo, creationInfo, updateInfo,
+				collaborationInfo);
+		return newRP;
 	}
 
 	public FilteredContactsOfUserReport createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser) {
@@ -171,7 +193,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 */
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u)
 			throws IllegalArgumentException {
-		
+
 		System.out.println("Filtern nach " + pv.toString() + pv.getProperty().getLabel());
 		/**
 		 * Es wird eine ArrayList mit allen Kontakten des jeweiligen Nutzers erstellt.
@@ -254,7 +276,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
 		}
 		System.err.println("Gefundene kontakte: ");
-		for(Contact c : contacts) {
+		for (Contact c : contacts) {
 			System.err.println("Contact : " + c.getName());
 		}
 		// Kontakte nach PropertyValue filtern, falls gesetzt
@@ -270,7 +292,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 				pviews.add(new PropertyView(p));
 			}
 			JabicsUser u = uMapper.findUserByContact(c);
-			results.add(new ContactReport(pviews, new Paragraph(c.getName()), new Paragraph(u.getUsername())));
+			results.add(createContactReport(pviews, c, cMapper.findCollaborators(c)));
 		}
 		return results;
 	}
@@ -305,7 +327,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
-			results.add(new ContactReport(pviews));
+			results.add(createContactReport(pviews, c, cMapper.findCollaborators(c)));
 		}
 		return results;
 
@@ -339,7 +361,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
-			results.add(new ContactReport(pviews));
+			results.add(createContactReport(pviews, c, cMapper.findCollaborators(c)));
 		}
 		return results; // ?
 
@@ -360,8 +382,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 				for (PValue p : c2.getValues()) {
 					pviews.add(new PropertyView(p));
 				}
-				// TODO hier muss eigentlich der Owner rein: c2.getOwner().getUsername()
-				results.add(new ContactReport(pviews, new Paragraph(c2.getName()), new Paragraph(u.getUsername())));
+
+				results.add(createContactReport(pviews, c, collaborators));
 			}
 		}
 		return results;
@@ -395,7 +417,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
-			results.add(new ContactReport(pviews));
+
+			results.add(createContactReport(pviews, c, cMapper.findCollaborators(c)));
 		}
 		return results; // ?
 	}
