@@ -97,35 +97,34 @@ public class ContactMapper {
 	public Contact insertContact(Contact c) {
 
 		// Erzeugen der Datenbankverbindung
-	    Connection con = DBConnection.connection();
-	    
-	    try {
-		String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
-		// Erzeugen eines ungefüllten SQL-Statements
-		Statement stmt = con.createStatement();
-		stmt.executeUpdate( query, Statement.RETURN_GENERATED_KEYS);
-		ResultSet rs = stmt.getGeneratedKeys();
-		Statement stmt2 =  con.createStatement();
-		ResultSet rs2;
-		
-		if(rs.next()) {
-			rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
-			c.setId(rs.getInt(1));
-		if(rs2.next()) {
-			c.setDateCreated(rs2.getTimestamp("dateCreated"));
-			c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+		Connection con = DBConnection.connection();
+
+		try {
+			String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = stmt.getGeneratedKeys();
+			Statement stmt2 = con.createStatement();
+			ResultSet rs2;
+
+			if (rs.next()) {
+				rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
+				c.setId(rs.getInt(1));
+				if (rs2.next()) {
+					c.setDateCreated(rs2.getTimestamp("dateCreated"));
+					c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+				}
+			}
+			// Schließen der Datenbankverbindung
+			stmt.close();
+			stmt2.close();
+			con.close();
+			return c;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
 		}
-		}
-		// Schließen der Datenbankverbindung
-        stmt.close();
-        stmt2.close();
-        con.close();
-		return c;
-	    }
-	    catch (SQLException e) {
-	    	System.err.print(e);
-	    	return null;
-	    }
 	}
 
 	/**
@@ -155,9 +154,9 @@ public class ContactMapper {
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        stmt2.close();
-	        con.close();
+			stmt.close();
+			stmt2.close();
+			con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;
@@ -183,8 +182,8 @@ public class ContactMapper {
 			// Löschen des Kontakts.
 			stmt.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId());
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        con.close();
+			stmt.close();
+			con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -231,13 +230,13 @@ public class ContactMapper {
 				al.add(c);
 			}
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        con.close();
-	        
-	        for(Contact c : al) {
-	        	System.out.println("Alle Kontakte Finden " + c.getName() + c.getId());
-	        }
-	        
+			stmt.close();
+			con.close();
+
+			for (Contact c : al) {
+				System.out.println("Alle Kontakte Finden " + c.getName() + c.getId());
+			}
+
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -274,8 +273,8 @@ public class ContactMapper {
 				System.out.println(c.getName());
 			}
 			// Schließen der Datenbankverbindung
-	        stmt.close();
-	        con.close();
+			stmt.close();
+			con.close();
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -297,7 +296,6 @@ public class ContactMapper {
 
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -328,10 +326,10 @@ public class ContactMapper {
 			}
 			// Schließen des SQL-Statements
 			stmt.close();
-			
+
 			// Schließen der Datenbankverbindung
 			con.close();
-			
+
 			// Rückgabe der mit Contact-Objekten befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
@@ -375,10 +373,10 @@ public class ContactMapper {
 			}
 			// Schließen des SQL-Statements
 			stmt.close();
-			
+
 			// Schließen der Datenbankverbindung
 			con.close();
-			
+
 			// Rückgabe der mit JabicsUsern befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
@@ -415,10 +413,10 @@ public class ContactMapper {
 
 			// Schließen des SQL-Statements
 			stmt.close();
-			
+
 			// Schließen der Datenbankverbindung
 			con.close();
-			
+
 			// Rückgabe des Contact-Objekts
 			return c;
 		} catch (SQLException e) {
@@ -451,11 +449,55 @@ public class ContactMapper {
 
 			// Schließen des SQL-Statements
 			stmt.close();
-			
+
 			// Schließen der Datenbankverbindung
 			con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
+		}
+	}
+
+	public ArrayList<BoStatus> findShareStatus(ArrayList<Contact> alContact) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
+
+			StringBuffer s = new StringBuffer();
+
+			for (Contact c : alContact) {
+				s.append(c.getId());
+				s.append(",");
+			}
+			s.deleteCharAt(s.lastIndexOf(","));
+
+			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "
+					+ " WHERE isOwner = 0 AND contactID IN (" + s + ")");
+
+			for (Contact c : alContact) {
+				while (rs.next()) {
+					if (rs.getInt("contactID") == c.getId()) {
+						al.add(BoStatus.IS_SHARED);
+					} else {
+						al.add(BoStatus.NOT_SHARED);
+					}
+				}
+			}
+
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
+
+			return al;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
 		}
 	}
 }
