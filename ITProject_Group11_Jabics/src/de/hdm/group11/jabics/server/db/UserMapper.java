@@ -112,9 +112,12 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -145,9 +148,12 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -178,8 +184,10 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
 
 		} catch (SQLException e) {
@@ -215,9 +223,12 @@ public class UserMapper {
 			if (rs.next()) {
 				u.setId(rs.getInt(1));
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -241,9 +252,12 @@ public class UserMapper {
 
 			// Löschen des Users.
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -284,9 +298,12 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -320,9 +337,12 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -357,9 +377,13 @@ public class UserMapper {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
-				// Schließen der Datenbankverbindung
+
+				// Schließen des SQL-Statements
 				stmt.close();
+
+				// Schließen der Datenbankverbindung
 				con.close();
+
 				return u;
 			} else
 				return null;

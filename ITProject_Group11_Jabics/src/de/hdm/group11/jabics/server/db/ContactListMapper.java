@@ -119,10 +119,13 @@ public class ContactListMapper {
 					cl.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 				}
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return cl;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -152,9 +155,12 @@ public class ContactListMapper {
 			// Update des Namens der Kontaktliste und des letzten Updates
 			stmt.executeUpdate(
 					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return cl;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -177,10 +183,14 @@ public class ContactListMapper {
 			Statement stmt = con.createStatement();
 
 			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
-			stmt.executeUpdate("DELETE FROM contactList WHERE  contactlistID = " + cl.getId());
-			// Schließen der Datenbankverbindung
+			stmt.executeUpdate("DELETE FROM contactList WHERE  contactListID = " + cl.getId());
+
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -219,12 +229,13 @@ public class ContactListMapper {
 			// Update des letzten Updates der Kontaktliste.
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
-			// Schließen der Datenbankverbindung
-
+			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
 
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return cl;
 		} catch (SQLException e) {
 			System.err.print("Verkackt");
@@ -259,11 +270,14 @@ public class ContactListMapper {
 
 			// Update des letzten Updates der Kontaktliste.
 			stmt2.executeUpdate(
-					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactlistID = " + cl.getId());
-			// Schließen der Datenbankverbindung
+					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
+			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -288,7 +302,7 @@ public class ContactListMapper {
 			ContactList cl = new ContactList();
 
 			// Auswählen eines Contaktlistenobjekts mit einer bestimmten ID.
-			ResultSet rs = stmt.executeQuery("SELECT * FROM contactList " + "WHERE contactlistID = " + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM contactList " + "WHERE contactListID = " + id);
 
 			if (rs.next()) {
 				// Befüllen des Kontaktlisten-Objekts
@@ -297,9 +311,12 @@ public class ContactListMapper {
 				cl.setDateCreated(rs.getTimestamp("dateCreated"));
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return cl;
 		} catch (SQLException e) {
 
@@ -334,9 +351,9 @@ public class ContactListMapper {
 			// Join zwischen ContactList und ContactListCollaboration und Auswählen der
 			// Stellen mit einer bestimmten User-ID.
 			ResultSet rs = stmt.executeQuery(
-					"SELECT contactList.contactlistID, contactList.listname, contactList.dateCreated, contactList.dateUpdated"
+					"SELECT contactList.contactListID, contactList.listname, contactList.dateCreated, contactList.dateUpdated"
 							+ " FROM contactList"
-							+ " LEFT JOIN contactlistCollaboration ON contactList.contactlistID = contactlistCollaboration.contactlistID"
+							+ " LEFT JOIN contactlistCollaboration ON contactList.contactListID = contactlistCollaboration.contactListID"
 							+ " WHERE contactlistCollaboration.systemUserID =" + u.getId());
 
 			while (rs.next()) {
@@ -349,10 +366,12 @@ public class ContactListMapper {
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(cl);
 			}
-			// System.out.println(cl.getListName());
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -387,9 +406,12 @@ public class ContactListMapper {
 			// ContactlistCollaboration Tabelle.
 			stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES "
 					+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")");
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return cl;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -418,9 +440,12 @@ public class ContactListMapper {
 			// Löschen einer Teilhaberschaft aus der ContactlistCollaboration Tabelle.
 			stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId()
 					+ " AND systemUserID = " + u.getId());
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -460,9 +485,12 @@ public class ContactListMapper {
 				u.setId(rs.getInt("systemUserID"));
 				al.add(u);
 			}
-			// Schließen der Datenbankverbindung
+			// Schließen des SQL-Statements
 			stmt.close();
+
+			// Schließen der Datenbankverbindung
 			con.close();
+
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -479,7 +507,7 @@ public class ContactListMapper {
 			Statement stmt = con.createStatement();
 
 			// Auswählen von Tupeln mit einer bestimmten User-Id.
-			ResultSet rs = stmt.executeQuery("SELECT contactlistID" + " FROM contactlistCollaboration "
+			ResultSet rs = stmt.executeQuery("SELECT contactListID" + " FROM contactlistCollaboration "
 					+ " WHERE isOwner = 0 AND contactListID = " + cl.getId());
 
 			if (rs.next()) {
