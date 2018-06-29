@@ -43,7 +43,7 @@ public interface EditorService extends RemoteService{
 	
 	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u);
 	
-	public ContactList removeContactFromList(Contact c, ContactList cl);
+	public Contact removeContactFromList(Contact c, ContactList cl);
 	
 	public void deleteContact(Contact c, JabicsUser u);
 	

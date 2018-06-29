@@ -246,27 +246,33 @@ public class Editor implements EntryPoint {
 		clForm.setUser(this.currentUser);
 
 		formPanel.clear();
+		GWT.log("Editor: isNewList true");
 		clForm.setIsNewList(true);
 		clForm.setContactList(cl);
 
-		formPanel.insert(cForm, 0);
+		formPanel.insert(clForm, 0);
 
 		formPanel.setStyleName("formPanel");
 	}
 
 	public void showContactList(ContactList cl) {
+		GWT.log("7.x showContactList");
 
 		if (this.clForm == null) {
 			clForm = new ContactListForm();
+
 			clForm.setUser(this.currentUser);
 
 			clForm.setEditor(this);
+			
+
 
 		}
 		formPanel.clear();
 
 		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
 		// clForm.clear();
+		clForm.setIsNewList(false);
 		clForm.setCurrentList(cl);
 
 		formPanel.add(clForm);
@@ -368,6 +374,10 @@ public class Editor implements EntryPoint {
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
 	}
+	
+	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
+		treeViewMenu.removeContactFromList(cl, c);
+	}
 
 	public void updateContactInTree(Contact c) {
 		treeViewMenu.contactListTab.updateContact(c);
@@ -456,11 +466,12 @@ public class Editor implements EntryPoint {
 	private class CreateCLClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
-			Window.alert(
-					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
+//			Window.alert(
+//					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
 
 			ContactList newContactList = new ContactList();
-			showContactList(newContactList);
+			newContactList(newContactList);
+			//showContactList(newContactList);
 		}
 	}
 
