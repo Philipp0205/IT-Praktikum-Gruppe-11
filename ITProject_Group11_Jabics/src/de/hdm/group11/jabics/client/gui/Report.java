@@ -153,6 +153,8 @@ public class Report implements EntryPoint {
 		datatypemenu.addItem("Datum");
 		datatypemenu.addItem("Dezimalzahl");
 		datatypemenu.addItem("Ganzzahl");
+		datatypemenu.setSelectedIndex(4);
+		
 		verPanel1.add(propertyl);
 		verPanel2.add(valuelabel);
 		verPanel2.add(valueBox);
