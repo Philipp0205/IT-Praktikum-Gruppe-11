@@ -37,7 +37,7 @@ public interface EditorService extends RemoteService{
 	
 	public JabicsUser getUserById(int id);
 	
-	public ContactList addContactToList(Contact c, ContactList cl);
+	public Contact addContactToList(Contact c, ContactList cl);
 	
 	public Contact addValueToContact(PValue pv, Contact c, JabicsUser u);
 	

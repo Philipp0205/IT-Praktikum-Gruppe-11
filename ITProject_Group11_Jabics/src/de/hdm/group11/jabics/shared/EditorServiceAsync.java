@@ -36,7 +36,7 @@ public interface EditorServiceAsync {
 	
 	void getUserById(int id, AsyncCallback<JabicsUser> callback);
 	
-	void addContactToList(Contact c, ContactList cl, AsyncCallback<ContactList> callback);
+	void addContactToList(Contact c, ContactList cl, AsyncCallback<Contact> callback);
 	
 	void addValueToContact(PValue pv, Contact c, JabicsUser u, AsyncCallback<Contact> callback);
 	

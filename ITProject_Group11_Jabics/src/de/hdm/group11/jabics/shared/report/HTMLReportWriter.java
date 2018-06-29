@@ -91,10 +91,10 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 			}
 			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
 			sb.append("<td> <p>Besitzer: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
-			// sb.append("<td> <p>Erstellt am " + c.getCreationDateAsString() + "</p>
-			// </td>");
-			// sb.append("<td> <p>Zuletzt geändert: " + c.getCreationDateAsString() + "</p>
-			// </td>");
+			sb.append("<td> <p>Erstellt am " + c.getCreationDateAsString() + "</p>" +
+			"</td>");
+			sb.append("<td> <p>Zuletzt geändert: " + c.getCreationDateAsString() + "</p>" +
+			"</td>");
 			sb.append("</tr><tr>");
 			for (PropertyView pv : c.getContent()) {
 				// int i = 0;
