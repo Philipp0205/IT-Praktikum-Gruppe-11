@@ -45,18 +45,25 @@ public class TreeViewMenu {
 
 	public void addContactList(ContactList cl) {
 		contactListTab.addContactList(cl);
+		
 		for (Contact c : cl.getContacts()) {
-			GWT.log("8.1 add Contact " + c.getName() + "to List " + cl.getListName());
+			GWT.log("8.1 add Contact " + c.getName() + " to List " + cl.getListName());
 			contactListTab.addContactOfList(cl, c);
 		}
 
+	}
+
+	public void removeContactListFromTree(ContactList cl) {
+		contactListTab.removeContactList(cl);
+
+	
 	}
 
 	public void addContactToList(ContactList cl, Contact c) {
 		contactListTab.addContactOfList(cl, c);
 	}
 	
-	public void removeContactFromList(ContactList cl, Contact c) {
+	public void removeContactOfContactList(ContactList cl, Contact c) {
 		contactListTab.removeContactOfContactList(cl, c);
 	}
 
@@ -93,6 +100,10 @@ public class TreeViewMenu {
 		this.sharedContactListTab = new SharedContactCellListTab();
 		return sharedContactListTab.createContactTab();
 		
+	}
+	
+	public void flushContactListsProvider() {
+		contactListTab.flushContactListProvider();
 	}
 
 
