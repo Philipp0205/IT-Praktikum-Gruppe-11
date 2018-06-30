@@ -319,7 +319,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		}
 		// Kontakte nach PropertyValue filtern, falls gesetzt
 		if (pv.getIntValue() != 0) {
-			contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
+			contacts = Filter.filterContactsByInt(contacts, pv.getIntValue(), pv.getProperty());
 		}
 
 		for (Contact c : contacts) {

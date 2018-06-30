@@ -838,9 +838,50 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 //			return alc;
 //		} else {
 
-		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
+
+			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contacts) {
+				c.setValues(pvMapper.findPValueForContact(c));
+			}
+
+			// Kontakte nach Property filtern, falls gesetzt
+			if (pv.getProperty().getLabel() != null) {
+				System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
+				contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+			}
+			System.err.println("Gefundene kontakte: ");
+			for (Contact c : contacts) {
+				System.err.println("Contact : " + c.getName());
+			}
+			// Kontakte nach PropertyValue filtern, falls gesetzt
+			switch(pv.getPointer()) {
+			case 1:{
+					System.err.println("Nach PVal filtern");
+					contacts = Filter.filterContactsByInt(contacts, pv.getIntValue(), pv.getProperty());
+				
+			}
+			case 2:{
+				if (pv.getStringValue() != null) {
+					System.err.println("Nach PVal filtern");
+					contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+				}
+			}
+			case 3:{
+				if (pv.getDateValue() != null) {
+					System.err.println("Nach PVal filtern");
+					contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+				}
+			}
+			case 4:{
+				if (pv.getFloatValue() != 0.0f) {
+					System.err.println("Nach PVal filtern");
+					contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
+				}
+			}
+			}
+			
+			return contacts;
+
 		}
 
 		// Kontakte nach Property filtern, falls gesetzt
@@ -861,33 +902,33 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return contacts;
 	}
 
-	/**
-	 * Eine Kontaktliste nach Int-Values durchsuchen
-	 * 
-	 * @return ArrayList<Contact>
-	 */
-	public ArrayList<Contact> searchInList(int i, ContactList cl) {
-		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
-		}
-		ArrayList<Contact> alc = Filter.filterContactsByInt(contacts, i);
-		return alc;
-	}
-
-	/**
-	 * Eine Kontaktliste nach float-Values durchsuchen
-	 * 
-	 * @return ArrayList<Contact>
-	 */
-	public ArrayList<Contact> searchInList(float f, ContactList cl) {
-		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
-		}
-		ArrayList<Contact> alc = Filter.filterContactsByFloat(contacts, f);
-		return alc;
-	}
+//	/**
+//	 * Eine Kontaktliste nach Int-Values durchsuchen
+//	 * 
+//	 * @return ArrayList<Contact>
+//	 */
+//	public ArrayList<Contact> searchInList(int i, ContactList cl) {
+//		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+//		for (Contact c : contacts) {
+//			c.setValues(pvMapper.findPValueForContact(c));
+//		}
+//		ArrayList<Contact> alc = Filter.filterContactsByInt(contacts, i);
+//		return alc;
+//	}
+//
+//	/**
+//	 * Eine Kontaktliste nach float-Values durchsuchen
+//	 * 
+//	 * @return ArrayList<Contact>
+//	 */
+//	public ArrayList<Contact> searchInList(float f, ContactList cl) {
+//		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+//		for (Contact c : contacts) {
+//			c.setValues(pvMapper.findPValueForContact(c));
+//		}
+//		ArrayList<Contact> alc = Filter.filterContactsByFloat(contacts, f);
+//		return alc;
+//	}
 
 	/**
 	 * Eine Liste nach Nutzern durchsuchen, zB Kollaboratoren oder Eigentümer

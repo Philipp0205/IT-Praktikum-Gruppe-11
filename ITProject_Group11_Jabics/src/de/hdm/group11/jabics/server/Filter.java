@@ -46,18 +46,34 @@ public class Filter {
 		return result;
 	}
 
-	public static ArrayList<Contact> filterContactsByInt(ArrayList<Contact> contacts, int pv) {
+	public static ArrayList<Contact> filterContactsByInt(ArrayList<Contact> contacts, int pv, Property prop) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
 		for (Contact c : contacts) {
+			Boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
-				Integer integ = (Integer) pv;
-				if (p.getIntValue() == pv || p.getStringValue().contains(integ.toString())
-						|| p.getProperty().getLabel().contains(integ.toString())) {
-					result.add(c);
+				if(p.getPointer()==1) {
+				if(pv==-2147483648) {
+					System.out.println(String.valueOf(pv));
+					if (p.getProperty().getLabel().equals(prop.getLabel())) {
+						bol=true;
 				}
+				
+				}else {
+					Integer integ = (Integer) pv;
+					if (p.getIntValue() == pv || p.getProperty().getLabel().contains(integ.toString()) ) {  //|| p.getStringValue().contains(integ.toString()) 
+						bol=true;	
+						System.out.println(String.valueOf(pv));
+				}
+				}	
+				}
+			}
+			
+			if((!result.contains(c))&&bol) {
+				result.add(c);
+			System.out.println("kukuk3");
 			}
 		}
 		return result;
