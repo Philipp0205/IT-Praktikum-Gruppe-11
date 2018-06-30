@@ -882,24 +882,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			
 			return contacts;
 
-		}
-
-		// Kontakte nach Property filtern, falls gesetzt
-		if (pv.getProperty().getLabel() != null) {
-			System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
-			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
-		}
-		System.err.println("Gefundene kontakte: ");
-		for (Contact c : contacts) {
-			System.err.println("Contact : " + c.getName());
-		}
-		// Kontakte nach PropertyValue filtern, falls gesetzt
-		if (pv.getStringValue() != null) {
-			System.err.println("Nach PVal filtern");
-			contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
-		}
-		System.out.println("kukuk");
-		return contacts;
 	}
 
 //	/**
