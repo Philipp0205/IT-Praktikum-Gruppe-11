@@ -1,10 +1,6 @@
-/**
- * 
- */
 package de.hdm.group11.jabics.shared.bo;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.google.gwt.view.client.ProvidesKey;
@@ -18,7 +14,6 @@ import com.google.gwt.view.client.ProvidesKey;
  * @author Anders
  * @author Kurrle 
  */
-
 public class Contact extends BusinessObject implements Comparable<Contact>, Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -46,7 +41,9 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		this.values = a;
 	}
 
-	//Leerer Konstruktor
+	/**
+	 * Leerer Konstruktor
+	 */
 		public Contact() { 
 			super();
 		}
@@ -58,7 +55,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 	
 	/**
-	 *  Adds value to the values Array 
+	 *  Fügt einen <code>PValue</code> einer <code>ArrayList<code> hinzu
 	 */
 	public void addPValue(PValue p) { 
 		this.values.add(p);	
