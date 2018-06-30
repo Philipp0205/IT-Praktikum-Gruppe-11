@@ -494,7 +494,8 @@ public class ContactListMapper {
 			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 			// Auswählen von Tupeln mit einer bestimmten User-Id.
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email,  " + " FROM systemUser "
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email,  " 
+          + " FROM systemUser "
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
 					+ " WHERE contactListID = " + cl.getId());
 
