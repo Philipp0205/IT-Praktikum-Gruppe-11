@@ -15,6 +15,7 @@ public class Filter {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
 		for (Contact c : contacts) {
+			Boolean bol= false;
 			System.out.println("Kontakt filtern: " + c.getName());
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue pv : pvalues) {
@@ -22,11 +23,14 @@ public class Filter {
 				// Die Logik der Methode
 				if (p.getLabel() != null && pv.getProperty().getLabel().equals(p.getLabel())) {
 					System.err.println("Gefunden");
-
-					if (!contacts.contains(c))
-						result.add(c);
+					bol = true;
+					for (Contact c2 : result) {
+						if(c.getId()==c2.getId()) 
+							bol = false;
+					}
+						
 				}
-			}
+			} if(bol)result.add(c);
 		}
 		return result;
 	}
@@ -39,23 +43,18 @@ public class Filter {
 			for (PValue p : pvalues) {
 				if (p.getPointer() == 2) {
 					if (p.getStringValue() == pv || p.getStringValue().contains(pv)) { // zu definiert:
-																						// p.getProperty().getLabel().contains(pv)){
 						bol = true;
-					}
-
-				}
-				if (result.isEmpty() && bol) {
-					result.add(c);
-				} else {
-					for (Contact c2 : result) {
-						if (!(c2.getId() == c.getId()) && bol) {
-							result.add(c);
-
+						for (Contact c2 : result) {
+							if (c2.getId() != c.getId()) {
+								bol = false;
+							}
 						}
 					}
 				}
 			}
-
+			if (bol) {
+				result.add(c);
+			}
 		}
 		return result;
 	}
@@ -71,20 +70,17 @@ public class Filter {
 				if (p.getPointer() == 1) {
 					if (p.getProperty().getLabel().equals(prop.getLabel())) {
 						bol = true;
-					}
-				}
-				if (result.isEmpty() && bol) {
-					result.add(c);
-				} else {
-					for (Contact c2 : result) {
-						if (c2.getId() != c.getId() && bol) {
-							result.add(c);
-
+						for (Contact c2 : result) {
+							if (c2.getId() != c.getId()) {
+								bol = false;
+							}
 						}
 					}
 				}
 			}
-
+			if (bol) {
+				result.add(c);
+			}
 		}
 		return result;
 	}
@@ -100,20 +96,17 @@ public class Filter {
 				if (p.getPointer() == 3) {
 					if (dateFormat.format(p.getDateValue()).equals(dateFormat.format(pv))) {
 						bol = true;
-					}
-				}
-				if (result.isEmpty() && bol) {
-					result.add(c);
-				} else {
-					for (Contact c2 : result) {
-						if (!(c2.getId() == c.getId()) && bol) {
-							result.add(c);
-
+						for (Contact c2 : result) {
+							if (c2.getId() != c.getId()) {
+								bol = false;
+							}
 						}
 					}
 				}
 			}
-
+			if (bol) {
+				result.add(c);
+			}
 		}
 		return result;
 	}
