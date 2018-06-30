@@ -125,9 +125,12 @@ public class ContactListForm extends VerticalPanel {
 
 		shareButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				// e.showContactListCollab(currentList);
-				removeAddPanel();
-				removeRemovePanel();
+				GWT.log("Teile Liste " + currentList.getListName());
+				
+				e.showContactListCollab(currentList);
+				
+//				removeAddPanel();
+//				removeRemovePanel();
 			}
 		});
 		shareExistingButton.addClickHandler(new ClickHandler() {

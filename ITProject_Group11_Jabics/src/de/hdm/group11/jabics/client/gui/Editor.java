@@ -305,15 +305,19 @@ public class Editor implements EntryPoint {
 	}
 
 	public void showContactListCollab(ContactList cl) {
+		
+		GWT.log("contactListCollab");
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
+			
 		}
-		widgetPanel.clear();
+		GWT.log("huhu");
+		formPanel.clear();
 		// clcForm.clear();
-		clcForm.setList(cl);
+		clcForm.setContactList(cl);
 		// clcForm.setUser(loginfo.getCurrentUser());
-		widgetPanel.add(clcForm);
+		formPanel.add(clcForm);
 	}
 
 	public void showExistingContactListCollab(ContactList cl) {
