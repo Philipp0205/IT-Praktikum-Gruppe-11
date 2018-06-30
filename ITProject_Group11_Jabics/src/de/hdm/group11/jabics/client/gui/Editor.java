@@ -33,7 +33,7 @@ import de.hdm.group11.jabics.shared.bo.Property;
 public class Editor implements EntryPoint {
 
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
-	
+
 	/**
 	 * Im folgenden Interface werden die Items, öffnen und schließen, hinzugefügt.
 	 */
@@ -199,7 +199,7 @@ public class Editor implements EntryPoint {
 		currentUser.setId(1);
 		GWT.log("form einfügen");
 		formPanel.insert(scForm, 0);
-		//formPanel.add(scForm);
+		// formPanel.add(scForm);
 		GWT.log("ShowCont fertig");
 	}
 
@@ -238,7 +238,7 @@ public class Editor implements EntryPoint {
 
 		formPanel.setStyleName("formPanel");
 	}
-	
+
 	public void newContactList(ContactList cl) {
 		// if (this.cForm == null) {
 		clForm = new ContactListForm();
@@ -264,8 +264,6 @@ public class Editor implements EntryPoint {
 			clForm.setUser(this.currentUser);
 
 			clForm.setEditor(this);
-			
-
 
 		}
 		formPanel.clear();
@@ -282,19 +280,16 @@ public class Editor implements EntryPoint {
 	public void showContactCollab(Contact c) {
 
 		GWT.log("contactCollab");
-		// if (this.ccForm == null) {
-		ccForm = new ContactCollaborationForm();
-		ccForm.setEditor(this);
-
+		if (this.ccForm == null) {
+			ccForm = new ContactCollaborationForm();
+			ccForm.setEditor(this);
+		}
 		GWT.log("huhu");
-		// formPanel.clear();
-		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		formPanel.clear();
 		// ccForm.clear();
-		// ccForm = new ContactCollaborationForm();
-		ccForm.setEditor(this);
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());
-		formPanel.insert(ccForm, 0);
+		formPanel.add(ccForm);
 	}
 
 	public void showExistingContactCollab(Contact c) {
@@ -341,13 +336,14 @@ public class Editor implements EntryPoint {
 
 	public void returnToContactForm(Contact c) {
 		if (this.scForm == null) {
-			clForm.setUser(this.currentUser);
-			clForm.setEditor(this);
 			scForm = new ShowContactForm();
+			scForm.setUser(this.currentUser);
+			scForm.setEditor(this);
 		}
 		// addContactToTree(c);
+		formPanel.clear();
 		scForm.setContact(c);
-		formPanel.add(cForm);
+		formPanel.add(scForm);
 		scForm.setStyleName("scForm");
 	}
 
@@ -375,7 +371,7 @@ public class Editor implements EntryPoint {
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
 	}
-	
+
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
 		treeViewMenu.removeContactOfContactList(cl, c);
 	}
@@ -387,16 +383,15 @@ public class Editor implements EntryPoint {
 	public void updateContactListInTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
 	}
-	
+
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
 	}
-	
+
 	public void flushContactLists() {
 		treeViewMenu.flushContactListsProvider();
 	}
-	
-	
+
 	/*
 	 * public void removeContactFromTree(Contact c) { treeViewMenu.removeContact(c);
 	 * }
@@ -482,7 +477,7 @@ public class Editor implements EntryPoint {
 
 			ContactList newContactList = new ContactList();
 			newContactList(newContactList);
-			//showContactList(newContactList);
+			// showContactList(newContactList);
 		}
 	}
 

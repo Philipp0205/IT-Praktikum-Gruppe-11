@@ -116,6 +116,7 @@ public class SearchForm extends VerticalPanel {
 		this.add(listInfoLabel);
 		this.add(mainpanel);
 		this.add(sp);
+		this.add(ausgabeLabel);
 
 		ausgabeLabel.setVisible(false);
 
@@ -126,6 +127,7 @@ public class SearchForm extends VerticalPanel {
 			public void onClick(ClickEvent event) {
 				sp.setVisible(false);
 				ausgabeLabel.setVisible(false);
+				
 //			}
 //		}));
 //		
@@ -140,7 +142,11 @@ public class SearchForm extends VerticalPanel {
 						finalPVal.setProperty(finalProperty);
 						break;
 					case "Ganzzahl":
-						finalPVal.setIntValue(Integer.valueOf(valueBox.getValue())); 
+					if(valueBox.getText().isEmpty())	{
+						finalPVal.setIntValue(-2147483648);
+					}else {
+						finalPVal.setIntValue(Integer.valueOf(valueBox.getValue()));
+					}
 						finalPVal.setProperty(finalProperty);
 						break;
 					case "Datum":
@@ -255,7 +261,10 @@ public class SearchForm extends VerticalPanel {
 				sp.setVisible(true);
 				sp.clear();
 				sp.add(list, "Ausgabe");
-				ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
+				if(valueBox.getText().equals("")) {ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText()+ "' gesucht.");
+				}else {
+					ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
+				}
 				ausgabeLabel.setVisible(true);
 				valueBox.setText("");
 			}
@@ -276,6 +285,7 @@ public class SearchForm extends VerticalPanel {
 			ArrayList<Property> userproperties = result;
 			for (Property p : userproperties) {
 				propertyToSuggest.add(p.getLabel());
+				GWT.log(p.getLabel());
 			}
 
 			propertySuggest = new SuggestBox(propertyToSuggest);

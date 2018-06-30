@@ -34,8 +34,8 @@ public class TreeViewMenu {
 		// StackPanel wird erstellt.
 		stackPanel = new StackPanel();
 		stackPanel.add(createContactListTreeTab(), "Meine Listen");
-		stackPanel.add(createContactCellListTab(), "Meine Kontakte");
-		stackPanel.add(createSharedContactListTreeTab(), "Meine geteilte Kontakte");
+		stackPanel.add(createContactCellListTab(), "Alle Kontakte");
+		stackPanel.add(createSharedContactListTreeTab(), "Mir geteilte Kontakte");
 		GWT.log("createdAllTabs");
 		//stackPanel.add(new Label("Foo"), "foo");
 

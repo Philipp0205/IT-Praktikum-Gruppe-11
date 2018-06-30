@@ -268,7 +268,6 @@ public class PValueMapper {
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
-				System.err.println(p.getTypeInString());
 				p.setDateCreated(rs.getTimestamp("dateCreated"));
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				pv.setProperty(p);

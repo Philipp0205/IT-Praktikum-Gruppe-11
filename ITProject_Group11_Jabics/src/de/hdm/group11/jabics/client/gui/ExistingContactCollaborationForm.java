@@ -243,7 +243,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	}
 
 	/**
-	 * Hier findet die "logik" des updatens der Collaboration statt. Ausgewählte PValues werden geteilt.
+	 * Hier findet die "Logik" des Updatens der Collaboration statt. Ausgewählte PValues werden geteilt.
 	 * Die Entscheidung, ob ein solches bereits geteilt wurde und dementsprechend das Speichern überflüssig ist,
 	 * übernimmt die Applikationslogik severseitig.
 	 */
@@ -251,7 +251,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		GWT.log(u.getEmail());
 
 		for (PValue pv : allVisibleValues) {
-			// TODO: wenn ein pv vorhanden ist, aber nicht ausgewählt, wird collab gelöscht.
 			if (multiSelectionModel.isSelected(pv)) {
 				GWT.log("Hinzugefügt wird: " + pv.toString());
 				editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
@@ -282,14 +281,14 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	public void deleteCollabWithUser(JabicsUser u) {
 		GWT.log(selectedUser.getEmail());
 
-		for (PValue pv : finalPV) {
-			editorService.deleteCollaboration(pv, u, new DeletePVCollaborationCallback());
-		}
+		//Wird von deleteCollaboration(Contact, user) erledigt
+//		for (PValue pv : finalPV) {
+//			editorService.deleteCollaboration(pv, u, new DeletePVCollaborationCallback());
+//		}
 
 		editorService.deleteCollaboration(sharedContact, u, new DeleteContactCollaborationCallback());
 
 		e.returnToContactForm(sharedContact);
-
 	}
 
 	public void setContact(Contact c) {

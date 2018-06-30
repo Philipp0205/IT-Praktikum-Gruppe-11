@@ -78,9 +78,9 @@ public interface EditorServiceAsync {
 
 	void searchInList(ContactList cl, PValue pv, AsyncCallback<ArrayList<Contact>> callback);
 
-	void searchInList(int i, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
-
-	void searchInList(float f, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
+//	void searchInList(int i, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
+//
+//	void searchInList(float f, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 
 	void searchInList(JabicsUser u, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 
