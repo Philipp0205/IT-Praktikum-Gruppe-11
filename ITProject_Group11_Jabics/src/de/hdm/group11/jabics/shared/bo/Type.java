@@ -7,7 +7,5 @@ package de.hdm.group11.jabics.shared.bo;
  *
  */
 public enum Type {
-	
 	STRING, INT, DATE, FLOAT
-
 }
