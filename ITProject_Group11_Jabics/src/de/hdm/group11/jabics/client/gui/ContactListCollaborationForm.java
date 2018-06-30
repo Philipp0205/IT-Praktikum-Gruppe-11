@@ -28,11 +28,11 @@ public class ContactListCollaborationForm extends HorizontalPanel {
 	ContactList sharedContactList;
 	ArrayList<JabicsUser> allUser = new ArrayList<JabicsUser>();
 	ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
-
+	
 	Button shareContactList, exit, addButton, removeButton;
-
+	
 	JabicsUser selectedUserAdd, selectedUserRemove;
-
+	
 	MultiWordSuggestOracle oracle;
 	SuggestBox sug; // = new SuggestBox();
 

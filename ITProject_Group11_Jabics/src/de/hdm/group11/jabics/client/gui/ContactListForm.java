@@ -39,7 +39,6 @@ public class ContactListForm extends VerticalPanel {
 	 *         Angepasst von
 	 * @author Anders
 	 */
-
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	Editor e;
@@ -152,11 +151,10 @@ public class ContactListForm extends VerticalPanel {
 				save();
 			}
 		});
-
+		
 		/*
 		 * Kontakte hinzufügen
 		 */
-
 		addButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
@@ -170,14 +168,10 @@ public class ContactListForm extends VerticalPanel {
 					
 				} else {
 					GWT.log("7.2 updateList " + currentList.getListName());
-					
-					
 					//editorService.updateContactList(currentList, new UpdateContactListCallback());
-					
 				}
 
 				// editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
-
 			}
 		});
 
@@ -220,7 +214,6 @@ public class ContactListForm extends VerticalPanel {
 		this.add(addPanel);
 		this.add(removePanel);
 		this.add(searchPanel);
-
 	}
 
 	public void setCurrentList(ContactList cl) {
@@ -308,7 +301,6 @@ public class ContactListForm extends VerticalPanel {
 				GWT.log("7.3 selected getPValue");
 				return selectionModel.isSelected(object);
 			}
-
 		};
 		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
 			public String getValue(Contact object) {
@@ -615,19 +607,15 @@ public class ContactListForm extends VerticalPanel {
 	}
 
 	private class DeleteContactListCallback implements AsyncCallback<ContactList> {
-
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Fehler 5 Kontakt konnte nicht gelöscht werden.");
 
 		}
-
 		@Override
 		public void onSuccess(ContactList cl) {
 			e.removeContactListFromTree(cl);
-
 		}
-
 	}
 
 	public void setIsNewList(boolean b) {
