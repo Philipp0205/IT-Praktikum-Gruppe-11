@@ -78,9 +78,9 @@ public interface EditorService extends RemoteService {
 
 	public ArrayList<Contact> searchInList(ContactList cl, PValue pv);
 
-	public ArrayList<Contact> searchInList(int i, ContactList cl);
-
-	public ArrayList<Contact> searchInList(float f, ContactList cl);
+//	public ArrayList<Contact> searchInList(int i, ContactList cl);
+//
+//	public ArrayList<Contact> searchInList(float f, ContactList cl);
 
 	public ArrayList<Contact> searchInList(JabicsUser u, ContactList cl);
 
