@@ -108,7 +108,7 @@ public class ContactListMapper {
 			ResultSet rs = stmt.getGeneratedKeys();
 			Statement stmt2 = con.createStatement();
 			ResultSet rs2;
-			
+
 			if (rs.next()) {
 				rs2 = stmt2.executeQuery("SELECT * FROM contactList WHERE contactListID = " + rs.getInt(1));
 				cl.setId(rs.getInt(1));
@@ -168,6 +168,7 @@ public class ContactListMapper {
 			// Update des letzten Updates der Kontaktliste.
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
+			
 			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
@@ -213,7 +214,7 @@ public class ContactListMapper {
 			// ContactlistCollaboration Tabelle.
 			stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES "
 					+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")");
-			
+
 			// Schließen des SQL-Statements
 			stmt.close();
 
@@ -249,6 +250,7 @@ public class ContactListMapper {
 			// Update des Namens der Kontaktliste und des letzten Updates
 			stmt.executeUpdate(
 					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
+			
 			// Schließen des SQL-Statements
 			stmt.close();
 
@@ -277,6 +279,7 @@ public class ContactListMapper {
 			Statement stmt = con.createStatement();
 
 			System.out.println("Delete contactList with ID " + cl.getId());
+			
 			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
 			stmt.executeUpdate("DELETE FROM contactList WHERE contactListID = " + cl.getId());
 
@@ -306,6 +309,7 @@ public class ContactListMapper {
 		System.err.println("deleteContactfromContactList: ContactID " + c.getName() + "into " + cl.getListName());
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		
 		try {
 			System.err.println("try");
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -323,6 +327,7 @@ public class ContactListMapper {
 			// Update des letzten Updates der Kontaktliste.
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
+			
 			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
@@ -356,6 +361,7 @@ public class ContactListMapper {
 			// Löschen einer Teilhaberschaft aus der ContactlistCollaboration Tabelle.
 			stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId()
 					+ " AND systemUserID = " + u.getId());
+			
 			// Schließen des SQL-Statements
 			stmt.close();
 
@@ -467,11 +473,12 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code>
-	 * Objekten die eine Teilhaberschaft an einer bestimmten Kontaktliste besitzen.
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen
+	 * <code>JabicsUser</code> Objekten die eine Teilhaberschaft an einer bestimmten
+	 * Kontaktliste besitzen zurück.
 	 * 
 	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dessen Teilhaber gesucht
+	 *            Das <code>ContactList</code> Objekt, dessen Teilhaber gesucht
 	 *            werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
@@ -487,10 +494,7 @@ public class ContactListMapper {
 			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 			// Auswählen von Tupeln mit einer bestimmten User-Id.
-
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email "
-
-					+ " FROM systemUser "
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email,  " + " FROM systemUser "
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
 					+ " WHERE contactListID = " + cl.getId());
 
@@ -514,6 +518,15 @@ public class ContactListMapper {
 		}
 	}
 
+	/**
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen
+	 * <code>BoStatus</code>
+	 * 
+	 * @param alContactList
+	 *            Die <code>ArrayList</code> aus <code>ContactList</code> Objekten,
+	 *            für welche der Share Status benötigt wird.
+	 * @return Die <code>ArrayList</code> mit <code>BoStatus</code>
+	 */
 	public ArrayList<BoStatus> findShareStatus(ArrayList<ContactList> alContactList) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
