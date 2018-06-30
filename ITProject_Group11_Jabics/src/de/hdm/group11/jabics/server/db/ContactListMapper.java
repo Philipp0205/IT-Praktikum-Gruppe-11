@@ -6,12 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.google.gwt.core.client.GWT;
-
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
-import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
 
 /**
@@ -217,21 +214,21 @@ public class ContactListMapper {
 
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-			
+
 			System.out.println("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
 					+ ", " + cl.getId() + ")");
 
 			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
 			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
 					+ ", " + cl.getId() + ")");
-			
-			
-			
-//			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + c.getId()
-//			+ ", " + cl.getId());
-			
-			//String query = ("INSERT INTO contactList (listname) VALUES ('" + cl.getListName() + "')");
-			
+
+			// stmt.executeUpdate("INSERT INTO contactContactLists (contactID,
+			// contactListID) VALUES " + c.getId()
+			// + ", " + cl.getId());
+
+			// String query = ("INSERT INTO contactList (listname) VALUES ('" +
+			// cl.getListName() + "')");
+
 			System.out.println("insertedContactIntoContactList: ContactID " + c.getName() + "into " + cl.getListName());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
@@ -251,7 +248,7 @@ public class ContactListMapper {
 		} catch (SQLException e) {
 			System.out.println("Kontakt: " + c.getId());
 			System.out.println("KontaktList: " + cl.getId());
-			
+
 			System.err.print("Verkackt");
 			System.err.print(e);
 			return null;
@@ -280,7 +277,7 @@ public class ContactListMapper {
 			// Löschen des Kontakts aus der Liste.
 			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID = " + c.getId()
 					+ " AND contactListID = " + cl.getId());
-			
+
 			System.out.println("DeletedContactFromContactList: ContactID " + c.getName() + "from " + cl.getListName());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
@@ -519,7 +516,7 @@ public class ContactListMapper {
 		}
 	}
 
-	public BoStatus findShareStatus(ContactList cl) {
+	public ArrayList<BoStatus> findShareStatus(ArrayList<ContactList> alContactList) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
@@ -527,27 +524,54 @@ public class ContactListMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Auswählen von Tupeln mit einer bestimmten User-Id.
-			ResultSet rs = stmt.executeQuery("SELECT contactListID" + " FROM contactlistCollaboration "
-					+ " WHERE isOwner = 0 AND contactListID = " + cl.getId());
+			// Deklaration und Initialisierung einer ArrayList<BoStatus>
+			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
 
-			if (rs.next()) {
-				// Schließen des SQL-Statements
-				stmt.close();
+			// Deklaration und Initialisierung eines StringBuffers
+			StringBuffer contactListIDs = new StringBuffer();
 
-				// Schließen der Datenbankverbindung
-				con.close();
-
-				return BoStatus.IS_SHARED;
-			} else {
-				// Schließen des SQL-Statements
-				stmt.close();
-
-				// Schließen der Datenbankverbindung
-				con.close();
-
-				return BoStatus.NOT_SHARED;
+			// pValueIDs an den StringBuffer anhängen
+			for (ContactList cl : alContactList) {
+				contactListIDs.append(cl.getId());
+				contactListIDs.append(",");
 			}
+
+			// Letztes Komma im StringBuffer löschen
+			contactListIDs.deleteCharAt(contactListIDs.lastIndexOf(","));
+
+			ResultSet rs = stmt.executeQuery("SELECT contactListID " + " FROM contactlistCollaboration "
+					+ " WHERE isOwner = 0 AND contactListID IN (" + contactListIDs + ")");
+
+			// Das Resultset in ein Array aus BoStatus überführen
+			ArrayList<Integer> ids = new ArrayList<Integer>();
+
+			while (rs.next()) {
+				ids.add(new Integer(rs.getInt("contactID")));
+			}
+
+			// Setzen des Shared Status für jeden Contact in ArrayList<Contact>
+			for (ContactList cl : alContactList) {
+				Boolean bol = false;
+				for (Integer i : ids) {
+					if (i.equals(cl.getId())) {
+						bol = true;
+					}
+				}
+				if (bol) {
+					al.add(BoStatus.IS_SHARED);
+				} else {
+					al.add(BoStatus.NOT_SHARED);
+				}
+			}
+
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
+
+			// Rückgabe der ArrayList<BoStatus>
+			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;

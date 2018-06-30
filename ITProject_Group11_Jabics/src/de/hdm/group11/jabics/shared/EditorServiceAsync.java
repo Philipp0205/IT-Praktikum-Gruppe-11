@@ -76,7 +76,7 @@ public interface EditorServiceAsync {
 
 	void searchExpressionInList(String s, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 
-	void searchInList(String s, ContactList cl, PValue pv, AsyncCallback<ArrayList<Contact>> callback);
+	void searchInList(ContactList cl, PValue pv, AsyncCallback<ArrayList<Contact>> callback);
 
 	void searchInList(int i, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 
