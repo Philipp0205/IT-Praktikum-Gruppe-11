@@ -503,6 +503,7 @@ public class ContactListMapper {
 				// Befüllen des User-Objekts und hinzufügen zur Arraylist.
 				JabicsUser u = new JabicsUser(rs.getString("email"));
 				u.setId(rs.getInt("systemUserID"));
+				u.setUsername("name");
 				al.add(u);
 			}
 			// Schließen des SQL-Statements
