@@ -64,8 +64,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		shareContactWUser = new Button("Für ausgewählten Nutzer freigeben");
 		shareContactWUser.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				shareContactWithUser(selectedUser);
-
+				if(selectedUser != null) {
+					if(!finalPV.isEmpty()) {
+						shareContactWithUser(selectedUser);
+					} else Window.alert("Keine Ausprägungen ausgewählt. Bitte wählen Sie mindestens eine Eigeschaftsausprägung aus");
+				} else Window.alert("Kein Nutzer ausgewählt! Bitte klicken sie auf einen Nutzer in der Tabelle links.");
 			}
 		});
 		shareContact = new Button("Für alle angegebenen Nutzer freigeben");
@@ -141,8 +144,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		addButton = new Button("Nutzer hinzufügen");
 		addButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
-				if (suggestedUser != null)
+				if (suggestedUser != null) {
 					finalUser.add(suggestedUser);
+				}
 				userDataProvider.setList(finalUser);
 				suggestBox.setText("");
 				userDataProvider.refresh();
@@ -252,11 +256,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		};
 
 		selValues.addColumn(checkbox, "Auswahl");
-		selValues.setColumnWidth(checkbox, 50, Unit.PX);
+		selValues.setColumnWidth(checkbox, "10px");
 		selValues.addColumn(property, "Merkmal");
-		selValues.setColumnWidth(property, 30, Unit.EM);
+		selValues.setColumnWidth(property, "50px");
 		selValues.addColumn(propertyvalue, "Wert");
-		selValues.setColumnWidth(propertyvalue, 50, Unit.EM);
+		selValues.setColumnWidth(propertyvalue, "50px");
 	}
 
 	/**
@@ -301,7 +305,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		if (c != null) {
 			this.sharedContact = c;
 		} else {
-			this.sharedContact = null;
+			Window.alert("Freigabe nicht möglich, kein Kontakt ausgewählt");
 		}
 	}
 
