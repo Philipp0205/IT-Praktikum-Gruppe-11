@@ -55,6 +55,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			;
 		}
 		return c.get(1).getValues().get(1).toString();
+		
 		// ArrayList<PValue> lol = pvMapper.findPValueForContact(c);
 		// for(int i= 0; i< lol.size(); i++) {
 		// System.out.println(lol.get(i).getStringValue());
@@ -352,6 +353,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.err.println("Alle Geteilten Kontakte");
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for (Contact c : getContactsOf(u)) {
+			
+			
 			// nicht notwendig, da in getContacsOf() schon gesetzt:
 			// c.setOwner(uMapper.findUserByContact(c));
 			if (c.getOwner().getId() != u.getId()) {
@@ -401,11 +404,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.err.println("Liste ändern: " + cl.getListName());
 
 		cl.removeContact(c);
+		
+//		System.err.println("Kollaboratoren finden:");
+//		for (JabicsUser u : cMapper.findCollaborators(c)) {
+//			deleteCollaboration(c, u);
+//		}
 
-		System.err.println("Kollaboratoren finden:");
-		for (JabicsUser u : cMapper.findCollaborators(c)) {
-			deleteCollaboration(c, u);
-		}
 		System.err.println("Kontakt in Liste löschen: " + c.getName());
 		clMapper.deleteContactfromContactList(cl, c);
 		return c;
@@ -483,8 +487,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
 			System.out.println("");
 			for (JabicsUser u : users) {
-				clMapper.deleteCollaboration(cl, u);
-				System.out.println("delete Collaboration from user" + u.getUsername());
+
+				deleteCollaboration(cl, u);
+				System.out.println("delete Collaboration from user" + u.getId() );
+
 			}
 			for (Contact c : cl.getContacts()) {
 				System.out.println("Delete Contact" + c.getName());
@@ -744,6 +750,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * enthalten ist, wird die Freigabe der Liste ebenfalls entfernt
 	 */
 	public void deleteCollaboration(Contact c, JabicsUser u) {
+		System.out.println("Lösche Kollaboration für User " +  c.getId());
 		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
 		ArrayList<PValue> pVal = pvMapper.findPValueForContact(c);
 		for (PValue pv : pVal) {

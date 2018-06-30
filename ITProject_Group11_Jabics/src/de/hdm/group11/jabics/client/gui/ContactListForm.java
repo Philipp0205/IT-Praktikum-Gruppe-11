@@ -72,7 +72,6 @@ public class ContactListForm extends VerticalPanel {
 	Button addButton = new Button("Kontakte hinzufügen");
 
 	Button searchInListButton = new Button("Liste durchsuchen");
-	
 
 	ArrayList<Contact> cArray;
 
@@ -137,12 +136,13 @@ public class ContactListForm extends VerticalPanel {
 				e.showContactListCollab(currentList);
 			}
 		});
+
 		deleteButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				GWT.log("7.2 deleteButton");
-				
+
 				editorService.deleteContactList(currentList, u, new DeleteContactListCallback());
-				
+
 			}
 		});
 		saveButton.addClickHandler(new ClickHandler() {
@@ -165,11 +165,13 @@ public class ContactListForm extends VerticalPanel {
 				cArray = new ArrayList<Contact>();
 				if (isNewList) {
 					editorService.createContactList(listBox.getText(), cArray, u, new CreateContactListCallback());
+					
 				} else {
 					GWT.log("7.2 updateList " + currentList.getListName());
-					editorService.updateContactList(currentList, new UpdateContactListCallback());
+					//editorService.updateContactList(currentList, new UpdateContactListCallback());
 				}
-				//editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
+
+				// editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
 			}
 		});
 
@@ -183,9 +185,10 @@ public class ContactListForm extends VerticalPanel {
 				GWT.log("7.2 RemoveContactButton");
 				GWT.log("7.2 User: " + u.getId());
 
-				editorService.updateContactList(currentList, new UpdateContactListCallback());
+				// editorService.updateContactList(currentList, new
+				// UpdateContactListCallback());
 
-				//editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
+				// editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
 			}
 		});
 
@@ -280,16 +283,16 @@ public class ContactListForm extends VerticalPanel {
 
 		selectionModel = new MultiSelectionModel<Contact>();
 
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			public void onSelectionChange(SelectionChangeEvent event) {
-				/**
-				 * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
-				 * add abgedeckt!
-				 */
-				HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
-				// Window.alert("Auswahl geändert");
-			}
-		});
+//		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+//			public void onSelectionChange(SelectionChangeEvent event) {
+//				/**
+//				 * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
+//				 * add abgedeckt!
+//				 */
+//				HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
+//				// Window.alert("Auswahl geändert");
+//			}
+//		});
 
 		selValues.setSelectionModel(selectionModel);
 
@@ -322,7 +325,6 @@ public class ContactListForm extends VerticalPanel {
 
 					GWT.log("7.4 Add Contact " + c.getName() + "to List " + currentList.getId() + " "
 							+ currentList.getListName() + " " + currentList.getContacts().toString());
-
 
 					/*
 					 * TODO hier gibt es zwei möglichkeiten der Implementierung: nummer 2 ist
@@ -393,7 +395,7 @@ public class ContactListForm extends VerticalPanel {
 		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
 			public String getValue(Contact object) {
 				GWT.log("7.3 selected getPValue");
-				
+
 				return object.toString();
 			}
 		};
@@ -406,21 +408,19 @@ public class ContactListForm extends VerticalPanel {
 		Button remove = new Button("Ausgewählte Kontakte aus Liste entfernen");
 		remove.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
-				
+
 				/*
 				 * TODO hier gibt es zwei möglichkeiten der Implementierung nummer 2 ist
 				 * auskommatiert, noch entscheiden welhes besser ist!
 				 */
-				
 
 				GWT.log("7.4 RemoveContactsButton ");
 				GWT.log("7.4 currentList: " + currentList.getListName());
-				
+
 				for (Contact c : selectionModel.getSelectedSet()) {
-					
+
 					GWT.log("7.4 Remove Contact " + c.getName() + "from List " + currentList.getId() + " "
 							+ currentList.getListName() + " " + currentList.getContacts().toString());
-					
 
 					editorService.removeContactFromList(c, currentList, new RemoveContactFromListCallback());
 					// editorService.removeContactFromList(c, currentList, new
@@ -470,8 +470,6 @@ public class ContactListForm extends VerticalPanel {
 		}
 	}
 
-
-
 	private class UpdateContactListCallback implements AsyncCallback<ContactList> {
 
 		public void onFailure(Throwable arg0) {
@@ -503,11 +501,11 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<Contact> al) {
-			
-			//GWT.log("7.3 GetContactsOfListCallback onSuccess" );
+
+			// GWT.log("7.3 GetContactsOfListCallback onSuccess" );
 
 			if (al != null) {
-				//currentList.addContacts(al);
+				// currentList.addContacts(al);
 				removeContactPanel(al);
 
 			}
@@ -542,7 +540,7 @@ public class ContactListForm extends VerticalPanel {
 				// GWT.log(list.getContacts().toString());
 				// setCurrentList(list);
 
-				//Window.alert("Kontakt" + contact.getName() + " hinzugefügt");
+				// Window.alert("Kontakt" + contact.getName() + " hinzugefügt");
 				/**
 				 * TODO: diese liste auch in dem TreeViewModel updaten!
 				 */
@@ -559,30 +557,30 @@ public class ContactListForm extends VerticalPanel {
 
 		}
 	}
-	
+
 	private class RemoveContactFromListCallback implements AsyncCallback<Contact> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Fehler 5! Kontakt konnte nicht hinzugefügt werden");
-			
+
 		}
 
 		@Override
 		public void onSuccess(Contact contact) {
 			if (contact != null) {
-				
+
 				Window.alert("Kontakt" + contact.getName() + " aus Liste gelöscht.");
 				GWT.log("7.5  " + "remove " + contact.getName() + " from " + currentList.getListName() + "in Tree"
 						+ currentList.getContacts().toString());
-				
+
 				currentList.removeContact(contact);
 				e.removeContactFromContactListInTree(currentList, contact);
-				
+
 			}
-			
+
 		}
-		
+
 	}
 
 	private class CreateContactListCallback implements AsyncCallback<ContactList> {
@@ -607,12 +605,12 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	private class DeleteContactListCallback implements AsyncCallback<ContactList> {
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Fehler 5 Kontakt konnte nicht gelöscht werden.");
-			
+
 		}
 		@Override
 		public void onSuccess(ContactList cl) {
