@@ -112,8 +112,8 @@ public class EditContactForm extends VerticalPanel {
 			});
 			dp2.addValueChangeHandler(new ValueChangeHandler<Date>() {
 				public void onValueChange(ValueChangeEvent<Date> event) {
-						tempDate = event.getValue();
-						pValueTextBox.setText(event.getValue().toString());
+					tempDate = event.getValue();
+					pValueTextBox.setText(event.getValue().toString());
 				}
 			});
 			pValueTextBox.addClickHandler(new ClickHandler() {
@@ -125,7 +125,6 @@ public class EditContactForm extends VerticalPanel {
 					}
 				}
 			});
-			
 
 			Label type = new Label("Art:");
 			Label pvaluelabel = new Label("Wert:");
@@ -149,7 +148,6 @@ public class EditContactForm extends VerticalPanel {
 			if (isNewContact) {
 				addPPanel.setVisible(false);
 			}
-			
 
 			/*
 			 * // Die notwendigen Standardeigenschaften erstellen, damit PValues eingeordnet
@@ -419,7 +417,7 @@ public class EditContactForm extends VerticalPanel {
 					editorService.createPValue(result, pValueTextBox.getText(), contact, u, new CreatePValueCallback());
 					break;
 				case "Datum":
-					editorService.createPValue(result, tempDate , contact, u, new CreatePValueCallback());
+					editorService.createPValue(result, tempDate, contact, u, new CreatePValueCallback());
 					break;
 				case "Kommazahl":
 					editorService.createPValue(result, Float.valueOf(pValueTextBox.getText()), contact, u,
@@ -578,7 +576,8 @@ public class EditContactForm extends VerticalPanel {
 		/**
 		 * Hinzufügen eines PValues zur Form.
 		 * 
-		 * @param PValue pv
+		 * @param PValue
+		 *            pv
 		 */
 		void addPValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -590,7 +589,8 @@ public class EditContactForm extends VerticalPanel {
 		 * Löschen des initial erstellten PVForms und ersetzen durch ein befülltes. Darf
 		 * nur von renderContact() aufgerufen werden
 		 * 
-		 * @param PValue pv
+		 * @param PValue
+		 *            pv
 		 */
 		void replacePValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -631,7 +631,6 @@ public class EditContactForm extends VerticalPanel {
 			this.insert(val, 0);
 			this.insert(delete, 1);
 		}
-		
 
 		PVForm(PValue pv) {
 			create(pv);
