@@ -139,6 +139,46 @@ public class ContactMapper {
 	}
 
 	/**
+	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
+	 * einem <code>Contact</code> Objekt in die Datenbank ein.
+	 * 
+	 * @param u
+	 *            der User der an einem Kontakt Teilhaberschaftsrechte erlangen
+	 *            soll.
+	 * @param c
+	 *            der Kontakt an dem ein User Teilhaberschaft haben soll.
+	 * @param IsOwner
+	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
+	 *            zuzuweisende Teilhaber auch der Owner ist.
+	 * @return das übergebene <code>Contact</code> Objekt
+	 */
+	public Contact insertCollaboration(JabicsUser u, Contact c, boolean IsOwner) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Einfügen der Teilhaberschaft in die contactCollaboration-Tabelle.
+			stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " + "("
+					+ IsOwner + ", " + c.getId() + ", " + u.getId() + ")");
+
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
+
+			// Rückgabe des Contact-Objekts
+			return c;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+	}
+
+	/**
 	 * Diese Methode aktualisiert ein <code>Contact</code> Objekt in der Datenbank.
 	 * 
 	 * @param c
@@ -202,6 +242,38 @@ public class ContactMapper {
 			// Schließen der Datenbankverbindung
 			con.close();
 
+		} catch (SQLException e) {
+			System.err.print(e);
+		}
+	}
+
+	/**
+	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code>
+	 * Objekt und einem <code>Contact</code> Objekt.
+	 * 
+	 * @param c
+	 *            der ausgewählte Kontakt.
+	 * @param u
+	 *            der Nutzer der die Teilhaberschaft zu dem <code>Contact</code>
+	 *            Objekt verlieren soll.
+	 */
+	public void deleteCollaboration(Contact c, JabicsUser u) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Löschen der Teilhaberschaft.
+			stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= "
+					+ c.getId());
+
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -406,78 +478,6 @@ public class ContactMapper {
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;
-		}
-	}
-
-	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
-	 * einem <code>Contact</code> Objekt in die Datenbank ein.
-	 * 
-	 * @param u
-	 *            der User der an einem Kontakt Teilhaberschaftsrechte erlangen
-	 *            soll.
-	 * @param c
-	 *            der Kontakt an dem ein User Teilhaberschaft haben soll.
-	 * @param IsOwner
-	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
-	 *            zuzuweisende Teilhaber auch der Owner ist.
-	 * @return das übergebene <code>Contact</code> Objekt
-	 */
-	public Contact insertCollaboration(JabicsUser u, Contact c, boolean IsOwner) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-
-			// Einfügen der Teilhaberschaft in die contactCollaboration-Tabelle.
-			stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " + "("
-					+ IsOwner + ", " + c.getId() + ", " + u.getId() + ")");
-
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
-
-			// Rückgabe des Contact-Objekts
-			return c;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
-		}
-	}
-
-	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code>
-	 * Objekt und einem <code>Contact</code> Objekt.
-	 * 
-	 * @param c
-	 *            der ausgewählte Kontakt.
-	 * @param u
-	 *            der Nutzer der die Teilhaberschaft zu dem <code>Contact</code>
-	 *            Objekt verlieren soll.
-	 */
-	public void deleteCollaboration(Contact c, JabicsUser u) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-
-			// Löschen der Teilhaberschaft.
-			stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= "
-					+ c.getId());
-
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
-		} catch (SQLException e) {
-			System.err.print(e);
 		}
 	}
 
