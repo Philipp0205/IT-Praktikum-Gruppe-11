@@ -942,6 +942,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erhalten aller kollaborierenden Nutzer für einen Kontakt
 	 */
 	public ArrayList<JabicsUser> getCollaborators(Contact c) {
+		System.out.println("Kollaboratoren holen");
 		return cMapper.findCollaborators(c);
 	}
 
