@@ -108,6 +108,7 @@ public class ContactListMapper {
 			ResultSet rs = stmt.getGeneratedKeys();
 			Statement stmt2 = con.createStatement();
 			ResultSet rs2;
+			
 			if (rs.next()) {
 				rs2 = stmt2.executeQuery("SELECT * FROM contactList WHERE contactListID = " + rs.getInt(1));
 				cl.setId(rs.getInt(1));
@@ -158,13 +159,6 @@ public class ContactListMapper {
 			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
 			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
 					+ ", " + cl.getId() + ")");
-
-			// stmt.executeUpdate("INSERT INTO contactContactLists (contactID,
-			// contactListID) VALUES " + c.getId()
-			// + ", " + cl.getId());
-
-			// String query = ("INSERT INTO contactList (listname) VALUES ('" +
-			// cl.getListName() + "')");
 
 			System.out.println("insertedContactIntoContactList: ContactID " + c.getName() + "into " + cl.getListName());
 
@@ -219,6 +213,7 @@ public class ContactListMapper {
 			// ContactlistCollaboration Tabelle.
 			stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES "
 					+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")");
+			
 			// Schließen des SQL-Statements
 			stmt.close();
 
@@ -503,7 +498,7 @@ public class ContactListMapper {
 				// Befüllen des User-Objekts und hinzufügen zur Arraylist.
 				JabicsUser u = new JabicsUser(rs.getString("email"));
 				u.setId(rs.getInt("systemUserID"));
-				u.setUsername("name");
+				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
 			// Schließen des SQL-Statements
