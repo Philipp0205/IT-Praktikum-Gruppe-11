@@ -333,16 +333,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// Besitzer und ShareStatus setzen
 		ArrayList<BoStatus> status = cMapper.findShareStatus(cons);
 		if (status.size() == cons.size()) {
-			int i = 1;
+			int i = 0;
 			for (Contact c : cons) {
-				System.out.println("BOStatus für Kontakt: " + c.getId() + status.get(i).toString());
+//				System.out.println("BOStatus für Kontakt: " + c.getId() + status.get(i).toString());
 				c.setOwner(uMapper.findUserByContact(c));
 				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
 				
 				c.setShareStatus(status.get(i));
-				if (i == 1) {
-					c.setShareStatus(status.get(i));
-				}
+				
 				i++;
 			}
 			// result.add(c);

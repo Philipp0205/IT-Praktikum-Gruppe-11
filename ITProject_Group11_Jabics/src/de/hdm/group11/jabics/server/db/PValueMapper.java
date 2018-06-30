@@ -137,10 +137,11 @@ public class PValueMapper {
 				break;
 			}
 			case INT: {
-				stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
-						+ "dateValue, propertyID, contactID) VALUES " + "(" + "null, " + pv.getIntValue() + ", "
-						+ "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")"
-						, Statement.RETURN_GENERATED_KEYS);
+				stmt.executeUpdate(
+						"INSERT INTO pValue (stringValue, intValue, floatValue, "
+								+ "dateValue, propertyID, contactID) VALUES " + "(" + "null, " + pv.getIntValue() + ", "
+								+ "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")",
+						Statement.RETURN_GENERATED_KEYS);
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
 				while (rs.next()) {
@@ -193,8 +194,8 @@ public class PValueMapper {
 				// Füllen des Statements
 				stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 						+ " dateValue, propertyID, contactID) VALUES " + "( " + "null, " + "null, " + pv.getFloatValue()
-						+ ", " + "null" + ", " + pv.getProperty().getId() + ", " + c.getId() + ")"
-						, Statement.RETURN_GENERATED_KEYS);
+						+ ", " + "null" + ", " + pv.getProperty().getId() + ", " + c.getId() + ")",
+						Statement.RETURN_GENERATED_KEYS);
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
 				while (rs.next()) {
@@ -267,19 +268,24 @@ public class PValueMapper {
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
+				System.err.println(p.getTypeInString());
 				p.setDateCreated(rs.getTimestamp("dateCreated"));
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				pv.setProperty(p);
-				if (p.getType().equals("STRING")) {
+				if (p.getType().equals(Type.STRING)) {
 					pv.setPointer(2);
-				} else if (p.getType().equals("DATE")) {
-					pv.setPointer(3);
-				} else if (p.getType().equals("INT")) {
+				} else if (p.getType().equals(Type.INT)) {
 					pv.setPointer(1);
-				} else {
+				} else if (p.getType().equals(Type.DATE)) {
+					pv.setPointer(3);
+				} else if (p.getType().equals(Type.FLOAT)) {
 					pv.setPointer(4);
+				} else {
+					pv.setPointer(0);
 				}
 				al.add(pv);
+//				System.out.println(pv.getStringValue());
+//				System.out.println(pv.getPointer());
 			}
 
 			// Schließen des SQL-Statements
@@ -591,8 +597,7 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValueID " + " FROM pValueCollaboration "
 					+ " WHERE isOwner = 0 AND pValueID IN (" + pValueIDs + ")");
 
-			
-			//Das Resultset in ein Array aus BoStatus überführen
+			// Das Resultset in ein Array aus BoStatus überführen
 			ArrayList<Integer> ids = new ArrayList<Integer>();
 
 			while (rs.next()) {
@@ -604,25 +609,21 @@ public class PValueMapper {
 				for (Integer i : ids) {
 					if (i.equals(p.getId())) {
 						bol = true;
-					} 
+					}
 				}
 				if (bol) {
 					al.add(BoStatus.IS_SHARED);
-				}else {
+				} else {
 					al.add(BoStatus.NOT_SHARED);
 				}
 			}
 			/*
-			for (PValue pv : alPValue) {
-				while (rs.next()) {
-					if (rs.getInt("pValueID") == pv.getId()) {
-						al.add(BoStatus.IS_SHARED);
-					} else {
-						al.add(BoStatus.NOT_SHARED);
-					}
-				}
-
-			}*/
+			 * for (PValue pv : alPValue) { while (rs.next()) { if (rs.getInt("pValueID") ==
+			 * pv.getId()) { al.add(BoStatus.IS_SHARED); } else {
+			 * al.add(BoStatus.NOT_SHARED); } }
+			 * 
+			 * }
+			 */
 
 			// Schließen des SQL-Statements
 			stmt.close();
