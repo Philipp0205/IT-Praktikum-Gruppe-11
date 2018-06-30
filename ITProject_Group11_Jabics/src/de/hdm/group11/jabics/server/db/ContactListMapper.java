@@ -179,8 +179,9 @@ public class ContactListMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
+			System.out.println("Delete contactList with ID " + cl.getId());
 			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
-			stmt.executeUpdate("DELETE FROM contactList WHERE  contactListID = " + cl.getId());
+			stmt.executeUpdate("DELETE FROM contactList WHERE contactListID = " + cl.getId());
 
 			// Schließen des SQL-Statements
 			stmt.close();
@@ -189,6 +190,7 @@ public class ContactListMapper {
 			con.close();
 
 		} catch (SQLException e) {
+			System.err.println("Löschen fehlgeschlagen");
 			System.err.print(e);
 		}
 	}
