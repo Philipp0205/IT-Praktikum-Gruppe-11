@@ -284,8 +284,8 @@ public class PValueMapper {
 					pv.setPointer(0);
 				}
 				al.add(pv);
-//				System.out.println(pv.getStringValue());
-//				System.out.println(pv.getPointer());
+				// System.out.println(pv.getStringValue());
+				// System.out.println(pv.getPointer());
 			}
 
 			// Schließen des SQL-Statements
@@ -617,13 +617,6 @@ public class PValueMapper {
 					al.add(BoStatus.NOT_SHARED);
 				}
 			}
-			/*
-			 * for (PValue pv : alPValue) { while (rs.next()) { if (rs.getInt("pValueID") ==
-			 * pv.getId()) { al.add(BoStatus.IS_SHARED); } else {
-			 * al.add(BoStatus.NOT_SHARED); } }
-			 * 
-			 * }
-			 */
 
 			// Schließen des SQL-Statements
 			stmt.close();

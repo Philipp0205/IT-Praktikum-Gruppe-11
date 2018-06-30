@@ -214,21 +214,21 @@ public class ContactListMapper {
 
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-			
+
 			System.out.println("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
 					+ ", " + cl.getId() + ")");
 
 			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
 			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
 					+ ", " + cl.getId() + ")");
-			
-			
-			
-//			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + c.getId()
-//			+ ", " + cl.getId());
-			
-			//String query = ("INSERT INTO contactList (listname) VALUES ('" + cl.getListName() + "')");
-			
+
+			// stmt.executeUpdate("INSERT INTO contactContactLists (contactID,
+			// contactListID) VALUES " + c.getId()
+			// + ", " + cl.getId());
+
+			// String query = ("INSERT INTO contactList (listname) VALUES ('" +
+			// cl.getListName() + "')");
+
 			System.out.println("insertedContactIntoContactList: ContactID " + c.getName() + "into " + cl.getListName());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
@@ -248,7 +248,7 @@ public class ContactListMapper {
 		} catch (SQLException e) {
 			System.out.println("Kontakt: " + c.getId());
 			System.out.println("KontaktList: " + cl.getId());
-			
+
 			System.err.print("Verkackt");
 			System.err.print(e);
 			return null;
@@ -277,7 +277,7 @@ public class ContactListMapper {
 			// Löschen des Kontakts aus der Liste.
 			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID = " + c.getId()
 					+ " AND contactListID = " + cl.getId());
-			
+
 			System.out.println("DeletedContactFromContactList: ContactID " + c.getName() + "from " + cl.getListName());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
@@ -519,7 +519,7 @@ public class ContactListMapper {
 	public ArrayList<BoStatus> findShareStatus(ArrayList<ContactList> alContactList) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -542,13 +542,25 @@ public class ContactListMapper {
 			ResultSet rs = stmt.executeQuery("SELECT contactListID " + " FROM contactlistCollaboration "
 					+ " WHERE isOwner = 0 AND contactListID IN (" + contactListIDs + ")");
 
+			// Das Resultset in ein Array aus BoStatus überführen
+			ArrayList<Integer> ids = new ArrayList<Integer>();
+
+			while (rs.next()) {
+				ids.add(new Integer(rs.getInt("contactID")));
+			}
+
+			// Setzen des Shared Status für jeden Contact in ArrayList<Contact>
 			for (ContactList cl : alContactList) {
-				while (rs.next()) {
-					if (rs.getInt("contactListID") == cl.getId()) {
-						al.add(BoStatus.IS_SHARED);
-					} else {
-						al.add(BoStatus.NOT_SHARED);
+				Boolean bol = false;
+				for (Integer i : ids) {
+					if (i.equals(cl.getId())) {
+						bol = true;
 					}
+				}
+				if (bol) {
+					al.add(BoStatus.IS_SHARED);
+				} else {
+					al.add(BoStatus.NOT_SHARED);
 				}
 			}
 
