@@ -75,7 +75,9 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
+	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name
 	 * 
+	 * @return name
 	 */
 	@Override
 	public String toString() {
