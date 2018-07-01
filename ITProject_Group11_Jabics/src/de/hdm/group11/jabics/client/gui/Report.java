@@ -290,6 +290,7 @@ public class Report implements EntryPoint {
 				if (datepicker != null) {
 					// pval.setDateValue(event.getValue());
 					valueBox.setText(event.getValue().toString());
+					finalPVal.setDateValue(datepicker.getValue());
 				}
 			}
 		});
@@ -310,7 +311,8 @@ public class Report implements EntryPoint {
 					finalPVal.setStringValue((java.lang.String) event.getValue());
 					break;
 				case 3:
-					GWT.log("Datum wird durch DatePicker gesetzt");
+					//Datum wird vom Datepicker gesetzt. Bei netürlichem Gebrauch wird kein ValueChangeEvent ausgelöst. 
+					finalPVal.setDateValue((Date)event.getValue());
 					break;
 				case 4:
 					finalPVal.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));
