@@ -69,6 +69,7 @@ public class SearchForm extends VerticalPanel {
 	VerticalPanel verPanel5;
 	JabicsUser currentUser;
 	ArrayList<Property> PropertyArrayList;
+	Date tempDate;
 	HorizontalPanel mainpanel = new HorizontalPanel();
 
 	public void onLoad() {
@@ -108,6 +109,7 @@ public class SearchForm extends VerticalPanel {
 
 		verPanel4.add(datepicker);
 		datepicker.setVisible(false);
+		// Set the default value
 		mainpanel.add(verPanel4);
 
 		verPanel5.add(sb);
@@ -122,55 +124,94 @@ public class SearchForm extends VerticalPanel {
 
 		ct.setEditor(e);
 
-		sb.addClickHandler((new ClickHandler() {
+		sb.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				sp.setVisible(false);
 				ausgabeLabel.setVisible(false);
-				
-//			}
-//		}));
-//		
-//		valueBox.addValueChangeHandler(new ValueChangeHandler<String>() {
-//			   @Override
-//			   public void onValueChange(ValueChangeEvent<String> event) {
-				   GWT.log("kukuk");
-				   
-				   switch (datatypemenu.getSelectedItemText()) {
-					case "Text":
-						finalPVal.setStringValue(valueBox.getValue()); 
-						finalPVal.setProperty(finalProperty);
-						break;
-					case "Ganzzahl":
-					if(valueBox.getText().isEmpty())	{
-						finalPVal.setIntValue(-2147483648);
-					}else {
-						finalPVal.setIntValue(Integer.valueOf(valueBox.getValue()));
-					}
-						finalPVal.setProperty(finalProperty);
-						break;
-					case "Datum":
-						finalPVal.setFloatValue(Float.valueOf(valueBox.getValue())); 
-						finalPVal.setProperty(finalProperty);
-						break;
-					case "Dezimalzahl":
-						finalPVal.setDateValue(datepicker.getValue()); 
-						finalPVal.setProperty(finalProperty);
-						break;
-					default:
-						break;
-						
-			  }
 
+				// }
+				// }));
+				//
+				// valueBox.addValueChangeHandler(new ValueChangeHandler<String>() {
+				// @Override
+				// public void onValueChange(ValueChangeEvent<String> event) {
+
+				switch (datatypemenu.getSelectedItemText()) {
+				case "Text":
+					if (valueBox.getValue() != "") {
+						finalPVal.setStringValue(valueBox.getValue());
+					} else {
+						finalPVal.setStringValue(null);
+					}
+					finalPVal.setProperty(finalProperty);
+					GWT.log(finalProperty.getLabel());
+					// Aufruf des der Listensuche in der EditorServiceImpl+
 					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
-			  }
-			}));
-		
+					break;
+				case "Ganzzahl":
+					if (valueBox.getText().isEmpty()) {
+						finalPVal.setIntValue(-2147483648);
+						// Aufruf des der Listensuche in der EditorServiceImpl
+						editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					} else {
+						finalPVal.setIntValue(Integer.valueOf(valueBox.getValue()));
+						// Aufruf des der Listensuche in der EditorServiceImpl
+						editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					}
+					finalPVal.setProperty(finalProperty);
+					break;
+				case "Datum":
+					if (valueBox.getValue() != "") {
+						finalPVal.setDateValue(datepicker.getValue());
+					} else {
+						finalPVal.setDateValue(null);
+					}
+					finalPVal.setProperty(finalProperty);
+					// Aufruf des der Listensuche in der EditorServiceImpl
+					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+
+					break;
+				case "Dezimalzahl":
+					finalPVal.setFloatValue(Float.valueOf(valueBox.getValue()));
+					finalPVal.setProperty(finalProperty);
+					// Aufruf des der Listensuche in der EditorServiceImpl
+					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					break;
+				default:
+					break;
+
+				}
+
+			}
+		});
+
 		editorService.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
 
-		datatypemenu.addChangeHandler(new ChangeHandler() {
-
+		valueBox.addClickHandler(new ClickHandler() {
 			Button finish = new Button("Fertig");
+
+			public void onClick(ClickEvent event) {
+				if (datatypemenu.getSelectedItemText() == "Datum") {
+					datepicker.setVisible(true);
+					finish.setVisible(true);
+					verPanel4.add(finish);
+
+					finish.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							datepicker.setVisible(false);
+							finish.setVisible(false);
+						}
+					});
+				}
+				if (datatypemenu.getSelectedItemText() != "Datum") {
+					datepicker.setVisible(false);
+					finish.setVisible(false);
+				}
+			}
+		});
+
+		datatypemenu.addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -184,16 +225,6 @@ public class SearchForm extends VerticalPanel {
 					finalPVal.getProperty().setType(Type.INT);
 					break;
 				case "Datum":
-					datepicker.setVisible(true);
-					finish.setVisible(true);
-					verPanel4.add(finish);
-
-					finish.addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-							datepicker.setVisible(false);
-							finish.setVisible(false);
-						}
-					});
 					finalPVal.setPointer(3);
 					finalPVal.getProperty().setType(Type.DATE);
 					break;
@@ -207,10 +238,6 @@ public class SearchForm extends VerticalPanel {
 					break;
 				}
 
-				if (datatypemenu.getSelectedItemText() != "Datum") {
-					datepicker.setVisible(false);
-					finish.setVisible(false);
-				}
 			}
 		});
 
@@ -220,6 +247,9 @@ public class SearchForm extends VerticalPanel {
 				if (datepicker != null) {
 					// pval.setDateValue(event.getValue());
 					valueBox.setText(event.getValue().toString());
+					tempDate = event.getValue();
+					GWT.log(tempDate.toString());
+					finalPVal.setDateValue(tempDate);
 				}
 			}
 		});
@@ -261,12 +291,12 @@ public class SearchForm extends VerticalPanel {
 				sp.setVisible(true);
 				sp.clear();
 				sp.add(list, "Ausgabe");
-				if(valueBox.getText().equals("")) {ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText()+ "' gesucht.");
-				}else {
+				if (valueBox.getText().equals("")) {
+					ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText() + "' gesucht.");
+				} else {
 					ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
 				}
 				ausgabeLabel.setVisible(true);
-				valueBox.setText("");
 			}
 		}
 	}
@@ -297,9 +327,11 @@ public class SearchForm extends VerticalPanel {
 			 */
 			propertySuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
-								finalProperty= new Property();
-								finalProperty.setLabel(propertySuggest.getText());
-								finalPVal.setProperty(finalProperty);
+					finalProperty = new Property();
+					finalProperty.setLabel(propertySuggest.getText());
+					GWT.log(">>>>>>>>>>>>>" + finalProperty.getLabel());
+					finalPVal.setProperty(finalProperty);
+					// finalPVal.getProperty().setType(Type.STRING);
 				}
 			});
 			verPanel1.add(propertySuggest);
