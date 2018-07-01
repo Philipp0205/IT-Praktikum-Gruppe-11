@@ -9,6 +9,7 @@ import java.sql.Timestamp;
  * der Ersteller eines Objektes.
  * 
  * @author Anders
+ * @author Stahl
  */
 public abstract class BusinessObject implements Serializable {
 

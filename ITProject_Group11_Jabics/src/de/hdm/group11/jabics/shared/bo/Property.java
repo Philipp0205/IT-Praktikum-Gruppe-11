@@ -87,7 +87,7 @@ public class Property extends BusinessObject implements Serializable {
 	 * @return label
 	 */
 	public String getLabel() {
-		return label;
+		return this.label;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class Property extends BusinessObject implements Serializable {
 	 * @return type
 	 */
 	public Type getType() {
-		return type;
+		return this.type;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class Property extends BusinessObject implements Serializable {
 	 * @return isStandard
 	 */
 	public boolean isStandard() {
-		return isStandard;
+		return this.isStandard;
 	}
 
 	/**
