@@ -9,19 +9,13 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
- * Struktur von
+ * Diese Mapper-Klasse realisiert die Abbildung von <code>User</code> Objekten
+ * auf die relationale Datenbank. Sie stellt alle notwendigen Methoden zur
+ * Verwaltung der User in der Datenbank zur Verfügung.
  * 
  * @author Thies
- * 
- *         Angepasst von
  * @author Brase
  * @author Stahl
- * 
- *         Diese Mapper-Klasse realisiert die Abbildung von <code>User</code>
- *         Objekten auf die relationale Datenbank. Sie stellt alle notwendigen
- *         Methoden zur Verwaltung der User in der Datenbank zur Verfügung.
- * 
- *
  */
 public class UserMapper {
 

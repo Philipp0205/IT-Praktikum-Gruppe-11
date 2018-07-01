@@ -10,70 +10,45 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
+ * 
+ * Diese Mapper-Klasse realisiert die Abbildung von <code>PValue</code> Objekten
+ * auf die relationale Datenbank. Sie stellt alle notwendigen Methoden zur
+ * Verwaltung der Eigenschaftsausprägungen in der Datenbank zur Verfügung.
+ *
+ * @author Thies
  * @author Brase
  * @author Stahl
- * 
- *         Diese Mapper-Klasse realisiert die Abbildung von <code>PValue</code>
- *         Objekten auf die relationale Datenbank. Sie stellt alle notwendigen
- *         Methoden zur Verwaltung der Eigenschaftsausprägungen in der Datenbank
- *         zur Verfügung.
- *
  */
 public class PValueMapper {
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Die Klasse PValueMapper wird nur einmal instantiiert. Man spricht
-	 *         hierbei von einem sogenannten <b>Singleton</b>.
-	 *         <p>
-	 *         Diese Variable ist durch den Bezeichner <code>static</code> nur
-	 *         einmal für sämtliche eventuellen Instanzen dieser Klasse vorhanden.
-	 *         Sie speichert die einzige Instanz dieser Klasse.
+	 * Die Klasse PValueMapper wird nur einmal instantiiert. Man spricht hierbei von
+	 * einem sogenannten <b>Singleton</b>.
+	 * <p>
+	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
+	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+	 * einzige Instanz dieser Klasse.
 	 * 
 	 * @see pValueMapper()
 	 */
 	private static PValueMapper pValueMapper = null;
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Geschützter Konstruktor - verhindert die Möglichkeit, mit
-	 *         <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected PValueMapper() {
 	}
 
 	/**
-	 * Struktur von
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>PValueMapper.pValueMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
+	 * Instanz von <code>PValueMapper</code> existiert.
+	 * <p>
 	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Diese statische Methode kann aufgrufen werden durch
-	 *         <code>PValueMapper.pValueMapper()</code>. Sie stellt die
-	 *         Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
-	 *         einzige Instanz von <code>PValueMapper</code> existiert.
-	 *         <p>
-	 * 
-	 *         <b>Fazit:</b> PValueMapper sollte nicht mittels <code>new</code>
-	 *         instantiiert werden, sondern stets durch Aufruf dieser statischen
-	 *         Methode.
+	 * <b>Fazit:</b> PValueMapper sollte nicht mittels <code>new</code> instantiiert
+	 * werden, sondern stets durch Aufruf dieser statischen Methode.
 	 * 
 	 * @return Das <code>PValueMapper</code>-Objekt.
 	 * @see pValueMapper
@@ -243,24 +218,24 @@ public class PValueMapper {
 	public PValue insertCollaboration(JabicsUser u, PValue pv, boolean IsOwner) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-	
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-	
+
 			System.err.println("pvid" + pv.getId());
 			System.err.println("uid" + u.getId());
 			System.err.println("tbool: " + IsOwner);
 			// Füllen des Statements
 			stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + pv.getId() + ", " + u.getId() + ")");
-	
+
 			// Schließen des SQL-Statements
 			stmt.close();
-	
+
 			// Schließen der Datenbankverbindung
 			con.close();
-	
+
 			// Rückgabe des pValue-Objekts
 			return pv;
 		} catch (SQLException e) {
@@ -279,17 +254,17 @@ public class PValueMapper {
 	public PValue updatePValue(PValue pv) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-	
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-	
+
 			/**
 			 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code>
 			 * Objekts und trägt den Wert in die Datenbank ein
 			 */
 			switch (pv.getProperty().getType()) {
-	
+
 			case STRING: {
 				stmt.executeUpdate("UPDATE pValue SET stringValue = '" + pv.getStringValue() + "' WHERE pValueID = "
 						+ pv.getId() + ";");
@@ -312,13 +287,13 @@ public class PValueMapper {
 				break;
 			}
 			}
-	
+
 			// Schließen des SQL-Statements
 			stmt.close();
-	
+
 			// Schließen der Datenbankverbindung
 			con.close();
-	
+
 			// Rückgabe des PValue-Objekts
 			return pv;
 		} catch (SQLException e) {
@@ -337,20 +312,20 @@ public class PValueMapper {
 	public void deletePValue(PValue pv) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-	
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-	
+
 			// Füllen des Statements
 			stmt.executeUpdate("DELETE FROM pValue WHERE pValueID = " + pv.getId());
-	
+
 			// Schließen des SQL-Statements
 			stmt.close();
-	
+
 			// Schließen der Datenbankverbindung
 			con.close();
-	
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -369,18 +344,18 @@ public class PValueMapper {
 	public void deleteCollaboration(PValue pv, JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-	
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-	
+
 			// Füllen des Statements
 			stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID = " + u.getId() + " AND pValueID = "
 					+ pv.getId());
-	
+
 			// Schließen des SQL-Statements
 			stmt.close();
-	
+
 			// Schließen der Datenbankverbindung
 			con.close();
 		} catch (SQLException e) {
@@ -535,20 +510,20 @@ public class PValueMapper {
 	public ArrayList<JabicsUser> findCollaborators(PValue pv) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-	
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-	
+
 			// Erzeugen einer ArrayList
 			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
-	
+
 			// Auswählen der <code>User</code> Objekte mit einer bestimmten ID aus der
 			// Teilhaberschaftstabelle.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email" + " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
 					+ " WHERE pValueCollaboration.pValueID = " + pv.getId());
-	
+
 			//
 			while (rs.next()) {
 				// Befüllen des User-Objekts und Hinzufügen zur ArrayList.
@@ -558,10 +533,10 @@ public class PValueMapper {
 			}
 			// Schließen des SQL-Statements
 			stmt.close();
-	
+
 			// Schließen der Datenbankverbindung
 			con.close();
-	
+
 			// Rückgabe der mit JabicsUsern befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
