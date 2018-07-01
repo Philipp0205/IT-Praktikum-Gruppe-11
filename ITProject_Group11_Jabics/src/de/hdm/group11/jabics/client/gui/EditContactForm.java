@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -39,11 +37,12 @@ public class EditContactForm extends VerticalPanel {
 	Contact contact;
 	Boolean isNewContact;
 	Boolean userIsOwner;
-	
+
 	Button deleteContactButton = new Button("Kontakt löschen");
 	Button saveButton = new Button("Änderungen speichern");
+	Button exitButton = new Button("Abbruch");
 	Button existingSharedContactButton;
-	
+
 	VerticalPanel pPanel;
 	HorizontalPanel buttonPanel;
 	HorizontalPanel addPPanel;
@@ -69,6 +68,7 @@ public class EditContactForm extends VerticalPanel {
 			buttonPanel = new HorizontalPanel();
 			addPPanel = new HorizontalPanel();
 
+			buttonPanel.add(exitButton);
 			buttonPanel.add(deleteContactButton);
 			buttonPanel.add(saveButton);
 			buttonPanel.addStyleName("buttonPanel");
@@ -86,6 +86,12 @@ public class EditContactForm extends VerticalPanel {
 				@Override
 				public void onClick(ClickEvent event) {
 					save();
+				}
+			});
+			exitButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					e.showContact(contact);
 				}
 			});
 
@@ -194,12 +200,27 @@ public class EditContactForm extends VerticalPanel {
 						}
 					}
 				} else {
-					PropForm pnew = new PropForm(pv);
-					val.add(pnew);
+					Boolean bol = true;
+					// Wenn dieses PValue zu einer bereits vorhandenen Property gehört, füge es an
+					// der richtigen Stellen ein
+					for (PropForm p : val) {
+						if (p.getProperty().getId() == pv.getProperty().getId()) {
+							GWT.log("RichtigeGefunden!");
+							bol = false;
+							// Neue PVForm hinzufügen
+							p.addPValue(pv);
+							GWT.log("PValue zugeordnet");
+						}
+
+					}
+					// Wenn dieses PValue alleine ist, mache neue PropForm
+					if (bol) {
+						PropForm pnew = new PropForm(pv);
+						val.add(pnew);
+					}
 				}
 			}
 		}
-
 
 		// Alle PropForms mit allen PVForms anzeigen lassen
 		for (PropForm p : val) {
@@ -276,27 +297,8 @@ public class EditContactForm extends VerticalPanel {
 			} else if (!isNewContact) {
 
 				contact.setValues(filledPV);
-				editorService.updateContact(contact, u, new AsyncCallback<Contact>() {
-
-					public void onFailure(Throwable caught) {
-						Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
-
-					}
-
-					public void onSuccess(Contact result) {
-						if (result != null) {
-
-							GWT.log("Kontakt " + result.getName() + " erfolgreich gespeichert mit diesen PV:");
-							for (PValue pv : result.getValues()) {
-								GWT.log(pv.toString());
-							}
-							setContact(result);
-							e.updateContactInTree(result);
-							e.showContact(result);
-						}
-
-					}
-				});
+				editorService.updateContact(contact, u, new UpdateContactCallback());
+				exitButton.setVisible(false);
 			}
 		} else if (!nameExistent) {
 			Window.alert("Kontakt muss einen Namen haben! Bitte Name und Nachname eingeben.");
@@ -404,6 +406,32 @@ public class EditContactForm extends VerticalPanel {
 	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer
 	 * Eigenschafts- ausprägung.
 	 */
+	private class UpdateContactCallback implements AsyncCallback<Contact> {
+
+		public void onFailure(Throwable caught) {
+			Window.alert("Konnte nicht gespeichert werden!" + caught.getMessage());
+		}
+
+		public void onSuccess(Contact result) {
+			if (result != null) {
+
+				GWT.log("Kontakt " + result.getName() + " erfolgreich gespeichert mit diesen PV:");
+				for (PValue pv : result.getValues()) {
+					GWT.log(pv.toString());
+				}
+				setContact(result);
+				exitButton.setText("Zurück");
+				exitButton.setVisible(true);
+				e.updateContactInTree(result);
+				e.showContact(result);
+			}
+		}
+	}
+
+	/**
+	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer
+	 * Eigenschafts- ausprägung.
+	 */
 	private class UpdatePValueCallback implements AsyncCallback<PValue> {
 
 		public void onFailure(Throwable caugth) {
@@ -451,11 +479,10 @@ public class EditContactForm extends VerticalPanel {
 	 * Eigenschafts- ausprägung.
 	 */
 	class DeletePValueCallback implements AsyncCallback<Void> {
-		private PValue pvalue = null;
-		PVForm pvform;
+		PVForm pvForm;
 
 		public DeletePValueCallback(PVForm pv) {
-			this.pvform = pv;
+			this.pvForm = pv;
 		}
 
 		public void onFailure(Throwable caugth) {
@@ -464,11 +491,10 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Void result) {
-			if (result != null) {
-				Window.alert("Erfolgreich gelöscht");
-				pvform.setVisible(false);
-			}
 
+			Window.alert("Erfolgreich gelöscht");
+			pvForm.setVisible(false);
+			pvForm.setPV(null);
 		}
 	}
 
@@ -517,7 +543,7 @@ public class EditContactForm extends VerticalPanel {
 				}
 			}
 			// Styling Labels
-			property.setWidth("80px");
+			property.setWidth("100px");
 
 			this.add(property);
 			pvPanel.setWidth("200px");
@@ -541,8 +567,7 @@ public class EditContactForm extends VerticalPanel {
 		/**
 		 * Hinzufügen eines PValues zur Form.
 		 * 
-		 * @param PValue
-		 *            pv
+		 * @param PValue pv
 		 */
 		void addPValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -554,8 +579,7 @@ public class EditContactForm extends VerticalPanel {
 		 * Löschen des initial erstellten PVForms und ersetzen durch ein befülltes. Darf
 		 * nur von renderContact() aufgerufen werden
 		 * 
-		 * @param PValue
-		 *            pv
+		 * @param PValue pv
 		 */
 		void replacePValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -580,7 +604,9 @@ public class EditContactForm extends VerticalPanel {
 		ArrayList<PValue> getPV() {
 			ArrayList<PValue> res = new ArrayList<PValue>();
 			for (PVForm pf : pvForms) {
-				res.add(pf.getPV());
+				if (pf.getPV() != null) {
+					res.add(pf.getPV());
+				}
 			}
 			return res;
 		}
@@ -633,7 +659,14 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 		PValue getPV() {
-			return this.pval;
+			if (this.pval != null) {
+				return this.pval;
+			} else
+				return null;
+		}
+
+		void setPV(PValue pv) {
+			this.pval = pv;
 		}
 
 		void create(PValue pv) {

@@ -547,6 +547,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	public void deletePValue(PValue pv, Contact c) {
+		System.err.println("PValue löschen" + pv.toString());
 		ArrayList<JabicsUser> cols = pvMapper.findCollaborators(pv);
 		// überprüfen, ob dieses PV das letzte seiner Art ist und wenn ja die zugehörige
 		// Property löschen
@@ -560,14 +561,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			if (bol)
 				pMapper.deleteProperty(pv.getProperty());
 		}
-
+		System.err.println("PValue löschen2" + pv.toString());
 		/**
-		 * glöckchen: if(pv.getOwner().getId() == u.getId()) {
+		 * glöckchen (bzw. überhaupt sinnvoll): if(pv.getOwner().getId() == u.getId()) {
 		 */
-		for (int i = 0; i < cols.size(); i++) {
-			pvMapper.deleteCollaboration(pv, cols.get(i));
+		for (JabicsUser u : cols) {
+			pvMapper.deleteCollaboration(pv, u);
 			pvMapper.deletePValue(pv);
 		}
+		System.err.println("PValue löschen3" + pv.toString());
+		return;
 	}
 
 	/**
@@ -657,7 +660,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
-				Boolean bol = false;
+				boolean bol = false;
 				for (PValue pvtemp : ctemp.getValues()) {
 					// Wenn das gleiche PValue gemeint ist, es sich aber geändert hat, updaten
 					if (pvtemp.getId() == pv.getId() && (!pvtemp.equals(pv))) {
@@ -708,7 +711,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public JabicsUser addCollaboration(ContactList cl, JabicsUser u) {
 		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
-		Boolean bol = true;
+		boolean bol = true;
 		// Überprüfen, ob die Liste bereits freigegeben ist
 		for (JabicsUser user : users) {
 			if (user.getId() == u.getId()) {
@@ -740,7 +743,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void addCollaboration(Contact c, JabicsUser u) {
 		System.err.println("Kollab: " + c.getName() + u.getUsername());
 		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
-		Boolean bol = true;
+		boolean bol = true;
 		// Überprüfen, ob der Kontakt bereits freigegeben ist
 		for (JabicsUser user : users) {
 			if (user.getId() == u.getId()) {
@@ -767,7 +770,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public void addCollaboration(PValue pv, JabicsUser u) {
 		ArrayList<JabicsUser> users = pvMapper.findCollaborators(pv);
-		Boolean bol = true;
+		boolean bol = true;
 		// Überprüfen, ob der Kontakt bereits freigegeben ist
 		for (JabicsUser user : users) {
 			if (user.getId() == u.getId()) {
