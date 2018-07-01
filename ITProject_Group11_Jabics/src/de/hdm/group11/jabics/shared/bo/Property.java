@@ -9,6 +9,7 @@ import java.io.Serializable;
  * in Jabics gehört.
  * 
  * @author Anders
+ * @author Stahl
  */
 public class Property extends BusinessObject implements Serializable {
 	
@@ -30,7 +31,7 @@ public class Property extends BusinessObject implements Serializable {
 	private boolean isStandard = false;
 
 	/**
-	 * Leerer Konstruktor
+	 * Konstruktor, welcher den Konstruktor seiner Superklasse aufruft.
 	 */
 	public Property() {
 		super();

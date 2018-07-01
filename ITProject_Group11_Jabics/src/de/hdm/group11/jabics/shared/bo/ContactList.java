@@ -13,8 +13,17 @@ import java.util.ArrayList;
  *
  */
 public class ContactList extends BusinessObject implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Name einer Instanz dieser Klasse.
+	 */
 	private String listName;
+	
+	/**
+	 * Share-Status einer Instanz dieser Klasse.
+	 */
 	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 
 	ArrayList<Contact> contacts = new ArrayList<Contact>();

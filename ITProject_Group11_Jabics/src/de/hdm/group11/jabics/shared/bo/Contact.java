@@ -31,7 +31,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	private String name;
 
 	/**
-	 * Share Status einer Instanz dieser Klasse.
+	 * Share-Status einer Instanz dieser Klasse.
 	 */
 	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 
@@ -134,7 +134,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Auslesen des Share Status.
+	 * Auslesen des Share-Status.
 	 * 
 	 * @return shareStatus
 	 */
@@ -143,7 +143,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Setzen des Share Status.
+	 * Setzen des Share-Status.
 	 * 
 	 * @param shareStatus
 	 */
