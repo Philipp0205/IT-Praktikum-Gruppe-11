@@ -193,7 +193,11 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Check if BusinessObject is the same as transfer parameter
+	 * Prüfen ob das <code>PValue</code> Objekt das Gleiche wie der Parameter ist.
+	 * 
+	 * @param obj
+	 * 
+	 * @return true oder false
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -201,14 +205,12 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 			PValue pv = (PValue) obj;
 			if (pv.getId() == this.id) {
 				boolean bol = true;
-				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
 				if (pv.toString() != this.toString())
 					bol = false;
 				if (pv.containsValue() != this.containsValue())
 					bol = false;
 				if (!pv.getProperty().equals(this.getProperty()))
 					bol = false;
-				System.out.println("Ists gleich: " + bol);
 				return bol;
 			}
 			return false;
