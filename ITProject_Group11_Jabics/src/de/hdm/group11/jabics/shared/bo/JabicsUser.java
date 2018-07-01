@@ -31,10 +31,7 @@ public class JabicsUser implements Serializable {
 	 */
 	private String username;
 
-	/**
-	 * Login-Status einer Instanz dieser Klasse.
-	 */
-	private boolean isLoggedIn;
+
 
 	/**
 	 * Leerer Konstruktor
@@ -85,23 +82,7 @@ public class JabicsUser implements Serializable {
 		return this.email;
 	}
 
-	/**
-	 * Auslesen des Login-Status.
-	 * 
-	 * @return isLoggedIn
-	 */
-	public boolean getIsLoggedIn() {
-		return this.isLoggedIn;
-	}
 
-	/**
-	 * Setzen des Login-Status.
-	 * 
-	 * @param isLoggedIn
-	 */
-	public void setLoggedIn(boolean isLoggedIn) {
-		this.isLoggedIn = isLoggedIn;
-	}
 
 	/**
 	 * Auslesen der ID.

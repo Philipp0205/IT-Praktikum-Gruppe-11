@@ -24,6 +24,7 @@ public class LoginInfo implements Serializable {
 
 	private String loginUrl;
 	private String logoutUrl;
+	private boolean isLoggedIn;
 
 	private JabicsUser currentUser;
 
@@ -43,12 +44,12 @@ public class LoginInfo implements Serializable {
 	}
 
 	public boolean isLoggedIn() {
-		return currentUser.getIsLoggedIn();
+		return isLoggedIn;
 	}
 
 	public void setLoggedIn(boolean loggedIn) {
-		this.currentUser.setLoggedIn(loggedIn);
-	}
+		this.isLoggedIn = loggedIn;
+}
 
 	public String getLoginUrl() {
 		Window.alert("4");

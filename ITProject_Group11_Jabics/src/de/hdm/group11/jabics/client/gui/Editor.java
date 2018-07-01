@@ -92,27 +92,11 @@ public class Editor implements EntryPoint {
 		 * Zunächst wird eine User-Instanz hinzugefügt. Später entfernen und dies den
 		 * Login übernehmen lassen
 		 */
-		currentUser = new JabicsUser(1);
-		currentUser.setEmail("stahl.alexander@live.de");
-		currentUser.setId(1);
-		currentUser.setUsername("Alexander Stahl");
+//		currentUser = new JabicsUser(1);
+//		currentUser.setEmail("stahl.alexander@live.de");
+//		currentUser.setId(1);
+//		currentUser.setUsername("Alexander Stahl");
 
-		/**
-		 * Login
-		 */
-		// loginService = ClientsideSettings.getLoginService();
-		// GWT.log(GWT.getHostPageBaseURL());
-		// loadEditor();
-		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-		loadEditor();
-	}
-
-	public void loadEditor() {
-
-		if (editorService == null) {
-			editorService = ClientsideSettings.getEditorService();
-		}
-		
 		editorService.testmethod(new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {
 				Window.alert("Testmethode hat nicht geklappt");
@@ -125,6 +109,24 @@ public class Editor implements EntryPoint {
 			}
 			
 		});
+		
+		/**
+		 * Login
+		 */
+		 loginService = ClientsideSettings.getLoginService();
+		// GWT.log(GWT.getHostPageBaseURL());
+		// loadEditor();
+		 loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		loadEditor();
+	}
+
+	public void loadEditor() {
+
+		if (editorService == null) {
+			editorService = ClientsideSettings.getEditorService();
+		}
+		
+		
 
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
@@ -455,18 +457,18 @@ public class Editor implements EntryPoint {
 		@Override
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
-				currentUser = logon.getCurrentUser();
-				setLoginInfo(logon);
-
-				if (currentUser.getIsLoggedIn()) {
+				if (logon.isLoggedIn()) {
+					setLoginInfo(logon);
 					setJabicsUser(logon.getCurrentUser());
 					loadEditor();
 				} else {
+					Anchor a = new Anchor(logon.getLoginUrl());
+					RootPanel.get("details").add(a);
 					Window.alert("User not logged in");
 				}
-			}
+			}else Window.alert("Something went terribly wrong. Please reload the page or try again later.");
 
-		}
+}
 	}
 
 }
