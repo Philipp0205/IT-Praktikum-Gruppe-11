@@ -60,7 +60,7 @@ public interface EditorServiceAsync {
 
 	void updateContactList(ContactList cl, AsyncCallback<ContactList> callback);
 
-	void addCollaboration(ContactList cl, JabicsUser u, AsyncCallback<Void> callback);
+	void addCollaboration(ContactList cl, JabicsUser u, AsyncCallback<JabicsUser> callback);
 
 	void addCollaboration(Contact c, JabicsUser u, AsyncCallback<Void> callback);
 

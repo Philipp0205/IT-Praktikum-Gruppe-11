@@ -408,10 +408,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		cl.removeContact(c);
 
-		// System.err.println("Kollaboratoren finden:");
-		// for (JabicsUser u : cMapper.findCollaborators(c)) {
-		// deleteCollaboration(c, u);
-		// }
+//		System.err.println("Kollaboratoren finden:");
+//		for (JabicsUser u : cMapper.findCollaborators(c)) {
+//			deleteCollaboration(c, u);
+//		}
+
 
 		System.err.println("Kontakt in Liste löschen: " + c.getName());
 		clMapper.deleteContactfromContactList(cl, c);
@@ -485,8 +486,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ContactList deleteContactList(ContactList cl, JabicsUser ju) {
 		System.out.println("Delete Contactlist " + " " + cl.getId() + " " + cl.getListName());
 
-		// if (clMapper.findContactListById(cl.getId()).getOwner().getId() ==
-		// ju.getId()) {
+		//Überprüfen, ob Löschanfrage vom Besitzer stammt
 		if (uMapper.findUserByContactList(cl).getId() == ju.getId()) {
 
 			ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
@@ -503,6 +503,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			}
 			clMapper.deleteContactList(cl);
 			System.out.println("Delete ContactList " + cl.getListName());
+
 		}
 		return cl;
 	}
@@ -681,7 +682,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @param Nutzer,
 	 *            dem die Liste freigegeben werden soll
 	 */
-	public void addCollaboration(ContactList cl, JabicsUser u) {
+	public JabicsUser addCollaboration(ContactList cl, JabicsUser u) {
 		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
 		Boolean bol = true;
 		// Überprüfen, ob die Liste bereits freigegeben ist
@@ -699,7 +700,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				addCollaboration(c, u);
 			}
 		}
-		return;
+		return u;
 	}
 
 	/**
@@ -874,6 +875,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue(), pv.getProperty());
 			}
 			break;
+
 		}
 		case 2: {
 			if (pv.getStringValue() != null) {
@@ -885,9 +887,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		case 3: {
 			if (pv.getDateValue() != null) {
 				System.err.println("Nach PVal filtern");
+
 				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue(), pv.getProperty());
 			}
 			break;
+
 		}
 		case 4: {
 			if (pv.getFloatValue() != 0.0f) {
@@ -895,13 +899,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
 			}
 			break;
+
 		}
 		}
 
 		return contacts;
 
 	}
-
 
 	// /**
 	// * Eine Kontaktliste nach Int-Values durchsuchen
@@ -931,6 +935,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	// return alc;
 	// }
 
+
 	/**
 	 * Eine Liste nach Nutzern durchsuchen, zB Kollaboratoren oder Eigentümer
 	 * 
@@ -957,7 +962,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<JabicsUser> getAllNotCollaboratingUser(Contact c) {
 		ArrayList<JabicsUser> res = uMapper.findAllUser();
 		for (JabicsUser u : cMapper.findCollaborators(c)) {
-			res.remove(u);
+			//for (JabicsUser uu : res) {
+				//if (uu.getId() == u.getId())
+					res.remove(u);
+			//}
 		}
 		return res;
 	}
@@ -992,7 +1000,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erhalten aller kollaborierenden Nutzer für eine KontaktListe
 	 */
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
-		return clMapper.findCollaborators(cl);
+		ArrayList<JabicsUser> result = clMapper.findCollaborators(cl);
+		JabicsUser owner = uMapper.findUserByContactList(cl);
+		for(JabicsUser u : result) {
+			System.out.println(u.getId() + u.getEmail());
+			//if(u.getId() == owner.getId()) result.remove(u);
+		}
+		return result;
 	}
 
 	/**

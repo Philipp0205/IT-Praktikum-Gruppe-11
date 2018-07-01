@@ -270,7 +270,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	 * durch
 	 */
 	public void deleteCollabWithUser(JabicsUser[] u) {
-		GWT.log(selectedUser[1].getEmail());
+		GWT.log(selectedUser[0].getEmail());
 
 		// Wird von deleteCollaboration(Contact, user) erledigt
 //		for (PValue pv : finalPV) {

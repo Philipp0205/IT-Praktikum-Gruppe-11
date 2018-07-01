@@ -67,7 +67,6 @@ public class ContactListForm extends VerticalPanel {
 	Button deleteButton = new Button("Liste löschen");
 	Button saveButton = new Button("Änderungen speichern");
 	Button shareButton = new Button("Liste teilen");
-	Button shareExistingButton = new Button("Teilen bearbeiten");
 	Button removeButton = new Button("Kontakte entfernen");
 	Button addButton = new Button("Kontakte hinzufügen");
 
@@ -112,7 +111,9 @@ public class ContactListForm extends VerticalPanel {
 			removeButton.setVisible(false);
 
 		} else {
-			deleteButton.setVisible(true);
+			if (this.u.getId() == currentList.getOwner().getId()) {
+				deleteButton.setVisible(true);
+			} else deleteButton.setVisible(false);
 			removeButton.setVisible(true);
 		}
 
@@ -126,20 +127,10 @@ public class ContactListForm extends VerticalPanel {
 		shareButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				GWT.log("Teile Liste " + currentList.getListName());
-				
-				e.showContactListCollab(currentList);
-				
-//				removeAddPanel();
-//				removeRemovePanel();
-			}
-		});
-		shareExistingButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.alert("aktuell noch falsche share form!");
-				e.showContactListCollab(currentList);
-			}
-		});
 
+				e.showContactListCollab(currentList);
+			}
+		});
 		deleteButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				GWT.log("7.2 deleteButton");
@@ -154,7 +145,7 @@ public class ContactListForm extends VerticalPanel {
 				save();
 			}
 		});
-		
+
 		/*
 		 * Kontakte hinzufügen
 		 */
@@ -168,10 +159,11 @@ public class ContactListForm extends VerticalPanel {
 				cArray = new ArrayList<Contact>();
 				if (isNewList) {
 					editorService.createContactList(listBox.getText(), cArray, u, new CreateContactListCallback());
-					
+
 				} else {
 					GWT.log("7.2 updateList " + currentList.getListName());
-					//editorService.updateContactList(currentList, new UpdateContactListCallback());
+					// editorService.updateContactList(currentList, new
+					// UpdateContactListCallback());
 				}
 
 				// editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
@@ -196,7 +188,6 @@ public class ContactListForm extends VerticalPanel {
 		});
 
 		sharePanel.add(shareButton);
-		sharePanel.add(shareExistingButton);
 		editPanel.add(addButton);
 		editPanel.add(removeButton);
 		changePanel.add(deleteButton);
@@ -277,8 +268,7 @@ public class ContactListForm extends VerticalPanel {
 	 * allgemeinen Informationen) ein. Es können Kontakte ausgewählt werden und
 	 * durch Klick auf einen Button der Liste hinzugefügt werden.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
 	public void addContactPanel(ArrayList<Contact> allC) {
 
@@ -362,8 +352,7 @@ public class ContactListForm extends VerticalPanel {
 	 * ein. Es können Kontakte ausgewählt werden und durch Klick auf einen Button
 	 * aus der Liste entfernt werden.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
 	public void removeContactPanel(ArrayList<Contact> allC) {
 		GWT.log("7.7 removeContactPanel");
@@ -615,6 +604,7 @@ public class ContactListForm extends VerticalPanel {
 			Window.alert("Fehler 5 Kontakt konnte nicht gelöscht werden.");
 
 		}
+
 		@Override
 		public void onSuccess(ContactList cl) {
 			e.removeContactListFromTree(cl);

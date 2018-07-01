@@ -265,7 +265,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		ArrayList<Contact> contactRes = new ArrayList<Contact>();
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		System.err.println("Filterkriterium PVAL: " + pv.getStringValue());
-
+		
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}

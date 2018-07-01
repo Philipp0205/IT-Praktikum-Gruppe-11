@@ -202,8 +202,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
 				for (JabicsUser u : allUser) {
+					GWT.log(suggestBox.getValue());
 					if (suggestBox.getValue().contains(u.getUsername())
 							&& suggestBox.getValue().contains(u.getEmail())) {
+						GWT.log("Nutzer erkant");
+						
 						suggestedUser = u;
 					}
 				}
