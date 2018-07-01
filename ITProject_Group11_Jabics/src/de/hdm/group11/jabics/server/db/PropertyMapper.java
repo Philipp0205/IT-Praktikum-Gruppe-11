@@ -225,6 +225,7 @@ public class PropertyMapper {
 			while (rs.next()) {
 				// Erzeugen eines Property-Objektes
 				Property p = new Property();
+
 				// Befüllen des Property-Objekts
 				p.setId(rs.getInt("propertyID"));
 				p.setStandard(rs.getBoolean("isStandard"));

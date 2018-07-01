@@ -80,7 +80,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				e.returnToContactForm(sharedContact);
 			}
 		});
-		GWT.log("collab2");
+
 		exit = new Button("Abbrechen/Zurück");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
