@@ -103,6 +103,8 @@ public interface EditorServiceAsync {
 	void getStandardProperties(AsyncCallback<ArrayList<Property>> callback) throws IllegalArgumentException;
 
 	void initialise(AsyncCallback<Void> callback);
+	
+	void testmethod(AsyncCallback<String> callback);
 
 	void getPropertysOfJabicsUser(JabicsUser u, AsyncCallback<ArrayList<Property>> callback);
 

@@ -37,24 +37,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public EditorServiceImpl() {
 	}
 
-	public String testMethod() {
+	public String testmethod() {
 		/*
 		 * Contact c = cMapper.findContactById(1); //PValue pv =
 		 * pvMapper.findPValueById(1); System.out.println(c.getId());
 		 * System.out.println(c.getDateCreated().toString());
 		 * c.setOwner(uMapper.findUserByContact(c)); return c.getOwner().getEmail();
 		 */
-		// return "halowelt";
-		ContactList cl = clMapper.findContactListById(1);
-		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
-		for (Contact cnew : c) {
-			for (PValue pv : pvMapper.findPValueForContact(cnew)) {
-				cnew.addPValue(pv);
-				System.out.println(pv.getStringValue());
-			}
-			;
-		}
-		return c.get(1).getValues().get(1).toString();
+		return "Testmethode geglückt!";
+//		ContactList cl = clMapper.findContactListById(1);
+//		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
+//		for (Contact cnew : c) {
+//			for (PValue pv : pvMapper.findPValueForContact(cnew)) {
+//				cnew.addPValue(pv);
+//				System.out.println(pv.getStringValue());
+//			}
+//			;
+//		}
+//		return c.get(1).getValues().get(1).toString();
 
 		// ArrayList<PValue> lol = pvMapper.findPValueForContact(c);
 		// for(int i= 0; i< lol.size(); i++) {
