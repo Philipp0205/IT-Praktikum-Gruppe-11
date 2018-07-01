@@ -46,6 +46,7 @@ public class SearchForm extends VerticalPanel {
 	CellList<Contact> list;
 	TextBox valueBox;
 	Button sb;
+	Button back;
 	Label listInfoLabel;
 	ContactList cl;
 	Editor e;
@@ -88,6 +89,7 @@ public class SearchForm extends VerticalPanel {
 		datatypeLabel = new Label("Datentyp:");
 		datepicker = new DatePicker();
 		finalPVal = new PValue();
+		back = new Button("Zurück");
 
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
 
@@ -119,10 +121,18 @@ public class SearchForm extends VerticalPanel {
 		this.add(mainpanel);
 		this.add(sp);
 		this.add(ausgabeLabel);
+		this.add(back);
+		
 
 		ausgabeLabel.setVisible(false);
 
 		ct.setEditor(e);
+		
+		back.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				e.showContactList(cl);
+			}});
 
 		sb.addClickHandler(new ClickHandler() {
 
