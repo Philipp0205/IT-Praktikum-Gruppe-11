@@ -182,13 +182,25 @@ public class Filter {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
 		for (Contact c : contacts) {
+			boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
+				if (p.getPointer() == 4) {
 				if (p.getFloatValue() == pv) {
-					result.add(c);
+					bol = true;
+					for (Contact c2 : result) {
+						if (c2.getId() != c.getId()) {
+							bol = false;
+						}
+					}
 				}
 			}
 		}
-		return result;
+		if (bol) {
+			result.add(c);
+		}
 	}
+	return result;
+}
+	
 }

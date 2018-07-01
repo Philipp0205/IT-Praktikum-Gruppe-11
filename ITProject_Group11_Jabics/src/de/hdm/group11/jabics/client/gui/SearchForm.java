@@ -46,6 +46,7 @@ public class SearchForm extends VerticalPanel {
 	CellList<Contact> list;
 	TextBox valueBox;
 	Button sb;
+	Button back;
 	Label listInfoLabel;
 	ContactList cl;
 	Editor e;
@@ -88,6 +89,7 @@ public class SearchForm extends VerticalPanel {
 		datatypeLabel = new Label("Datentyp:");
 		datepicker = new DatePicker();
 		finalPVal = new PValue();
+		back = new Button("Zurück");
 
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
 
@@ -119,10 +121,18 @@ public class SearchForm extends VerticalPanel {
 		this.add(mainpanel);
 		this.add(sp);
 		this.add(ausgabeLabel);
+		this.add(back);
+		
 
 		ausgabeLabel.setVisible(false);
 
 		ct.setEditor(e);
+		
+		back.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				e.showContactList(cl);
+			}});
 
 		sb.addClickHandler(new ClickHandler() {
 
@@ -173,10 +183,17 @@ public class SearchForm extends VerticalPanel {
 
 					break;
 				case "Dezimalzahl":
+					if (valueBox.getText().isEmpty()) {
+						finalPVal.setFloatValue(Float.MIN_VALUE);
+					
+						// Aufruf des der Listensuche in der EditorServiceImpl
+						editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					} else {
 					finalPVal.setFloatValue(Float.valueOf(valueBox.getValue()));
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
 					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					}
 					break;
 				default:
 					break;
@@ -290,7 +307,7 @@ public class SearchForm extends VerticalPanel {
 				}
 				sp.setVisible(true);
 				sp.clear();
-				sp.add(list, "Ausgabe");
+				sp.add(list, "Ergebnis:");
 				if (valueBox.getText().equals("")) {
 					ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText() + "' gesucht.");
 				} else {
