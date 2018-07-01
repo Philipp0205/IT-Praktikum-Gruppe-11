@@ -8,7 +8,6 @@ import java.io.Serializable;
  * 
  *  @author Kurrle and Anders
  */
-
 public class JabicsUser implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -16,16 +15,9 @@ public class JabicsUser implements Serializable {
 	private int id; 
 	private String email;
 	private String username;
-	private boolean isLoggedIn;
 	
 	public JabicsUser() {}
 	
-	public boolean getIsLoggedIn() {
-		return isLoggedIn;
-	}
-	public void setLoggedIn(boolean isLoggedIn) {
-		this.isLoggedIn = isLoggedIn;
-	}
 	public JabicsUser(int id) {
 		this.id = id;	
 	}

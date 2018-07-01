@@ -20,8 +20,6 @@ import de.hdm.group11.jabics.shared.bo.*;
  *         Diese Mapper-Klasse realisiert die Abbildung von <code>User</code>
  *         Objekten auf die relationale Datenbank. Sie stellt alle notwendigen
  *         Methoden zur Verwaltung der User in der Datenbank zur Verfügung.
- * 
- *
  */
 public class UserMapper {
 

@@ -1,47 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee">
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>Jabics_Editor.html</welcome-file>
-    <welcome-file>Jabics_Report.html</welcome-file>
-  </welcome-file-list>
-  
-   <!-- Servlets NICHT LÖSCHEN -->
-  <servlet>
-    <servlet-name>loginService</servlet-name>
-    <servlet-class>de.hdm.group11.jabics.server.LoginServiceImpl</servlet-class>
-  </servlet>
-  
-   <servlet>
-    <servlet-name>editorService</servlet-name>
-    <servlet-class>de.hdm.group11.jabics.server.EditorServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet>
-    <servlet-name>reportGeneratorService</servlet-name>
-    <servlet-class>de.hdm.group11.jabics.server.ReportGeneratorServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>loginService</servlet-name>
-    <url-pattern>/itproject_group11_jabics_editor/login</url-pattern>
-    <url-pattern>/jabics/login</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>editorService</servlet-name>
-    <url-pattern>/itproject_group11_jabics_editor/editor</url-pattern>
-    <url-pattern>/itproject_group11_jabics_report/editor</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>reportGeneratorService</servlet-name>
-    <url-pattern>/itproject_group11_jabics_report/report</url-pattern>
-    <url-pattern>/itproject_group11_jabics/report</url-pattern>
-  </servlet-mapping>
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
+
+	<!-- Servlets NICHT LÖSCHEN -->
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>de.hdm.group11.jabics.server.LoginServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/itproject_group11_jabics_editor/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/itproject_group11_jabics_report/login</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>editorService</servlet-name>
+		<servlet-class>de.hdm.group11.jabics.server.EditorServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>editorService</servlet-name>
+		<url-pattern>/itproject_group11_jabics_editor/editor</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>reportGeneratorService</servlet-name>
+		<servlet-class>de.hdm.group11.jabics.server.ReportGeneratorServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>reportGeneratorService</servlet-name>
+		<url-pattern>/itproject_group11_jabics_report/report</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>Jabics_Editor.html</welcome-file>
+		<!-- <welcome-file>Jabics_Report.html</welcome-file> -->
+	</welcome-file-list>
 </web-app>
