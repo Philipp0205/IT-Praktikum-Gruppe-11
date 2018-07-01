@@ -2,8 +2,6 @@ package de.hdm.group11.jabics.shared.bo;
 
 import java.io.Serializable;
 
-import java.io.Serializable;
-
 /**
  * Diese Klasse definiert die abstrakte Version einer Eigenschaft, also wie diese hei�t und welcher Datentyp diese repr�sentiert.
  * Zusätzlich ist hier gespeichert, ob eine Eigenschaft zu den Standardeigenschaften von Kontakten in Jabics gehört.

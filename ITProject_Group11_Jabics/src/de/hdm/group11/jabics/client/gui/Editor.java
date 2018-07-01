@@ -10,7 +10,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -23,12 +22,15 @@ import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
-import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
 
 /**
- * In der folgenden Klasse "Editor" wird die Darstellung einzelnen Klassen
- * bestimmt: ContactForm, ContactListForm
+ * In der Klasse "Editor" werden die einzelnen Teile der Gui zusammengeführt und
+ * die Darstellung der einzelnen Klassen initiiert. Editor kann wie eine
+ * Verwalterklasse gesehen werden, die zu jedem Zeitpunkt über das Geschehen im
+ * Editor Bescheid weiß. Folgende Klassen werden verwaltet: ShowContactForm,
+ * EditContactForm, ContactCollaborationForm, ExisitingContactColaborationForm,
+ * ContactListForm, ContactListCollaborationForm, SearchForm, TreeViewMenu mit
+ * seinen "Subtabs".
  */
 public class Editor implements EntryPoint {
 
@@ -51,8 +53,8 @@ public class Editor implements EntryPoint {
 		CellTree.Style cellTreeStyle();
 	}
 
+	EditorServiceAsync editorService;
 	LoginServiceAsync loginService;
-	EditorServiceAsync editorAdmin;
 	LoginInfo loginfo;
 
 	JabicsUser currentUser;
@@ -71,22 +73,20 @@ public class Editor implements EntryPoint {
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
-	EditContactForm cForm;
-	ShowContactForm scForm;
-	ContactListForm clForm;
-	ContactCollaborationForm ccForm;
-	ContactListCollaborationForm clcForm;
-	ExistingContactCollaborationForm eccForm;
-	SearchForm sForm;
-	// ExistingContactListCollaborationForm clcForm;
+	private EditContactForm ecForm;
+	private ShowContactForm scForm;
+	private ContactListForm clForm;
+	private ContactCollaborationForm ccForm;
+	private ExistingContactCollaborationForm eccForm;
+	private ContactListCollaborationForm clcForm;
+	private SearchForm sForm;
 
-	// SearchForm sForm = new SearchForm();
 	TreeViewMenu treeViewMenu;
 
 	@Override
 	public void onModuleLoad() {
 
-		editorAdmin = ClientsideSettings.getEditorService();
+		editorService = ClientsideSettings.getEditorService();
 
 		/**
 		 * Zunächst wird eine User-Instanz hinzugefügt. Später entfernen und dies den
@@ -109,9 +109,22 @@ public class Editor implements EntryPoint {
 
 	public void loadEditor() {
 
-		if (editorAdmin == null) {
-			editorAdmin = ClientsideSettings.getEditorService();
+		if (editorService == null) {
+			editorService = ClientsideSettings.getEditorService();
 		}
+		
+		editorService.testmethod(new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Testmethode hat nicht geklappt");
+				Window.alert(caught.toString());
+			}
+			public void onSuccess(String s) {
+				Window.alert(s.toString());
+				Label l = new Label(s);
+				RootPanel.get("trailer").add(l);
+			}
+			
+		});
 
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
@@ -142,12 +155,6 @@ public class Editor implements EntryPoint {
 
 		menuPanel.add(treeViewMenu.getStackPanel());
 		menuPanel.setStyleName("menuPanel");
-		/**
-		 * Das kann weg sobald treeview passt
-		 */
-		Contact c6 = new Contact();
-		c6.setId(1);
-		editContact(c6);
 
 		RootPanel.get("details").add(mainPanel);
 	}
@@ -206,16 +213,16 @@ public class Editor implements EntryPoint {
 	public void editContact(Contact c) {
 		GWT.log("editcont");
 		// if (this.cForm == null) {
-		cForm = new EditContactForm();
-		cForm.setEditor(this);
-		cForm.setUser(this.currentUser);
+		ecForm = new EditContactForm();
+		ecForm.setEditor(this);
+		ecForm.setUser(this.currentUser);
 
 		formPanel.clear();
 		GWT.log("AltesWidgetEntfernt");
-		cForm.setNewContact(false);
-		cForm.setContact(c);
+		ecForm.setNewContact(false);
+		ecForm.setContact(c);
 
-		formPanel.insert(cForm, 0);
+		formPanel.insert(ecForm, 0);
 		GWT.log("editcontFertig");
 
 		formPanel.setStyleName("formPanel");
@@ -224,16 +231,16 @@ public class Editor implements EntryPoint {
 	public void newContact(Contact c) {
 		GWT.log("editcont");
 		// if (this.cForm == null) {
-		cForm = new EditContactForm();
-		cForm.setEditor(this);
-		cForm.setUser(this.currentUser);
+		ecForm = new EditContactForm();
+		ecForm.setEditor(this);
+		ecForm.setUser(this.currentUser);
 
 		formPanel.clear();
 		GWT.log("AltesWidgetEntfernt");
-		cForm.setNewContact(true);
-		cForm.setContact(c);
+		ecForm.setNewContact(true);
+		ecForm.setContact(c);
 
-		formPanel.insert(cForm, 0);
+		formPanel.insert(ecForm, 0);
 		GWT.log("editcontFertig");
 
 		formPanel.setStyleName("formPanel");
@@ -278,13 +285,12 @@ public class Editor implements EntryPoint {
 	}
 
 	public void showContactCollab(Contact c) {
-
 		GWT.log("contactCollab");
 		if (this.ccForm == null) {
 			ccForm = new ContactCollaborationForm();
 			ccForm.setEditor(this);
 		}
-		GWT.log("huhu");
+
 		formPanel.clear();
 		// ccForm.clear();
 		ccForm.setContact(c);
@@ -294,36 +300,29 @@ public class Editor implements EntryPoint {
 
 	public void showExistingContactCollab(Contact c) {
 		GWT.log("existingContactCollab");
-		// if (this.eccForm == null) {
-		eccForm = new ExistingContactCollaborationForm();
-		eccForm.setEditor(this);
+		if (this.eccForm == null) {
+			eccForm = new ExistingContactCollaborationForm();
+			eccForm.setEditor(this);
+			eccForm.setUser(this.currentUser);
+		}
 		eccForm.setContact(c);
-		eccForm.setUser(this.currentUser);
-
 		formPanel.clear();
-		formPanel.add(eccForm);
+		formPanel.insert(eccForm, 0);
 	}
 
 	public void showContactListCollab(ContactList cl) {
-		
+
 		GWT.log("contactListCollab");
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
-			
 		}
-		GWT.log("huhu");
-		formPanel.clear();
-		// clcForm.clear();
-		clcForm.setContactList(cl);
-		// clcForm.setUser(loginfo.getCurrentUser());
-		formPanel.add(clcForm);
-	}
 
-	public void showExistingContactListCollab(ContactList cl) {
-		/**
-		 * TODO implement
-		 */
+		formPanel.clear();
+		clcForm.clear();
+		clcForm.setContactList(cl);
+		formPanel.add(clcForm);
+		// formPanel.insert(clcForm, 0);
 	}
 
 	public void showSearchForm(ContactList cl) {
@@ -395,66 +394,6 @@ public class Editor implements EntryPoint {
 	public void flushContactLists() {
 		treeViewMenu.flushContactListsProvider();
 	}
-
-	/*
-	 * public void removeContactFromTree(Contact c) { treeViewMenu.removeContact(c);
-	 * }
-	 * 
-	 * public void removeContactListFromTree(ContactList cl) {
-	 * treeViewMenu.removeContactList(cl); }
-	 * 
-	 * public void removeContactFromListInTree(ContactList cl, Contact c) {
-	 * treeViewMenu.removeContactFromList(cl, c); }
-	 */
-
-	// +++++++++++++++++++++++++++++++ClickHandler++++++++++++++++++++++++++
-	/**
-	 * ClickHandler um die SearchForm anzuzeigen
-	 */
-//	private class SearchClickHandler implements ClickHandler {
-//		ContactList cl;
-//
-//		SearchClickHandler() {
-//		}
-//
-//		@Override
-//		public void onClick(ClickEvent event) {
-//
-//			// treeViewMenu.setContactForm(cForm);
-//			// cForm.setTreeViewMenu(treeViewMenu);
-//
-//			// hPanel.add(contactDetailPanel);
-//			//
-//			// contactDetailPanel.clear();
-//			// contactDetailPanel.add(cForm);
-//
-//			// RootPanel.get("details").add(contactDetailPanel);
-//			// TODO
-//			GWT.log("clickEventForm");
-//			ContactList cl = new ContactList();
-//			cl.setId(1);
-//			JabicsUser u = new JabicsUser(1);
-//			Contact c1 = new Contact();
-//			Property p = new Property();
-//			p.setId(2);
-//			GWT.log("clickEventForm");
-//			PValue pv = new PValue(p, "Fiffi", u);
-//			c1.setName("Uschi");
-//			Contact c2 = new Contact();
-//			c2.setName("Strolch");
-//			Contact c3 = new Contact();
-//			c3.setId(3);
-//			c3.setName("Fiffi");
-//			GWT.log("clickEventForm");
-//			c3.addPValue(pv);
-//			GWT.log("clickEventForm");
-//			cl.setListName("Idiyets");
-//			cl.addContact(c1);
-//			cl.addContact(c2);
-//			cl.addContact(c3);
-//			showSearchForm(cl);
-//		}
-//	}
 
 	/**
 	 * ClickHandler um einen neuen Kontakt zu erstellen und zu bearbeiten

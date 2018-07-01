@@ -265,7 +265,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		ArrayList<Contact> contactRes = new ArrayList<Contact>();
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		System.err.println("Filterkriterium PVAL: " + pv.getStringValue());
-
+		
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
@@ -282,7 +282,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		// Kontakte nach PropertyValue filtern, falls gesetzt
 		if (pv.getStringValue() != null) {
 			System.err.println("Nach PVal filtern");
-			contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+			contacts = Filter.filterContactsByString(contacts, pv.getStringValue(), pv.getProperty());
 		}
 		System.err.println("Zurückgeben");
 		// Reports für die gefilterten Kontakte erstellen
@@ -354,7 +354,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		}
 		// Kontakte nach PropertyValue filtern, falls gesetzt
 		if (pv.getDateValue() != null) {
-			contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+			contacts = Filter.filterContactsByDate(contacts, pv.getDateValue(), pv.getProperty());
 		}
 		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();

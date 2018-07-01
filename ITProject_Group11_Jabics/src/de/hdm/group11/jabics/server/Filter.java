@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.server;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ public class Filter {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
 		for (Contact c : contacts) {
+			Boolean bol= false;
 			System.out.println("Kontakt filtern: " + c.getName());
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue pv : pvalues) {
@@ -21,27 +23,38 @@ public class Filter {
 				// Die Logik der Methode
 				if (p.getLabel() != null && pv.getProperty().getLabel().equals(p.getLabel())) {
 					System.err.println("Gefunden");
-					result.add(c);
+					bol = true;
+					for (Contact c2 : result) {
+						if(c.getId()==c2.getId()) 
+							bol = false;
+					}
+						
 				}
-			}
+			} if(bol)result.add(c);
 		}
 		return result;
 	}
 
-	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv) {
+	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv, Property prop) {
 		ArrayList<Contact> result = new ArrayList<Contact>();
-		
 		for (Contact c : contacts) {
 			Boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
-				if (p.getStringValue() != null) {
-					if (pv != null && (p.getStringValue() == pv || p.getStringValue().contains(pv))) { // zu definiert:	// p.getProperty().getLabel().contains(pv)){
-						bol=true;	
+				if (p.getPointer() == 2) {
+					if (p.getStringValue() == pv || p.getStringValue().contains(pv)) { // zu definiert:
+						bol = true;
+						for (Contact c2 : result) {
+							if (c2.getId() != c.getId()) {
+								bol = false;
+							}
+						}
 					}
 				}
 			}
-			if((!result.contains(c))&&bol)result.add(c);
+			if (bol) {
+				result.add(c);
+			}
 		}
 		return result;
 	}
@@ -54,41 +67,45 @@ public class Filter {
 			Boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
-				if(p.getPointer()==1) {
-				if(pv==-2147483648) {
-					System.out.println(String.valueOf(pv));
+				if (p.getPointer() == 1) {
 					if (p.getProperty().getLabel().equals(prop.getLabel())) {
-						bol=true;
-				}
-				
-				}else {
-					Integer integ = (Integer) pv;
-					if (p.getIntValue() == pv || p.getProperty().getLabel().contains(integ.toString()) ) {  //|| p.getStringValue().contains(integ.toString()) 
-						bol=true;	
-						System.out.println(String.valueOf(pv));
-				}
-				}	
+						bol = true;
+						for (Contact c2 : result) {
+							if (c2.getId() != c.getId()) {
+								bol = false;
+							}
+						}
+					}
 				}
 			}
-			
-			if((!result.contains(c))&&bol) {
+			if (bol) {
 				result.add(c);
-			System.out.println("kukuk3");
 			}
 		}
 		return result;
 	}
 
-	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, Date pv) {
+	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, Date pv, Property prop) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
-
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		for (Contact c : contacts) {
+			Boolean bol = new Boolean(false);
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
-				if (p.getDateValue() == pv) {
-					result.add(c);
+				if (p.getPointer() == 3) {
+					if (dateFormat.format(p.getDateValue()).equals(dateFormat.format(pv))) {
+						bol = true;
+						for (Contact c2 : result) {
+							if (c2.getId() != c.getId()) {
+								bol = false;
+							}
+						}
+					}
 				}
+			}
+			if (bol) {
+				result.add(c);
 			}
 		}
 		return result;
@@ -105,8 +122,8 @@ public class Filter {
 					result.add(c);
 				}
 			}
-//			System.out.println(String.valueOf(finalUser.get(i).getId()));
-//			System.out.println(String.valueOf(collaborators.get(i).getId()));
+			// System.out.println(String.valueOf(finalUser.get(i).getId()));
+			// System.out.println(String.valueOf(collaborators.get(i).getId()));
 
 		}
 		return result;
