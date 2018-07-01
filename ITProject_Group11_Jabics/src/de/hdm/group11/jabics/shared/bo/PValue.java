@@ -7,12 +7,11 @@ import com.google.gwt.view.client.ProvidesKey;
 
 /**
  * Diese Klasse realisiert die Eigenschaftsausprägungen eines Kontakts. Diese
- * können entweder im Datentyp int, String, float oder LocalDate angelegt sein.
- * Der int pointer repräsentiert die Information, welcher Datentyp in PValue
- * gespeichert ist. 1 bedeutet int, 2 String, 3 Date und 4 float. Zusätzlich ist
- * in jedem PValue Objekt ein Property Objekt gespeichert, welches Informationen
- * über den Charakter der Eigenschaft, zu welcher die Ausprägung gehört,
- * enthält.
+ * können entweder im Datentyp int, String, float oder Date angelegt sein. Der
+ * int pointer repräsentiert die Information, welcher Datentyp in PValue
+ * gespeichert ist. Zusätzlich ist in jedem PValue Objekt ein Property Objekt
+ * gespeichert, welches Informationen über den Charakter der Eigenschaft, zu
+ * welcher die Ausprägung gehört, enthält.
  * 
  * @author Kurrle
  * @author Anders
@@ -24,22 +23,22 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Integer Wert einer Instanz dieser Klasse.
+	 * Ausprägung der Ganzzahl einer Instanz dieser Klasse.
 	 */
 	private int intValue;
 
 	/**
-	 * String Wert einer Instanz dieser Klasse.
+	 * Ausprägung der Zeichenkette einer Instanz dieser Klasse.
 	 */
 	private String stringValue;
 
 	/**
-	 * Date Wert einer Instanz dieser Klasse.
+	 * Ausprägung des Datums einer Instanz dieser Klasse.
 	 */
 	private Date dateValue;
 
 	/**
-	 * Float Wert einer Instanz dieser Klasse.
+	 * Ausprägung der Kommazahl einer Instanz dieser Klasse.
 	 */
 	private float floatValue;
 
@@ -55,12 +54,13 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	private int propertyId;
 
 	/**
-	 * 
+	 * Information über den Datentyp einer Instanz dieser Klasse. 1 = int, 2 =
+	 * String, 3 = Date und 4 = float
 	 */
 	private int pointer = 0;
 
 	/**
-	 * 
+	 * Information ob in der Instanz dieser Klasse eine Ausprägung hinterlegt ist.
 	 */
 	private boolean contains;
 
@@ -133,9 +133,9 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * @param s
 	 * @param u
 	 */
-	public PValue(Property p, String s, JabicsUser u) {
+	public PValue(Property p, String stringValue, JabicsUser u) {
 		this(p, u);
-		this.stringValue = s;
+		this.stringValue = stringValue;
 		this.contains = true;
 		this.pointer = 2;
 	}
@@ -146,9 +146,9 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * @param date
 	 * @param u
 	 */
-	public PValue(Property p, Date date, JabicsUser u) {
+	public PValue(Property p, Date dateValue, JabicsUser u) {
 		this(p, u);
-		this.dateValue = date;
+		this.dateValue = dateValue;
 		this.contains = true;
 		this.pointer = 3;
 	}
@@ -159,15 +159,18 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * @param f
 	 * @param u
 	 */
-	public PValue(Property p, float f, JabicsUser u) {
+	public PValue(Property p, float floatValue, JabicsUser u) {
 		this(p, u);
-		this.floatValue = f;
+		this.floatValue = floatValue;
 		this.contains = true;
 		this.pointer = 4;
 	}
 
 	/**
+	 * Textuelle Repräsentation des <code>PValue</code> Obejekts durch den Wert der
+	 * Ausprägung.
 	 * 
+	 * @return intValue, stringValue, dateValue oder floatValue
 	 */
 	@Override
 	public String toString() {
@@ -187,14 +190,6 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 		} catch (Exception e) {
 			return "nicht gesetzt";
 		}
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean containsValue() {
-		return this.contains;
 	}
 
 	/**
@@ -222,16 +217,25 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Setzen
+	 * Auslesen der Information, ob ein Wert hinterlegt ist.
 	 * 
-	 * @return
+	 * @return contatins
+	 */
+	public boolean containsValue() {
+		return this.contains;
+	}
+
+	/**
+	 * Auslesen der Ausprägung in der Form einer Ganzzahl.
+	 * 
+	 * @return intValue
 	 */
 	public int getIntValue() {
 		return intValue;
 	}
 
 	/**
-	 * 
+	 * Setzen der Ausprägung in der Form einer Ganzzahl.
 	 * 
 	 * @param intValue
 	 */
@@ -242,7 +246,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * 
+	 * Auslesen der Ausprägung in der Form einer Zeichenkette.
 	 * 
 	 * @return
 	 */
@@ -251,6 +255,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Setzen der Ausprägung in der Form einer Zeichenkette.
 	 * 
 	 * @param string
 	 */
@@ -261,6 +266,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Auslesen der Ausprägung in der Form eines Datums.
 	 * 
 	 * @return
 	 */
@@ -269,6 +275,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Setzen der Ausprägung in der Form eines Datums.
 	 * 
 	 * @param dateValue
 	 */
@@ -279,6 +286,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Auslesen der Ausprägung in der Form einer Kommazahl.
 	 * 
 	 * @return
 	 */
@@ -287,6 +295,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Setzen der Ausprägung in der Form einer Kommazahl.
 	 * 
 	 * @param floatValue
 	 */
@@ -297,6 +306,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Auslesen des zugehörigen <code>Property</code> Objekts.
 	 * 
 	 * @return
 	 */
@@ -305,6 +315,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Setzen des zugehörigen <code>Property</code> Objekts.
 	 * 
 	 * @param property
 	 */
@@ -313,6 +324,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Auslesen der ID des zugehörigen <code>Property</code> Objekts.
 	 * 
 	 * @return
 	 */
@@ -321,6 +333,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Setzen der ID des zugehörigen <code>Property</code> Objekts.
 	 * 
 	 * @param propertyId
 	 */
@@ -329,14 +342,16 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Auslesen des Pointers.
 	 * 
-	 * @return
+	 * @return pointer
 	 */
 	public int getPointer() {
 		return pointer;
 	}
 
 	/**
+	 * Setzen des Pointers.
 	 * 
 	 * @param pointer
 	 */
@@ -345,14 +360,17 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Auslesen des Share-Status.
 	 * 
-	 * @return
+	 * @return shareStatus
 	 */
 	public BoStatus getShareStatus() {
 		return shareStatus;
 	}
 
+
 	/**
+	 * Setzen des Share-Status.
 	 * 
 	 * @param shareStatus
 	 */
@@ -362,9 +380,10 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 
 	/**
 	 * 
+	 * 
+	 * @param pv
 	 */
 	@Override
-	// das mit dem implements comparable und compare to nochmal überlgen
 	public int compareTo(PValue pv) {
 		if (pv.getId() == this.id) {
 			return 0;
@@ -380,5 +399,4 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 			return (Integer) pv.getId();
 		}
 	};
-
 }

@@ -5,51 +5,75 @@ import java.util.ArrayList;
 
 /**
  * Diese Klasse implementiert Kontaktlisten in Jabics. Kontaktlisten haben einen
- * Namen und ein Feld aus Kontakten. Diese können eine nicht definierte Menge an
- * <code>Contact</code> Objekten speichern. Kontakte können einer Liste mittels
- * addContact() und removeContact() hinzugefügt oder entfernt werden.
+ * Namen und eine Liste aus Kontakten. Diese können <code>Contact</code> Objekten
+ * speichern. Kontakte können einer Liste mittels addContact() und
+ * removeContact() hinzugefügt oder entfernt werden.
  * 
  * @author Anders
  *
  */
 public class ContactList extends BusinessObject implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Name einer Instanz dieser Klasse.
 	 */
 	private String listName;
-	
+
 	/**
 	 * Share-Status einer Instanz dieser Klasse.
 	 */
 	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 
+	/**
+	 * <code>Contact</code> Objekte welche in einer Instanz dieser Klasse liegen.
+	 */
 	ArrayList<Contact> contacts = new ArrayList<Contact>();
 
-	// Konstruktoren
+	/**
+	 * Konstruktor, welcher den Konstruktor seiner Superklasse aufruft.
+	 */
 	public ContactList() {
 		super();
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param al
+	 */
 	public ContactList(ArrayList<Contact> al) {
 		this();
 		this.contacts = al;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param al
+	 * @param u
+	 */
 	public ContactList(ArrayList<Contact> al, JabicsUser u) {
 		this(al);
 		this.owner = u;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param al
+	 * @param ln
+	 * @param u
+	 */
 	public ContactList(ArrayList<Contact> al, String ln, JabicsUser u) {
 		this(al, u);
 		this.listName = ln;
 	}
 
 	/**
-	 * toString gibt den Listennamen zurück
+	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name und
+	 * wenn dieser nicht gesetzt ist durch die ID.
 	 */
 	@Override
 	public String toString() {
@@ -60,13 +84,12 @@ public class ContactList extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Fügt einen Kontakt zur Liste hinzu und aktualisiert das Änderungsdatum.
+	 * Ein <code>Contact</code> Objekt einer Instanz dieser Klasse
 	 * 
 	 * @param <code>Contact</code>
 	 */
 	public void addContact(Contact c) {
 		contacts.add(c);
-		// this.setDateUpdated(LocalDateTime.now());
 	}
 
 	/**
@@ -83,27 +106,58 @@ public class ContactList extends BusinessObject implements Serializable {
 		this.contacts.addAll(conts);
 	}
 
-	// Getter und Setter
+	/**
+	 * Auslesen einer ArrayList mit alle <code>Contact</code> Objekten, welche in
+	 * einer <code>ContactList</code> liegen.
+	 * 
+	 * @return contacts
+	 */
 	public ArrayList<Contact> getContacts() {
 		return contacts;
 	}
 
+	/**
+	 * Setzen aller <code>Contact</code> Objekte, die einer
+	 * <code>ContactList</code> angehören.
+	 * 
+	 * @param contacts
+	 */
 	public void setContacts(ArrayList<Contact> contacts) {
 		this.contacts = contacts;
 	}
 
+	/**
+	 * Auslesen des Listennamens.
+	 * 
+	 * @return
+	 */
 	public String getListName() {
 		return listName;
 	}
 
+	/**
+	 * Setzen des Listennamens.
+	 * 
+	 * @param listName
+	 */
 	public void setListName(String listName) {
 		this.listName = listName;
 	}
 
+	/**
+	 * Auslesen des Share-Status.
+	 * 
+	 * @return
+	 */
 	public BoStatus getShareStatus() {
 		return shareStatus;
 	}
 
+	/**
+	 * Setzen des Share-Status
+	 * 
+	 * @param shareStatus
+	 */
 	public void setShareStatus(BoStatus shareStatus) {
 		this.shareStatus = shareStatus;
 	}
