@@ -64,9 +64,9 @@ public interface EditorService extends RemoteService {
 
 	public void addCollaboration(PValue pv, JabicsUser u);
 
-	public void deleteCollaboration(PValue pv, JabicsUser u);
+	public void  deleteCollaboration(PValue pv, JabicsUser u);
 
-	public void deleteCollaboration(Contact c, JabicsUser u);
+	public JabicsUser deleteCollaboration(Contact c, JabicsUser u);
 
 	public void deleteCollaboration(ContactList cl, JabicsUser u);
 

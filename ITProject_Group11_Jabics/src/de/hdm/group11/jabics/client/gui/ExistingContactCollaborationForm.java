@@ -71,6 +71,8 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 	public ExistingContactCollaborationForm() {
 		
+		grid = new Grid(4, 3);
+		
 		valueLabel = new Label("Eigenschaften, die der ausgewählte Nutzer sehen darf");
 
 		selValues = new CellTable<PValue>();
@@ -146,7 +148,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			public void onClick(ClickEvent e) {
 				if (selectedUser != null) {
 					deleteCollabWithUser(selectedUser);
-					sharedUser.remove(singleSelectedUser);
+					
 					ldp.flush();
 				}
 			}
@@ -168,7 +170,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 		shareContactWAll = new Button("Für alle Nutzer ändern");
-		shareContact.addClickHandler(new ClickHandler() {
+		shareContactWAll.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				Window.alert(
 						"Achtung! Damit überschreibst du alle Freigaben mit allen ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
@@ -195,7 +197,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		createPValueBox(sharedContact.getValues());
 
 		GWT.log("collab4");
-		grid = new Grid(4, 3);
+		
 		// grid.setSize("500px", "400px");
 		
 		grid.setWidget(0, 1, addButton);
@@ -235,6 +237,9 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		valueProvider.setList(pv);
 		allValues = pv;
 		valueProvider.flush();
+		for (PValue pval : allValues) {
+			multiSelectionModel.setSelected(pval, false);
+		}
 	}
 
 	public void showCollabOfUser(JabicsUser u) {
@@ -254,8 +259,14 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 	public void setSelectedValues(ArrayList<PValue> pval) {
 		this.selectedValues = pval;
-		for (PValue pv : selectedValues) {
+		for (PValue pv : allValues) {
+			boolean bol = false;
+			for(PValue val : pval) {
+				if(val.getId() == pv.getId()) bol = true;
+			}
+			if(bol) {
 			multiSelectionModel.setSelected(pv, true);
+			} else multiSelectionModel.setSelected(pv, false);
 		}
 		valueProvider.flush();
 	}
@@ -294,7 +305,11 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 	
-	public void removeContactFromTable() {
+	public void removeContactFromTable(JabicsUser u) {
+		for(JabicsUser uu : sharedUser) {
+			if(uu.getId() == u.getId()) sharedUser.remove(uu);
+			ldp.flush();
+		}
 		
 	}
 
@@ -352,16 +367,14 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 
-	private class DeleteContactCollaborationCallback implements AsyncCallback<Void> {
+	private class DeleteContactCollaborationCallback implements AsyncCallback<JabicsUser> {
 		public void onFailure(Throwable arg0) {
 			Window.alert("Contact: Fail");
 		}
 
-		public void onSuccess(Void v) {
-			if (v != null) {
-				Window.alert("Kontakt erolgreich entteilt!");
-				removeContactFromTable();
-			}
+		public void onSuccess(JabicsUser u) {
+			Window.alert("Kontakt erolgreich entteilt!");
+			removeContactFromTable(u);
 			exit.setVisible(true);
 		}
 	}

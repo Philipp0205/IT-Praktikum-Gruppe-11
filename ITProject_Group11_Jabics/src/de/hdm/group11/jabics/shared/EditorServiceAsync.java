@@ -46,9 +46,7 @@ public interface EditorServiceAsync {
 
 	void deleteContact(Contact c, JabicsUser u, AsyncCallback<Void> callback);
 
-	
 	void deleteContactList(ContactList cl, JabicsUser u, AsyncCallback<ContactList> callback);
-	
 
 	void deleteProperty(Property p, AsyncCallback<Void> callback);
 
@@ -70,7 +68,7 @@ public interface EditorServiceAsync {
 
 	void deleteCollaboration(ContactList cl, JabicsUser u, AsyncCallback<Void> callback);
 
-	void deleteCollaboration(Contact c, JabicsUser u, AsyncCallback<Void> callback);
+	void deleteCollaboration(Contact c, JabicsUser u, AsyncCallback<JabicsUser> callback);
 
 	void getPValueOf(Contact c, JabicsUser u, AsyncCallback<ArrayList<PValue>> callback);
 
@@ -103,7 +101,7 @@ public interface EditorServiceAsync {
 	void getStandardProperties(AsyncCallback<ArrayList<Property>> callback) throws IllegalArgumentException;
 
 	void initialise(AsyncCallback<Void> callback);
-	
+
 	void testmethod(AsyncCallback<String> callback);
 
 	void getPropertysOfJabicsUser(JabicsUser u, AsyncCallback<ArrayList<Property>> callback);
