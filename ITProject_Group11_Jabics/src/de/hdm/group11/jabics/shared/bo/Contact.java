@@ -154,7 +154,8 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Überprüfen, ob der Nickname dieses Kontakts noch aktuell ist und neu setzen.
+	 * Überprüfen, ob der Name dieses <code>Contact</code> Objekts noch aktuell ist,
+	 * wenn nicht wird der Name neu gesetzt.
 	 */
 	public void updateNickname() {
 		StringBuffer sBuffer = new StringBuffer("VornameNachname");
@@ -176,10 +177,6 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		this.name = sBuffer.toString();
 	}
 
-	/*
-	 * Relevante Methoden für die spätere Anzeige mittels selectionModels und
-	 * ListDataProvider
-	 */
 	/**
 	 * 
 	 */
@@ -191,14 +188,17 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Check if BusinessObject is the same as transfer parameter
+	 * Prüfen ob das <code>Contact</code> Objekt, das Gleiche wie der Parameter ist.
+	 * 
+	 * @param obj
+	 * 
+	 * @return true oder false
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof Contact) {
 			Contact c = (Contact) obj;
 			if (c.getId() == this.id) {
 				boolean bol = true;
-				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
 				for (PValue pv : c.getValues()) {
 					if (!this.values.contains(pv)) {
 						bol = false;
