@@ -402,15 +402,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Contact removeContactFromList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
-
-		cl.removeContact(c);
+		
+		
+		//cl.removeContact(c);
 		
 //		System.err.println("Kollaboratoren finden:");
 //		for (JabicsUser u : cMapper.findCollaborators(c)) {
 //			deleteCollaboration(c, u);
 //		}
 
-		System.err.println("Kontakt in Liste löschen: " + c.getName());
+		System.err.println("editorSerivce -> removeContactFromList: Kontakt in Liste löschen: " + c.getName());
 		clMapper.deleteContactfromContactList(cl, c);
 		return c;
 	}
@@ -473,33 +474,50 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Eine <code>ContactList</code> aus der DB löschen. Löscht die Liste für alle
 	 * Nutzer permanent. Kann nicht rückgängig gemacht werden.
+	 * Zuerst werden die Collaborations der Liste gelöscht, dann die Kontakte aus der Kontaktliste, 
+	 * zuletzt wird die Liste an sich gelöscht.
 	 * 
 	 * @param cl ContactList, die gelöscht werden soll
 	 * @return
 	 */
 	public ContactList deleteContactList(ContactList cl, JabicsUser ju) {
-		System.out.println("Delete Contactlist " + " " + cl.getId() + " " + cl.getListName());
-
-		// if (clMapper.findContactListById(cl.getId()).getOwner().getId() ==
-		// ju.getId()) {
+		System.out.println("START deleting List");
+		
+		
 		if (uMapper.findUserByContactList(cl).getId() == ju.getId()) {
 
 			ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
-			System.out.println("");
+			System.out.println(users.toString());
+			
+			
+			ArrayList<Contact> contacts = cl.getContacts();
+			
+			System.out.println("EditorService -> deleteContactList(): Contacts " + contacts.toString());
+			
 			for (JabicsUser u : users) {
-
+				System.out.println("delete Collaboration from user " + u.getId() + " and ContactList " + cl.getId() );
+				
 				deleteCollaboration(cl, u);
-				System.out.println("delete Collaboration from user" + u.getId() );
+			}
+			
+			for (Contact c : contacts) {
 
-			}
-			for (Contact c : cl.getContacts()) {
-				System.out.println("Delete Contact" + c.getName());
+				System.out.println("Delete Contact "  + c.getId() + " from List " + cl.getId() );
 				removeContactFromList(c, cl);
+				
+				System.out.println("Schleife fertig");
+				
 			}
+
 			clMapper.deleteContactList(cl);
 			System.out.println("Delete ContactList " + cl.getListName());
+			
 		}
 		return cl;
+		
+
+		
+
 	}
 
 	/**
