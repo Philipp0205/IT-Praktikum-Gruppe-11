@@ -1,7 +1,5 @@
 package de.hdm.group11.jabics.server;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
@@ -17,10 +15,14 @@ import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.report.*;
 
 /**
- * Implementierung des <code>ReportGeneratorService</code>-Interface.
+ * Implementierung des <code>ReportGeneratorService</code>-Interface. Diese
+ * Klasse stellt die Logik zur Verfügung, die bei einem RPC aufgerufen wird und
+ * gibt den angefragten Report zurück.
  * 
  * @see ReportGeneratorService
- * @author Kurrle und Anders
+ * @author Kurrle
+ * @author Anders
+ * @author Brase
  */
 public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements ReportGeneratorService {
 
@@ -117,7 +119,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 				pval.add(newPV);
 			}
 			if (!pval.isEmpty()) {
-				//Hier wird der Report letztendlich erstellt
+				// Hier wird der Report letztendlich erstellt
 				System.err.println("CR add: ");
 				result.addReport(createContactReport(pval, c, allCollaborators));
 			} else {
@@ -129,7 +131,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		return result;
 	}
 
-	public ContactReport createContactReport(ArrayList<PropertyView> pv, Contact contact, ArrayList<JabicsUser> collaborators) {
+	public ContactReport createContactReport(ArrayList<PropertyView> pv, Contact contact,
+			ArrayList<JabicsUser> collaborators) {
 		Paragraph contactInfo = new Paragraph("Kein Kontaktname");
 		Paragraph userInfo = new Paragraph("Kein Nutzername");
 		Paragraph creationInfo = new Paragraph("Kein Erstelldatum");
@@ -141,7 +144,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		}
 		if (contact.getOwner() != null) {
 			userInfo.setContent(contact.getOwner().getUsername());
-		}else {
+		} else {
 			userInfo.setContent(uMapper.findUserByContact(contact).getUsername());
 		}
 		// Datum formattieren
@@ -152,7 +155,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		if (contact.getDateUpdated() != null) {
 			updateInfo.setContent(contact.getDateUpdated().toLocalDateTime().format(formatter));
 		}
-		//Teilhaber setzen
+		// Teilhaber setzen
 		if (!collaborators.isEmpty()) {
 			String info = new String();
 			for (JabicsUser collaborator : collaborators) {
@@ -161,8 +164,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			info = info.substring(0, info.length() - 1);
 			collaborationInfo.setContent(info);
 		}
-		ContactReport newRP = new ContactReport(pv, contactInfo, userInfo, creationInfo, updateInfo,
-				collaborationInfo);
+		ContactReport newRP = new ContactReport(pv, contactInfo, userInfo, creationInfo, updateInfo, collaborationInfo);
 		return newRP;
 	}
 
@@ -173,11 +175,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 
 		report.setHeadline(new Paragraph("Alle gemeinsamen Kontakte von " + u.getUsername()));
 		report.setFootline(new Paragraph("Ende des Reports"));
-		report.setSubReports(filterContactsByCollaborators(u, finalUser));
+		ArrayList<Contact> allUserContacts = cMapper.findAllContacts(u);
+		report.setSubReports(filterContactsByCollaborators(allUserContacts, finalUser));
 		for (int i = 0; i < finalUser.size(); i++) {
 			filtercriteria[i] = finalUser.get(i).getUsername();
 		}
-
 		report.setFiltercriteria(new Paragraph(filtercriteria));
 		return report;
 	}
@@ -262,10 +264,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * @return ArrayList mit Contact-Report-Objekten
 	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
-		ArrayList<Contact> contactRes = new ArrayList<Contact>();
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
 		System.err.println("Filterkriterium PVAL: " + pv.getStringValue());
-		
+
 		for (Contact c : contacts) {
 			c.setValues(pvMapper.findPValueForContact(c));
 		}
@@ -291,7 +292,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
-			JabicsUser u = uMapper.findUserByContact(c);
+			//JabicsUser u = uMapper.findUserByContact(c);
 			results.add(createContactReport(pviews, c, cMapper.findCollaborators(c)));
 		}
 		return results;
@@ -366,12 +367,19 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		return results; // ?
 
 	}
-
-	public ArrayList<ContactReport> filterContactsByCollaborators(JabicsUser u, ArrayList<JabicsUser> finalUser) {
+	
+	/**
+	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem oder mehreren Nutzern,
+	 * die in einem Array mitgegeben werden und gibt eine fertige ArrayList,
+	 * bestehend aus ContactReports, zurück.
+	 * 
+	 * @param        ArrayList<Contact> contacts
+	 * @param finalUser, ArrayList<JabicsUser>
+	 * @return ArrayList mit Contact-Report-Objekten
+	 */
+	public ArrayList<ContactReport> filterContactsByCollaborators(ArrayList<Contact> allUserContacts, ArrayList<JabicsUser> finalUser) {
 
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
-
-		ArrayList<Contact> allUserContacts = cMapper.findAllContacts(u);
 
 		for (Contact c : allUserContacts) {
 			ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);

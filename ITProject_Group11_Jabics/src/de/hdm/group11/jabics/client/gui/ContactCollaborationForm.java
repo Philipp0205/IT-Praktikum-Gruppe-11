@@ -43,13 +43,13 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 	TextColumn<JabicsUser> username;
 
-	CellTable<JabicsUser> selUser;
+	CellTable<JabicsUser> userTable;
 	ListDataProvider<JabicsUser> userDataProvider;
-	SingleSelectionModel<JabicsUser> selectionModel;
+	SingleSelectionModel<JabicsUser> userSelectionModel;
 	MultiSelectionModel<PValue> multiSelectionModel;
 
-	HashSet<PValue> finalPV = new HashSet<PValue>();
-	CellTable<PValue> selValues;
+	HashSet<PValue> selectedPV = new HashSet<PValue>();
+	CellTable<PValue> valueTable;
 	ListDataProvider<PValue> valueProvider;
 
 	Column<PValue, Boolean> checkbox;
@@ -58,17 +58,143 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	ContactForm cf;
 
 	Grid grid;
-
+	
 	public void onLoad() {
 
+		allUser = new ArrayList<JabicsUser>();
+		retrieveUser();
+
+	}
+
+	/**
+	 * Die Contact Form das erste Mal erstellen, Tabellen hinzufügen und alles verknüpfen
+	 */
+	public ContactCollaborationForm() {
+
+		// Alles, was mit der PVal Tabelle zu tun hat
+		valueTable = new CellTable<PValue>();
+		
+		valueProvider = new ListDataProvider<PValue>();
+		valueProvider.addDataDisplay(valueTable);
+
+		checkbox = new Column<PValue, Boolean>(new CheckboxCell(true, false)) {
+			public Boolean getValue(PValue object) {
+				return multiSelectionModel.isSelected(object);
+			}
+		};
+		property = new Column<PValue, String>(new TextCell()) {
+			public String getValue(PValue object) {
+				return object.getProperty().getLabel();
+			}
+		};
+		propertyvalue = new Column<PValue, String>(new TextCell()) {
+			public String getValue(PValue object) {
+				return object.toString();
+			}
+		};
+		
+		
+		valueTable.addColumn(checkbox, "Auswahl");
+		valueTable.setColumnWidth(checkbox, "10px");
+		valueTable.addColumn(property, "Merkmal");
+		valueTable.setColumnWidth(property, "50px");
+		valueTable.addColumn(propertyvalue, "Wert");
+		valueTable.setColumnWidth(propertyvalue, "50px");
+
+		multiSelectionModel = new MultiSelectionModel<PValue>();
+		// Bei Auswahl ausgewählte PValues in finalPV speichern
+		multiSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				selectedPV = (HashSet<PValue>) multiSelectionModel.getSelectedSet();
+				for (PValue pv : selectedPV) {
+					GWT.log("Auswahl:" + pv.getStringValue());
+				}
+			}
+		});
+		valueTable.setSelectionModel(multiSelectionModel);
+
+		
+		
+		//####################### Alles, was mit der Auwahl der Nutzer zu tun hat
+		
+		userTable = new CellTable<JabicsUser>();
+		
+		userDataProvider = new ListDataProvider<JabicsUser>();
+		userDataProvider.addDataDisplay(userTable);
+
+		oracle = new MultiWordSuggestOracle();
+		suggestBox = new SuggestBox(oracle);
+
+		/**
+		 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
+		 * die Suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
+		 * "Nutzer hinzufügen" zur liste der zu teilenden Nutzer hinzugefügt
+		 */
+		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+			public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
+				for (JabicsUser u : allUser) {
+					GWT.log(suggestBox.getValue());
+					if (suggestBox.getValue().contains(u.getUsername())
+							&& suggestBox.getValue().contains(u.getEmail())) {
+						GWT.log("Nutzer erkant");
+
+						suggestedUser = u;
+					}
+				}
+			}
+		});
+		
+		username = new TextColumn<JabicsUser>() {
+			public String getValue(JabicsUser u) {
+				return u.getUsername();
+			}
+		};
+		userTable.addColumn(username, "Nutzer");
+
+		userSelectionModel = new SingleSelectionModel<JabicsUser>();
+		userSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				selectedUser = userSelectionModel.getSelectedObject();
+			}
+		});
+		userTable.setSelectionModel(userSelectionModel);
+
+
+		// +++++++++++++Alle Buttons
+		
+		removeButton = new Button("Nutzer entfernen");
+		removeButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				if (selectedUser != null) {
+					finalUser.remove(selectedUser);
+					userDataProvider.setList(finalUser);
+					userDataProvider.flush();
+				}
+			}
+		});
+		addButton = new Button("Nutzer hinzufügen");
+		addButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				if (suggestedUser != null) {
+					finalUser.add(suggestedUser);
+				}
+				userDataProvider.setList(finalUser);
+				suggestBox.setText("");
+				userDataProvider.refresh();
+				userDataProvider.flush();
+			}
+		});
 		shareContactWUser = new Button("Für ausgewählten Nutzer freigeben");
 		shareContactWUser.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				if(selectedUser != null) {
-					if(!finalPV.isEmpty()) {
+				if (selectedUser != null) {
+					if (!selectedPV.isEmpty()) {
 						shareContactWithUser(selectedUser);
-					} else Window.alert("Keine Ausprägungen ausgewählt. Bitte wählen Sie mindestens eine Eigeschaftsausprägung aus");
-				} else Window.alert("Kein Nutzer ausgewählt! Bitte klicken sie auf einen Nutzer in der Tabelle links.");
+					} else
+						Window.alert(
+								"Keine Ausprägungen ausgewählt. Bitte wählen Sie mindestens eine Eigeschaftsausprägung aus");
+				} else
+					Window.alert("Kein Nutzer ausgewählt! Bitte klicken sie auf einen Nutzer in der Tabelle links.");
 			}
 		});
 		shareContact = new Button("Für alle angegebenen Nutzer freigeben");
@@ -87,16 +213,14 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				e.returnToContactForm(sharedContact);
 			}
 		});
-		GWT.log("collab3");
-		allUser = new ArrayList<JabicsUser>();
-		retrieveUser();
-
 	}
+
+
 
 	public void continueOnLoad() {
 
-		createSuggestBox();
-		createPValueBox(sharedContact.getValues());
+		fillSuggestBox();
+		fillPValueBox(sharedContact.getValues());
 
 		GWT.log("collab4");
 		grid = new Grid(5, 4);
@@ -104,80 +228,21 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		grid.setWidget(0, 0, suggestBox);
 
 		grid.setWidget(0, 1, addButton);
-		grid.setWidget(1, 0, selUser);
+		grid.setWidget(1, 0, userTable);
 		grid.setWidget(2, 0, removeButton);
-		grid.setWidget(1, 2, selValues);
-		selValues.setColumnWidth(checkbox, 20, Unit.PX);
-		selValues.setColumnWidth(property, 20, Unit.EM);
-		selValues.setColumnWidth(propertyvalue, 10, Unit.EM);
+		grid.setWidget(1, 2, valueTable);
 		grid.setWidget(3, 3, shareContact);
 		grid.setWidget(3, 2, shareContactWUser);
-
 		grid.setWidget(3, 0, exit);
-		GWT.log("halloattach4");
+
 		this.add(grid);
-		GWT.log("collab5");
 	}
 	// selUser.getResources und getRowElement
 
-	public void createSuggestBox() {
-		/**
-		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
-		 */
+	public void fillSuggestBox() {
 		GWT.log("SuggestBox");
 
-		userDataProvider = new ListDataProvider<JabicsUser>();
-		selUser = new CellTable<JabicsUser>();
-
-		// ldp.setList(allUser);
-		userDataProvider.addDataDisplay(selUser);
-
-		selectionModel = new SingleSelectionModel<JabicsUser>();
-
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			public void onSelectionChange(SelectionChangeEvent event) {
-				selectedUser = selectionModel.getSelectedObject();
-			}
-		});
-		selUser.setSelectionModel(selectionModel);
-
-		addButton = new Button("Nutzer hinzufügen");
-		addButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-				if (suggestedUser != null) {
-					finalUser.add(suggestedUser);
-				}
-				userDataProvider.setList(finalUser);
-				suggestBox.setText("");
-				userDataProvider.refresh();
-				userDataProvider.flush();
-			}
-		});
-		GWT.log("SuggestBox4");
-		removeButton = new Button("Nutzer entfernen");
-		removeButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-				if (selectedUser != null) {
-					finalUser.remove(selectedUser);
-					userDataProvider.setList(finalUser);
-					userDataProvider.flush();
-				}
-			}
-		});
-		GWT.log("SuggestBox5");
-		username = new TextColumn<JabicsUser>() {
-			public String getValue(JabicsUser u) {
-				return u.getUsername();
-			}
-		};
-		selUser.addColumn(username, "Nutzer");
-
-		/**
-		 * SuggestBox hinzufügen und mit Optionen befüllen
-		 */
-		oracle = new MultiWordSuggestOracle();
-		suggestBox = new SuggestBox(oracle);
-
+		// SuggestBox mit Optionen befüllen
 		for (JabicsUser u : allUser) {
 			GWT.log("SuggestBoxalluser");
 			try {
@@ -193,26 +258,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				}
 			}
 		}
-
-		/**
-		 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
-		 * die suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
-		 * "Nutzer hinzufügen" zur liste der zu teilenden Nutzer hinzugefügt
-		 */
-		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
-			public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
-				for (JabicsUser u : allUser) {
-					GWT.log(suggestBox.getValue());
-					if (suggestBox.getValue().contains(u.getUsername())
-							&& suggestBox.getValue().contains(u.getEmail())) {
-						GWT.log("Nutzer erkant");
-						
-						suggestedUser = u;
-					}
-				}
-			}
-		});
-
 		suggestBox.setLimit(5);
 	}
 
@@ -221,49 +266,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		this.e = e;
 	}
 
-	public void createPValueBox(ArrayList<PValue> pv) {
-		selValues = new CellTable<PValue>();
-		valueProvider = new ListDataProvider<PValue>();
+	public void fillPValueBox(ArrayList<PValue> pv) {
+
 		valueProvider.setList(pv);
-		valueProvider.addDataDisplay(selValues);
-		// Es kann sein, dass hier noch kexprovider benötigt werden
-		multiSelectionModel = new MultiSelectionModel<PValue>();
+		valueProvider.flush();
 
-		// Bei Auswahl ausgewählte PValues inf finalPV speichern
-		multiSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			public void onSelectionChange(SelectionChangeEvent event) {
-				finalPV = (HashSet<PValue>) multiSelectionModel.getSelectedSet();
-				for (PValue pv : finalPV) {
-					GWT.log("Auswahl:" + pv.getStringValue());
-				}
-
-				Window.alert("Auswahl geändert");
-			}
-		});
-		selValues.setSelectionModel(multiSelectionModel);
-
-		checkbox = new Column<PValue, Boolean>(new CheckboxCell(true, false)) {
-			public Boolean getValue(PValue object) {
-				return multiSelectionModel.isSelected(object);
-			}
-		};
-		property = new Column<PValue, String>(new TextCell()) {
-			public String getValue(PValue object) {
-				return object.getProperty().getLabel();
-			}
-		};
-		propertyvalue = new Column<PValue, String>(new TextCell()) {
-			public String getValue(PValue object) {
-				return object.toString();
-			}
-		};
-
-		selValues.addColumn(checkbox, "Auswahl");
-		selValues.setColumnWidth(checkbox, "10px");
-		selValues.addColumn(property, "Merkmal");
-		selValues.setColumnWidth(property, "50px");
-		selValues.addColumn(propertyvalue, "Wert");
-		selValues.setColumnWidth(propertyvalue, "50px");
 	}
 
 	/**
@@ -273,7 +280,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	public void shareContactWithUser(JabicsUser u) {
 		GWT.log(selectedUser.getEmail());
 
-		for (PValue pv : finalPV) {
+		for (PValue pv : selectedPV) {
 			editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
 		}
 
@@ -293,7 +300,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			 * oder aber: for (User u: ldp.getList()) {
 			 */
 			for (JabicsUser u : finalUser) {
-				for (PValue pv : finalPV) {
+				for (PValue pv : selectedPV) {
 					editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
 				}
 				editorService.addCollaboration(sharedContact, u, new AddContactCollaborationCallback());
@@ -332,11 +339,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-
 			if (v != null) {
 				Window.alert("PV erfolgreich geteilt!");
 			}
-
 		}
 	}
 
@@ -349,9 +354,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			if (v != null) {
 				Window.alert("Kontakt erolgreich geteilt!");
 				// e.returnToContact();
-
 			}
-
 		}
 	}
 
@@ -367,7 +370,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				setAllUser(user);
 				continueOnLoad();
 			}
-
 		}
 	}
 
