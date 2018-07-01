@@ -196,13 +196,6 @@ public class ContactListForm extends VerticalPanel {
 			removeButton.setVisible(true);
 		}
 
-		shareExistingButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.alert("aktuell noch falsche share form!");
-				e.showContactListCollab(currentList);
-			}
-		});
-
 		sharePanel.add(shareButton);
 		editPanel.add(addButton);
 		editPanel.add(removeButton);
