@@ -306,7 +306,7 @@ public class ContactListMapper {
 	 *            werden soll.
 	 */
 	public void deleteContactfromContactList(ContactList cl, Contact c) {
-		System.err.println("deleteContactfromContactList: ContactID " + c.getName() + "into " + cl.getListName());
+		System.err.println("clMapper ->  deleteContactfromContactList: ContactID " + c.getName() + "from " + cl.getListName());
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 		
@@ -319,7 +319,7 @@ public class ContactListMapper {
 			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID = " + c.getId()
 					+ " AND contactListID = " + cl.getId());
 
-			System.out.println("DeletedContactFromContactList: ContactID " + c.getName() + "from " + cl.getListName());
+			System.out.println("clMapper: DeletedContactFromContactList: ContactID " + c.getId() + " from ContactList " + cl.getId());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
 			Statement stmt2 = con.createStatement();
@@ -328,6 +328,7 @@ public class ContactListMapper {
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
 			
+
 			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
