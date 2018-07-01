@@ -6,92 +6,151 @@ import java.util.ArrayList;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
- * Diese Klasse implementiert Kontakte in Jabics. In einem Kontakt sind mehrere PValue Objekte gespeichert.
- * PValues können hinzugefügt oder gelöscht werden, jedoch benötigt jeder Kontakt mindestens einen Namen, der
- * entweder über eine ArrayList<PValue>, in dem mindestens die PValues zu Name und Vorname vorhanden sind,
- * gesetzt werden kann, oder direkt über einen String.
+ * Diese Klasse implementiert Kontakte in Jabics. In einem Kontakt sind mehrere
+ * PValue Objekte gespeichert. PValues können hinzugefügt oder gelöscht werden,
+ * jedoch benötigt jeder Kontakt mindestens einen Namen, der entweder über eine
+ * ArrayList<PValue>, in dem mindestens die PValues zu Name und Vorname
+ * vorhanden sind, gesetzt werden kann, oder direkt über einen String.
  * 
  * @author Anders
- * @author Kurrle 
+ * @author Kurrle
  */
-public class Contact extends BusinessObject implements Comparable<Contact>, Serializable{
-	
+public class Contact extends BusinessObject implements Comparable<Contact>, Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	/**
-	 * Instanzenvariablen
+	 * ArrayList aus Eigenschaftsauspräfungen, welcher einer Instanz dieser Klasse
+	 * zugeordnet werden.
 	 */
 	private ArrayList<PValue> values = new ArrayList<PValue>();
-	private String name;
-	private BoStatus shareStatus = BoStatus.NOT_SHARED;
-	
 
-	public Contact(ArrayList<PValue> a, JabicsUser u) { 
-		this(a);
-		this.updateNickname();
-		this.owner = u;
-	}
-		
-	public Contact(ArrayList<PValue> a, String name) { 
-		this(a);
-		this.name = name;
-	}
-	
-	public Contact(ArrayList<PValue> a) { 
-		this();
-		this.values = a;
-	}
+	/**
+	 * Name einer Instanz dieser Klasse.
+	 */
+	private String name;
+
+	/**
+	 * Share Status einer Instanz dieser Klasse.
+	 */
+	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 
 	/**
 	 * Leerer Konstruktor
 	 */
-		public Contact() { 
-			super();
-		}
+	public Contact() {
+		super();
+	}
 
-	
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Bezeichner und Type zu
+	 * erzeugen.
+	 * 
+	 * @param values
+	 */
+	public Contact(ArrayList<PValue> values) {
+		this();
+		this.values = values;
+	}
+
+	/**
+	 * 
+	 * @param values
+	 * @param name
+	 */
+	public Contact(ArrayList<PValue> values, String name) {
+		this(values);
+		this.name = name;
+	}
+
+	/**
+	 * 
+	 * @param a
+	 * @param u
+	 */
+	public Contact(ArrayList<PValue> values, JabicsUser u) {
+		this(values);
+		this.updateNickname();
+		this.owner = u;
+	}
+
+	/**
+	 * 
+	 */
 	@Override
-	public String toString() {		
+	public String toString() {
 		return this.name;
 	}
-	
+
 	/**
-	 *  Fügt einen <code>PValue</code> einer <code>ArrayList<code> hinzu
+	 * Fügt einen <code>PValue</code> der <code>ArrayList<code> <code>values</code>
+	 * hinzu.
 	 */
-	public void addPValue(PValue p) { 
-		this.values.add(p);	
+	public void addPValue(PValue pValue) {
+		this.values.add(pValue);
 	}
+
 	/**
-	 *  Removes value from the value Array
+	 * Entfernt eine Ausprägung aus der Liste von Ausprägungen
 	 */
-	public void removePValue(PValue p) {
-		this.values.remove(p);
+	public void removePValue(PValue pValue) {
+		this.values.remove(pValue);
 	}
-	
+
 	/**
-	 *  Getter and Setter
+	 * Auslesen der Eigenschaftsausprägungen
+	 * 
+	 * @return values
 	 */
-	
 	public ArrayList<PValue> getValues() {
 		return this.values;
 	}
+
+	/**
+	 * 
+	 * @param values
+	 */
 	public void setValues(ArrayList<PValue> values) {
 		this.values = values;
-		//this.dateUpdated = LocalDateTime.now();
 	}
+
+	/**
+	 * Auslesen des Namens
+	 * 
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
+
+	/**
+	 * Setzen des Namens.
+	 * 
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
-		//this.dateUpdated = LocalDateTime.now();
+		// this.dateUpdated = LocalDateTime.now();
 	}
+
+	/**
+	 * Auslesen des Share Status.
+	 * 
+	 * @return shareStatus
+	 */
 	public BoStatus getShareStatus() {
 		return shareStatus;
 	}
+
+	/**
+	 * Setzen des Share Status.
+	 * 
+	 * @param shareStatus
+	 */
 	public void setShareStatus(BoStatus shareStatus) {
 		this.shareStatus = shareStatus;
 	}
-	
+
 	/**
 	 * Überprüfen, ob der Nickname dieses Kontakts noch aktuell ist und neu setzen.
 	 */
@@ -99,14 +158,14 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		StringBuffer sBuffer = new StringBuffer("VornameNachname");
 		for (PValue p : values) {
 			if (p.getProperty().getId() == 1) {
-				sBuffer.replace(0, sBuffer.length(), p.getStringValue());					
-				} else {
-					System.out.println("Constructor in Contact: No name in Array.");
-				}
+				sBuffer.replace(0, sBuffer.length(), p.getStringValue());
+			} else {
+				System.out.println("Constructor in Contact: No name in Array.");
+			}
 		}
-		for (PValue p2: values) {
+		for (PValue p2 : values) {
 			if (p2.getProperty().getId() == 2) {
-				sBuffer.append(" " + p2.getStringValue());				
+				sBuffer.append(" " + p2.getStringValue());
 			} else {
 				System.out.println("No lastname in Array");
 			}
@@ -114,33 +173,36 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		System.out.println("Neuer Nickname: " + sBuffer.toString());
 		this.name = sBuffer.toString();
 	}
-	
+
 	/*
-	 * Relevante Methoden für die spätere Anzeige mittels selectionModels und ListDataProvider
+	 * Relevante Methoden für die spätere Anzeige mittels selectionModels und
+	 * ListDataProvider
+	 */
+	/**
+	 * 
 	 */
 	public int compareTo(Contact c) {
 		if (c.getId() == this.id) {
 			return 0;
-		} else return -1;
+		} else
+			return -1;
 	}
-	
+
 	/**
 	 * Check if BusinessObject is the same as transfer parameter
 	 */
 	public boolean equals(Object obj) {
-		System.out.println("equals1");
 		if (obj instanceof Contact) {
 			Contact c = (Contact) obj;
 			if (c.getId() == this.id) {
-				System.out.println("equals2");
 				boolean bol = true;
 				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
-				for(PValue pv : c.getValues()) {
+				for (PValue pv : c.getValues()) {
 					if (!this.values.contains(pv)) {
 						bol = false;
 					}
 				}
-				for(PValue pv : this.values) {
+				for (PValue pv : this.values) {
 					if (!c.getValues().contains(pv)) {
 						bol = false;
 					}
@@ -151,13 +213,13 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		}
 		return false;
 	}
+
 	/**
-     * Der Key Provider für einen Contact
-     */
-    public static final ProvidesKey<Contact> KEY_PROVIDER = new ProvidesKey<Contact>() {
-      public Object getKey(Contact c) {
-        return (Integer)c.getId();
-      }
-    };
-	
+	 * Der Key Provider für einen Contact
+	 */
+	public static final ProvidesKey<Contact> KEY_PROVIDER = new ProvidesKey<Contact>() {
+		public Object getKey(Contact c) {
+			return (Integer) c.getId();
+		}
+	};
 }

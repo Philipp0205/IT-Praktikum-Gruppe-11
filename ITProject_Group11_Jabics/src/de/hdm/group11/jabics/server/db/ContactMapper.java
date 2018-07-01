@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
- * 
  * Diese Mapper-Klasse realisiert die Abbildung von <code>Contact</code>
  * Objekten auf die relationale Datenbank. Sie stellt alle notwendigen Methoden
  * zur Verwaltung der Kontakte in der Datenbank zur Verfügung.
  * 
+ * @author Thies
  * @author Brase
  * @author Stahl
  *
@@ -21,14 +21,6 @@ import de.hdm.group11.jabics.shared.bo.*;
 public class ContactMapper {
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
 	 *         Die Klasse ContactMapper wird nur einmal instantiiert. Man spricht
 	 *         hierbei von einem sogenannten <b>Singleton</b>.
 	 *         <p>
@@ -42,14 +34,6 @@ public class ContactMapper {
 	private static ContactMapper contactMapper = null;
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
 	 *         Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 *         <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
@@ -57,14 +41,6 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
 	 *         Diese statische Methode kann aufgrufen werden durch
 	 *         <code>ContactMapper.contactMapper()</code>. Sie stellt die
 	 *         Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine

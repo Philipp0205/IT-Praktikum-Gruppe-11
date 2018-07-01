@@ -12,71 +12,44 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
 
 /**
+ * Diese Mapper-Klasse realisiert die Abbildung von <code>ContactList</code>
+ * Objekten auf die relationale Datenbank. Sie stellt alle notwendigen Methoden
+ * zur Verwaltung der Kontaktlisten in der Datenbank zur Verfügung.
+ *
+ * @author Thies
  * @author Brase
  * @author Stahl
- * 
- * 
- *         Diese Mapper-Klasse realisiert die Abbildung von
- *         <code>ContactList</code> Objekten auf die relationale Datenbank. Sie
- *         stellt alle notwendigen Methoden zur Verwaltung der Kontaktlisten in
- *         der Datenbank zur Verfügung.
- *
  */
 public class ContactListMapper {
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Die Klasse ContactListMapper wird nur einmal instantiiert. Man
-	 *         spricht hierbei von einem sogenannten <b>Singleton</b>.
-	 *         <p>
-	 *         Diese Variable ist durch den Bezeichner <code>static</code> nur
-	 *         einmal für sämtliche eventuellen Instanzen dieser Klasse vorhanden.
-	 *         Sie speichert die einzige Instanz dieser Klasse.
+	 * Die Klasse ContactListMapper wird nur einmal instantiiert. Man spricht
+	 * hierbei von einem sogenannten <b>Singleton</b>.
+	 * <p>
+	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
+	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+	 * einzige Instanz dieser Klasse.
 	 * 
 	 * @see contactListMapper()
 	 */
 	private static ContactListMapper contactListMapper = null;
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Geschützter Konstruktor - verhindert die Möglichkeit, mit
-	 *         <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected ContactListMapper() {
 	}
 
 	/**
-	 * Struktur von
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>ContactListMapper.contactListMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine einzige
+	 * Instanz von <code>ContactListMapper</code> existiert.
+	 * <p>
 	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Diese statische Methode kann aufgrufen werden durch
-	 *         <code>ContactListMapper.contactListMapper()</code>. Sie stellt die
-	 *         Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine
-	 *         einzige Instanz von <code>ContactListMapper</code> existiert.
-	 *         <p>
-	 * 
-	 *         <b>Fazit:</b> ContactListMapper sollte nicht mittels <code>new</code>
-	 *         instantiiert werden, sondern stets durch Aufruf dieser statischen
-	 *         Methode.
+	 * <b>Fazit:</b> ContactListMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
 	 * 
 	 * @return Das <code>ContactListMapper</code>-Objekt.
 	 * @see contactListMapper
@@ -168,7 +141,7 @@ public class ContactListMapper {
 			// Update des letzten Updates der Kontaktliste.
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
-			
+
 			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
@@ -250,7 +223,7 @@ public class ContactListMapper {
 			// Update des Namens der Kontaktliste und des letzten Updates
 			stmt.executeUpdate(
 					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
-			
+
 			// Schließen des SQL-Statements
 			stmt.close();
 
@@ -279,7 +252,7 @@ public class ContactListMapper {
 			Statement stmt = con.createStatement();
 
 			System.out.println("Delete contactList with ID " + cl.getId());
-			
+
 			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
 			stmt.executeUpdate("DELETE FROM contactList WHERE contactListID = " + cl.getId());
 
@@ -309,7 +282,7 @@ public class ContactListMapper {
 		System.err.println("deleteContactfromContactList: ContactID " + c.getName() + "into " + cl.getListName());
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			System.err.println("try");
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -327,7 +300,7 @@ public class ContactListMapper {
 			// Update des letzten Updates der Kontaktliste.
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
-			
+
 			// Schließen des SQL-Statements
 			stmt.close();
 			stmt2.close();
@@ -361,7 +334,7 @@ public class ContactListMapper {
 			// Löschen einer Teilhaberschaft aus der ContactlistCollaboration Tabelle.
 			stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId()
 					+ " AND systemUserID = " + u.getId());
-			
+
 			// Schließen des SQL-Statements
 			stmt.close();
 
@@ -494,8 +467,8 @@ public class ContactListMapper {
 			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
 			// Auswählen von Tupeln mit einer bestimmten User-Id.
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email,  " 
-          + " FROM systemUser "
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email,  "
+					+ " FROM systemUser "
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
 					+ " WHERE contactListID = " + cl.getId());
 

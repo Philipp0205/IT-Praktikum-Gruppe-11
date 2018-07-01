@@ -30,7 +30,7 @@ public class Property extends BusinessObject implements Serializable {
 	private boolean isStandard = false;
 
 	/**
-	 * Default Konstruktor
+	 * Leerer Konstruktor
 	 */
 	public Property() {
 		super();
