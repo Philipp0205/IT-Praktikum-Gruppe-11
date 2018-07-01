@@ -183,10 +183,17 @@ public class SearchForm extends VerticalPanel {
 
 					break;
 				case "Dezimalzahl":
+					if (valueBox.getText().isEmpty()) {
+						finalPVal.setFloatValue(Float.MIN_VALUE);
+					
+						// Aufruf des der Listensuche in der EditorServiceImpl
+						editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					} else {
 					finalPVal.setFloatValue(Float.valueOf(valueBox.getValue()));
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
 					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					}
 					break;
 				default:
 					break;
@@ -300,7 +307,7 @@ public class SearchForm extends VerticalPanel {
 				}
 				sp.setVisible(true);
 				sp.clear();
-				sp.add(list, "Ausgabe");
+				sp.add(list, "Ergebnis:");
 				if (valueBox.getText().equals("")) {
 					ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText() + "' gesucht.");
 				} else {

@@ -921,7 +921,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		}
 		case 4: {
-			if (pv.getFloatValue() != 0.0f) {
+			if (pv.getFloatValue() != Float.MIN_VALUE) {
 				System.err.println("Nach PVal filtern");
 				contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
 			}
