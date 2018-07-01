@@ -58,7 +58,7 @@ public interface EditorService extends RemoteService {
 
 	public ContactList updateContactList(ContactList cl);
 
-	public void addCollaboration(ContactList cl, JabicsUser u);
+	public JabicsUser addCollaboration(ContactList cl, JabicsUser u);
 
 	public void addCollaboration(Contact c, JabicsUser u);
 

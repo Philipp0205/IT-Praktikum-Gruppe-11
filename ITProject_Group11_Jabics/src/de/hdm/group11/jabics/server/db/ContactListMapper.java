@@ -493,7 +493,7 @@ public class ContactListMapper {
 
 			// Auswählen von Tupeln mit einer bestimmten User-Id.
 
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email "
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email, systemUser.name "
 					+ " FROM systemUser "
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
 					+ " WHERE contactListID = " + cl.getId());
@@ -502,7 +502,7 @@ public class ContactListMapper {
 				// Befüllen des User-Objekts und hinzufügen zur Arraylist.
 				JabicsUser u = new JabicsUser(rs.getString("email"));
 				u.setId(rs.getInt("systemUserID"));
-				u.setUsername("name");
+				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
 			// Schließen des SQL-Statements
