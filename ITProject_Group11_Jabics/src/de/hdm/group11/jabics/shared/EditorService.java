@@ -58,7 +58,7 @@ public interface EditorService extends RemoteService {
 
 	public ContactList updateContactList(ContactList cl);
 
-	public void addCollaboration(ContactList cl, JabicsUser u);
+	public JabicsUser addCollaboration(ContactList cl, JabicsUser u);
 
 	public void addCollaboration(Contact c, JabicsUser u);
 
@@ -103,6 +103,8 @@ public interface EditorService extends RemoteService {
 	public ArrayList<Property> getStandardProperties() throws IllegalArgumentException;
 
 	public void initialise();
+	
+	public String testmethod();
 
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) throws IllegalArgumentException;
 

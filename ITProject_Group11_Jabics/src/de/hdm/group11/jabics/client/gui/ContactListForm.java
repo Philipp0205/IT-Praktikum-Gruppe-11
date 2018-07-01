@@ -61,13 +61,11 @@ public class ContactListForm extends VerticalPanel {
 	VerticalPanel removePanel = new VerticalPanel();
 
 	TextBox listBox = new TextBox();
-	Label formName;
 	Label headline;
 
 	Button deleteButton = new Button("Liste löschen");
 	Button saveButton = new Button("Änderungen speichern");
 	Button shareButton = new Button("Liste teilen");
-	Button shareExistingButton = new Button("Teilen bearbeiten");
 	Button removeButton = new Button("Kontakte entfernen");
 	Button addButton = new Button("Kontakte hinzufügen");
 
@@ -79,67 +77,14 @@ public class ContactListForm extends VerticalPanel {
 	ListDataProvider<Contact> contactDataProvider;
 
 	public ContactListForm() {
+		
+		//LABELS
+		headline = new Label("Liste: ");
 
-		GWT.log("isNewList " + isNewList);
 
-		contactDataProvider = cTab.getContactDataProvider();
-		selValues = new CellTable<Contact>();
-		valueProvider = new ListDataProvider<Contact>();
-		valueProvider.addDataDisplay(selValues);
-
-		selectionModel = new MultiSelectionModel<Contact>();
-
-	}
-
-	public void onLoad() {
-		super.onLoad();
-		// For Debugging
-		GWT.log("7.1 onLoad");
-
-		formName = new Label("Listen-Editor. Kontakte in der Liste sind links im Menu zu sehen");
-		headline = new Label("Liste: " + currentList.getListName());
-
-		headline.setStyleName("contactListHeadline");
-
-		this.add(formName);
-		this.add(headline);
-
-		// GWT.log("isNewList: " + isNewList);
-
-		if (isNewList == true) {
-			GWT.log("7.1 isNewList true");
-			deleteButton.setVisible(false);
-			removeButton.setVisible(false);
-
-		} else {
-			deleteButton.setVisible(true);
-			removeButton.setVisible(true);
-		}
-
-		/**
-		 * 3 Reihen Die erste bietet die Optionen auf Listenebene an (Liste teilen1,
-		 * Liste teilen 2). Die zweite bietet die Option an, die Liste zu löschen. Die
-		 * dritte bietet die Optionen innerhalb der Liste an (Kontakt hinzufügen,
-		 * Kontakt entfernen)
+		/*
+		 * ---------- Clickhandler für alle Buttons -----------------
 		 */
-
-		shareButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				GWT.log("Teile Liste " + currentList.getListName());
-				
-				e.showContactListCollab(currentList);
-				
-//				removeAddPanel();
-//				removeRemovePanel();
-			}
-		});
-		shareExistingButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.alert("aktuell noch falsche share form!");
-				e.showContactListCollab(currentList);
-			}
-		});
-
 		deleteButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				GWT.log("7.2 deleteButton");
@@ -148,13 +93,8 @@ public class ContactListForm extends VerticalPanel {
 
 			}
 		});
-		saveButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				GWT.log("7.2 saveButton");
-				save();
-			}
-		});
-		
+
+
 		/*
 		 * Kontakte hinzufügen
 		 */
@@ -168,13 +108,39 @@ public class ContactListForm extends VerticalPanel {
 				cArray = new ArrayList<Contact>();
 				if (isNewList) {
 					editorService.createContactList(listBox.getText(), cArray, u, new CreateContactListCallback());
-					
+
 				} else {
 					GWT.log("7.2 updateList " + currentList.getListName());
-					//editorService.updateContactList(currentList, new UpdateContactListCallback());
+					// editorService.updateContactList(currentList, new
+					// UpdateContactListCallback());
 				}
 
 				// editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
+			}
+		});
+
+		/**
+		 * 3 Reihen Die erste bietet die Optionen auf Listenebene an (Liste teilen1,
+		 * Liste teilen 2). Die zweite bietet die Option an, die Liste zu löschen. Die
+		 * dritte bietet die Optionen innerhalb der Liste an (Kontakt hinzufügen,
+		 * Kontakt entfernen)
+		 */
+
+		shareButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				GWT.log("Teile Liste " + currentList.getListName());
+
+				e.showContactListCollab(currentList);
+
+				// removeAddPanel();
+				// removeRemovePanel();
+			}
+		});
+
+		saveButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				GWT.log("7.2 saveButton");
+				save();
 			}
 		});
 
@@ -195,8 +161,42 @@ public class ContactListForm extends VerticalPanel {
 			}
 		});
 
+		GWT.log("isNewList " + isNewList);
+
+		contactDataProvider = cTab.getContactDataProvider();
+		selValues = new CellTable<Contact>();
+		valueProvider = new ListDataProvider<Contact>();
+		valueProvider.addDataDisplay(selValues);
+
+		selectionModel = new MultiSelectionModel<Contact>();
+
+	}
+
+	public void onLoad() {
+		super.onLoad();
+		// For Debugging
+		GWT.log("7.1 onLoad");
+		
+		headline.setText("Liste: " + currentList.getListName());
+
+
+		headline.setStyleName("contactListHeadline");
+
+		this.add(headline);
+
+		// GWT.log("isNewList: " + isNewList);
+
+		if (isNewList == true) {
+			GWT.log("7.1 isNewList true");
+			deleteButton.setVisible(false);
+			removeButton.setVisible(false);
+
+		} else {
+			deleteButton.setVisible(true);
+			removeButton.setVisible(true);
+		}
+
 		sharePanel.add(shareButton);
-		sharePanel.add(shareExistingButton);
 		editPanel.add(addButton);
 		editPanel.add(removeButton);
 		changePanel.add(deleteButton);
@@ -277,8 +277,7 @@ public class ContactListForm extends VerticalPanel {
 	 * allgemeinen Informationen) ein. Es können Kontakte ausgewählt werden und
 	 * durch Klick auf einen Button der Liste hinzugefügt werden.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
 	public void addContactPanel(ArrayList<Contact> allC) {
 
@@ -286,16 +285,16 @@ public class ContactListForm extends VerticalPanel {
 
 		selectionModel = new MultiSelectionModel<Contact>();
 
-//		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-//			public void onSelectionChange(SelectionChangeEvent event) {
-//				/**
-//				 * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
-//				 * add abgedeckt!
-//				 */
-//				HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
-//				// Window.alert("Auswahl geändert");
-//			}
-//		});
+		// selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		// public void onSelectionChange(SelectionChangeEvent event) {
+		// /**
+		// * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
+		// * add abgedeckt!
+		// */
+		// HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
+		// // Window.alert("Auswahl geändert");
+		// }
+		// });
 
 		selValues.setSelectionModel(selectionModel);
 
@@ -362,8 +361,7 @@ public class ContactListForm extends VerticalPanel {
 	 * ein. Es können Kontakte ausgewählt werden und durch Klick auf einen Button
 	 * aus der Liste entfernt werden.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
 	public void removeContactPanel(ArrayList<Contact> allC) {
 		GWT.log("7.7 removeContactPanel");
@@ -615,8 +613,10 @@ public class ContactListForm extends VerticalPanel {
 			Window.alert("Fehler 5 Kontakt konnte nicht gelöscht werden.");
 
 		}
+
 		@Override
 		public void onSuccess(ContactList cl) {
+			GWT.log("7.3 DeleteContactListCallback Success");
 			e.removeContactListFromTree(cl);
 		}
 	}
