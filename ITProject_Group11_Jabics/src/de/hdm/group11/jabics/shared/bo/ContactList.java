@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Diese Klasse implementiert Kontaktlisten in Jabics. Kontaktlisten haben einen
- * Namen und eine Liste aus Kontakten. Diese können <code>Contact</code> Objekten
- * speichern. Kontakte können einer Liste mittels addContact() und
- * removeContact() hinzugefügt oder entfernt werden.
+ * <p>
+ * Die Klasse <code>ContactList</code> implementiert Kontaktlisten in Jabics. In einer
+ * Kontaktliste sind mehrere <code>Contact</code> Objekte gespeichert.
+ * </p>
  * 
  * @author Anders
  *
@@ -117,8 +117,8 @@ public class ContactList extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Setzen aller <code>Contact</code> Objekte, die einer
-	 * <code>ContactList</code> angehören.
+	 * Setzen aller <code>Contact</code> Objekte, die einer <code>ContactList</code>
+	 * angehören.
 	 * 
 	 * @param contacts
 	 */

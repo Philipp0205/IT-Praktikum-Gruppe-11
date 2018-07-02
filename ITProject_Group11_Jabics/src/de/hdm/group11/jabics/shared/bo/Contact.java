@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
- * Diese Klasse implementiert Kontakte in Jabics. In einem Kontakt sind mehrere
- * PValue Objekte gespeichert. PValues können hinzugefügt oder gelöscht werden,
- * jedoch benötigt jeder Kontakt mindestens einen Namen, der entweder über eine
- * ArrayList<PValue>, in dem mindestens die PValues zu Name und Vorname
- * vorhanden sind, gesetzt werden kann, oder direkt über einen String.
+ * <p>
+ * Die Klasse <code>Contact</code> implementiert Kontakte in Jabics. In einem
+ * Kontakt sind mehrere <code>PValue</code> Objekte gespeichert.
+ * </p>
  * 
  * @author Anders
  * @author Kurrle
