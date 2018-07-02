@@ -37,6 +37,15 @@ import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.Type;
 
+/**
+ * Diese Klasse realisiert die Abbildung einer Suchoberfläche für Kontaktlisten
+ * auf das GUI. Es kann nach individuellen, vom jeweiligen Nutzer angelegten
+ * Eigenschaften und spezifischen Eigenschaftsausprägungen gefiltert werden.
+ * Dazu muss immer der richtige Datentyp einer Eigenschaft angegeben werden.
+ *
+ * @author Brase
+ */
+
 public class SearchForm extends VerticalPanel {
 
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
@@ -73,6 +82,11 @@ public class SearchForm extends VerticalPanel {
 	Date tempDate;
 	HorizontalPanel mainpanel = new HorizontalPanel();
 
+	/**
+	 * Diese Methode bringt die grafischen GWT-Widgets der SearchForm Klasse zur
+	 * Anzeige. Die einzelnen Widgets werden in drei Hauptbereiche (verPanel1, 2 und
+	 * 3) gegliedert.
+	 */
 	public void onLoad() {
 		ct = new ContactCellListTab();
 		list = ct.createContactTabForSearchForm();
@@ -127,13 +141,25 @@ public class SearchForm extends VerticalPanel {
 
 		ct.setEditor(e);
 
+		/**
+		 * Bei der Aktivierung des "Zurück" Buttons, gelangt der Systemnutzer zurück in
+		 * die Listenansicht (ContactListForm).
+		 * 
+		 */
+
 		back.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				e.showContactList(cl);
 			}
 		});
-
+		/**
+		 * Bei der Aktivierung des "Finden" Buttons wird die Service Methode
+		 * "searchInList" aufgerufen, welche die als Klassenvariable angelegte
+		 * Kontaktliste serverseitig durchsucht. Anschließend wird die Ausgabe
+		 * angezeigt.
+		 * 
+		 */
 		sb.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -199,8 +225,22 @@ public class SearchForm extends VerticalPanel {
 			}
 		});
 
+		
+		
+		
+		/**
+		 * Durch diesen ServiceAufruf werden die spezifisch mit dem Systemnutzer in
+		 * Verbindung stehenden Eigenschaften in eine SuggestBox geladen.
+		 * @param JabicsUser currentUser
+		 * @param getPropertysOfJabicsUserCallback
+		 */
 		editorService.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
 
+		/**
+		 * Sofern im Datentypmenü ein "Datum" ausgewählt wurde, erscheint nach einem
+		 * Klick in die Wert-TextBox ein Datepicker zur bequemen Eingabe eines Datums.
+		 * Außerdem wird ein Button zum wieder Schließen des Datepickers erzeugt.
+		 */
 		valueBox.addClickHandler(new ClickHandler() {
 			Button finish = new Button("Fertig");
 
@@ -224,6 +264,10 @@ public class SearchForm extends VerticalPanel {
 			}
 		});
 
+		/**
+		 * Nach dem Auswählen eines Datentyps wird der Klassenvariable
+		 * <code>finalPValue</code> ein Pointer und der richtige Datentyp zugewiesen.
+		 */
 		datatypemenu.addChangeHandler(new ChangeHandler() {
 
 			@Override
@@ -254,6 +298,10 @@ public class SearchForm extends VerticalPanel {
 			}
 		});
 
+		/**
+		 * Sobald sich ein Wert im Datepicker verändert, wird dieser der Klassenvariable
+		 * <code>finalPValue</code> und der Wert-TextBox zugewiesen.
+		 */
 		datepicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
@@ -268,6 +316,10 @@ public class SearchForm extends VerticalPanel {
 		});
 	}
 
+	/**
+	 * Konstruktor der SearchForm. Ein neues StackPanel, ein "Finden" Button und
+	 * eine Eingabebox werden instanziiert.
+	 */
 	public SearchForm() {
 		sp = new StackPanel();
 
@@ -275,18 +327,34 @@ public class SearchForm extends VerticalPanel {
 		valueBox = new TextBox();
 	}
 
+	/**
+	 * Eine Methode zum Setzen der zu durchsuchenden Kontaktliste.
+	 */
 	void setContactList(ContactList cl) {
 		this.cl = cl;
 	}
 
+	/**
+	 * Eine Methode zum Setzen der Editorklasse. Dies ist wichtig, wenn der Nutzer
+	 * wieder zurück zur Kontaktlisten Ansicht gelangen will.
+	 */
 	void setEditor(Editor e) {
 		this.e = e;
 	}
 
+	/**
+	 * Eine Methode zum Setzen des Nutzers der Aktiven Sitzung.
+	 */
 	void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
 	}
+	
 
+	/**
+	 * Dies ist die Callback-Klasse, welche die Aktionen nach einer Suche bestimmt.
+	 * Das StackPanel wird geleert, mit den Ergebnissen erfüllt und sichtbar
+	 * gemacht. Zudem werden die Suchinformationen erstellt.	 
+	 */
 	class SearchInListCallback implements AsyncCallback<ArrayList<Contact>> {
 		@Override
 
@@ -314,6 +382,11 @@ public class SearchForm extends VerticalPanel {
 		}
 	}
 
+	/**
+	 * Eine Callback-Klasse, welche die Aktionen nach dem Laden von
+	 * Nutzerspezifischen Eigenschaften bestimmt. Alle dem Nutzerverfügbaren
+	 * Eigenschaften werden in eine <code>SuggestBox</code> geladen.
+	 */
 	private class getPropertysOfJabicsUserCallback implements AsyncCallback<ArrayList<Property>> {
 
 		@Override
