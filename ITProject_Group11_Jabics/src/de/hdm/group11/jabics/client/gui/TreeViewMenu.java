@@ -3,6 +3,7 @@ package de.hdm.group11.jabics.client.gui;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,30 +18,29 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * @author Philipp
  * 
  *         Struktur von @author Thies
- *
  */
-
 public class TreeViewMenu extends VerticalPanel {
 	EditorAdmin e;
 	JabicsUser user;
 
 	ContactListTreeTab contactListTab;
-	ContactListTreeTab contactListTab2;
 	SharedContactCellListTab sharedContactListTab;
 	ContactCellListTab contactTab;
 	StackPanel stackPanel;
 	CellTree tree;
 	ContactCellListTab cellListTab;
 
-	public TreeViewMenu() {
+	public TreeViewMenu(JabicsUser u) {
+		Window.alert("TreeViewMenu Konstruktor");
 		stackPanel = new StackPanel();
-		stackPanel.add(createContactListTreeTab(), "Meine Listen");
-		stackPanel.add(createContactCellListTab(), "Alle Kontakte");
-		stackPanel.add(createSharedContactListTreeTab(), "Mir geteilte Kontakte");
-		stackPanel.ensureDebugId("cwStackPanel");
+		stackPanel.add(createContactListTreeTab(u), "Meine Listen");
+		stackPanel.add(createContactCellListTab(u), "Alle Kontakte");
+		stackPanel.add(createSharedContactListTreeTab(u), "Mir geteilte Kontakte");
+		//stackPanel.ensureDebugId("cwStackPanel");
 	}
 
 	public void onLoad() {
+		GWT.log("+++++++++++++++++++++++++++++++++");
 		this.add(this.stackPanel);
 	}
 
@@ -60,7 +60,7 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public void setUser(JabicsUser u) {
 		this.user = u;
-		contactListTab.setUser(u);
+		//contactListTab.setUser(u);
 		contactTab.setUser(u);
 		sharedContactListTab.setUser(u);
 	}
@@ -90,26 +90,23 @@ public class TreeViewMenu extends VerticalPanel {
 		sharedContactListTab.setEditor(editor);
 	}
 
-//	public CellList createContactCellListTab() {
-//		contactTab = new ContactCellListTab();
-//		return contactTab.createContactTab();
-//	}
-
-	public Widget createContactCellListTab() {
-		return contactTab = new ContactCellListTab();
-
+	public CellList<Contact> createContactCellListTab(JabicsUser u) {
+		this.contactTab = new ContactCellListTab(u);
+		contactTab.onLoad();
+		return contactTab.getCellList();
 	}
 
-	public Widget createContactListTreeTab() {
-		this.contactListTab = new ContactListTreeTab();
+	public Widget createContactListTreeTab(JabicsUser u) {
+		this.contactListTab = new ContactListTreeTab(u);
 		CellTree tree = new CellTree(contactListTab, "Root");
 		GWT.log("TreeViewMenu: createListTab");
 		return tree;
 	}
 
-	public Widget createSharedContactListTreeTab() {
-		return sharedContactListTab = new SharedContactCellListTab();
-
+	public CellList<Contact> createSharedContactListTreeTab(JabicsUser u) {
+		this.sharedContactListTab = new SharedContactCellListTab(u);
+		sharedContactListTab.onLoad();
+		return sharedContactListTab.getCellList();
 	}
 
 	public void flushContactListsProvider() {

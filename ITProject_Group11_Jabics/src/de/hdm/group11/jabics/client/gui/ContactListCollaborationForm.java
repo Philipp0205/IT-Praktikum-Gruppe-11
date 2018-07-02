@@ -91,6 +91,9 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		retrieveUser();
 	}
 
+	/**
+	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren 
+	 */
 	public void continueOnLoad() {
 
 		createSuggestBox();

@@ -44,7 +44,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 					System.out.println("Nutzer gefunden");
 					System.out.println("5##################################");
 					loginInfo.setCurrentUser(existingJabicsUser);
-					System.out.println("6##################################");
+					System.out.println("6########" + existingJabicsUser.getId() + existingJabicsUser.getEmail());
 					loginInfo.setLoggedIn(true);
 					System.out.println("7##################################");
 					// loginInfo.setEmailAddress(user.getEmail());

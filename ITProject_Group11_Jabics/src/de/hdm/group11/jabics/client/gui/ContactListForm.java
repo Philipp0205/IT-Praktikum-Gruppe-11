@@ -73,7 +73,6 @@ public class ContactListForm extends VerticalPanel {
 
 	ArrayList<Contact> cArray;
 
-	ContactCellListTab cTab = new ContactCellListTab();
 	ListDataProvider<Contact> contactDataProvider;
 
 	public ContactListForm() {
@@ -163,7 +162,6 @@ public class ContactListForm extends VerticalPanel {
 
 		GWT.log("isNewList " + isNewList);
 
-		contactDataProvider = cTab.getContactDataProvider();
 		selValues = new CellTable<Contact>();
 		valueProvider = new ListDataProvider<Contact>();
 		valueProvider.addDataDisplay(selValues);

@@ -25,7 +25,7 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.resource.*;
 
-public class ContactCellListTab extends Widget {
+public class ContactCellListTab {
 
 	private Contact selectedContact;
 	EditorAdmin editor;
@@ -41,39 +41,37 @@ public class ContactCellListTab extends Widget {
 	// private final ArrayList<Contact> allcontacts =
 	// cMapper.findAllContacts(loginfo.getCurrentUser());
 
-	public ContactCellListTab() {
+	public ContactCellListTab(JabicsUser u) {
+		this.user = u;
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
-
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 
 	}
 
 	public CellList<Contact> createContactTabForSearchForm() {
-
 		contactDataProvider.flush();
 		contactCell.redraw();
 		return contactCell;
+	}
+	
+	public CellList<Contact> getCellList() {
+		return this.contactCell;
 	}
 
 	public void onLoad() {
 
 		GWT.log("3.1 createContactTab");
 
-		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
-		contactDataProvider = new ListDataProvider<Contact>();
-
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
 		GWT.log("2.1 User: " + user.getId());
-
 		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
@@ -89,18 +87,16 @@ public class ContactCellListTab extends Widget {
 
 					for (Contact c : contacts) {
 						contactDataProvider.getList().add(c);
+						contactDataProvider.refresh();
+						contactCell.redraw();
+						contactDataProvider.flush();
 					}
 				}
 
 			}
 		});
 
-		contactDataProvider.addDataDisplay(contactCell);
-		contactCell.setSelectionModel(selectionModel);
-		GWT.log("Contacts1");
-		contactDataProvider.flush();
-		contactCell.redraw();
-		GWT.log("Contacts2");
+	
 
 	}
 
@@ -114,10 +110,6 @@ public class ContactCellListTab extends Widget {
 			// Zurückgeben das unique Key von dem Objekt.
 			return (c == null) ? null : c.getId();
 		}
-	}
-
-	public CellList getCellList() {
-		return this.contactCell;
 	}
 
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
@@ -174,7 +166,6 @@ public class ContactCellListTab extends Widget {
 	}
 
 	public class AsyncDataProvider extends AbstractCell<Contact> {
-
 		@Override
 		public void render(Context context, Contact value, SafeHtmlBuilder sb) {
 			if (value == null) {

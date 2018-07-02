@@ -140,16 +140,13 @@ public class ShowContactForm extends VerticalPanel {
 
 	public void onLoad() {
 
-		// den Status des Boolschen Werts userIsOwner ermitteln
-		u.setId(1);
 		userIsOwner();
-
+		// den Status des Boolschen Werts userIsOwner ermitteln
 		if (userIsOwner) {
 			sharePanel.setVisible(true);
 		} else {
 			sharePanel.setVisible(false);
 		}
-
 		
 		GWT.log("Kontakte holen");
 		if (valueProvider.getList().isEmpty()) {

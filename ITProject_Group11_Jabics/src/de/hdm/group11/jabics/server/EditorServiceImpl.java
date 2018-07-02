@@ -710,9 +710,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 			}
 			c.setValues(pvMapper.findPValueForContact(c));
-			return cMapper.updateContact(c);
+			c = cMapper.updateContact(c);
+			c.setValues(getPValueOf(c, u));
+			return c;
 		} else
-			return cMapper.findContactById(c.getId());
+			c = cMapper.findContactById(c.getId());
+			c.setValues(getPValueOf(c,u));
+			return c;
 	}
 
 	/**

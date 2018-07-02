@@ -73,7 +73,7 @@ public class SearchForm extends VerticalPanel {
 	HorizontalPanel mainpanel = new HorizontalPanel();
 
 	public void onLoad() {
-		ct = new ContactCellListTab();
+		ct = new ContactCellListTab(currentUser);
 		list = ct.createContactTabForSearchForm();
 		listInfoLabel = new Label();
 		ausgabeLabel = new Label();
@@ -284,6 +284,9 @@ public class SearchForm extends VerticalPanel {
 
 	void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
+		if(ct != null) {
+			ct.setUser(currentUser);
+		}
 	}
 
 	class SearchInListCallback implements AsyncCallback<ArrayList<Contact>> {

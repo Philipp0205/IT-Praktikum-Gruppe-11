@@ -44,6 +44,10 @@ public class Editor implements EntryPoint {
 		/*
 		 * Login
 		 */
+		//JabicsUser u = new JabicsUser(1);
+		//u.setEmail("test@mail.com");
+		//u.setUsername("ein nutzer");
+		
 		GWT.log("Load");
 		loginService = ClientsideSettings.getLoginService();
 		GWT.log(GWT.getHostPageBaseURL());
@@ -87,7 +91,7 @@ public class Editor implements EntryPoint {
 			if (logon != null) {
 				if (logon.getIsLoggedIn()) {
 					currentUser = logon.getCurrentUser();
-					editor = new EditorAdmin();
+					editor = new EditorAdmin(currentUser);
 					editor.setLoginInfo(logon);
 					editor.setJabicsUser(logon.getCurrentUser());
 					// Den Editor laden

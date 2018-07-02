@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -20,9 +19,9 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class EditorAdmin {
-	
+
 	EditorServiceAsync editorService;
-	
+
 	LoginInfo loginfo;
 	JabicsUser currentUser;
 
@@ -32,8 +31,6 @@ public class EditorAdmin {
 	VerticalPanel menuPanel = new VerticalPanel();
 	HorizontalPanel formPanel = new HorizontalPanel();
 	HorizontalPanel placeholder = new HorizontalPanel();
-
-	
 
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
@@ -47,11 +44,12 @@ public class EditorAdmin {
 	private SearchForm sForm;
 
 	private TreeViewMenu treeViewMenu;
-	
-	
-	public EditorAdmin() {
+
+	public EditorAdmin(JabicsUser u) {
+		Window.alert("Editor konstruktor");
+		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
-		
+
 		Button createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
 		Button createCL = new Button("Neue Liste");
@@ -65,47 +63,49 @@ public class EditorAdmin {
 		topPanel.add(createCL);
 
 		topPanel.addStyleName("topPanel");
-		
+
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
 		widgetPanel.add(menuPanel);
 		widgetPanel.add(formPanel);
-		
 
-		// Menu hinzufügen
-		treeViewMenu = new TreeViewMenu();
-		treeViewMenu.onLoad();
+		GWT.log("Editor: TreeViewMenu erstellt");
+		
+		treeViewMenu = new TreeViewMenu(currentUser);
 		treeViewMenu.setEditor(this);
 		
-		GWT.log("Editor: TreeViewMenu erstellt");
-
 		menuPanel.add(treeViewMenu.getStackPanel());
+		
 		menuPanel.setStyleName("menuPanel");
 	}
 	
-	public void loadEditor() {
 
+	public void loadEditor() {
+		//Window.alert("Editor 1");
+		//Window.alert("Editor 2");
+		GWT.log("hallo gwt");
 		if (editorService == null) {
 			editorService = ClientsideSettings.getEditorService();
 		}
-		
+
+		// Menu hinzufügen		
+
 		editorService.testmethod(new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {
 				Window.alert("Testmethode hat nicht geklappt");
 				Window.alert(caught.toString());
 			}
+
 			public void onSuccess(String s) {
 				Window.alert(s.toString());
 				Label l = new Label(s);
 				RootPanel.get("trailer").add(l);
 			}
-			
+
 		});
-		
 
 		RootPanel.get("details").add(mainPanel);
 	}
-
 
 	/**
 	 * Getter und Setter
@@ -116,7 +116,7 @@ public class EditorAdmin {
 
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
-		treeViewMenu.setUser(u);
+	//	treeViewMenu.setUser(u);
 	}
 
 	public void showMenuOnly() {
@@ -140,7 +140,6 @@ public class EditorAdmin {
 		}
 		formPanel.clear();
 		scForm.setContact(c);
-		currentUser.setId(1);
 		GWT.log("form einfügen");
 		formPanel.insert(scForm, 0);
 		// formPanel.add(scForm);
@@ -204,11 +203,8 @@ public class EditorAdmin {
 
 		if (this.clForm == null) {
 			clForm = new ContactListForm();
-
 			clForm.setUser(this.currentUser);
-
 			clForm.setEditor(this);
-
 		}
 		formPanel.clear();
 
@@ -216,9 +212,7 @@ public class EditorAdmin {
 		// clForm.clear();
 		clForm.setIsNewList(false);
 		clForm.setCurrentList(cl);
-
 		formPanel.add(clForm);
-
 	}
 
 	public void showContactCollab(Contact c) {
@@ -300,36 +294,36 @@ public class EditorAdmin {
 	 * TreeView manipulieren
 	 */
 	public void addContactToTree(Contact c) {
-		treeViewMenu.addContact(c);
+	//	treeViewMenu.addContact(c);
 	}
 
 	public void addContactListToTree(ContactList cl) {
-		treeViewMenu.addContactList(cl);
+	//	treeViewMenu.addContactList(cl);
 
 	}
 
 	public void addContactToListInTree(ContactList cl, Contact c) {
-		treeViewMenu.addContactToList(cl, c);
+	//	treeViewMenu.addContactToList(cl, c);
 	}
 
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
-		treeViewMenu.removeContactOfContactList(cl, c);
+	//	treeViewMenu.removeContactOfContactList(cl, c);
 	}
 
 	public void updateContactInTree(Contact c) {
-		treeViewMenu.contactListTab.updateContact(c);
+	//	treeViewMenu.contactListTab.updateContact(c);
 	}
 
 	public void updateContactListInTree(ContactList cl) {
-		treeViewMenu.addContactList(cl);
+	//	treeViewMenu.addContactList(cl);
 	}
 
 	public void removeContactListFromTree(ContactList cl) {
-		treeViewMenu.removeContactListFromTree(cl);
+	//	treeViewMenu.removeContactListFromTree(cl);
 	}
 
 	public void flushContactLists() {
-		treeViewMenu.flushContactListsProvider();
+	//	treeViewMenu.flushContactListsProvider();
 	}
 
 	/**
@@ -362,9 +356,7 @@ public class EditorAdmin {
 	}
 
 	/**
-	 * 
 	 * RPC++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	 *
 	 */
 	private class SetJabicsUserCallback implements AsyncCallback<JabicsUser> {
 

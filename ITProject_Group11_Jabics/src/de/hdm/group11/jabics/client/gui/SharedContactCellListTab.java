@@ -37,7 +37,8 @@ public class SharedContactCellListTab extends Widget {
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
 	ListDataProvider<Contact> contactsProvider;
 	
-	public SharedContactCellListTab() {
+	public SharedContactCellListTab(JabicsUser u) {
+		this.user = u;
 
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
@@ -54,10 +55,12 @@ public class SharedContactCellListTab extends Widget {
 		contactsProvider = new ListDataProvider<Contact>();
 		
 	}
+	
+	public CellList<Contact> getCellList(){
+		return this.contactCell;
+	}
 
 	public void onLoad() {
-		
-
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
@@ -76,10 +79,10 @@ public class SharedContactCellListTab extends Widget {
 					
 					for (Contact c : contacts) {
 						contactDataProvider.getList().add(c);
+						contactDataProvider.refresh();
+						contactDataProvider.flush();
 					}
 				}
-
-
 			}
 		});
 
@@ -103,11 +106,6 @@ public class SharedContactCellListTab extends Widget {
 			return (c == null) ? null : c.getId();
 		}
 	}
-
-	public CellList getCellList() {
-		return this.contactCell;
-	}
-	
 
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
 		@Override

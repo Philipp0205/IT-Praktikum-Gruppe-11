@@ -14,45 +14,17 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
-import com.google.gwt.user.client.ui.SuggestOracle.Callback;
-import com.google.gwt.user.client.ui.SuggestOracle.Request;
-import com.google.gwt.user.client.ui.SuggestOracle.Response;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.datepicker.client.DatePicker;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.group11.jabics.client.gui.ReportAdmin;
-import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.GetAllNotCollaboratingUserCallback;
-import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
-import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
-import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Property;
-import de.hdm.group11.jabics.shared.bo.Type;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
-import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
-import de.hdm.group11.jabics.shared.report.AllContactsOfUserReport;
-import de.hdm.group11.jabics.shared.report.CompositeReport;
-import de.hdm.group11.jabics.shared.report.ContactReport;
-import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
-import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
 
 public class Report implements EntryPoint {
 	JabicsUser currentUser;
@@ -66,13 +38,11 @@ public class Report implements EntryPoint {
 	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
 	private Anchor signInLink = new Anchor("Anmelden.");
 
-
 	@Override
 	public void onModuleLoad() {
 		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
-
 		
 		/**
 		 * Login
@@ -81,7 +51,6 @@ public class Report implements EntryPoint {
 		 GWT.log(GWT.getHostPageBaseURL());
 		 
 		 loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-
 	}
 	
 	private void loadLogin(LoginInfo logon) {

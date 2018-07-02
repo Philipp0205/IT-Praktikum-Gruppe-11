@@ -68,9 +68,9 @@ public class ContactListTreeTab implements TreeViewModel {
 
 	private SingleSelectionModel<BusinessObject> selectionModel;
 
-	public ContactListTreeTab() {
+	public ContactListTreeTab(JabicsUser u) {
 		GWT.log("2: Konstruktor ContactListTreeTab");
-
+		this.jabicsUser = u;
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 
@@ -128,7 +128,6 @@ public class ContactListTreeTab implements TreeViewModel {
 				return new Integer(-bo.getId());
 			}
 		}
-
 	}
 
 	/**
@@ -143,11 +142,11 @@ public class ContactListTreeTab implements TreeViewModel {
 		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;
 	}
-	
+
 	public void setUser(JabicsUser user) {
 		this.jabicsUser = user;
 	}
-	
+
 	public void flushContactListProvider() {
 		contactListDataProviders.refresh();
 	}
@@ -308,7 +307,7 @@ public class ContactListTreeTab implements TreeViewModel {
 		contactsProvider.getList().remove(c);
 
 		selectionModel.setSelected(c, true);
-		
+
 		contactsProvider.flush();
 	}
 
@@ -400,16 +399,13 @@ public class ContactListTreeTab implements TreeViewModel {
 			GWT.log("2.2 TreeTab: instanceof ContactList");
 			// GWT.log("2.2 ContactList" + currentCL.toString());
 
-			JabicsUser user2 = new JabicsUser();
-			user2.setId(1);
-
 			final ListDataProvider<Contact> contactProvider = new ListDataProvider<Contact>();
 
 			contactDataProviders.put((ContactList) value, contactProvider);
 
 			// GWT.log("CurrentCL: " + currentCL.toString());
 
-			eService.getContactsOfList((ContactList) value, user2, new AsyncCallback<ArrayList<Contact>>() {
+			eService.getContactsOfList((ContactList) value, jabicsUser, new AsyncCallback<ArrayList<Contact>>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
