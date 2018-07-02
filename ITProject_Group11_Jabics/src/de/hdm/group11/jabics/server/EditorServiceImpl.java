@@ -892,7 +892,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// Kontakte nach PropertyValue filtern, falls gesetzt
 		switch (pv.getPointer()) {
 		case 1: {
-			if (pv.getIntValue() == -2147483648) {
+			if (pv.getIntValue() != -2147483648) {
 				System.err.println("Nach PVal filtern");
 				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue(), pv.getProperty());
 			}
