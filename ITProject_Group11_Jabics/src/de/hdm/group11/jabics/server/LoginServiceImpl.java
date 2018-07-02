@@ -30,7 +30,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		LoginInfo loginInfo = new LoginInfo();
 		System.out.println("4##################################");
 		// return new LoginInfo();
-		
+
 		/**
 		 * Logik aus http://www.gwtproject.org/doc/latest/tutorial/appengine.html
 		 */
@@ -54,21 +54,25 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 					System.out.println("Nutzer nicht gefunden");
 					JabicsUser newUser = new JabicsUser();
 					newUser.setEmail(user.getEmail());
-					newUser.setUsername("Neuer Testnutzer");
-					System.out.println("new user1##################################");
+					try {
+						newUser.setUsername(user.getNickname());
+					} catch (Exception e) {
+						System.err.println("Username not found" + e.toString());
+						newUser.setUsername("not found");
+					}
+					//Nutzer in DB einfügen und mit Id zurückbekommen
+					newUser = uMapper.insertUser(newUser);
 					loginInfo.setLoggedIn(true);
 					loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 
-					newUser = uMapper.insertUser(newUser);
 					loginInfo.setCurrentUser(newUser);
-					System.out.println("newuser2############# mit id: " + newUser.getId());
 				}
-				System.out.println("9##################################");
 				return loginInfo;
 
 			} catch (Exception e) {
-				System.err.println("Login failed. Catch!");
 				System.out.println(e.toString());
+				String s = userService.createLoginURL(requestUri);
+				loginInfo.setLoginUrl(s);
 				loginInfo.setLoggedIn(false);
 				return loginInfo;
 			}
@@ -76,10 +80,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 			System.err.println("Nutzer konnte nicht ermittelt werden");
 			loginInfo.setLoggedIn(false);
 			String s = userService.createLoginURL(requestUri);
-			System.err.println(s);
 			loginInfo.setLoginUrl(s);
 			return loginInfo;
-
 		}
 	}
 }

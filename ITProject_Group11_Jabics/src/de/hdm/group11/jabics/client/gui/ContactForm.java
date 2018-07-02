@@ -47,7 +47,7 @@ public class ContactForm extends VerticalPanel {
 	 * 
 	 * @see
 	 */
-	Editor e;
+	EditorAdmin e;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	// TODO USER richtig setzen (wird hier nur instanziiert, dass er nicht
@@ -158,7 +158,7 @@ public class ContactForm extends VerticalPanel {
 		});
 	}
 
-	public void setEditor(Editor e) {
+	public void setEditor(EditorAdmin e) {
 		this.e = e;
 
 	}

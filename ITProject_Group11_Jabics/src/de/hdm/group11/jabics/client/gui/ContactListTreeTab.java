@@ -34,12 +34,11 @@ public class ContactListTreeTab implements TreeViewModel {
 	private Contact selectedContact;
 	private ContactList selectedContactList;
 	private EditorServiceAsync eService = ClientsideSettings.getEditorService();
-	private EditorServiceAsync eService2 = ClientsideSettings.getEditorService();
 
 	// Instanziierung des Singelton-Objektes
 	// private LoginInfo loginfo = LoginInfo.getloginInfo();
 	JabicsUser jabicsUser;
-	Editor editor;
+	EditorAdmin editor;
 
 	// ContactList currentCL;
 
@@ -139,10 +138,14 @@ public class ContactListTreeTab implements TreeViewModel {
 	 *
 	 */
 
-	public void setEditor(Editor editor) {
+	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in contactlisttree");
 		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;
+	}
+	
+	public void setUser(JabicsUser user) {
+		this.jabicsUser = user;
 	}
 	
 	public void flushContactListProvider() {
@@ -358,13 +361,9 @@ public class ContactListTreeTab implements TreeViewModel {
 
 			contactListDataProviders = new ListDataProvider<ContactList>();
 
-			JabicsUser user2 = new JabicsUser(1);
-			// JabicsUser jabicsUser2 = new JabicsUser();
-			// GWT.log("2.2 ContatListTree: User erstellen" );
-			// GWT.log(jabicsUser2.toString());
 			// Der aktuelle User wird verwendet.
-			GWT.log("2.2 aktueller User: " + user2.getId());
-			eService2.getListsOf(user2, new AsyncCallback<ArrayList<ContactList>>() {
+			GWT.log("2.2 aktueller User: " + jabicsUser.getId());
+			eService.getListsOf(jabicsUser, new AsyncCallback<ArrayList<ContactList>>() {
 
 				@Override
 				public void onFailure(Throwable caught) {

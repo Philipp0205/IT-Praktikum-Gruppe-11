@@ -23,7 +23,7 @@ import com.google.gwt.dom.client.Style.Unit;
 
 public class ContactCollaborationForm extends HorizontalPanel {
 
-	Editor e;
+	EditorAdmin e;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	Contact sharedContact;
@@ -261,7 +261,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		suggestBox.setLimit(5);
 	}
 
-	public void setEditor(Editor e) {
+	public void setEditor(EditorAdmin e) {
 		GWT.log("Editor in Collab setzen");
 		this.e = e;
 	}

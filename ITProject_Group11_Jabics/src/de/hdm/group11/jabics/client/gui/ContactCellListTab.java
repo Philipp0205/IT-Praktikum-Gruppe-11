@@ -28,7 +28,7 @@ import de.hdm.group11.jabics.resource.*;
 public class ContactCellListTab {
 
 	private Contact selectedContact;
-	Editor editor;
+	EditorAdmin editor;
 	JabicsUser user;
 
 	private EditorServiceAsync eService;
@@ -68,12 +68,10 @@ public class ContactCellListTab {
 
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
-		user = new JabicsUser(1);
 
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		// JabicsUser user2 = new JabicsUser(1);
 		GWT.log("2.1 User: " + user.getId());
 
 		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
@@ -135,7 +133,7 @@ public class ContactCellListTab {
 		}
 	}
 
-	public void setEditor(Editor editor) {
+	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in contactCellListTab");
 		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;

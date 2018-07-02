@@ -4,11 +4,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.StackPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
  * Diese Klasse repräsentiert die Baum-Ansicht der Kontaktlisten und Listen.
@@ -19,8 +21,9 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
  *
  */
 
-public class TreeViewMenu {
-	Editor e;
+public class TreeViewMenu extends VerticalPanel{
+	EditorAdmin e;
+	JabicsUser user;
 	
 	ContactListTreeTab contactListTab;
 	ContactListTreeTab contactListTab2;
@@ -29,18 +32,17 @@ public class TreeViewMenu {
 	StackPanel stackPanel;
 	CellTree tree;
 	ContactCellListTab cellListTab;
-
-	public Widget onLoad() {
-		// StackPanel wird erstellt.
+	
+	public TreeViewMenu() {
 		stackPanel = new StackPanel();
 		stackPanel.add(createContactListTreeTab(), "Meine Listen");
 		stackPanel.add(createContactCellListTab(), "Alle Kontakte");
 		stackPanel.add(createSharedContactListTreeTab(), "Mir geteilte Kontakte");
-		GWT.log("createdAllTabs");
-		//stackPanel.add(new Label("Foo"), "foo");
-
 		stackPanel.ensureDebugId("cwStackPanel");
-		return stackPanel;
+	}
+
+	public void onLoad() {		
+		this.add(this.stackPanel);
 	}
 
 	public void addContactList(ContactList cl) {
@@ -55,8 +57,13 @@ public class TreeViewMenu {
 
 	public void removeContactListFromTree(ContactList cl) {
 		contactListTab.removeContactList(cl);
-
+	}
 	
+	public void setUser(JabicsUser u) {
+		this.user = u;
+		contactListTab.setUser(u);
+		contactTab.setUser(u);
+		sharedContactListTab.setUser(u);
 	}
 
 	public void addContactToList(ContactList cl, Contact c) {
@@ -75,7 +82,7 @@ public class TreeViewMenu {
 		return this.stackPanel;
 	}
 
-	public void setEditor(Editor editor) {
+	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in tree view");
 		GWT.log("Editor: " + editor.hashCode());
 		this.e = editor;

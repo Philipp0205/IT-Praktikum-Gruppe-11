@@ -41,7 +41,7 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	Editor e;
+	EditorAdmin e;
 	JabicsUser u = null;
 	ContactList currentList;
 	ContactList currentList2;
@@ -446,7 +446,7 @@ public class ContactListForm extends VerticalPanel {
 		valueProvider.flush();
 	}
 
-	public void setEditor(Editor e) {
+	public void setEditor(EditorAdmin e) {
 		this.e = e;
 	}
 

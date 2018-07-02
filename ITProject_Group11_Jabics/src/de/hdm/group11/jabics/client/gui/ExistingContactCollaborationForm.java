@@ -28,7 +28,7 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
 public class ExistingContactCollaborationForm extends HorizontalPanel {
-	Editor e;
+	EditorAdmin e;
 	JabicsUser u;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
@@ -222,7 +222,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		ldp.flush();
 	}
 
-	public void setEditor(Editor e) {
+	public void setEditor(EditorAdmin e) {
 		GWT.log("Editor in Collab setzen");
 		this.e = e;
 	}

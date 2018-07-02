@@ -28,7 +28,7 @@ import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.Type;
 
 public class EditContactForm extends VerticalPanel {
-	Editor e;
+	EditorAdmin e;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	Grid grid;
@@ -315,7 +315,7 @@ public class EditContactForm extends VerticalPanel {
 		this.isNewContact = bol;
 	}
 
-	public void setEditor(Editor e) {
+	public void setEditor(EditorAdmin e) {
 		this.e = e;
 	}
 

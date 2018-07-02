@@ -49,7 +49,7 @@ public class SearchForm extends VerticalPanel {
 	Button back;
 	Label listInfoLabel;
 	ContactList cl;
-	Editor e;
+	EditorAdmin e;
 
 	DatePicker datepicker;
 
@@ -283,7 +283,7 @@ public class SearchForm extends VerticalPanel {
 		this.cl = cl;
 	}
 
-	void setEditor(Editor e) {
+	void setEditor(EditorAdmin e) {
 		this.e = e;
 	}
 

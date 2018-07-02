@@ -136,7 +136,7 @@ public class Report implements EntryPoint {
 		u.setId(1);
 		u.setEmail("stahl.alexander@live.de");
 		u.setUsername("Stahlex");
-		u.setLoggedIn(true);
+		//u.setLoggedIn(true);
 		/**
 		 * Das GUI soll folgendermaßen aussehen: Oben gibt es eine Navigation mit 4
 		 * Feldern für ints, strings, floars und Dates zusätzlich gibt es einen "Suchen"
@@ -267,7 +267,7 @@ public class Report implements EntryPoint {
 				u.setId(1);
 				u.setEmail("stahl.alexander@live.de");
 				u.setUsername("Stahlex");
-				u.setLoggedIn(true);
+				//u.setLoggedIn(true);
 
 				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
 
@@ -357,7 +357,7 @@ public class Report implements EntryPoint {
 				u.setId(1);
 				u.setEmail("stahl.alexander@live.de");
 				u.setUsername("Stahlex");
-				u.setLoggedIn(true);
+				//u.setLoggedIn(true);
 				System.out.println(finalUser.get(0).getUsername());
 				reportGenerator.createAllSharedContactsReport(u, finalUser,
 						new CreateAllSharedContactsReportCallback());

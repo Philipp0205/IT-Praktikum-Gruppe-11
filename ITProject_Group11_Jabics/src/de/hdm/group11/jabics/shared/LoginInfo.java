@@ -24,6 +24,11 @@ public class LoginInfo implements Serializable {
 
 	private String loginUrl;
 	private String logoutUrl;
+	
+	/**
+	 * Login-Status einer Instanz dieser Klasse.
+	 */
+	private boolean isLoggedIn;
 
 	private JabicsUser currentUser;
 
@@ -42,13 +47,24 @@ public class LoginInfo implements Serializable {
 		this.currentUser = currentUser;
 	}
 
-	public boolean isLoggedIn() {
-		return currentUser.getIsLoggedIn();
+	/**
+	 * Auslesen des Login-Status.
+	 * 
+	 * @return isLoggedIn
+	 */
+	public boolean getIsLoggedIn() {
+		return this.isLoggedIn;
 	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		this.currentUser.setLoggedIn(loggedIn);
+	/**
+	 * Setzen des Login-Status.
+	 * 
+	 * @param isLoggedIn
+	 */
+	public void setLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
 	}
+
 
 	public String getLoginUrl() {
 		Window.alert("4");

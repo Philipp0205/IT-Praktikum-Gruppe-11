@@ -29,7 +29,7 @@ public class ShowContactForm extends VerticalPanel {
 
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	Editor e;
+	EditorAdmin e;
 	JabicsUser u;
 	Contact currentContact;
 	Boolean userIsOwner = false;
@@ -190,7 +190,7 @@ public class ShowContactForm extends VerticalPanel {
 		this.u = u;
 	}
 
-	public void setEditor(Editor e) {
+	public void setEditor(EditorAdmin e) {
 		this.e = e;
 	}
 

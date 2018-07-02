@@ -21,7 +21,7 @@ import com.google.gwt.view.client.ListDataProvider;
 
 public class ContactListCollaborationForm extends VerticalPanel {
 
-	private Editor e;
+	private EditorAdmin e;
 	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	private HorizontalPanel suggestionPanel = new HorizontalPanel();
@@ -153,8 +153,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		}
 	}
 
-	public void setEditor(Editor e) {
-		GWT.log("Editor in ContactlistCollab setzen");
+	public void setEditor(EditorAdmin e) {
+		GWT.log("EditorAdmin in ContactlistCollab setzen");
 		this.e = e;
 	}
 
