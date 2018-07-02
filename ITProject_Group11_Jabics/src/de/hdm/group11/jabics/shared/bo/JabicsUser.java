@@ -3,9 +3,12 @@ package de.hdm.group11.jabics.shared.bo;
 import java.io.Serializable;
 
 /**
- * Ein Nutzer ist in Jabics ein Bediener der Software, der sich über Google
+ * <p>
+ * Die Klasse <code>JabicsUser</code> implementiert Nutzer im System Jabics, ein
+ * Nutzer ist ein Bediener des Systems, der sich über Google
  * eingeloggt hat. Viele Attribute werden direkt aus der Google Accounts API
  * übernommen.
+ * </p>
  * 
  * @author Kurrle
  * @author Anders

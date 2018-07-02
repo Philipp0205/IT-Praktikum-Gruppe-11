@@ -3,16 +3,17 @@ package de.hdm.group11.jabics.shared.bo;
 import java.io.Serializable;
 
 /**
- * Diese Klasse definiert die abstrakte Version einer Eigenschaft, also wie
- * diese heißt und welcher Datentyp diese repräsentiert. Zusätzlich ist hier
- * gespeichert, ob eine Eigenschaft zu den Standardeigenschaften von Kontakten
- * in Jabics gehört.
+ * <p>
+ * Die Klasse <code>Property</code> implementiert Eigenschaften in Jabics und
+ * definiert die abstrakte Version eines <code>PValue</code>, also wie diese
+ * heißt und welcher Datentyp diese repräsentiert.
+ * </p>
  * 
  * @author Anders
  * @author Stahl
  */
 public class Property extends BusinessObject implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -110,7 +111,7 @@ public class Property extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Setzen des Types
+	 * Setzen des Types.
 	 * 
 	 * @param type
 	 */
