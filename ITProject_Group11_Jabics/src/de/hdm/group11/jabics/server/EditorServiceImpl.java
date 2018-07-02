@@ -892,9 +892,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// Kontakte nach PropertyValue filtern, falls gesetzt
 		switch (pv.getPointer()) {
 		case 1: {
-			if (pv.getIntValue() == -2147483648) {
+			if (pv.getIntValue() != -2147483648) {
 				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue(), pv.getProperty());
+				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
 			}
 			break;
 
@@ -902,7 +902,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		case 2: {
 			if (pv.getStringValue() != null) {
 				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByString(contacts, pv.getStringValue(), pv.getProperty());
+				contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
 			}
 			break;
 		}
@@ -910,13 +910,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			if (pv.getDateValue() != null) {
 				System.err.println("Nach PVal filtern");
 
-				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue(), pv.getProperty());
+				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
 			}
 			break;
 
 		}
 		case 4: {
-			if (pv.getFloatValue() != Float.MIN_VALUE) {
+			if (pv.getFloatValue() != -99999997952f) {
 				System.err.println("Nach PVal filtern");
 				contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
 			}
@@ -928,7 +928,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return contacts;
 
 	}
-
+	
 	// /**
 	// * Eine Kontaktliste nach Int-Values durchsuchen
 	// *

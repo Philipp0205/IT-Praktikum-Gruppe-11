@@ -52,7 +52,7 @@ public class Filter {
 	 * @param Property p
 	 * @return ArrayList<Contact>
 	 */
-	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv, Property prop) {
+	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv) {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for (Contact c : contacts) {
 			boolean bol = false;
@@ -84,7 +84,7 @@ public class Filter {
 	 * @param Property p
 	 * @return ArrayList<Contact>
 	 */
-	public static ArrayList<Contact> filterContactsByInt(ArrayList<Contact> contacts, int pv, Property prop) {
+	public static ArrayList<Contact> filterContactsByInt(ArrayList<Contact> contacts, int pv) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
@@ -93,7 +93,7 @@ public class Filter {
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
 				if (p.getPointer() == 1) {
-					if (p.getProperty().getLabel().equals(prop.getLabel())) {
+					if (pv == p.getIntValue()) {
 						bol = true;
 						for (Contact c2 : result) {
 							if (c2.getId() != c.getId()) {
@@ -118,7 +118,7 @@ public class Filter {
 	 * @param Property p
 	 * @return ArrayList<Contact>
 	 */
-	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, Date pv, Property prop) {
+	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, Date pv) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

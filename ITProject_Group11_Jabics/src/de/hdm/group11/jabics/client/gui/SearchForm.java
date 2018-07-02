@@ -121,17 +121,17 @@ public class SearchForm extends VerticalPanel {
 		this.add(sp);
 		this.add(ausgabeLabel);
 		this.add(back);
-		
 
 		ausgabeLabel.setVisible(false);
 
 		ct.setEditor(e);
-		
+
 		back.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				e.showContactList(cl);
-			}});
+			}
+		});
 
 		sb.addClickHandler(new ClickHandler() {
 
@@ -159,16 +159,15 @@ public class SearchForm extends VerticalPanel {
 					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
 					break;
 				case "Ganzzahl":
-					if (valueBox.getText().isEmpty()) {
-						finalPVal.setIntValue(-2147483648);
-						// Aufruf des der Listensuche in der EditorServiceImpl
-						editorService.searchInList(cl, finalPVal, new SearchInListCallback());
-					} else {
+					if (valueBox.getValue() != "") {
 						finalPVal.setIntValue(Integer.valueOf(valueBox.getValue()));
-						// Aufruf des der Listensuche in der EditorServiceImpl
-						editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					} else {
+						finalPVal.setIntValue(-2147483648);
 					}
 					finalPVal.setProperty(finalProperty);
+					// Aufruf des der Listensuche in der EditorServiceImpl
+					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+
 					break;
 				case "Datum":
 					if (valueBox.getValue() != "") {
@@ -182,17 +181,14 @@ public class SearchForm extends VerticalPanel {
 
 					break;
 				case "Dezimalzahl":
-					if (valueBox.getText().isEmpty()) {
-						finalPVal.setFloatValue(Float.MIN_VALUE);
-					
-						// Aufruf des der Listensuche in der EditorServiceImpl
-						editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					if (valueBox.getValue() != "") {
+						finalPVal.setFloatValue(Float.valueOf(valueBox.getValue()));
 					} else {
-					finalPVal.setFloatValue(Float.valueOf(valueBox.getValue()));
+						finalPVal.setFloatValue(-99999997952f);
+					}
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
 					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
-					}
 					break;
 				default:
 					break;
