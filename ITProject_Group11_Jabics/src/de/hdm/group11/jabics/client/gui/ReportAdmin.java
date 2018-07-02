@@ -3,7 +3,6 @@ package de.hdm.group11.jabics.client.gui;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -26,9 +25,6 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
-import com.google.gwt.user.client.ui.SuggestOracle.Callback;
-import com.google.gwt.user.client.ui.SuggestOracle.Request;
-import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -37,23 +33,23 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
-import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.GetAllNotCollaboratingUserCallback;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
+import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
+import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.Type;
-import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.report.AllContactsInSystemReport;
 import de.hdm.group11.jabics.shared.report.AllContactsOfUserReport;
-import de.hdm.group11.jabics.shared.report.CompositeReport;
 import de.hdm.group11.jabics.shared.report.ContactReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
 import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
 
-public class Report implements EntryPoint {
+public class ReportAdmin {
 	JabicsUser currentUser;
+	LoginInfo loginfo;
 
 	ReportGeneratorServiceAsync reportGenerator = null;
 	LoginServiceAsync loginService = null;
@@ -66,6 +62,7 @@ public class Report implements EntryPoint {
 	VerticalPanel mainPanel = new VerticalPanel();
 	HorizontalPanel otherReportsPanel = new HorizontalPanel();
 	HorizontalPanel navPanel = new HorizontalPanel();
+	VerticalPanel userPanel = new VerticalPanel();
 	VerticalPanel verPanel1 = new VerticalPanel();
 	VerticalPanel verPanel2 = new VerticalPanel();
 	VerticalPanel verPanel3 = new VerticalPanel();
@@ -100,56 +97,30 @@ public class Report implements EntryPoint {
 	JabicsUser suggestedUser;
 	JabicsUser selectedUser;
 
-	@Override
-	public void onModuleLoad() {
-		if (reportGenerator == null || loginService == null) {
-			reportGenerator = ClientsideSettings.getReportGeneratorService();
-			loginService = ClientsideSettings.getLoginService();
-			editorService = ClientsideSettings.getEditorService();
-		}
+	/**
+	 * Das GUI sieht folgendermaßen aus: Oben gibt es eine Navigation mit 4 Feldern
+	 * für ints, strings, floars und Dates zusätzlich gibt es einen "Suchen" Button
+	 * zum starten der Suche. Sollte keines der Felder ausgefüllt worden sein werden
+	 * alle Kontakte des Users ausgegeben. Des Weiteren gibt es einen
+	 * AllContactsOfSystem Button
+	 * 
+	 * Unterhalb der Navigation wird der Report dargestellt.
+	 */
+	public ReportAdmin() {
 
-		/**
-		 * Zunächst wird eine User-Instanz hinzugefügt. Später entfernen und dies den
-		 * Login übernehmen lassen
-		 */
-		currentUser = new JabicsUser();
-		currentUser.setEmail("stahl.alexander@live.de");
-		currentUser.setId(1);
-		currentUser.setUsername("Alexander Stahl");
-		/**
-		 * Login
-		 */
-		// loginService = ClientsideSettings.getLoginService();
-		// GWT.log(GWT.getHostPageBaseURL());
-		// loadEditor();
-		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		// Instantitierung relevanter Variablen für UserSuggestion
+		sharedContactsButton = new Button("gemeinsame Kontakte");
+		finalUser = new ArrayList<JabicsUser>();
+		userSelectionModel = new SingleSelectionModel<JabicsUser>();
+		userDataProvider = new ListDataProvider<JabicsUser>();
+		userTable = new CellTable<JabicsUser>();
 
-		// Übergangslösung
-		retrieveUser();
-
-		loadReport();
-
-	}
-
-	public void loadReport() {
-		JabicsUser u = new JabicsUser();
-		u.setId(1);
-		u.setEmail("stahl.alexander@live.de");
-		u.setUsername("Stahlex");
-		//u.setLoggedIn(true);
-		/**
-		 * Das GUI soll folgendermaßen aussehen: Oben gibt es eine Navigation mit 4
-		 * Feldern für ints, strings, floars und Dates zusätzlich gibt es einen "Suchen"
-		 * Button zum starten der Suche. Sollte keines der Felder ausgefüllt worden sein
-		 * werden alle Kontakte des Users ausgegeben. Des Weiteren gibt es einen
-		 * AllContactsOfSystem Button
-		 * 
-		 * Unterhalb der Navigation wird der Report dargestellt.
-		 */
-
-		// Aufbauen des NavPanels
-
-		reportGenerator.getPropertysOfJabicsUser(u, new getPropertysOfJabicsUserCallback());
+		// Verhalten der Buttons
+		createSelectionMenu();
+		createUserSuggestMenu();
+		
+		otherReportsPanel.add(allReportsInSystemButton);
+		otherReportsPanel.add(allReportButton);
 
 		datatypemenu.addItem("Text");
 		datatypemenu.addItem("Datum");
@@ -165,7 +136,6 @@ public class Report implements EntryPoint {
 		// verPanel4.add(db);
 
 		datepicker.setValue(null);
-		// verPanel4.add(dateBox);
 		verPanel4.add(datepicker);
 		datepicker.setVisible(false);
 
@@ -174,17 +144,58 @@ public class Report implements EntryPoint {
 		navPanel.add(verPanel3);
 		navPanel.add(verPanel4);
 		navPanel.add(filteredReportButton);
-		// navPanel.add(allReportsInSystemButton);
+		
+		userPanel.add(userSuggest);
+		userPanel.add(userTable);
+		
+		navPanel.add(userPanel);
+		navPanel.add(addUserButton);
+		navPanel.add(removeUserButton);
+		navPanel.add(sharedContactsButton);
 
 		mainPanel.add(navPanel);
-		otherReportsPanel.add(allReportsInSystemButton);
-		otherReportsPanel.add(allReportButton);
 		mainPanel.add(otherReportsPanel);
+
+	}
+
+	public void loadReport() {
+
+		if (reportGenerator == null || editorService == null) {
+			reportGenerator = ClientsideSettings.getReportGeneratorService();
+			// TODO: Diese Zeile könnte kritisch werden, da zwei Module in einem Klasse
+			editorService = ClientsideSettings.getEditorService();
+		}
+
+		// Alle Properties holen, nach denen vom Nutzer gefiltern werden kann
+		reportGenerator.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
 
 		// Aufbauen des RootPanels
 		RootPanel.get("navigator").add(mainPanel);
 
-		// Verhalten der Buttons
+	}
+
+	/**
+	 * Getter und Setter
+	 */
+	public void setLoginInfo(LoginInfo logon) {
+		this.loginfo = logon;
+	}
+
+	public void setJabicsUser(JabicsUser u) {
+		this.currentUser = u;
+	}
+
+	// Alle Nutzer des Systems holen
+	private void retrieveUser() {
+		GWT.log("allUser");
+		if (editorService != null) {
+			editorService.getAllUsers(new GetAllUserCallback());
+		}
+		GWT.log("allUserfetisch");
+	}
+
+	public void createSelectionMenu() {
+
 		allReportsInSystemButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -267,7 +278,7 @@ public class Report implements EntryPoint {
 				u.setId(1);
 				u.setEmail("stahl.alexander@live.de");
 				u.setUsername("Stahlex");
-				//u.setLoggedIn(true);
+				// u.setLoggedIn(true);
 
 				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
 
@@ -296,54 +307,12 @@ public class Report implements EntryPoint {
 
 	}
 
-	class PValueChangeHandler<String> implements ValueChangeHandler {
-		@Override
-		public void onValueChange(ValueChangeEvent event) {
-			GWT.log("Änderungen in pValue: " + event.getValue());
-			try {
-				GWT.log("Pointer: " + finalPVal.getPointer());
-				switch (finalPVal.getPointer()) {
-				case 1:
-					finalPVal.setIntValue(Integer.parseInt((java.lang.String) event.getValue()));
-					break;
-				case 2:
-					finalPVal.setStringValue((java.lang.String) event.getValue());
-					break;
-				case 3:
-					GWT.log("Datum wird durch DatePicker gesetzt");
-					break;
-				case 4:
-					finalPVal.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));
-					break;
-				default:
-					Window.alert("Bitte Datentyp angeben und erneut versuchen");
-				}
-			} catch (Exception e) {
-				Window.alert("Konnte Wert nicht lesen, bitte im richtigen Format eingeben! (Kommazahlen mit Punkten!) "
-						+ e.toString());
-			}
-		}
-	}
-
-	private void retrieveUser() {
-		GWT.log("allUser");
-		editorService.getAllUsers(new GetAllUserCallback());
-		GWT.log("allUserfetisch");
-	}
-
 	public void createUserSuggestMenu() {
 
 		/**
 		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 		 */
 		GWT.log("SuggestBox");
-
-		// Instantitierung
-		sharedContactsButton = new Button("gemeinsame Kontakte");
-		finalUser = new ArrayList<JabicsUser>();
-		userSelectionModel = new SingleSelectionModel<JabicsUser>();
-		userDataProvider = new ListDataProvider<JabicsUser>();
-		userTable = new CellTable<JabicsUser>();
 
 		userTable.setSelectionModel(userSelectionModel);
 		userDataProvider.addDataDisplay(userTable);
@@ -357,7 +326,7 @@ public class Report implements EntryPoint {
 				u.setId(1);
 				u.setEmail("stahl.alexander@live.de");
 				u.setUsername("Stahlex");
-				//u.setLoggedIn(true);
+				// u.setLoggedIn(true);
 				System.out.println(finalUser.get(0).getUsername());
 				reportGenerator.createAllSharedContactsReport(u, finalUser,
 						new CreateAllSharedContactsReportCallback());
@@ -442,12 +411,6 @@ public class Report implements EntryPoint {
 		});
 
 		userSuggest.setLimit(5);
-
-		navPanel.add(userSuggest);
-		navPanel.add(userTable);
-		navPanel.add(addUserButton);
-		navPanel.add(removeUserButton);
-		navPanel.add(sharedContactsButton);
 	}
 
 	public void setAllUser(ArrayList<JabicsUser> u) {
@@ -464,6 +427,42 @@ public class Report implements EntryPoint {
 		public void onClick(ClickEvent event) {
 			datepicker.setVisible(false);
 			p.setVisible(false);
+		}
+	}
+
+	/**
+	 * Diese Klasse setzt das Attribut des PValue Objekts, wenn sich dieses ändert
+	 * 
+	 * @author Brase
+	 *
+	 * @param <String>
+	 */
+	class PValueChangeHandler<String> implements ValueChangeHandler {
+		@Override
+		public void onValueChange(ValueChangeEvent event) {
+			GWT.log("Änderungen in pValue: " + event.getValue());
+			try {
+				GWT.log("Pointer: " + finalPVal.getPointer());
+				switch (finalPVal.getPointer()) {
+				case 1:
+					finalPVal.setIntValue(Integer.parseInt((java.lang.String) event.getValue()));
+					break;
+				case 2:
+					finalPVal.setStringValue((java.lang.String) event.getValue());
+					break;
+				case 3:
+					GWT.log("Datum wird durch DatePicker gesetzt");
+					break;
+				case 4:
+					finalPVal.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));
+					break;
+				default:
+					Window.alert("Bitte Datentyp angeben und erneut versuchen");
+				}
+			} catch (Exception e) {
+				Window.alert("Konnte Wert nicht lesen, bitte im richtigen Format eingeben! (Kommazahlen mit Punkten!) "
+						+ e.toString());
+			}
 		}
 	}
 
@@ -598,21 +597,3 @@ public class Report implements EntryPoint {
 	}
 
 }
-
-/*
- * private class customPropertySuggest implements SuggestOracle{
- * 
- * public void add(Property p) {
- * 
- * }
- * 
- * public void requestSugestions(Request request, Callback callback) {
- * 
- * Collection<Suggestion> suggestions = new ArrayList<Suggestion>;
- * 
- * 
- * Response response = new Response(); response.setSuggestions(suggestions);
- * callback.onSuggestionsReady(request, response);
- * 
- * } }
- */

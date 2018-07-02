@@ -20,7 +20,7 @@
   <!-- Other module inherits                                      -->
   
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='de.hdm.group11.jabics.client.gui.Editor'/>
+  <entry-point class='de.hdm.group11.jabics.client.Editor'/>
 
   <!-- Specify the paths for translatable code                    -->
   <source path= 'client'/>
