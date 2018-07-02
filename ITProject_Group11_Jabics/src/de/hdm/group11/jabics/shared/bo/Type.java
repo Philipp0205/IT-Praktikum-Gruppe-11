@@ -1,11 +1,29 @@
-
 package de.hdm.group11.jabics.shared.bo;
 
 /**
- * Enum, das die verschiedenen Datentypen, die ein PropertyValue bzw. eine Property haben kann, angibt.
+ * Enum, welches die verschiedenen Datentypen einer Eigenschaft angibt.
+ * 
  * @author Anders
- *
+ * @author Stahl
  */
 public enum Type {
-	STRING, INT, DATE, FLOAT
+	/**
+	 * Eigenschaftstyp String
+	 */
+	STRING,
+
+	/**
+	 * Eigenschaftstyp Integer
+	 */
+	INT,
+
+	/**
+	 * Eigenschaftstyp Date
+	 */
+	DATE,
+
+	/**
+	 * Eigenschaftstyp Float
+	 */
+	FLOAT
 }

@@ -11,11 +11,18 @@ import de.hdm.group11.jabics.shared.bo.Property;
 
 public class Filter {
 
+	/**
+	 * Übergebene Kontakte nach übergebener Property filtern
+	 * 
+	 * @param          ArrayList<Contact> contacts
+	 * @param Property p
+	 * @return ArrayList<Contact>
+	 */
 	public static ArrayList<Contact> filterContactsByProperty(ArrayList<Contact> contacts, Property p) {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
 		for (Contact c : contacts) {
-			Boolean bol= false;
+			boolean bol = false;
 			System.out.println("Kontakt filtern: " + c.getName());
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue pv : pvalues) {
@@ -25,20 +32,30 @@ public class Filter {
 					System.err.println("Gefunden");
 					bol = true;
 					for (Contact c2 : result) {
-						if(c.getId()==c2.getId()) 
+						if (c.getId() == c2.getId())
 							bol = false;
 					}
-						
+
 				}
-			} if(bol)result.add(c);
+			}
+			if (bol)
+				result.add(c);
 		}
 		return result;
 	}
 
-	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv, Property prop) {
+	/**
+	 * Übergebene Kontakte nach übergebenem String und Property filtern
+	 * 
+	 * @param          ArrayList<Contact> contacts
+	 * @param String   s
+	 * @param Property p
+	 * @return ArrayList<Contact>
+	 */
+	public static ArrayList<Contact> filterContactsByString(ArrayList<Contact> contacts, String pv) {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		for (Contact c : contacts) {
-			Boolean bol = false;
+			boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
 				if (p.getPointer() == 2) {
@@ -59,16 +76,24 @@ public class Filter {
 		return result;
 	}
 
-	public static ArrayList<Contact> filterContactsByInt(ArrayList<Contact> contacts, int pv, Property prop) {
+	/**
+	 * Übergebene Kontakte nach übergebenem Integer und Property filtern
+	 * 
+	 * @param          ArrayList<Contact> contacts
+	 * @param          int pv
+	 * @param Property p
+	 * @return ArrayList<Contact>
+	 */
+	public static ArrayList<Contact> filterContactsByInt(ArrayList<Contact> contacts, int pv) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
 		for (Contact c : contacts) {
-			Boolean bol = false;
+			boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
 				if (p.getPointer() == 1) {
-					if (p.getProperty().getLabel().equals(prop.getLabel())) {
+					if (pv == p.getIntValue()) {
 						bol = true;
 						for (Contact c2 : result) {
 							if (c2.getId() != c.getId()) {
@@ -85,12 +110,20 @@ public class Filter {
 		return result;
 	}
 
-	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, Date pv, Property prop) {
+	/**
+	 * Übergebene Kontakte nach übergebenem Datum und Property filtern
+	 * 
+	 * @param          ArrayList<Contact> contacts
+	 * @param Date     pv
+	 * @param Property p
+	 * @return ArrayList<Contact>
+	 */
+	public static ArrayList<Contact> filterContactsByDate(ArrayList<Contact> contacts, Date pv) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		for (Contact c : contacts) {
-			Boolean bol = new Boolean(false);
+			boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
 				if (p.getPointer() == 3) {
@@ -111,21 +144,36 @@ public class Filter {
 		return result;
 	}
 
+	/**
+	 * Übergebenen Kontakt mit Hilfe der übergebenen JabicsUser nach diesen filtern.
+	 * Gibt den Kontakt zurück, wenn er mit einem der übergebenen finalUser geteilt
+	 * ist
+	 * 
+	 * @param         ArrayList<JabicsUser> finalUser, die Nutzer, für die überprüft
+	 *                werden soll, ob der Kontakt mit ihnen geteilt ist
+	 * @param         ArrayList<JabicsUser> collaborators, die Kollaboratoren des
+	 *                Kontakts
+	 * @param Contact c, der Kontakt, für den herausgefunden werden soll, ob er
+	 *                getielt ist
+	 * @return Contact c oder null
+	 */
 	public static ArrayList<Contact> filterContactsByCollaborators(ArrayList<JabicsUser> finalUser,
 			ArrayList<JabicsUser> collaborators, Contact c) {
 
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
+		boolean bol = false;
 		for (int z = 0; z < finalUser.size(); z++) {
 			for (int i = 0; i < collaborators.size(); i++) {
 				if (finalUser.get(z).getId() == collaborators.get(i).getId()) {
-					result.add(c);
+					bol = true;
 				}
 			}
 			// System.out.println(String.valueOf(finalUser.get(i).getId()));
 			// System.out.println(String.valueOf(collaborators.get(i).getId()));
 
 		}
+		if(bol) result.add(c);
 		return result;
 	}
 
@@ -134,13 +182,25 @@ public class Filter {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 
 		for (Contact c : contacts) {
+			boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
+				if (p.getPointer() == 4) {
 				if (p.getFloatValue() == pv) {
-					result.add(c);
+					bol = true;
+					for (Contact c2 : result) {
+						if (c2.getId() != c.getId()) {
+							bol = false;
+						}
+					}
 				}
 			}
 		}
-		return result;
+		if (bol) {
+			result.add(c);
+		}
 	}
+	return result;
+}
+	
 }

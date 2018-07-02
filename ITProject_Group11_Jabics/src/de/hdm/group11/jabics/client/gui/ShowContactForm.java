@@ -80,6 +80,41 @@ public class ShowContactForm extends VerticalPanel {
 				return "Keine Ahnung";
 			}
 		};
+		
+		
+		editButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent ev) {
+				e.editContact(currentContact);
+			}
+		});
+		deleteButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				editorService.deleteContact(currentContact, u, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						Window.alert("Löschen fehlgeschlagen");
+					}
+
+					public void onSuccess(Void v) {
+						if (v != null) {
+							GWT.log("Löschen fehlgeschlagen");
+						}
+					}
+				});
+			}
+		});
+		
+		shareContactButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				GWT.log(currentContact.getName());
+				e.showContactCollab(currentContact);
+			}
+		});
+		shareExistingContactButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				GWT.log(currentContact.getName());
+				e.showExistingContactCollab(currentContact);
+			}
+		});
 
 		values.addColumn(prop, "Eigenschaft");
 		values.setColumnWidth(prop, 50, Unit.PX);
@@ -115,39 +150,7 @@ public class ShowContactForm extends VerticalPanel {
 			sharePanel.setVisible(false);
 		}
 
-		editButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent ev) {
-				e.editContact(currentContact);
-			}
-		});
-		deleteButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-				editorService.deleteContact(currentContact, u, new AsyncCallback<Void>() {
-					public void onFailure(Throwable caught) {
-						Window.alert("Löschen fehlgeschlagen");
-					}
-
-					public void onSuccess(Void v) {
-						if (v != null) {
-							GWT.log("Löschen fehlgeschlagen");
-						}
-
-					}
-				});
-			}
-		});
-		shareContactButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				GWT.log(currentContact.getName());
-				e.showContactCollab(currentContact);
-			}
-		});
-		shareExistingContactButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				GWT.log(currentContact.getName());
-				e.showExistingContactCollab(currentContact);
-			}
-		});
+		
 		GWT.log("Kontakte holen");
 		if (valueProvider.getList().isEmpty()) {
 			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());

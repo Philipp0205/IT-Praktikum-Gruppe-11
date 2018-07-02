@@ -9,70 +9,44 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
+ * Diese Mapper-Klasse realisiert die Abbildung von <code>Property</code>
+ * Objekten auf die relationale Datenbank. Sie stellt alle notwendigen Methoden
+ * zur Verwaltung der Eigenschaften in der Datenbank zur Verfügung.
+ *
+ * @author Thies
  * @author Brase
  * @author Stahl
- *
- *         Diese Mapper-Klasse realisiert die Abbildung von
- *         <code>Property</code> Objekten auf die relationale Datenbank. Sie
- *         stellt alle notwendigen Methoden zur Verwaltung der Eigenschaften in
- *         der Datenbank zur Verfügung.
- *
  */
 public class PropertyMapper {
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Die Klasse PropertyMapper wird nur einmal instantiiert. Man spricht
-	 *         hierbei von einem sogenannten <b>Singleton</b>.
-	 *         <p>
-	 *         Diese Variable ist durch den Bezeichner <code>static</code> nur
-	 *         einmal für sämtliche eventuellen Instanzen dieser Klasse vorhanden.
-	 *         Sie speichert die einzige Instanz dieser Klasse.
+	 * Die Klasse PropertyMapper wird nur einmal instantiiert. Man spricht hierbei
+	 * von einem sogenannten <b>Singleton</b>.
+	 * <p>
+	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
+	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+	 * einzige Instanz dieser Klasse.
 	 * 
 	 * @see propertyMapper()
 	 */
 	private static PropertyMapper propertyMapper = null;
 
 	/**
-	 * Struktur von
-	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Geschützter Konstruktor - verhindert die Möglichkeit, mit
-	 *         <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected PropertyMapper() {
 	}
 
 	/**
-	 * Struktur von
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>PropertyMapper.propertyMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
+	 * Instanz von <code>PropertyMapper</code> existiert.
+	 * <p>
 	 * 
-	 * @author Thies
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Stahl
-	 * 
-	 *         Diese statische Methode kann aufgrufen werden durch
-	 *         <code>PropertyMapper.propertyMapper()</code>. Sie stellt die
-	 *         Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
-	 *         einzige Instanz von <code>PropertyMapper</code> existiert.
-	 *         <p>
-	 * 
-	 *         <b>Fazit:</b> PropertyMapper sollte nicht mittels <code>new</code>
-	 *         instantiiert werden, sondern stets durch Aufruf dieser statischen
-	 *         Methode.
+	 * <b>Fazit:</b> PropertyMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
 	 * 
 	 * @return Das <code>PropertyMapper</code>-Objekt.
 	 * @see propertyMapper

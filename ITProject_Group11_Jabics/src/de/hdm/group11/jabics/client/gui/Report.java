@@ -205,19 +205,24 @@ public class Report implements EntryPoint {
 		finalPVal.setProperty(finalProp);
 
 		valueBox.addClickHandler(new ClickHandler() {
+			Button finish = new Button("Fertig");
+
 			public void onClick(ClickEvent event) {
 				if (finalPVal.getPointer() == 0) {
 					Window.alert("Bitte zuerst Datentyp auswählen!");
 				}
-
+				if (datatypemenu.getSelectedItemText() == "Datum") {
+					datepicker.setVisible(true);
+					finish.setVisible(true);
+					verPanel4.add(finish);
+					finish.addClickHandler(new DatePickerClickHandler(finish));
+				}
 			}
 		});
 
-		valueBox.addValueChangeHandler(new PValueChangeHandler<String>());
+	//	valueBox.addValueChangeHandler(new PValueChangeHandler<String>());
 
 		datatypemenu.addChangeHandler(new ChangeHandler() {
-
-			Button finish = new Button("Fertig");
 
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -231,10 +236,7 @@ public class Report implements EntryPoint {
 					finalPVal.getProperty().setType(Type.INT);
 					break;
 				case "Datum":
-					datepicker.setVisible(true);
-					finish.setVisible(true);
-					verPanel4.add(finish);
-					finish.addClickHandler(new DatePickerClickHandler(finish));
+
 					finalPVal.setPointer(3);
 					finalPVal.getProperty().setType(Type.DATE);
 					break;
@@ -247,11 +249,6 @@ public class Report implements EntryPoint {
 					finalPVal.getProperty().setType(Type.STRING);
 					break;
 				}
-
-				if (datatypemenu.getSelectedItemText() != "Datum") {
-					datepicker.setVisible(false);
-					finish.setVisible(false);
-				}
 			}
 		});
 
@@ -262,6 +259,40 @@ public class Report implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				
+				switch (finalPVal.getPointer()) {
+				case 1:
+					if (valueBox.getValue() != "") {
+						finalPVal.setIntValue(Integer.parseInt((java.lang.String) valueBox.getValue()));
+					} else {
+						finalPVal.setIntValue(-2147483648);
+					}
+					break;
+				case 2:
+					if (valueBox.getValue() != "") {
+						finalPVal.setStringValue((java.lang.String) valueBox.getValue());
+					} else {
+						finalPVal.setStringValue(null);
+					}
+					break;
+				case 3:
+					if (valueBox.getValue() != "") {
+						finalPVal.setDateValue( datepicker.getValue());
+					} else {
+						finalPVal.setDateValue(null);
+					}
+					break;
+				case 4:
+					if (valueBox.getValue() != "") {
+						finalPVal.setFloatValue(Float.parseFloat((java.lang.String) valueBox.getValue()));
+					} else {
+						finalPVal.setFloatValue(-99999997952f);
+					}
+					break;
+				default:
+					Window.alert("Bitte Datentyp angeben und erneut versuchen");
+				}
+				
 				// TODO: folgende Zeilen ersetzen
 				JabicsUser u = new JabicsUser();
 				u.setId(1);
@@ -270,8 +301,9 @@ public class Report implements EntryPoint {
 				u.setLoggedIn(true);
 
 				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
-
 					GWT.log("Gefilterten Report erstellen");
+					GWT.log(String.valueOf(finalPVal.getIntValue()));
+					GWT.log(String.valueOf(finalPVal.getFloatValue()));
 					reportGenerator.createFilteredContactsOfUserReport(finalPVal, u,
 							new CreateFilteredContactsOfUserReportCallback());
 				} else
@@ -290,40 +322,26 @@ public class Report implements EntryPoint {
 				if (datepicker != null) {
 					// pval.setDateValue(event.getValue());
 					valueBox.setText(event.getValue().toString());
+					finalPVal.setDateValue(event.getValue());
 				}
 			}
 		});
 
 	}
 
-	class PValueChangeHandler<String> implements ValueChangeHandler {
-		@Override
-		public void onValueChange(ValueChangeEvent event) {
-			GWT.log("Änderungen in pValue: " + event.getValue());
-			try {
-				GWT.log("Pointer: " + finalPVal.getPointer());
-				switch (finalPVal.getPointer()) {
-				case 1:
-					finalPVal.setIntValue(Integer.parseInt((java.lang.String) event.getValue()));
-					break;
-				case 2:
-					finalPVal.setStringValue((java.lang.String) event.getValue());
-					break;
-				case 3:
-					GWT.log("Datum wird durch DatePicker gesetzt");
-					break;
-				case 4:
-					finalPVal.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));
-					break;
-				default:
-					Window.alert("Bitte Datentyp angeben und erneut versuchen");
-				}
-			} catch (Exception e) {
-				Window.alert("Konnte Wert nicht lesen, bitte im richtigen Format eingeben! (Kommazahlen mit Punkten!) "
-						+ e.toString());
-			}
-		}
-	}
+//	class PValueChangeHandler<String> implements ValueChangeHandler {
+//		@Override
+//		public void onValueChange(ValueChangeEvent event) {
+//			GWT.log("Änderungen in pValue: " + event.getValue());
+//			try {
+//				GWT.log("Pointer: " + finalPVal.getPointer());
+//				
+//			} catch (Exception e) {
+//				Window.alert("Konnte Wert nicht lesen, bitte im richtigen Format eingeben! (Kommazahlen mit Punkten!) "
+//						+ e.toString());
+//			}
+//		}
+//	}
 
 	private void retrieveUser() {
 		GWT.log("allUser");
