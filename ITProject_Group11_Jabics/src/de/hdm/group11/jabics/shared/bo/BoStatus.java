@@ -4,20 +4,21 @@ package de.hdm.group11.jabics.shared.bo;
  * Enum, welches den Share-Status von Listen, Kontakten und Ausprägungen angibt.
  * 
  * @author Anders
+ * @autor Stahl
  */
 public enum BoStatus {
 	/**
-	 * Vollständig geteilt
+	 * Vollständig geteilt.
 	 */
 	IS_SHARED, 
 	
 	/**
-	 * Teilweise geteilt
+	 * Teilweise geteilt.
 	 */
 	PARTIALLY_SHARED, 
 	
 	/**
-	 * Nicht geteilt
+	 * Nicht geteilt.
 	 */
 	NOT_SHARED
 }

@@ -19,6 +19,7 @@ import de.hdm.group11.jabics.shared.bo.BoStatus;
  * @author Thies
  * @author Brase
  * @author Stahl
+ * 
  */
 public class ContactListMapper {
 
@@ -52,7 +53,6 @@ public class ContactListMapper {
 	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
 	 * 
 	 * @return Das <code>ContactListMapper</code>-Objekt.
-	 * @see contactListMapper
 	 */
 	public static ContactListMapper contactListMapper() {
 		if (contactListMapper == null) {
@@ -107,11 +107,15 @@ public class ContactListMapper {
 	/**
 	 * Diese Methode fügt einem <code>ContactList</code> Objekt ein
 	 * <code>Contact</code> Objekt in der Datenbank hinzu. Dazu mussen in der
-	 * Datenbank neue Tupel in der Kontakt-Kontaktliste-Tabelle angelegt werden.
+	 * Datenbank ein neues Tupel in der Kontakt-Kontaktliste-Tabelle angelegt
+	 * werden.
 	 * 
 	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dass aktualisiert werden
-	 *            soll.
+	 *            das <code>ContactList</code> Objekt, welchem das
+	 *            <code>Contact</code> Objekt zugeordnet wird.
+	 * @param c
+	 *            das <code>ContactList</code> Objekt, welches einer
+	 *            <code>ContactList</code> hinzugefügt werden soll.
 	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList insertContactIntoContactList(ContactList cl, Contact c) {
@@ -161,19 +165,19 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
-	 * einem <code>ContactList</code> Objekt in die Datenbank ein.
+	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code>
+	 * Objekts zu einem <code>ContactList</code> Objekt in die Datenbank ein.
 	 * 
 	 * @param u
-	 *            der User der an einer Kontaktliste Teilhaberschaftsrechte erlangen
-	 *            soll.
+	 *            der <code>JabicsUser</code> der an der <code>ContactList</code>
+	 *            Teilhaberschaftsrechte erlangen soll.
 	 * @param cl
-	 *            die Kontaktliste an welcher ein User eine Teilhaberschaft bekommen
-	 *            soll.
+	 *            die <code>ContactList</code> an welcher ein der
+	 *            <code>JabicsUser</code> eine Teilhaberschaft bekommen soll.
 	 * @param IsOwner
 	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
-	 *            zuzuweisende Teilhaber auch der Owner ist.
-	 * @return das übergebene <code>ContactList</code> Objekt
+	 *            zuzuweisende Teilhaber auch der Besitzer ist.
+	 * @return Das übergebene <code>ContactList</code> Objekt
 	 */
 	public ContactList insertCollaboration(JabicsUser u, ContactList cl, boolean IsOwner) {
 		// Erzeugen der Datenbankverbindung
@@ -202,9 +206,8 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode aktualisiert ein <code>ContactList</code> Objekt in der
-	 * Datenbank. In der Datenbank muss in der Kontaktlisten-Tabelle ein Update des
-	 * Namens erfolgen, sowie des Datums des letzten Updates.
+	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in der
+	 * Datenbank. 
 	 * 
 	 * @param cl
 	 *            das <code>ContactList</code> Objekt, dass aktualisiert werden
@@ -219,10 +222,18 @@ public class ContactListMapper {
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
 
 			// Update des Namens der Kontaktliste und des letzten Updates
 			stmt.executeUpdate(
 					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
+			
+			ResultSet rs = stmt2
+					.executeQuery("SELECT dateUpdated FROM contactList WHERE contactListID = " + cl.getId());
+
+			if (rs.next()) {
+				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
+			}
 
 			// Schließen des SQL-Statements
 			stmt.close();
@@ -279,7 +290,8 @@ public class ContactListMapper {
 	 *            werden soll.
 	 */
 	public void deleteContactfromContactList(ContactList cl, Contact c) {
-		System.err.println("clMapper ->  deleteContactfromContactList: ContactID " + c.getName() + "from " + cl.getListName());
+		System.err.println(
+				"clMapper ->  deleteContactfromContactList: ContactID " + c.getName() + "from " + cl.getListName());
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
@@ -292,7 +304,8 @@ public class ContactListMapper {
 			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID = " + c.getId()
 					+ " AND contactListID = " + cl.getId());
 
-			System.out.println("clMapper: DeletedContactFromContactList: ContactID " + c.getId() + " from ContactList " + cl.getId());
+			System.out.println("clMapper: DeletedContactFromContactList: ContactID " + c.getId() + " from ContactList "
+					+ cl.getId());
 
 			// Erzeugen eines zweiten ungefüllten SQL-Statements
 			Statement stmt2 = con.createStatement();
@@ -446,6 +459,8 @@ public class ContactListMapper {
 	}
 
 	/**
+	 * Auslesen
+	 * 
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen
 	 * <code>JabicsUser</code> Objekten die eine Teilhaberschaft an einer bestimmten
 	 * Kontaktliste besitzen zurück.
@@ -493,13 +508,13 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen
-	 * <code>BoStatus</code>
+	 * Auslesen aller <code>BoStatus</code> aus einer Liste von
+	 * <code>ContactList</code> Objekten.
 	 * 
 	 * @param alContactList
 	 *            Die <code>ArrayList</code> aus <code>ContactList</code> Objekten,
 	 *            für welche der Share Status benötigt wird.
-	 * @return Die <code>ArrayList</code> mit <code>BoStatus</code>
+	 * @return <code>ArrayList</code> mit <code>BoStatus</code>
 	 */
 	public ArrayList<BoStatus> findShareStatus(ArrayList<ContactList> alContactList) {
 		// Erzeugen der Datenbankverbindung

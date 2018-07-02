@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
- * Diese Mapper-Klasse realisiert die Abbildung von <code>Property</code>
- * Objekten auf die relationale Datenbank. Sie stellt alle notwendigen Methoden
- * zur Verwaltung der Eigenschaften in der Datenbank zur Verfügung.
+ * Die Klasse <code>PropertyMapper</code> realisiert die Abbildung von
+ * <code>Property</code> Objekten auf die relationale Datenbank. Sie stellt alle
+ * notwendigen Methoden zur Verwaltung der Eigenschaften in der Datenbank zur
+ * Verfügung.
  *
  * @author Thies
  * @author Brase
