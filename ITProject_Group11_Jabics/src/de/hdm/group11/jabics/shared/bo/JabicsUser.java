@@ -75,8 +75,7 @@ public class JabicsUser implements Serializable {
 	}
 
 	/**
-	 * Textuelle repräsentation des <code>JabicsUser</code> in der Form der Mail
-	 * Adresse.
+	 * Textuelle Repräsentation des <code>JabicsUser</code> durch die Mail Adresse.
 	 * 
 	 * @return email
 	 */

@@ -31,7 +31,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	private String name;
 
 	/**
-	 * Share Status einer Instanz dieser Klasse.
+	 * Share-Status einer Instanz dieser Klasse.
 	 */
 	private BoStatus shareStatus = BoStatus.NOT_SHARED;
 
@@ -75,7 +75,9 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
+	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name
 	 * 
+	 * @return name
 	 */
 	@Override
 	public String toString() {
@@ -134,7 +136,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Auslesen des Share Status.
+	 * Auslesen des Share-Status.
 	 * 
 	 * @return shareStatus
 	 */
@@ -143,7 +145,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Setzen des Share Status.
+	 * Setzen des Share-Status.
 	 * 
 	 * @param shareStatus
 	 */
@@ -152,7 +154,8 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Überprüfen, ob der Nickname dieses Kontakts noch aktuell ist und neu setzen.
+	 * Überprüfen, ob der Name dieses <code>Contact</code> Objekts noch aktuell ist,
+	 * wenn nicht wird der Name neu gesetzt.
 	 */
 	public void updateNickname() {
 		StringBuffer sBuffer = new StringBuffer("VornameNachname");
@@ -174,10 +177,6 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		this.name = sBuffer.toString();
 	}
 
-	/*
-	 * Relevante Methoden für die spätere Anzeige mittels selectionModels und
-	 * ListDataProvider
-	 */
 	/**
 	 * 
 	 */
@@ -189,14 +188,17 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Check if BusinessObject is the same as transfer parameter
+	 * Prüfen ob das <code>Contact</code> Objekt, das Gleiche wie der Parameter ist.
+	 * 
+	 * @param obj
+	 * 
+	 * @return true oder false
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof Contact) {
 			Contact c = (Contact) obj;
 			if (c.getId() == this.id) {
 				boolean bol = true;
-				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
 				for (PValue pv : c.getValues()) {
 					if (!this.values.contains(pv)) {
 						bol = false;
