@@ -25,13 +25,13 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.resource.*;
 
-public class ContactCellListTab {
+public class ContactCellListTab extends Widget {
 
 	private Contact selectedContact;
 	EditorAdmin editor;
 	JabicsUser user;
 
-	private EditorServiceAsync eService;
+	private EditorServiceAsync eService = ClientsideSettings.getEditorService();
 	CellList<Contact> contactCell;
 	ListDataProvider<Contact> contactDataProvider;
 	private ContactKeyProvider keyProvider = null;
@@ -47,24 +47,24 @@ public class ContactCellListTab {
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
 
-	}
-
-	public CellList<Contact> createContactTabForSearchForm() {
-
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
 
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 
+	}
+
+	public CellList<Contact> createContactTabForSearchForm() {
+
 		contactDataProvider.flush();
 		contactCell.redraw();
 		return contactCell;
 	}
 
-	public CellList<Contact> createContactTab() {
+	public void onLoad() {
+
 		GWT.log("3.1 createContactTab");
-		eService = ClientsideSettings.getEditorService();
 
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
@@ -101,7 +101,7 @@ public class ContactCellListTab {
 		contactDataProvider.flush();
 		contactCell.redraw();
 		GWT.log("Contacts2");
-		return contactCell;
+
 	}
 
 	private class ContactKeyProvider implements ProvidesKey<Contact> {

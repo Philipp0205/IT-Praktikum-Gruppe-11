@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -20,7 +21,7 @@ import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
-public class SharedContactCellListTab {
+public class SharedContactCellListTab extends Widget {
 	
 	private Contact selectedContact;
 	EditorAdmin editor;
@@ -44,9 +45,6 @@ public class SharedContactCellListTab {
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
 		GWT.log("ContactsConstructor");
 		
-	}
-
-	public CellList createContactTab() {
 		GWT.log("4.1 createContactTab");
 		eService = ClientsideSettings.getEditorService();
 		
@@ -54,6 +52,11 @@ public class SharedContactCellListTab {
 		contactDataProvider = new ListDataProvider<Contact>();
 		
 		contactsProvider = new ListDataProvider<Contact>();
+		
+	}
+
+	public void onLoad() {
+		
 
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
@@ -86,7 +89,7 @@ public class SharedContactCellListTab {
 		contactDataProvider.flush();
 		contactCell.redraw();
 		GWT.log("Contacts2");
-		return contactCell;
+
 	}
 
 	private class ContactKeyProvider implements ProvidesKey<Contact> {
