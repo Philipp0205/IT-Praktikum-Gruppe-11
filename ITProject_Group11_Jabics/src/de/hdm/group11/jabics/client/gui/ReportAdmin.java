@@ -47,6 +47,18 @@ import de.hdm.group11.jabics.shared.report.ContactReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
 import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
 
+
+/**
+ * Diese Klasse realisiert die Abbildung aller zum Report Generator gehörigen
+ * GUI-Elemente. Im Report Generator kann nach individuellen, vom jeweiligen
+ * Nutzer angelegten Eigenschaften und spezifischen Eigenschaftsausprägungen
+ * gefiltert werden. Dazu muss immer der richtige Datentyp einer Eigenschaft
+ * angegeben werden. Zudem gibt es eine Ausgabe aller mit spezifisch
+ * auswählbaren Nutzern geteilten Kontakte.
+ *
+ * @author Brase
+ * @author Kurrle
+ */
 public class ReportAdmin {
 	JabicsUser currentUser;
 	LoginInfo loginfo;
@@ -98,13 +110,19 @@ public class ReportAdmin {
 	JabicsUser selectedUser;
 
 	/**
-	 * Das GUI sieht folgendermaßen aus: Oben gibt es eine Navigation mit 4 Feldern
-	 * für ints, strings, floars und Dates zusätzlich gibt es einen "Suchen" Button
-	 * zum starten der Suche. Sollte keines der Felder ausgefüllt worden sein werden
-	 * alle Kontakte des Users ausgegeben. Des Weiteren gibt es einen
-	 * AllContactsOfSystem Button
+	 * Die Anzeige ist in zwei große Bereiche aufgeteilt. Zum einen Elemente für die
+	 * Suche nach spezifischen Eigenschaften. Hierzu können der Datentyp und die
+	 * dynamisch erzeugten Eigenschaften über ein Auswahlangebot gewählt werden. Ein
+	 * konkreter Ausprägungswert kann anschließend in eine Wert-TextBox eingegeben
+	 * werden. Zum Start der Suche, wird die Schaltfläche "Alle Kontakte mit diesen
+	 * Filterkriterien" ausgewählt. Der zweite Bereich in welchem nach gemeinsamen
+	 * Kontakten gefiltert werden kann, beinhaltet eine Suggestbox mit dynamisch
+	 * erzeugten Schaltflächen zur Auswahl von Nutzern. Diese können durch den
+	 * Button "Nutzer hinzufügen" zu den Suchkriterien hinzugefügt werden. Mit dem
+	 * Button "Nutzer entfernen" kann dies nach dem Markieren des gleichen Nutzers
+	 * rückgängig gemacht werden. Mit einem Klick auf die "gemeinsame
+	 * Nutzer"-Schaltfläche wird die Suche nach gemeinsamen Kontakten gestartet.
 	 * 
-	 * Unterhalb der Navigation wird der Report dargestellt.
 	 */
 	public ReportAdmin() {
 
