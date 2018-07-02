@@ -6,12 +6,13 @@ import java.util.Date;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
- * Diese Klasse realisiert die Eigenschaftsausprägungen eines Kontakts. Diese
- * können entweder im Datentyp int, String, float oder Date angelegt sein. Der
- * int pointer repräsentiert die Information, welcher Datentyp in PValue
- * gespeichert ist. Zusätzlich ist in jedem PValue Objekt ein Property Objekt
- * gespeichert, welches Informationen über den Charakter der Eigenschaft, zu
- * welcher die Ausprägung gehört, enthält.
+ * <p>
+ * Die Klasse <code>PValue</code> implementiert Eigenschaftsausprägungen in
+ * Jabics. Diese können entweder im Datentyp int, String, float oder Date
+ * angelegt sein. In jedem <code>PValue</code> Objekt ist ein
+ * <code>Property</code> Objekt gespeichert, welches Informationen über den
+ * Charakter der Eigenschaft, zu welcher die Ausprägung gehört, enthält.
+ * </p>
  * 
  * @author Kurrle
  * @author Anders
@@ -369,7 +370,6 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	public BoStatus getShareStatus() {
 		return shareStatus;
 	}
-
 
 	/**
 	 * Setzen des Share-Status.

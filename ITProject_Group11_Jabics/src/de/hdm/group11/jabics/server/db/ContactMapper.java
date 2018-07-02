@@ -21,35 +21,34 @@ import de.hdm.group11.jabics.shared.bo.*;
 public class ContactMapper {
 
 	/**
-	 *         Die Klasse ContactMapper wird nur einmal instantiiert. Man spricht
-	 *         hierbei von einem sogenannten <b>Singleton</b>.
-	 *         <p>
+	 * Die Klasse ContactMapper wird nur einmal instantiiert. Man spricht hierbei
+	 * von einem sogenannten <b>Singleton</b>.
+	 * <p>
 	 * 
-	 *         Diese Variable ist durch den Bezeichner <code>static</code> nur
-	 *         einmal für sämtliche eventuellen Instanzen dieser Klasse vorhanden.
-	 *         Sie speichert die einzige Instanz dieser Klasse.
+	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
+	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+	 * einzige Instanz dieser Klasse.
 	 * 
 	 * @see contactMapper()
 	 */
 	private static ContactMapper contactMapper = null;
 
 	/**
-	 *         Geschützter Konstruktor - verhindert die Möglichkeit, mit
-	 *         <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected ContactMapper() {
 	}
 
 	/**
-	 *         Diese statische Methode kann aufgrufen werden durch
-	 *         <code>ContactMapper.contactMapper()</code>. Sie stellt die
-	 *         Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
-	 *         einzige Instanz von <code>ContactMapper</code> existiert.
-	 *         <p>
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>ContactMapper.contactMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
+	 * Instanz von <code>ContactMapper</code> existiert.
+	 * <p>
 	 * 
-	 *         <b>Fazit:</b> ContactMapper sollte nicht mittels <code>new</code>
-	 *         instantiiert werden, sondern stets durch Aufruf dieser statischen
-	 *         Methode.
+	 * <b>Fazit:</b> ContactMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
 	 * 
 	 * @return Das <code>ContactMapper</code>-Objekt.
 	 * @see contactMapper
@@ -458,11 +457,12 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Diese Methode ermittelt den Share-Status von übergeben
+	 * Diese Methode ermittelt den Share-Status von in einer Liste übergebenen
+	 * <code>Contact</code> Objekten
 	 * 
 	 * @param alContact
-	 *            ArrayList mit Contact-Objekten
-	 * @return ArrayList, welche den BoStatus der erhaltenen Kontakte enthält
+	 *            ArrayList mit <code>Contact</code> Objekten
+	 * @return ArrayList, welche den BoStatus der übergebenen Kontakte enthält
 	 */
 	public ArrayList<BoStatus> findShareStatus(ArrayList<Contact> alContact) {
 		// Erzeugen der Datenbankverbindung

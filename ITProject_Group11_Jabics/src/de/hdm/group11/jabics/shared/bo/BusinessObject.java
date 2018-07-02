@@ -4,9 +4,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * Dies ist die Basisklasse für alle Listen, Kontakte, Eigenschaften und deren
- * Ausprägungen. Hier sind Erstelldaten und Änderungsdaten gespeichert, sowie
- * der Ersteller eines Objektes.
+ * <p>
+ * Die Klasse <code>BusinessObject</code> ist die Basisklasse für
+ * <code>ContactList</code>, <code>Contact</code>, <code>Property</code> und
+ * <code>PValue</code>.
+ * </p>
  * 
  * @author Anders
  * @author Stahl
@@ -15,24 +17,27 @@ public abstract class BusinessObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Leerer Konstruktor.
+	 */
 	public BusinessObject() {
 	}
-	
+
 	/**
 	 * ID einer Instanz dieser Klasse.
 	 */
 	int id;
-	
+
 	/**
 	 * Besitzer einer Instanz dieser Klasse.
 	 */
 	JabicsUser owner;
-	
+
 	/**
 	 * Letztes Update einer Instanz dieser Klasse.
 	 */
 	Timestamp dateUpdated;
-	
+
 	/**
 	 * Erstellungsdatum einer Instanz dieser Klasse.
 	 */
