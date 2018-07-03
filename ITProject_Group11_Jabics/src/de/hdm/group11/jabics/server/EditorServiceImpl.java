@@ -287,6 +287,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
+		System.out.println("log");
 
 		ArrayList<Property> results = new ArrayList<Property>();
 

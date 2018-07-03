@@ -50,6 +50,7 @@ public class EditorAdmin {
 
 	private TreeViewMenu treeViewMenu;
 
+
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
@@ -66,15 +67,17 @@ public class EditorAdmin {
 		topPanel.add(logoutPanel);
 		logoutPanel.setStyleName("logout");
 		topPanel.setStyleName("topPanel");
-		
+
 		mainPanel.add(widgetPanel);
 		//widgetPanel.add(menuPanel);
 		widgetPanel.add(formPanel);
 		
 		treeViewMenu = new TreeViewMenu(currentUser);
 		treeViewMenu.setEditor(this);
-		menuPanel.add(treeViewMenu.getStackPanel());
+
+		treeViewMenu.setStyleName("treeView");
 		
+		menuPanel.add(treeViewMenu.getStackPanel());
 		menuPanel.setStyleName("menuPanel");
 	}
 	

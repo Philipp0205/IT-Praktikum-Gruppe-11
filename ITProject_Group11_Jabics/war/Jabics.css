@@ -129,13 +129,14 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .gwt-Button:hover {
-  background: #14b5ff;
+   background: #accbf0!important;
   background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
   background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
   background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
   background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
   background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .btn {
@@ -157,9 +158,59 @@ html>body .gwt-DecoratedStackPanel {
   background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
   background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
   text-decoration: none;
+  cursor: pointer;
 }
 
+.deleteBtn{
+  font-family: Arial;
+  color: #ff5e5e!important;
+  font-size: 14px !important;
+  background: #ffffff!important;
+  padding: 5px 2px 2px 2px !important;
+  margin-left: 15px;
+  border: solid #000000 0px !important;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
 
+.addButton{
+  padding: 2px 2px 2px 2px !important;
+  font-family: Arial;
+  color: #53f4af!important;
+  font-size: 16px !important;
+  background: #ffffff!important;
+  margin-left: 0px;
+  border: solid #000000 0px !important;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.gwt-StackPanel {
+	background-color: white;
+	border-style:hidden;
+	
+}
+.gwt-StackPanelItem {
+/*	text-align: center;
+	    align-content: center; */
+    
+    font-size: 14px !important;
+	background: #14b5ff !important;
+	color:white !important;;
+	padding: 6px 14px 6px 14px !important;
+	
+	}
+	
+.gwt-StackPanel:hover {
+	
+}
+.gwt-StackPanelItem:hover {
+
+   background: #accbf0!important;
+	cursor: pointer;
+	}
 .cw-StackPanelHeader {
   padding-left: 7px;
   font-weight: bold;
