@@ -88,7 +88,7 @@ public class UserMapper {
 				u.setId(rs.getInt(1));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -120,7 +120,7 @@ public class UserMapper {
 			// Löschen des Users.
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -160,7 +160,7 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -207,7 +207,7 @@ public class UserMapper {
 				al.add(u);
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -252,7 +252,7 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -300,7 +300,7 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -347,7 +347,7 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -389,7 +389,8 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 
-				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+				// werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}

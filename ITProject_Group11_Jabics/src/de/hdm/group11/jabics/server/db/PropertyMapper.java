@@ -90,7 +90,7 @@ public class PropertyMapper {
 				}
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -125,7 +125,7 @@ public class PropertyMapper {
 			// Löschen der Eigenschaft aus der Datenbank.
 			stmt.executeUpdate("DELETE FROM property WHERE propertyID = " + p.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -171,7 +171,7 @@ public class PropertyMapper {
 
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -222,7 +222,8 @@ public class PropertyMapper {
 				al.add(p);
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}

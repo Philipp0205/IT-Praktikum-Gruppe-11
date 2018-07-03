@@ -38,6 +38,7 @@ public class DBConnection {
      * @see ContactMapper.contactMapper()
      * @see PValueMapper.pValueMapper()
      * @see PropertyMapper.propertyMapper()
+     * 
      */
     private static Connection con = null;
 

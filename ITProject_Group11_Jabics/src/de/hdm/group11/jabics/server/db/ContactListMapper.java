@@ -91,7 +91,7 @@ public class ContactListMapper {
 				}
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -151,7 +151,7 @@ public class ContactListMapper {
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -201,7 +201,7 @@ public class ContactListMapper {
 			stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES "
 					+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")");
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -246,7 +246,7 @@ public class ContactListMapper {
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -280,7 +280,7 @@ public class ContactListMapper {
 			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
 			stmt.executeUpdate("DELETE FROM contactList WHERE contactListID = " + cl.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -329,7 +329,7 @@ public class ContactListMapper {
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -367,7 +367,7 @@ public class ContactListMapper {
 			stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId()
 					+ " AND systemUserID = " + u.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -411,7 +411,7 @@ public class ContactListMapper {
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -470,7 +470,7 @@ public class ContactListMapper {
 				al.add(cl);
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -522,7 +522,7 @@ public class ContactListMapper {
 				al.add(u);
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -594,7 +594,8 @@ public class ContactListMapper {
 				}
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}

@@ -103,7 +103,7 @@ public class PValueMapper {
 					}
 				}
 
-				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -133,7 +133,7 @@ public class PValueMapper {
 					}
 				}
 
-				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -167,7 +167,7 @@ public class PValueMapper {
 					}
 				}
 
-				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -198,7 +198,7 @@ public class PValueMapper {
 					}
 				}
 
-				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -308,7 +308,7 @@ public class PValueMapper {
 			}
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -342,7 +342,7 @@ public class PValueMapper {
 			// Füllen des Statements
 			stmt.executeUpdate("DELETE FROM pValue WHERE pValueID = " + pv.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -377,7 +377,7 @@ public class PValueMapper {
 			stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID = " + u.getId() + " AND pValueID = "
 					+ pv.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -435,7 +435,7 @@ public class PValueMapper {
 				pv.setProperty(p);
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -513,7 +513,7 @@ public class PValueMapper {
 				// System.out.println(pv.getPointer());
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -563,7 +563,7 @@ public class PValueMapper {
 				al.add(u);
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -627,7 +627,8 @@ public class PValueMapper {
 				}
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
