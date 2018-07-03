@@ -90,17 +90,12 @@ public class ContactListMapper {
 					cl.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 				}
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
+			stmt2.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return cl;
 		} catch (SQLException e) {
@@ -151,16 +146,12 @@ public class ContactListMapper {
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen des SQL-Statements
+			stmt.close();
+			stmt2.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return cl;
 		} catch (SQLException e) {
@@ -201,13 +192,11 @@ public class ContactListMapper {
 			stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES "
 					+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")");
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return cl;
 		} catch (SQLException e) {
@@ -217,8 +206,8 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in
-	 * der Datenbank.
+	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in der
+	 * Datenbank. 
 	 * 
 	 * @param cl
 	 *            das <code>ContactList</code> Objekt, dass aktualisiert werden
@@ -238,7 +227,7 @@ public class ContactListMapper {
 			// Update des Namens der Kontaktliste und des letzten Updates
 			stmt.executeUpdate(
 					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
-
+			
 			ResultSet rs = stmt2
 					.executeQuery("SELECT dateUpdated FROM contactList WHERE contactListID = " + cl.getId());
 
@@ -246,13 +235,11 @@ public class ContactListMapper {
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return cl;
 		} catch (SQLException e) {
@@ -280,13 +267,11 @@ public class ContactListMapper {
 			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
 			stmt.executeUpdate("DELETE FROM contactList WHERE contactListID = " + cl.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 		} catch (SQLException e) {
 			System.err.println("Löschen fehlgeschlagen");
@@ -329,16 +314,12 @@ public class ContactListMapper {
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen des SQL-Statements
+			stmt.close();
+			stmt2.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -367,13 +348,11 @@ public class ContactListMapper {
 			stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId()
 					+ " AND systemUserID = " + u.getId());
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -410,14 +389,11 @@ public class ContactListMapper {
 				cl.setDateCreated(rs.getTimestamp("dateCreated"));
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return cl;
 		} catch (SQLException e) {
@@ -469,14 +445,11 @@ public class ContactListMapper {
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(cl);
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return al;
 		} catch (SQLException e) {
@@ -521,14 +494,11 @@ public class ContactListMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return al;
 		} catch (SQLException e) {
@@ -594,13 +564,11 @@ public class ContactListMapper {
 				}
 			}
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen des SQL-Statements
+			stmt.close();
+
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			// Rückgabe der ArrayList<BoStatus>
 			return al;

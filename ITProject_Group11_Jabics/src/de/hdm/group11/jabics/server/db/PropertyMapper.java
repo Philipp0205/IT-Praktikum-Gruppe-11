@@ -89,17 +89,12 @@ public class PropertyMapper {
 					p.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 				}
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
+			stmt2.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return p;
 		} catch (SQLException e) {
@@ -124,14 +119,11 @@ public class PropertyMapper {
 
 			// Löschen der Eigenschaft aus der Datenbank.
 			stmt.executeUpdate("DELETE FROM property WHERE propertyID = " + p.getId());
+			// Schließen des SQL-Statements
+			stmt.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -170,14 +162,11 @@ public class PropertyMapper {
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return p;
 		} catch (SQLException e) {
@@ -221,14 +210,11 @@ public class PropertyMapper {
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(p);
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
-			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
+			// Schließen der Datenbankverbindung
+			con.close();
 
 			return al;
 		} catch (SQLException e) {
