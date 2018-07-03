@@ -13,11 +13,6 @@ public enum BoStatus {
 	IS_SHARED, 
 	
 	/**
-	 * Teilweise geteilt.
-	 */
-	PARTIALLY_SHARED, 
-	
-	/**
 	 * Nicht geteilt.
 	 */
 	NOT_SHARED

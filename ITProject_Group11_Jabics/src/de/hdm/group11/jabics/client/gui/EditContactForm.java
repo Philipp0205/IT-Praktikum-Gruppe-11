@@ -37,9 +37,12 @@ public class EditContactForm extends VerticalPanel {
 	Contact contact;
 	Boolean isNewContact;
 	Boolean userIsOwner;
+	// True = gerade am editieren, Buttons anzeigen, False = keine Buttons anzeigen
+	Boolean editContactState = false;
 
 	Button deleteContactButton = new Button("Kontakt löschen");
 	Button saveButton = new Button("Änderungen speichern");
+	Button editButton = new Button("Ausprägungen hinzufügen/löschen");
 	Button exitButton = new Button("Abbruch");
 	Button existingSharedContactButton;
 
@@ -78,14 +81,28 @@ public class EditContactForm extends VerticalPanel {
 
 			if (isNewContact) {
 				saveButton.setText("Neuen Kontakt anlegen");
+				deleteContactButton.setVisible(false);
 			} else {
 				saveButton.setText("Änderungen speichern");
+				deleteContactButton.setVisible(true);
 			}
 
 			saveButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					save();
+				}
+			});
+			editButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent e) {
+					editContact();
+					if (!editContactState) {
+						editContactState = true;
+						editButton.setText("Fertig");
+					} else {
+						editContactState = false;
+						editButton.setText("Ausprägungen hinzufügen/löschen");
+					}
 				}
 			});
 			exitButton.addClickHandler(new ClickHandler() {
@@ -292,6 +309,7 @@ public class EditContactForm extends VerticalPanel {
 							addPPanel.setVisible(true);
 							exitButton.setText("Kontakt anzeigen");
 							saveButton.setText("Änderungen speichern");
+							deleteContactButton.setVisible(true);
 						}
 
 					}
@@ -307,6 +325,27 @@ public class EditContactForm extends VerticalPanel {
 		} else
 			Window.alert("Massiver Fehler! Das sollte nicht passieren. Kontakt ist weder neu noch alt");
 		// editorService.updatePValue(val, new UpdatePValueCallback());
+	}
+
+	/**
+	 * Die Buttons zum hinzufügen und löschen von Ausprägungen einblenden
+	 */
+	public void editContact() {
+		if (editContactState) {
+			for (PropForm p : val) {
+				for (PVForm pv : p.getPVForms()) {
+					pv.showDeleteButton();
+				}
+				p.showAddButton();
+			}
+		} else {
+			for (PropForm p : val) {
+				for (PVForm pv : p.getPVForms()) {
+					pv.hideDeleteButton();
+				}
+				p.hideAddButton();
+			}
+		}
 	}
 
 	public void setContact(Contact c) {
@@ -528,6 +567,14 @@ public class EditContactForm extends VerticalPanel {
 		Label property;
 		Button addButton = new Button("hinzufügen");
 
+		public void showAddButton() {
+			this.addButton.setVisible(true);
+		}
+
+		public void hideAddButton() {
+			this.addButton.setVisible(false);
+		}
+
 		/**
 		 * Anzeige der PForm, bzw dieser sagen, sich zu zeigen. Fügt alle Widgets in der
 		 * Form dem Horizontal Panel hinzu. Durch das Hinzufügen der PVForms zum pvPanel
@@ -546,11 +593,9 @@ public class EditContactForm extends VerticalPanel {
 			}
 			// Styling Labels
 			property.setWidth("100px");
-
 			this.add(property);
 			pvPanel.setWidth("200px");
 			this.insert(pvPanel, 1);
-			addButton.setWidth("100px");
 			this.add(addButton);
 
 		}
@@ -623,6 +668,14 @@ public class EditContactForm extends VerticalPanel {
 		public void show() {
 			this.insert(val, 0);
 			this.insert(delete, 1);
+		}
+
+		public void showDeleteButton() {
+			this.delete.setVisible(true);
+		}
+
+		public void hideDeleteButton() {
+			this.delete.setVisible(false);
 		}
 
 		PVForm(PValue pv) {

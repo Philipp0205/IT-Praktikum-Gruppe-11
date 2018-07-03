@@ -27,9 +27,9 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * seinen "Subtabs".
  */
 public class Editor implements EntryPoint {
-
+	
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
-
+	
 	private LoginInfo logon;
 	private JabicsUser currentUser;
 	private EditorAdmin editor;

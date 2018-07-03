@@ -31,6 +31,8 @@ public interface EditorServiceAsync {
 	void getContactsOfList(ContactList cl, JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 
 	void getContactsOf(JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
+	
+	void getUpdatedContact(Contact c, AsyncCallback<Contact> callback);
 
 	void getAllSharedContactsOf(JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 
@@ -66,7 +68,7 @@ public interface EditorServiceAsync {
 
 	void deleteCollaboration(PValue pv, JabicsUser u, AsyncCallback<Void> callback);
 
-	void deleteCollaboration(ContactList cl, JabicsUser u, AsyncCallback<Void> callback);
+	void deleteCollaboration(ContactList cl, JabicsUser u, AsyncCallback<ContactList> callback);
 
 	void deleteCollaboration(Contact c, JabicsUser u, AsyncCallback<JabicsUser> callback);
 

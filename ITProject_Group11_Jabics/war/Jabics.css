@@ -25,6 +25,7 @@
 
 #menu{
     float: left;
+    margin-left: 100px;
 }
 
 #content{
@@ -32,8 +33,7 @@
 }
 
 #details{
-    margin-right: 600px;
-    margin-left: 100px;
+    margin-right: 200px;
 }
 
 #headlinereport{
@@ -206,12 +206,17 @@ html>body .gwt-DecoratedStackPanel {
 	float: right;
 }
 
+.topPanel{
+	color: black;	
+	
+}
+
 .navbar{
-    float: left;
-    margin-right: 10px;
+    display: block;
+    margin-right: -10px;
     margin-left: -10px;
     height: 58px;
-    margin-top: 30px;
+    margin-top: 20px;
     color: #000;
     background-color: #8cd2f0;
     display: block;
@@ -223,7 +228,7 @@ html>body .gwt-DecoratedStackPanel {
     background: #8cd2f0;
     margin-left: 100px;
     margin-right: 100px;
-    margin-top: 30px;
+    margin-top: 50px;
     color: #000;
     display: block;
     visibility: visible;

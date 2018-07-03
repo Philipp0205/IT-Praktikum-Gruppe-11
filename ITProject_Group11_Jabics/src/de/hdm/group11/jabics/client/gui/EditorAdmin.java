@@ -29,11 +29,12 @@ public class EditorAdmin {
 	private Button createC;
 	private Button createCL; 
 
-	private VerticalPanel mainPanel = new VerticalPanel();
-	private HorizontalPanel logoutPanel = new HorizontalPanel();
 	private HorizontalPanel topPanel = new HorizontalPanel();
-	private HorizontalPanel widgetPanel = new HorizontalPanel();
 	private VerticalPanel menuPanel = new VerticalPanel();
+	private VerticalPanel mainPanel = new VerticalPanel();
+	
+	private HorizontalPanel logoutPanel = new HorizontalPanel();
+	private HorizontalPanel widgetPanel = new HorizontalPanel();
 	private HorizontalPanel formPanel = new HorizontalPanel();
 	
 	/**
@@ -50,32 +51,28 @@ public class EditorAdmin {
 	private TreeViewMenu treeViewMenu;
 
 	public EditorAdmin(JabicsUser u) {
-		Window.alert("Editor konstruktor");
 		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
 
-		createC= new Button("Neuer Kontakt");
+		createC= new Button("Neuer ...Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
+		createC.setStyleName("btn1");
 		createCL = new Button("Neue Liste");
 		createCL.addClickHandler(new CreateCLClickHandler());
-		// Button settings = new Button("irgendwas anderes");
-		// settings.addClickHandler(new SearchClickHandler());
+		createCL.setStyleName("btn2");
 
 		topPanel.add(createC);
 		topPanel.add(createCL);
 		topPanel.add(logoutPanel);
-
-		topPanel.addStyleName("topPanel");
 		logoutPanel.setStyleName("logout");
-
-		mainPanel.add(topPanel);
+		topPanel.setStyleName("topPanel");
+		
 		mainPanel.add(widgetPanel);
-		widgetPanel.add(menuPanel);
+		//widgetPanel.add(menuPanel);
 		widgetPanel.add(formPanel);
 		
 		treeViewMenu = new TreeViewMenu(currentUser);
 		treeViewMenu.setEditor(this);
-		
 		menuPanel.add(treeViewMenu.getStackPanel());
 		
 		menuPanel.setStyleName("menuPanel");
@@ -83,22 +80,15 @@ public class EditorAdmin {
 	
 
 	public void loadEditor() {
-		//Window.alert("Editor 1");
-		//Window.alert("Editor 2");
-		Window.alert("load editor");
 		GWT.log("hallo gwt");
 		if (editorService == null) {
 			editorService = ClientsideSettings.getEditorService();
 		}
-
-		// Menu hinzufügen		
 		
+		// Menu hinzufügen
 		loadLogout();
 		
-		
-		RootPanel.get("nav").add(logoutPanel);
-		RootPanel.get("nav").add(logoutButton);
-		
+		RootPanel.get("nav").add(topPanel);
 		RootPanel.get("menu").add(menuPanel);
 		RootPanel.get("details").add(mainPanel);
 	}
@@ -122,8 +112,8 @@ public class EditorAdmin {
 				Window.Location.assign(loginfo.getLogoutUrl());
 			}
 		});
+		logoutButton.setStyleName("logbutton");
 		logoutPanel.add(logoutButton);
-		mainPanel.add(logoutPanel);
 	}
 
 	public void showMenuOnly() {
@@ -306,23 +296,26 @@ public class EditorAdmin {
 
 	public void addContactListToTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
-
 	}
 
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
+	}
+	
+	public void updateContactInTree(Contact c) {
+		treeViewMenu.updateContact(c);
+	}
+
+	public void updateContactListInTree(ContactList cl) {
+		treeViewMenu.addContactList(cl);
 	}
 
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
 		treeViewMenu.removeContactOfContactList(cl, c);
 	}
 
-	public void updateContactInTree(Contact c) {
-		treeViewMenu.contactListTab.updateContact(c);
-	}
-
-	public void updateContactListInTree(ContactList cl) {
-		treeViewMenu.addContactList(cl);
+	public void removeContact(Contact c) {
+		treeViewMenu.removeContact(c);
 	}
 
 	public void removeContactListFromTree(ContactList cl) {

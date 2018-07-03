@@ -58,7 +58,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	ContactForm cf;
 
 	Grid grid;
-	
+
 	public void onLoad() {
 
 		allUser = new ArrayList<JabicsUser>();
@@ -67,13 +67,14 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	}
 
 	/**
-	 * Die Contact Form das erste Mal erstellen, Tabellen hinzufügen und alles verknüpfen
+	 * Die Contact Form das erste Mal erstellen, Tabellen hinzufügen und alles
+	 * verknüpfen
 	 */
 	public ContactCollaborationForm() {
 
 		// Alles, was mit der PVal Tabelle zu tun hat
 		valueTable = new CellTable<PValue>();
-		
+
 		valueProvider = new ListDataProvider<PValue>();
 		valueProvider.addDataDisplay(valueTable);
 
@@ -92,8 +93,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				return object.toString();
 			}
 		};
-		
-		
+
 		valueTable.addColumn(checkbox, "Auswahl");
 		valueTable.setColumnWidth(checkbox, "10px");
 		valueTable.addColumn(property, "Merkmal");
@@ -113,12 +113,10 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		});
 		valueTable.setSelectionModel(multiSelectionModel);
 
-		
-		
-		//####################### Alles, was mit der Auwahl der Nutzer zu tun hat
-		
+		// ####################### Alles, was mit der Auwahl der Nutzer zu tun hat
+
 		userTable = new CellTable<JabicsUser>();
-		
+
 		userDataProvider = new ListDataProvider<JabicsUser>();
 		userDataProvider.addDataDisplay(userTable);
 
@@ -143,7 +141,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				}
 			}
 		});
-		
+
 		username = new TextColumn<JabicsUser>() {
 			public String getValue(JabicsUser u) {
 				return u.getUsername();
@@ -159,9 +157,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		});
 		userTable.setSelectionModel(userSelectionModel);
 
-
 		// +++++++++++++Alle Buttons
-		
+
 		removeButton = new Button("Nutzer entfernen");
 		removeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
@@ -214,8 +211,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 	}
-
-
 
 	public void continueOnLoad() {
 
@@ -274,7 +269,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	}
 
 	/**
-	 * Führt den RPC zur freigabe einens Kontakts mit den ausgewählten Parametern
+	 * Führt den RPC zur Freigabe einens Kontakts mit den ausgewählten Parametern
 	 * durch.
 	 */
 	public void shareContactWithUser(JabicsUser u) {
@@ -291,8 +286,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	}
 
 	/**
-	 * Führt den RPC zur freigabe einens Kontakts mit allen ausgewählten Nutzern mit
-	 * den ausgewählten Parametern durch.
+	 * Führt den RPC zur Freigabe einens Kontakts mit allen ausgewählten Nutzern mit
+	 * den ausgewählten PValues durch.
 	 */
 	public void shareContactWithAll() {
 		if (!finalUser.isEmpty()) {
@@ -309,6 +304,18 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			Window.alert("Keine Nutzer ausgewählt");
 		}
 
+	}
+
+	public void updateShareStatus() {
+		editorService.getUpdatedContact(sharedContact, new AsyncCallback<Contact>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Failed to update Contact" + caught.toString());
+			}
+
+			public void onSuccess(Contact result) {
+				e.updateContactInTree(result);
+			}
+		});
 	}
 
 	public void setContact(Contact c) {
@@ -339,9 +346,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			if (v != null) {
-				Window.alert("PV erfolgreich geteilt!");
-			}
+			Window.alert("PV erfolgreich geteilt!");
 		}
 	}
 
@@ -351,10 +356,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			if (v != null) {
-				Window.alert("Kontakt erolgreich geteilt!");
-				// e.returnToContact();
-			}
+			Window.alert("Kontakt erolgreich geteilt!");
+			e.updateContactInTree(sharedContact);
 		}
 	}
 
