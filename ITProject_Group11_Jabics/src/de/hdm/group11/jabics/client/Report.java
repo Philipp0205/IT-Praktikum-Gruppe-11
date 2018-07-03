@@ -1,22 +1,10 @@
 package de.hdm.group11.jabics.client;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -35,8 +23,7 @@ public class Report implements EntryPoint {
 	LoginServiceAsync loginService = null;
 	
 	private VerticalPanel loginPanel = new VerticalPanel();
-	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
-	private Anchor signInLink = new Anchor("Anmelden.");
+	
 
 	@Override
 	public void onModuleLoad() {
@@ -52,17 +39,34 @@ public class Report implements EntryPoint {
 		 
 		 loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 	}
-	
+	public LoginInfo getLoginInfo() {
+		return this.loginfo;
+	}
+
+	/**
+	 * Den Login laden und einen Button anbieten, der den Login zur Verfügung stellt
+	 * @param logon
+	 */
 	private void loadLogin(LoginInfo logon) {
 		// Assemble login panel.
-		Window.alert("3.1");
-		signInLink.setHref(logon.getLoginUrl());
-		Window.alert("3.2");
-		loginPanel.add(loginLabel);
-		Window.alert("3.3");
-		loginPanel.add(signInLink);
-		Window.alert("3.4");
-		RootPanel.get("details").add(loginPanel);
+		Label l1 = new Label("Sie sind nicht eingeloggt");
+		Label l2 = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
+		Button b = new Button("Anmelden");
+		/*b.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent ck) {
+				Window.Location.assign(getLoginInfo().getLoginUrl());
+			}
+		});*/
+		loginPanel = new VerticalPanel();
+		loginPanel.add(l1);
+		
+		loginPanel.add(l2);
+		
+		loginPanel.add(b);
+		
+		RootPanel.get("navright").add(b);
+		RootPanel.get("content").add(loginPanel);
+		
 	}
 	
 	

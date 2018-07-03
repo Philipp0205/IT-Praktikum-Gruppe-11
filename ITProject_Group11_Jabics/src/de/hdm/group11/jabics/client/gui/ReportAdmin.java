@@ -60,54 +60,54 @@ import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
  * @author Kurrle
  */
 public class ReportAdmin {
-	JabicsUser currentUser;
-	LoginInfo loginfo;
+	private JabicsUser currentUser;
+	private LoginInfo loginfo;
 
-	ReportGeneratorServiceAsync reportGenerator = null;
-	LoginServiceAsync loginService = null;
-	EditorServiceAsync editorService = null;
+	private ReportGeneratorServiceAsync reportGenerator = null;
+	private EditorServiceAsync editorService = null;
 
-	Button allReportsInSystemButton = new Button("Alle Kontakte aller Nutzer im System");
-	Button filteredReportButton = new Button("Alle Kontakte mit diesen Filterkriterien");
-	Button allReportButton = new Button("Alle meine Kontakte");
+	private Button allReportsInSystemButton = new Button("Alle Kontakte aller Nutzer im System");
+	private Button filteredReportButton = new Button("Alle Kontakte mit diesen Filterkriterien");
+	private Button allReportButton = new Button("Alle meine Kontakte");
 
-	VerticalPanel mainPanel = new VerticalPanel();
-	HorizontalPanel otherReportsPanel = new HorizontalPanel();
-	HorizontalPanel navPanel = new HorizontalPanel();
-	VerticalPanel userPanel = new VerticalPanel();
-	VerticalPanel verPanel1 = new VerticalPanel();
-	VerticalPanel verPanel2 = new VerticalPanel();
-	VerticalPanel verPanel3 = new VerticalPanel();
-	VerticalPanel verPanel4 = new VerticalPanel();
+	private VerticalPanel mainPanel = new VerticalPanel();
+	private HorizontalPanel logoutPanel = new HorizontalPanel();
+	private HorizontalPanel otherReportsPanel = new HorizontalPanel();
+	private HorizontalPanel navPanel = new HorizontalPanel();
+	private VerticalPanel userPanel = new VerticalPanel();
+	private VerticalPanel verPanel1 = new VerticalPanel();
+	private VerticalPanel verPanel2 = new VerticalPanel();
+	private VerticalPanel verPanel3 = new VerticalPanel();
+	private VerticalPanel verPanel4 = new VerticalPanel();
 
-	TextBox valueBox = new TextBox();
-	ListBox datatypemenu = new ListBox();
-	DatePicker datepicker = new DatePicker();
+	private TextBox valueBox = new TextBox();
+	private ListBox datatypemenu = new ListBox();
+	private DatePicker datepicker = new DatePicker();
 
 	// Die mit der PropertySuggestBox zusammenhängenden Variablen
-	MultiWordSuggestOracle propertyToSuggest;
-	SuggestBox propertySuggest;
-	PValue finalPVal;
-	Label datatypel = new Label("Datentyp:");
-	Label valuelabel = new Label("Wert:");
-	Label propertyl = new Label("Eigenschaft:");
+	private MultiWordSuggestOracle propertyToSuggest;
+	private SuggestBox propertySuggest;
+	private PValue finalPVal;
+	private Label datatypel = new Label("Datentyp:");
+	private Label valuelabel = new Label("Wert:");
+	private Label propertyl = new Label("Eigenschaft:");
 
 	// Alle mit der UserSuggestBox zusammenhängenden Variablen
-	MultiWordSuggestOracle userToSuggest;
-	SuggestBox userSuggest;
-	Button addUserButton;
-	Button removeUserButton;
-	Button sharedContactsButton;
+	private MultiWordSuggestOracle userToSuggest;
+	private SuggestBox userSuggest;
+	private Button addUserButton;
+	private Button removeUserButton;
+	private Button sharedContactsButton;
 
 	// Alle Variablen, die ein editieren der entstehenden Liste an Nutzern
 	// ermöglichen
-	ArrayList<JabicsUser> allUser;
-	ArrayList<JabicsUser> finalUser;
-	ListDataProvider<JabicsUser> userDataProvider;
-	SingleSelectionModel<JabicsUser> userSelectionModel;
-	CellTable<JabicsUser> userTable;
-	JabicsUser suggestedUser;
-	JabicsUser selectedUser;
+	private ArrayList<JabicsUser> allUser;
+	private ArrayList<JabicsUser> finalUser;
+	private ListDataProvider<JabicsUser> userDataProvider;
+	private SingleSelectionModel<JabicsUser> userSelectionModel;
+	private CellTable<JabicsUser> userTable;
+	private JabicsUser suggestedUser;
+	private JabicsUser selectedUser;
 
 	/**
 	 * Die Anzeige ist in zwei große Bereiche aufgeteilt. Zum einen Elemente für die
@@ -187,6 +187,7 @@ public class ReportAdmin {
 		// Alle Properties holen, nach denen vom Nutzer gefiltern werden kann
 		reportGenerator.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
 
+		
 		// Aufbauen des RootPanels
 		RootPanel.get("navigator").add(mainPanel);
 
@@ -201,6 +202,17 @@ public class ReportAdmin {
 
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
+	}
+	
+	public void loadLogout() {
+		Button logoutButton = new Button("Abmelden");
+		logoutButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				Window.Location.assign(loginfo.getLogoutUrl());
+			}
+		});
+		logoutPanel.add(logoutButton);
+		mainPanel.add(logoutPanel);
 	}
 
 	// Alle Nutzer des Systems holen

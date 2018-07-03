@@ -2,9 +2,12 @@ package de.hdm.group11.jabics.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -27,18 +30,13 @@ public class Editor implements EntryPoint {
 
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
 
-	LoginInfo logon;
-	JabicsUser currentUser;
+	private LoginInfo logon;
+	private JabicsUser currentUser;
+	private EditorAdmin editor;
 
-	EditorAdmin editor;
-
-	LoginServiceAsync loginService;
-	LoginInfo loginfo;
+	private LoginServiceAsync loginService;
 	
 	private VerticalPanel loginPanel = new VerticalPanel();
-	private Label loginLabel = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
-	private Anchor signInLink = new Anchor("Anmelden.");
-
 	@Override
 	public void onModuleLoad() {
 		/*
@@ -47,32 +45,42 @@ public class Editor implements EntryPoint {
 		//JabicsUser u = new JabicsUser(1);
 		//u.setEmail("test@mail.com");
 		//u.setUsername("ein nutzer");
-		
 		GWT.log("Load");
 		loginService = ClientsideSettings.getLoginService();
 		GWT.log(GWT.getHostPageBaseURL());
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-
 	}
 	
 	private void loadLogin(LoginInfo logon) {
 		// Assemble login panel.
-		Window.alert("3.1");
-		signInLink.setHref(logon.getLoginUrl());
-		Window.alert("3.2");
-		loginPanel.add(loginLabel);
-		Window.alert("3.3");
-		loginPanel.add(signInLink);
-		Window.alert("3.4");
+		Label l1 = new Label("Sie sind nicht eingeloggt");
+		Label l2 = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
+		Button b = new Button("Anmelden");
+		b.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent ck) {
+				Window.Location.assign(getLoginInfo().getLoginUrl());
+			}
+		});
+		Anchor a = new Anchor(logon.getLoginUrl());
+		loginPanel.add(l1);
+		loginPanel.add(l2);
 		RootPanel.get("details").add(loginPanel);
+		//RootPanel.get("nav").add(loginPanel);
+		//RootPanel.get("navright").add(loginPanel);
+		RootPanel.get("details").add(new Label(logon.getLoginUrl()));
+		RootPanel.get("navright").add(b);
+		RootPanel.get("nav").add(b);
 	}
-	
 
 	/**
 	 * Getter und Setter
 	 */
 	public void setLoginInfo(LoginInfo logon) {
-		this.loginfo = logon;
+		this.logon = logon;
+	}
+	
+	public LoginInfo getLoginInfo() {
+		return this.logon;
 	}
 
 	public void setJabicsUser(JabicsUser u) {
@@ -80,29 +88,28 @@ public class Editor implements EntryPoint {
 	}
 
 	private class loginServiceCallback implements AsyncCallback<LoginInfo> {
-
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
 		}
-
 		@Override
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
 				if (logon.getIsLoggedIn()) {
+					Window.alert("Login success");
 					currentUser = logon.getCurrentUser();
 					editor = new EditorAdmin(currentUser);
+					setLoginInfo(logon);
 					editor.setLoginInfo(logon);
 					editor.setJabicsUser(logon.getCurrentUser());
 					// Den Editor laden
 					editor.loadEditor();
 				} else {
 					Window.alert("User not logged in");
+					setLoginInfo(logon);
 					loadLogin(logon);
 				}
 			}
-
 		}
 	}
-
 }
