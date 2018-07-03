@@ -47,7 +47,6 @@ public class EditorAdmin {
 
 
 	public EditorAdmin(JabicsUser u) {
-		Window.alert("Editor konstruktor");
 		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
 
