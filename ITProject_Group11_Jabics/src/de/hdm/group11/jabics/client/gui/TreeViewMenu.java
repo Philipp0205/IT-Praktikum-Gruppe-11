@@ -31,7 +31,6 @@ public class TreeViewMenu extends VerticalPanel {
 	ContactCellListTab cellListTab;
 
 	public TreeViewMenu(JabicsUser u) {
-		Window.alert("TreeViewMenu Konstruktor");
 		stackPanel = new StackPanel();
 		stackPanel.add(createContactListTreeTab(u), "Meine Listen");
 		stackPanel.add(createContactCellListTab(u), "Alle Kontakte");

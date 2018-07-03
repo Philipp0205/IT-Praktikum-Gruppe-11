@@ -524,7 +524,7 @@ public class EditContactForm extends VerticalPanel {
 		ArrayList<PVForm> pvForms = new ArrayList<PVForm>();
 		VerticalPanel pvPanel = new VerticalPanel();
 		Label property;
-		Button addButton = new Button("hinzufügen");
+		Button addButton = new Button("+");
 
 		/**
 		 * Anzeige der PForm, bzw dieser sagen, sich zu zeigen. Fügt alle Widgets in der
@@ -550,6 +550,7 @@ public class EditContactForm extends VerticalPanel {
 			this.insert(pvPanel, 1);
 			addButton.setWidth("100px");
 			this.add(addButton);
+			addButton.setStyleName("addButton");
 
 		}
 
@@ -614,12 +615,13 @@ public class EditContactForm extends VerticalPanel {
 
 	private class PVForm extends HorizontalPanel {
 		PValue pval;
-		Button delete = new Button("löschen");
+		Button delete = new Button("x");
 		Button done = new Button("Fertig");
 		TextBox val = new TextBox();
 
 		public void show() {
 			this.insert(val, 0);
+			delete.setStyleName("deleteBtn");
 			this.insert(delete, 1);
 		}
 
