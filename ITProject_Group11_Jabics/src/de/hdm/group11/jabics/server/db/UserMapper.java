@@ -87,11 +87,14 @@ public class UserMapper {
 			if (rs.next()) {
 				u.setId(rs.getInt(1));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			return u;
 		} catch (SQLException e) {
@@ -116,11 +119,14 @@ public class UserMapper {
 
 			// Löschen des Users.
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -153,11 +159,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			return u;
 		} catch (SQLException e) {
@@ -202,11 +211,14 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			return al;
 		} catch (SQLException e) {
@@ -243,11 +255,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -279,11 +294,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -315,11 +333,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -354,11 +375,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 
-				// Schließen des SQL-Statements
-				stmt.close();
-
-				// Schließen der Datenbankverbindung
-				con.close();
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+				// werden diese geschlossen.
+				if (!stmt.isClosed()) {
+					stmt.close();
+				}
+				if (!con.isClosed()) {
+					con.close();
+				}
 
 				return u;
 			} else

@@ -15,10 +15,6 @@ public class DBConnection {
 	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
 	 * einzige Instanz dieser Klasse.
 	 * 
-	 * @author Thies
-	 * @author Brase
-	 * @author Stahl
-	 * 
 	 * @see ContactMapper.contactMapper()
 	 * @see PValueMapper.pValueMapper()
 	 * @see ContactListMapper.contactListMapper()
