@@ -330,21 +330,23 @@ public class ContactListCollaborationForm extends VerticalPanel {
 						newCollabDataProvider.flush();
 					}
 				}
+				sharedContactList.setShareStatus(BoStatus.IS_SHARED);
+				e.updateContactListInTree(sharedContactList);
 			}
 		}
 	}
 
-	private class DeleteContactListCollaborationCallback implements AsyncCallback<Void> {
+	private class DeleteContactListCollaborationCallback implements AsyncCallback<ContactList> {
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Kontaktliste konnte nicht entteilt werden");
 		}
 
 		@Override
-		public void onSuccess(Void result) {
+		public void onSuccess(ContactList result) {
 			if (result != null) {
 				Window.alert("Kontakt erfolgreich entteilt!");
-
+				e.updateContactListInTree(result);
 			}
 		}
 	}

@@ -96,7 +96,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 				}
 			}
 		});
-
+		
 		selValues.setSelectionModel(multiSelectionModel);
 
 		checkbox = new Column<PValue, Boolean>(new CheckboxCell(true, false)) {
@@ -135,7 +135,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 						showCollabOfUser(u);
 						singleSelectedUser = u;
 					}
-					
 				} else {
 					selValues.setVisible(false);
 				}
@@ -271,6 +270,17 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		valueProvider.flush();
 	}
 
+	public void updateShareStatus(){
+		editorService.getUpdatedContact(sharedContact, new AsyncCallback<Contact>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("Failed to update Contact" + caught.toString());
+			}
+			public void onSuccess(Contact result) {
+				e.updateContactInTree(result);
+			}
+		});
+	}
+	
 	/**
 	 * Teilt den Kontakt mit allen ausgewählten Nutzern mit den neuen ausgewählten
 	 * Eigenschaften
@@ -305,7 +315,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 	
-	public void removeContactFromTable(JabicsUser u) {
+	public void removeUserFromTable(JabicsUser u) {
 		for(JabicsUser uu : sharedUser) {
 			if(uu.getId() == u.getId()) sharedUser.remove(uu);
 			ldp.flush();
@@ -361,9 +371,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			if (v != null) {
 				Window.alert("PV erfolgreich geteilt!");
-			}
 		}
 	}
 
@@ -374,7 +382,8 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(JabicsUser u) {
 			Window.alert("Kontakt erolgreich entteilt!");
-			removeContactFromTable(u);
+			removeUserFromTable(u);
+			updateShareStatus();
 			exit.setVisible(true);
 		}
 	}
