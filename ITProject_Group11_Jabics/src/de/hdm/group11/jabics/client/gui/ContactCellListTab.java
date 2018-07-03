@@ -55,6 +55,14 @@ public class ContactCellListTab {
 	}
 
 	public CellList<Contact> createContactTabForSearchForm() {
+		keyProvider = new ContactKeyProvider();
+		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
+		selectionModel.clear();
+
+		contactDataProvider = new ListDataProvider<Contact>();
+		contactDataProvider.addDataDisplay(contactCell);
+		contactCell.setSelectionModel(selectionModel);
+
 		contactDataProvider.flush();
 		contactCell.redraw();
 		return contactCell;
