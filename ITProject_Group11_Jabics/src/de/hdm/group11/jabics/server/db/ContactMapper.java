@@ -185,7 +185,7 @@ public class ContactMapper {
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
-
+      
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
@@ -265,6 +265,7 @@ public class ContactMapper {
 			if (!con.isClosed()) {
 				con.close();
 			}
+      
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -506,6 +507,7 @@ public class ContactMapper {
 			// Deklaration und Initialisierung eines StringBuffers
 			StringBuffer contactIDs = new StringBuffer();
 
+			if (alContact != null) {
 			// contactIDs an den StringBuffer anhängen
 			for (Contact c : alContact) {
 				contactIDs.append(c.getId());
@@ -514,6 +516,8 @@ public class ContactMapper {
 
 			// Letztes Komma im StringBuffer löschen
 			contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
+			
+			}
 
 			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "

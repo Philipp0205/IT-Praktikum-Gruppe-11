@@ -70,6 +70,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 				return loginInfo;
 
 			} catch (Exception e) {
+				System.out.println("Nutzer nicht gefunden: Exception");
 				System.out.println(e.toString());
 				String s = userService.createLoginURL(requestUri);
 				loginInfo.setLoginUrl(s);

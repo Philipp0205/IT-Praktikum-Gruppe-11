@@ -20,18 +20,23 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class EditorAdmin {
 
-	EditorServiceAsync editorService;
+	private EditorServiceAsync editorService;
 
-	LoginInfo loginfo;
-	JabicsUser currentUser;
+	private LoginInfo loginfo;
+	private JabicsUser currentUser;
+	
+	private Button logoutButton;
+	private Button createC;
+	private Button createCL; 
 
-	VerticalPanel mainPanel = new VerticalPanel();
-	HorizontalPanel topPanel = new HorizontalPanel();
-	HorizontalPanel widgetPanel = new HorizontalPanel();
-	VerticalPanel menuPanel = new VerticalPanel();
-	HorizontalPanel formPanel = new HorizontalPanel();
-	HorizontalPanel placeholder = new HorizontalPanel();
-
+	private HorizontalPanel topPanel = new HorizontalPanel();
+	private VerticalPanel menuPanel = new VerticalPanel();
+	private VerticalPanel mainPanel = new VerticalPanel();
+	
+	private HorizontalPanel logoutPanel = new HorizontalPanel();
+	private HorizontalPanel widgetPanel = new HorizontalPanel();
+	private HorizontalPanel formPanel = new HorizontalPanel();
+	
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
@@ -45,65 +50,52 @@ public class EditorAdmin {
 
 	private TreeViewMenu treeViewMenu;
 
+
 	public EditorAdmin(JabicsUser u) {
-		Window.alert("Editor konstruktor");
 		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
 
-		Button createC = new Button("Neuer Kontakt");
+		createC= new Button("Neuer ...Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
-		Button createCL = new Button("Neue Liste");
+		createC.setStyleName("btn1");
+		createCL = new Button("Neue Liste");
 		createCL.addClickHandler(new CreateCLClickHandler());
-//		Button search = new Button("Suche");
-//		search.addClickHandler(new SearchClickHandler());
-		// Button settings = new Button("irgendwas anderes");
-		// settings.addClickHandler(new SearchClickHandler());
+		createCL.setStyleName("btn2");
 
 		topPanel.add(createC);
 		topPanel.add(createCL);
+		topPanel.add(logoutPanel);
+		logoutPanel.setStyleName("logout");
+		topPanel.setStyleName("topPanel");
 
-		topPanel.addStyleName("topPanel");
-
-		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
-		widgetPanel.add(menuPanel);
+		//widgetPanel.add(menuPanel);
 		widgetPanel.add(formPanel);
-
-		GWT.log("Editor: TreeViewMenu erstellt");
 		
 		treeViewMenu = new TreeViewMenu(currentUser);
 		treeViewMenu.setEditor(this);
+
+		treeViewMenu.setStyleName("treeView");
 		
 		menuPanel.add(treeViewMenu.getStackPanel());
-		
+
+		menuPanel.setWidth("400px");
+
 		menuPanel.setStyleName("menuPanel");
 	}
 	
 
 	public void loadEditor() {
-		//Window.alert("Editor 1");
-		//Window.alert("Editor 2");
 		GWT.log("hallo gwt");
 		if (editorService == null) {
 			editorService = ClientsideSettings.getEditorService();
 		}
-
-		// Menu hinzufügen		
-
-		editorService.testmethod(new AsyncCallback<String>() {
-			public void onFailure(Throwable caught) {
-				Window.alert("Testmethode hat nicht geklappt");
-				Window.alert(caught.toString());
-			}
-
-			public void onSuccess(String s) {
-				Window.alert(s.toString());
-				Label l = new Label(s);
-				RootPanel.get("trailer").add(l);
-			}
-
-		});
-
+		
+		// Menu hinzufügen
+		loadLogout();
+		
+		RootPanel.get("nav").add(topPanel);
+		RootPanel.get("menu").add(menuPanel);
 		RootPanel.get("details").add(mainPanel);
 	}
 
@@ -117,6 +109,17 @@ public class EditorAdmin {
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
 	//	treeViewMenu.setUser(u);
+	}
+	
+	public void loadLogout() {
+		logoutButton = new Button("Abmelden");
+		logoutButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				Window.Location.assign(loginfo.getLogoutUrl());
+			}
+		});
+		logoutButton.setStyleName("logbutton");
+		logoutPanel.add(logoutButton);
 	}
 
 	public void showMenuOnly() {
@@ -294,36 +297,39 @@ public class EditorAdmin {
 	 * TreeView manipulieren
 	 */
 	public void addContactToTree(Contact c) {
-	//	treeViewMenu.addContact(c);
+		treeViewMenu.addContact(c);
 	}
 
 	public void addContactListToTree(ContactList cl) {
-	//	treeViewMenu.addContactList(cl);
-
+		treeViewMenu.addContactList(cl);
 	}
 
 	public void addContactToListInTree(ContactList cl, Contact c) {
-	//	treeViewMenu.addContactToList(cl, c);
+		treeViewMenu.addContactToList(cl, c);
 	}
-
-	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
-	//	treeViewMenu.removeContactOfContactList(cl, c);
-	}
-
+	
 	public void updateContactInTree(Contact c) {
-	//	treeViewMenu.contactListTab.updateContact(c);
+		treeViewMenu.updateContact(c);
 	}
 
 	public void updateContactListInTree(ContactList cl) {
-	//	treeViewMenu.addContactList(cl);
+		treeViewMenu.addContactList(cl);
+	}
+
+	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
+		treeViewMenu.removeContactOfContactList(cl, c);
+	}
+
+	public void removeContact(Contact c) {
+		treeViewMenu.removeContact(c);
 	}
 
 	public void removeContactListFromTree(ContactList cl) {
-	//	treeViewMenu.removeContactListFromTree(cl);
+		treeViewMenu.removeContactListFromTree(cl);
 	}
 
 	public void flushContactLists() {
-	//	treeViewMenu.flushContactListsProvider();
+		treeViewMenu.flushContactListsProvider();
 	}
 
 	/**

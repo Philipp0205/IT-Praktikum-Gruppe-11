@@ -31,7 +31,6 @@ public class TreeViewMenu extends VerticalPanel {
 	ContactCellListTab cellListTab;
 
 	public TreeViewMenu(JabicsUser u) {
-		Window.alert("TreeViewMenu Konstruktor");
 		stackPanel = new StackPanel();
 		stackPanel.add(createContactListTreeTab(u), "Meine Listen");
 		stackPanel.add(createContactCellListTab(u), "Alle Kontakte");
@@ -40,7 +39,6 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public void onLoad() {
-		GWT.log("+++++++++++++++++++++++++++++++++");
 		this.add(this.stackPanel);
 	}
 
@@ -51,7 +49,6 @@ public class TreeViewMenu extends VerticalPanel {
 			GWT.log("8.1 add Contact " + c.getName() + " to List " + cl.getListName());
 			contactListTab.addContactOfList(cl, c);
 		}
-
 	}
 
 	public void removeContactListFromTree(ContactList cl) {
@@ -76,7 +73,18 @@ public class TreeViewMenu extends VerticalPanel {
 	public void addContact(Contact c) {
 		contactTab.addContact(c);
 	}
+	
+	public void removeContact(Contact c) {
+		contactTab.removeContact(c);
+	}
+	
+	public void updateContact(Contact c) {
+		contactTab.updateContact(c);
+		contactListTab.updateContact(c);
+		sharedContactListTab.updateContact(c);
+	}
 
+	
 	public StackPanel getStackPanel() {
 		return this.stackPanel;
 	}

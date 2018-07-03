@@ -177,9 +177,14 @@ public class UserMapper {
 	}
 
 	/**
-	 * Auslesen aller <code>JabicsUser</code> Objekte aus der Datenbank
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code>
+	 * Objekten eines <code>User</code> Objekts aus der Datenbank zurück.
 	 * 
-	 * @return Liste mit allen <code>JabicsUser</code> Objekten.
+	 * @param u
+	 *            das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
+	 *            sollen.
+	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des
+	 *         <code>User</code> Objekts.
 	 */
 	public ArrayList<JabicsUser> findAllUser() {
 		// Erzeugen der Datenbankverbindung
@@ -223,12 +228,11 @@ public class UserMapper {
 	}
 
 	/**
-	 * Auslesen eines <code>JabicsUser</code> Objektes, welches der Besitzer eines
-	 * <code>Contact</code> Objektes ist.
+	 * Gibt den Besitzer/Ersteller eines Kontakts zurück.
 	 * 
-	 * @param c
-	 *            <code>Contact</code> Objekt für welches der Beitzer gesucht wird.
-	 * @return Besitzer in Form eines <code>JabicsUser</code> Objektes
+	 * @param Contact
+	 *            c Der Kontakt für den der Besitzer gefunden werden soll
+	 * @return JabicsUser u
 	 */
 	public JabicsUser findUserByContact(Contact c) {
 		// Erzeugen der Datenbankverbindung
@@ -266,15 +270,6 @@ public class UserMapper {
 		return u;
 	}
 
-	/**
-	 * Auslesen eines <code>JabicsUser</code> Objektes, welches der Besitzer eines
-	 * <code>ContactList</code> Objektes ist.
-	 * 
-	 * @param cl
-	 *            <code>ContactList</code> Objekt für welches der Beitzer gesucht
-	 *            wird.
-	 * @return Besitzer in Form eines <code>JabicsUser</code> Objektes
-	 */
 	public JabicsUser findUserByContactList(ContactList cl) {
 
 		// Erzeugen der Datenbankverbindung
@@ -314,14 +309,6 @@ public class UserMapper {
 		return u;
 	}
 
-	/**
-	 * Auslesen eines <code>JabicsUser</code> Objektes, welches der Besitzer eines
-	 * <code>PValue</code> Objektes ist.
-	 * 
-	 * @param pv
-	 *            <code>PValue</code> Objekt für welches der Beitzer gesucht wird.
-	 * @return Besitzer in Form eines <code>JabicsUser</code> Objektes
-	 */
 	public JabicsUser findUserByPValue(PValue pv) {
 
 		// Erzeugen der Datenbankverbindung
@@ -362,13 +349,12 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts in der
+	 * Diese Methode erlaubt die Suche eines <code>User</code> Objekts in der
 	 * Datenbank nach seiner E-Mail-Adresse.
 	 * 
 	 * @param email
-	 *            die E-Mail-Adresse, für welche das <code>JabicsUser</code> Objekt
-	 *            gesucht wird.
-	 * @return das gesuchte <code>JabicsUser</code> Objekt.
+	 *            die email nach der gesucht werden soll.
+	 * @return das gesuchte <code>User</code> Objekt.
 	 */
 	public JabicsUser findUserByEmail(String email) {
 		// Erzeugen der Datenbankverbindung

@@ -217,8 +217,8 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in
-	 * der Datenbank.
+	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in der
+	 * Datenbank. 
 	 * 
 	 * @param cl
 	 *            das <code>ContactList</code> Objekt, dass aktualisiert werden
@@ -238,7 +238,7 @@ public class ContactListMapper {
 			// Update des Namens der Kontaktliste und des letzten Updates
 			stmt.executeUpdate(
 					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
-
+			
 			ResultSet rs = stmt2
 					.executeQuery("SELECT dateUpdated FROM contactList WHERE contactListID = " + cl.getId());
 
@@ -329,7 +329,6 @@ public class ContactListMapper {
 			stmt2.executeUpdate(
 					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -410,6 +409,8 @@ public class ContactListMapper {
 				cl.setDateCreated(rs.getTimestamp("dateCreated"));
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
@@ -469,6 +470,8 @@ public class ContactListMapper {
 				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(cl);
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {
@@ -521,6 +524,8 @@ public class ContactListMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
+			// Schließen des SQL-Statements
+			stmt.close();
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
 			if (!stmt.isClosed()) {

@@ -24,10 +24,6 @@ public class ContactListCell extends AbstractCell<ContactList> {
 				case IS_SHARED:
 					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
 					break;
-				case PARTIALLY_SHARED:
-					sb.appendHtmlConstant(
-							AbstractImagePrototype.create(JabicsResources.INSTANCE.yellowdot()).getHTML());
-					break;
 				case NOT_SHARED:
 					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
 					break;
