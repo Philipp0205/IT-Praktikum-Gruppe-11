@@ -77,7 +77,7 @@ public class EditContactForm extends VerticalPanel {
 			// UI anzuzeigen
 
 			if (isNewContact) {
-				saveButton.setText("Neuen Kontakt speichern");
+				saveButton.setText("Neuen Kontakt anlegen");
 			} else {
 				saveButton.setText("Änderungen speichern");
 			}
@@ -290,6 +290,8 @@ public class EditContactForm extends VerticalPanel {
 							setContact(result);
 							e.addContactToTree(result);
 							addPPanel.setVisible(true);
+							exitButton.setText("Kontakt anzeigen");
+							saveButton.setText("Änderungen speichern");
 						}
 
 					}

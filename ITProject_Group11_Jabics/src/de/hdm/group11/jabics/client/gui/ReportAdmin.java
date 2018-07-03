@@ -507,7 +507,6 @@ public class ReportAdmin {
 		public void onFailure(Throwable caught) {
 			// Fehler werden gelogt.
 			GWT.log(caught.toString());
-			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
 		}
 
 		@Override
@@ -528,7 +527,6 @@ public class ReportAdmin {
 		@Override
 		public void onFailure(Throwable caught) {
 			GWT.log(caught.toString());
-			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
 		}
 
 		@Override
@@ -560,7 +558,7 @@ public class ReportAdmin {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			ClientsideSettings.getLogger().severe("Erzeugen des Reports fehlgeschlagen.");
+			
 		}
 
 		@Override
@@ -582,7 +580,6 @@ public class ReportAdmin {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			ClientsideSettings.getLogger().severe("Fehler beim Laden der Eigenschaften");
 		}
 
 		@Override

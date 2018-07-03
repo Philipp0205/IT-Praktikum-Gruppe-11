@@ -16,12 +16,16 @@
 	width: 100%;
 }
 
+#footline{
+	text-align: center;
+}
 
+#footer{
+	text-align: center;
+}
 
-.logo{
-	width: 100px;
-	max-width: 100%;
-	padding: 5px;
+#trailer{
+    text-align: center;
 }
 
 .gwt-DecoratedStackPanel {
@@ -177,6 +181,75 @@ html>body .gwt-DecoratedStackPanel {
 
 .buttonPanel .gwt-Button {
 	margin-left: 5px;
+}
+
+.navbar{
+    margin-right: 140px;
+    margin-left: -10px;
+    height: 58px;
+    margin-top: 30px;
+    color: #000;
+    background-color: #8cd2f0;
+    display: block;
+    visibility: visible;
+}
+
+.navbrand{
+    max-width: 20%;
+    max-height: 40px;
+    
+}
+
+.navbarlogo{
+    margin-left: 70px;
+    align-content: center;
+    margin-top: 1000px;
+    color: #000;
+    background-color: #8cd2f0;
+    visibility: visible;
+}
+
+#btn1 {
+    display:block;
+    float: right;
+  background: #8cd2f0;
+  font-family: Arial;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  padding: 20px 20px 20px 20px;
+  margin-top: 0px;
+    margin-left: 20px;
+}
+
+#btn1:hover {
+  font-family: Arial;
+  color: #fff;
+  background: #008fd1;
+  padding: 20px 20px 20px 20px;
+  
+}
+#btn2 {
+    display:block;
+    float: right;
+  background: #8cd2f0;
+  font-family: Arial;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  padding: 20px 20px 20px 20px;
+  margin-top: 0px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#btn2:hover {
+  font-family: Arial;
+  color: #fff;
+  background: #008fd1;
+  padding: 20px 20px 20px 20px;
+  margin-right: 20px;
+  
 }
 
 
