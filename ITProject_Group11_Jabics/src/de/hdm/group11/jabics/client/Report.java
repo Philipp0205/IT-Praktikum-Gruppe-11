@@ -2,6 +2,8 @@ package de.hdm.group11.jabics.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -51,20 +53,21 @@ public class Report implements EntryPoint {
 		// Assemble login panel.
 		Label l1 = new Label("Sie sind nicht eingeloggt");
 		Label l2 = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
+		Label tempurl = new Label(logon.getLoginUrl());
+
 		Button b = new Button("Anmelden");
-		/*b.addClickHandler(new ClickHandler() {
+		b.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ck) {
 				Window.Location.assign(getLoginInfo().getLoginUrl());
 			}
-		});*/
+		});
 		loginPanel = new VerticalPanel();
 		loginPanel.add(l1);
-		
 		loginPanel.add(l2);
-		
+		loginPanel.add(tempurl);
 		loginPanel.add(b);
 		
-		RootPanel.get("navright").add(b);
+		RootPanel.get("nav").add(b);
 		RootPanel.get("content").add(loginPanel);
 		
 	}
@@ -97,21 +100,3 @@ public class Report implements EntryPoint {
 	}
 
 }
-
-/*
- * private class customPropertySuggest implements SuggestOracle{
- * 
- * public void add(Property p) {
- * 
- * }
- * 
- * public void requestSugestions(Request request, Callback callback) {
- * 
- * Collection<Suggestion> suggestions = new ArrayList<Suggestion>;
- * 
- * 
- * Response response = new Response(); response.setSuggestions(suggestions);
- * callback.onSuggestionsReady(request, response);
- * 
- * } }
- */

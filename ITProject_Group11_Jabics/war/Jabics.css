@@ -9,7 +9,6 @@
 #menuButton {
 	text-decoration: none;
 	color: black;
-	
 }
 
 #OuterTabel, #Tabellenstruktur {
@@ -22,6 +21,23 @@
 
 #footer{
 	text-align: center;
+}
+
+#menu{
+    float: left;
+}
+
+#content{
+    float: left;
+}
+
+#details{
+    margin-right: 600px;
+    margin-left: 100px;
+}
+
+#headlinereport{
+	float: left;
 }
 
 #trailer{
@@ -108,6 +124,7 @@ html>body .gwt-DecoratedStackPanel {
   background: #14b5ff !important;
   padding: 6px 14px 6px 14px !important;
   border: solid #000000 0px !important;
+  border-radius: 0px;
   text-decoration: none;
 }
 
@@ -120,6 +137,7 @@ html>body .gwt-DecoratedStackPanel {
   background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
   text-decoration: none;
 }
+
 .btn {
   font-family: Arial;
   color: #ffffff !important;
@@ -127,6 +145,7 @@ html>body .gwt-DecoratedStackPanel {
   background: #14b5ff !important;
   padding: 6px 14px 6px 14px !important;
   border: solid #000000 0px !important;
+  border-radius: 0px;
   text-decoration: none;
 }
 
@@ -183,13 +202,29 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 5px;
 }
 
+.logout{
+	float: right;
+}
+
 .navbar{
-    margin-right: 140px;
+    float: left;
+    margin-right: 10px;
     margin-left: -10px;
     height: 58px;
     margin-top: 30px;
     color: #000;
     background-color: #8cd2f0;
+    display: block;
+    visibility: visible;
+}
+
+.logbutton{
+    float: right;
+    background: #8cd2f0;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 30px;
+    color: #000;
     display: block;
     visibility: visible;
 }
@@ -214,10 +249,12 @@ html>body .gwt-DecoratedStackPanel {
     float: right;
   background: #8cd2f0;
   font-family: Arial;
+    font-weight: 700;
+    font-size: 18px !important;
   text-decoration: none;
-  color: #000;
+  color: #fff;
   font-size: 14px;
-  padding: 20px 20px 20px 20px;
+  padding: 18px 20px 18px 20px;
   margin-top: 0px;
     margin-left: 20px;
 }
@@ -226,7 +263,6 @@ html>body .gwt-DecoratedStackPanel {
   font-family: Arial;
   color: #fff;
   background: #008fd1;
-  padding: 20px 20px 20px 20px;
   
 }
 #btn2 {
@@ -234,10 +270,12 @@ html>body .gwt-DecoratedStackPanel {
     float: right;
   background: #8cd2f0;
   font-family: Arial;
+    font-weight: 700;
+    font-size: 18px !important;
   text-decoration: none;
-  color: #000;
+  color: #fff;
   font-size: 14px;
-  padding: 20px 20px 20px 20px;
+ padding: 18px 20px 18px 20px;
   margin-top: 0px;
     margin-left: 20px;
     margin-right: 20px;
@@ -247,10 +285,13 @@ html>body .gwt-DecoratedStackPanel {
   font-family: Arial;
   color: #fff;
   background: #008fd1;
-  padding: 20px 20px 20px 20px;
   margin-right: 20px;
   
 }
+/*
+table, th, td {
+   	border: 1px solid black;
+}*/
 
 
 

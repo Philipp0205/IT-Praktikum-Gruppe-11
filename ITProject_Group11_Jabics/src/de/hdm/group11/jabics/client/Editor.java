@@ -55,20 +55,19 @@ public class Editor implements EntryPoint {
 		// Assemble login panel.
 		Label l1 = new Label("Sie sind nicht eingeloggt");
 		Label l2 = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
+		Label tempurl = new Label(logon.getLoginUrl());
 		Button b = new Button("Anmelden");
 		b.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ck) {
 				Window.Location.assign(getLoginInfo().getLoginUrl());
 			}
 		});
-		Anchor a = new Anchor(logon.getLoginUrl());
+		b.setStyleName("logbutton");
+		
 		loginPanel.add(l1);
 		loginPanel.add(l2);
+		loginPanel.add(tempurl);
 		RootPanel.get("details").add(loginPanel);
-		//RootPanel.get("nav").add(loginPanel);
-		//RootPanel.get("navright").add(loginPanel);
-		RootPanel.get("details").add(new Label(logon.getLoginUrl()));
-		RootPanel.get("navright").add(b);
 		RootPanel.get("nav").add(b);
 	}
 
