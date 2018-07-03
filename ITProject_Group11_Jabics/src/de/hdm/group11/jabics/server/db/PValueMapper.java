@@ -219,7 +219,7 @@ public class PValueMapper {
 	}
 
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
+	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code> Objekts zu
 	 * einem <code>PValue</code> Objekt in die Datenbank ein.
 	 * 
 	 * @param u       der User der an einer Eigenschaftsausprägung
@@ -349,7 +349,7 @@ public class PValueMapper {
 	}
 
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code>
+	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>JabicsUser</code>
 	 * Objekt und einem <code>PValue</code> Objekt.
 	 * 
 	 * @param pv das ausgewählte <code>PValue</code> Objekt.
@@ -520,7 +520,7 @@ public class PValueMapper {
 	}
 
 	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code>
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>JabicsUser</code>
 	 * Objekten die eine Teilhaberschaft an einem bestimmten <code>PValue</code>
 	 * Objekt besitzen.
 	 * 
@@ -538,7 +538,7 @@ public class PValueMapper {
 			// Erzeugen einer ArrayList
 			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
-			// Auswählen der <code>User</code> Objekte mit einer bestimmten ID aus der
+			// Auswählen der <code>JabicsUser</code> Objekte mit einer bestimmten ID aus der
 			// Teilhaberschaftstabelle.
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email" + " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
