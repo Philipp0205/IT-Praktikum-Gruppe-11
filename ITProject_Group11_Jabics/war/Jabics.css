@@ -1,7 +1,7 @@
 /** Add css rules here for your application. */
 #content {
-	width: 1200px;
-	margin: 0 auto;
+	width: 2000px;
+	margin-left: -50px;
 }
 
 #menuButton {
@@ -13,40 +13,37 @@
 	width: 100%;
 }
 
-
 /*.logo {
 	width: 100px;
 	max-width: 100%;
 	padding: 5px;*/
-
-#footline{
+#footline {
 	text-align: center;
 }
 
-#footer{
+#footer {
 	text-align: center;
 }
 
-#menu{
-    float: left;
-    margin-left: 100px;
+#menu {
+	float: left;
+	margin-left: 100px;
 }
 
-#content{
-    float: left;
-}
-
-#details{
-    margin-right: 200px;
-}
-
-#headlinereport{
+#content {
 	float: left;
 }
 
-#trailer{
-    text-align: center;
+#details {
+	margin-right: 200px;
+}
 
+#headlinereport {
+	float: left;
+}
+
+#trailer {
+	text-align: center;
 }
 
 .gwt-DecoratedStackPanel {
@@ -140,15 +137,14 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .gwt-Button {
-
 	color: #ffffff !important;
 	font-size: 16px !important;
-	background: #4D70A8  !important;
-  font-family: Arial;
-  padding: 6px 14px 6px 14px !important;
-  border: solid #000000 0px !important;
-  border-radius: 0px;
-  text-decoration: none;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
 }
 
 .gwt-Button:hover {
@@ -163,16 +159,14 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .btn {
-
-  font-family: Arial;
-  color: #ffffff !important;
-  font-size: 14px !important;
-  background: #19376E !important;
-  padding: 6px 14px 6px 14px !important;
-  border: solid #000000 0px !important;
-  border-radius: 0px;
-  text-decoration: none;
-
+	font-family: Arial;
+	color: #ffffff !important;
+	font-size: 14px !important;
+	background: #19376E !important;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
 }
 
 .btn:hover {
@@ -212,19 +206,21 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 }
 
-.clremlabel{
+.clremlabel {
+	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 29px;
 	/*color: #ff5e5e !important;*/
-	color:#19376E;
+	color: #19376E;
 	margin-left: 20px;
 }
+
 .cdeleteBtn {
 	font-family: Arial;
 	/*color: #ff5e5e !important;*/
-	color:#19376E;
+	color: #19376E;
 	font-size: 39px !important;
 	background: #ffffff !important;
 	padding: 5px 2px 2px 2px !important;
@@ -236,20 +232,22 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 }
 
-.claddlabel{
+.claddlabel {
+	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-left: 20px;
 	margin-top: 29px;
-	color:#19376E;
+	color: #19376E;
 	/*color: #53f4af !important;*/
 }
+
 .caddButton {
 	padding: 2px 2px 2px 2px !important;
 	font-family: Arial;
 	/*color: #53f4af !important;*/
-	color:#19376E;
+	color: #19376E;
 	font-size: 29px !important;
 	background: #ffffff !important;
 	margin-top: 19px;
@@ -260,16 +258,18 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 }
 
-.clsearchlabel{
+.clsearchlabel {
+	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 29px;
 	margin-left: 10px;
-	color:#19376E;
+	color: #19376E;
 	margin-left: 25px;
 }
-.searchButton{
+
+.searchButton {
 	padding: 2px 2px 2px 2px !important;
 	font-family: Arial;
 	color: #53f4af !important;
@@ -281,7 +281,6 @@ html>body .gwt-DecoratedStackPanel {
 	text-decoration: none;
 	cursor: pointer;
 	font-weight: bold;
-	
 }
 
 .contactListHeadline {
@@ -295,24 +294,104 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 20px;
 	text-align: center;
 }
-.CLlistBox{
+
+.CLlistBox {
 	padding: 3px;
-    height: 30px;
-    position: relative;
-    left: 0;
-    margin-left: 10px;
+	height: 30px;
+	position: relative;
+	left: 0;
+	margin-left: 10px;
 	margin-top: 20px;
-    outline: none;
-    border: 1px solid #cdcdcd;
-    border-color: #9FB8E0;
-    background-color: white;
-    font-size: 16px;
+	outline: none;
+	width: 90px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	background-color: white;
+	font-size: 16px;
 }
-.Listenname{
+
+.Listenname {
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 29px;
+}
+
+.cldeleteLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.cldeleteButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 33px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 7px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.clsaveLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	margin-left: 10px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.clsaveButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 33px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 7px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.clshareLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	margin-left: 10px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.clshareButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 39px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 4px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
 }
 
 .gwt-StackPanel {
@@ -326,9 +405,14 @@ html>body .gwt-DecoratedStackPanel {
 	    align-content: center; */
 	font-family: Arial;
 	font-size: 14px !important;
-	background: #14b5ff !important;
+	background: #4D70A8 !important;
 	color: white !important;;
 	padding: 6px 14px 6px 14px !important;
+}
+
+.tree {
+	background-color: #19376E;
+	color: white;
 }
 
 .gwt-StackPanel:hover {
@@ -380,106 +464,98 @@ html>body .gwt-DecoratedStackPanel {
 
 .buttonPanel .gwt-Button {
 	margin-left: 5px;
-
 }
 
 }
-
-.logout{
+.logout {
 	float: right;
 }
 
-.topPanel{
-	color: black;	
-	
+.topPanel {
+	color: black;
 }
 
-.navbar{
-    display: block;
-    margin-right: -10px;
-    margin-left: -10px;
-    height: 58px;
-    margin-top: 20px;
-    color: #000;
-    background-color: #8cd2f0;
-    display: block;
-    visibility: visible;
+.navbar {
+	display: block;
+	margin-right: -10px;
+	margin-left: -10px;
+	height: 58px;
+	margin-top: 20px;
+	color: #000;
+	background-color: #8cd2f0;
+	display: block;
+	visibility: visible;
 }
 
-.logbutton{
-    float: right;
-    background: #8cd2f0;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 50px;
-    color: #000;
-    display: block;
-    visibility: visible;
+.logbutton {
+	float: right;
+	background: #8cd2f0;
+	margin-left: 100px;
+	margin-right: 100px;
+	margin-top: 50px;
+	color: #000;
+	display: block;
+	visibility: visible;
 }
 
-.navbrand{
-    max-width: 20%;
-    max-height: 40px;
-    
+.navbrand {
+	max-width: 20%;
+	max-height: 40px;
 }
 
-.navbarlogo{
-    margin-left: 70px;
-    align-content: center;
-    margin-top: 1000px;
-    color: #000;
-    background-color: #8cd2f0;
-    visibility: visible;
+.navbarlogo {
+	margin-left: 70px;
+	align-content: center;
+	margin-top: 1000px;
+	color: #000;
+	background-color: #8cd2f0;
+	visibility: visible;
 }
 
-#btn1 {
-    display:block;
-    float: right;
-  background: #8cd2f0;
-  font-family: Arial;
-    font-weight: 700;
-    font-size: 18px !important;
-  text-decoration: none;
-  color: #fff;
-  font-size: 14px;
-  padding: 18px 20px 18px 20px;
-  margin-top: 0px;
-    margin-left: 20px;
+.btn1 {
+	display: block;
+	float: right;
+	background: #8cd2f0;
+	font-family: Arial;
+	font-weight: 700;
+	font-size: 18px !important;
+	text-decoration: none;
+	color: #fff;
+	font-size: 14px;
+	padding: 18px 20px 18px 20px;
+	margin-top: 0px;
+	margin-left: 20px;
 }
 
-#btn1:hover {
-  font-family: Arial;
-  color: #fff;
-  background: #008fd1;
-  
+.btn1:hover {
+	font-family: Arial;
+	color: #fff;
+	background: #008fd1;
 }
+
 #btn2 {
-    display:block;
-    float: right;
-  background: #8cd2f0;
-  font-family: Arial;
-    font-weight: 700;
-    font-size: 18px !important;
-  text-decoration: none;
-  color: #fff;
-  font-size: 14px;
- padding: 18px 20px 18px 20px;
-  margin-top: 0px;
-    margin-left: 20px;
-    margin-right: 20px;
+	display: block;
+	float: right;
+	background: #8cd2f0;
+	font-family: Arial;
+	font-weight: 700;
+	font-size: 18px !important;
+	text-decoration: none;
+	color: #fff;
+	font-size: 14px;
+	padding: 18px 20px 18px 20px;
+	margin-top: 0px;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 #btn2:hover {
-  font-family: Arial;
-  color: #fff;
-  background: #008fd1;
-  margin-right: 20px;
-  
+	font-family: Arial;
+	color: #fff;
+	background: #008fd1;
+	margin-right: 20px;
 }
 /*
 table, th, td {
    	border: 1px solid black;
 }*/
-
-
-

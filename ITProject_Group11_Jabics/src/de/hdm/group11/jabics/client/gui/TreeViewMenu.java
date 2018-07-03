@@ -107,6 +107,7 @@ public class TreeViewMenu extends VerticalPanel {
 	public Widget createContactListTreeTab(JabicsUser u) {
 		this.contactListTab = new ContactListTreeTab(u);
 		CellTree tree = new CellTree(contactListTab, "Root");
+		tree.setStyleName("tree");
 		GWT.log("TreeViewMenu: createListTab");
 		return tree;
 	}
