@@ -73,8 +73,6 @@ public class SearchForm extends VerticalPanel {
 	HorizontalPanel mainpanel = new HorizontalPanel();
 
 	public void onLoad() {
-		ct = new ContactCellListTab(currentUser);
-		list = ct.createContactTabForSearchForm();
 		listInfoLabel = new Label();
 		ausgabeLabel = new Label();
 		verPanel1 = new VerticalPanel();
@@ -137,6 +135,7 @@ public class SearchForm extends VerticalPanel {
 
 			public void onClick(ClickEvent event) {
 				sp.setVisible(false);
+				sp.clear();
 				ausgabeLabel.setVisible(false);
 
 				// }
@@ -268,8 +267,6 @@ public class SearchForm extends VerticalPanel {
 	}
 
 	public SearchForm() {
-		sp = new StackPanel();
-
 		sb = new Button("Finden");
 		valueBox = new TextBox();
 	}
@@ -301,11 +298,12 @@ public class SearchForm extends VerticalPanel {
 			if (result != null) {
 				list = ct.createContactTabForSearchForm();
 				for (Contact c : result) {
+					
 					ct.addsearchedContact(c);
 				}
-				sp.setVisible(true);
-				sp.clear();
+				
 				sp.add(list, "Ergebnis:");
+				sp.setVisible(true);
 				if (valueBox.getText().equals("")) {
 					ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText() + "' gesucht.");
 				} else {

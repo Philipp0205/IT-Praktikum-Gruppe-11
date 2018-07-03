@@ -45,6 +45,7 @@ public class EditorAdmin {
 
 	private TreeViewMenu treeViewMenu;
 
+
 	public EditorAdmin(JabicsUser u) {
 		Window.alert("Editor konstruktor");
 		this.currentUser = u;
@@ -63,7 +64,6 @@ public class EditorAdmin {
 		topPanel.add(createCL);
 
 		topPanel.addStyleName("topPanel");
-
 		mainPanel.add(topPanel);
 		mainPanel.add(widgetPanel);
 		widgetPanel.add(menuPanel);
@@ -73,6 +73,7 @@ public class EditorAdmin {
 		
 		treeViewMenu = new TreeViewMenu(currentUser);
 		treeViewMenu.setEditor(this);
+		treeViewMenu.setStyleName("treeView");
 		
 		menuPanel.add(treeViewMenu.getStackPanel());
 		
