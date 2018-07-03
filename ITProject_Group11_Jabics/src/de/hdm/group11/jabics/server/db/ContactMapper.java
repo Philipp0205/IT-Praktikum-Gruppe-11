@@ -119,7 +119,7 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
+	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code> Objekts zu
 	 * einem <code>Contact</code> Objekt in die Datenbank ein.
 	 * 
 	 * @param u
@@ -241,7 +241,7 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code>
+	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>JabicsUser</code>
 	 * Objekt und einem <code>Contact</code> Objekt.
 	 * 
 	 * @param c
@@ -276,13 +276,13 @@ public class ContactMapper {
 
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code>
-	 * Objekten eines <code>User</code> Objekts aus der Datenbank zurück.
+	 * Objekten eines <code>JabicsUser</code> Objekts aus der Datenbank zurück.
 	 * 
 	 * @param u
-	 *            Das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
+	 *            Das <code>JabicsUser</code> Objekt, dessen Kontakte wiedergegeben werden
 	 *            sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des
-	 *         <code>User</code> Objekts.
+	 *         <code>JabicsUser</code> Objekts.
 	 */
 	public ArrayList<Contact> findAllContacts(JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -439,7 +439,7 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code>
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>JabicsUser</code>
 	 * Objekten die eine Teilhaberschaft an einem bestimmten Kontakt besitzen.
 	 * 
 	 * @param c
