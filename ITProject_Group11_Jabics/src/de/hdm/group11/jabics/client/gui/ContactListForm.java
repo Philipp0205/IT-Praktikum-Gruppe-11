@@ -56,20 +56,23 @@ public class ContactListForm extends VerticalPanel {
 	HorizontalPanel editPanel = new HorizontalPanel();
 	HorizontalPanel changePanel = new HorizontalPanel();
 	HorizontalPanel searchPanel = new HorizontalPanel();
+	HorizontalPanel horp1;
+	HorizontalPanel confirmPanel;
 
 	VerticalPanel addPanel = new VerticalPanel();
 	VerticalPanel removePanel = new VerticalPanel();
+	
 
-	TextBox listBox = new TextBox();
+	TextBox listBox;
 	Label headline;
 
-	Button deleteButton = new Button("Liste löschen");
+	Button deleteButton = new Button("🗑");
 	Button saveButton = new Button("Änderungen speichern");
 	Button shareButton = new Button("Liste teilen");
-	Button removeButton = new Button("Kontakte entfernen");
-	Button addButton = new Button("Kontakte hinzufügen");
+	Button removeButton = new Button("-");
+	Button addButton = new Button("+");
 
-	Button searchInListButton = new Button("Liste durchsuchen");
+	Button searchInListButton = new Button("🔍");
 
 	ArrayList<Contact> cArray;
 
@@ -78,9 +81,42 @@ public class ContactListForm extends VerticalPanel {
 	public ContactListForm() {
 		
 		//LABELS
+		horp1 = new HorizontalPanel();
+		Label listname = new Label("Name:");
+		listname.setStyleName("Listenname");
+		listBox = new TextBox();
+		horp1.add(listname);
+		
+		Label addlabel = new Label("Kontakt");
+		Label remlabel = new Label("Kontakt");
+		Label searchlabel = new Label("Suche");
+		HorizontalPanel hinzufügen = new HorizontalPanel();
+		HorizontalPanel entfernen = new HorizontalPanel();
+		HorizontalPanel suche = new HorizontalPanel();
+		horp1.add(listBox);
+		hinzufügen.add(addlabel);
+		hinzufügen.add(addButton);
+		entfernen.add(remlabel);
+		entfernen.add(removeButton);
+		suche.add(searchlabel);
+		suche.add(searchInListButton);
+		horp1.add(hinzufügen);
+		horp1.add(entfernen);
+		horp1.add(suche);
+		
+		addlabel.setStyleName("claddlabel");
+		remlabel.setStyleName("clremlabel");
+		searchlabel.setStyleName("clsearchlabel");
+		removeButton.setStyleName("cdeleteBtn");
+		addButton.setStyleName("caddButton");
+		listBox.setStyleName("CLlistBox");
+		searchInListButton.setStyleName("searchButton");
+		
+		
 		headline = new Label("Liste: ");
+		
 
-
+		
 		/*
 		 * ---------- Clickhandler für alle Buttons -----------------
 		 */
@@ -195,11 +231,9 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		sharePanel.add(shareButton);
-		editPanel.add(addButton);
-		editPanel.add(removeButton);
 		changePanel.add(deleteButton);
 		changePanel.add(saveButton);
-		searchPanel.add(searchInListButton);
+		
 		searchInListButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				e.showSearchForm(currentList);
@@ -208,7 +242,7 @@ public class ContactListForm extends VerticalPanel {
 
 		sharePanel.setStyleName("sharePanel");
 
-		this.add(listBox);
+		this.add(horp1);
 		this.add(sharePanel);
 		this.add(editPanel);
 		this.add(changePanel);
@@ -256,16 +290,8 @@ public class ContactListForm extends VerticalPanel {
 	}
 
 	void save() {
-		GWT.log("7.4 saveMethod");
-
-		// Überprüfen ob Name gesetzt
-		boolean nameExistent = false;
-		// for ()
-
-		/*
-		 * TODO: implement
-		 */
-		// Window.alert("Not yet implemented");
+		currentList.setListName(listBox.getValue());
+		editorService.updateContactList(currentList, new UpdateContactListCallback());
 
 	}
 

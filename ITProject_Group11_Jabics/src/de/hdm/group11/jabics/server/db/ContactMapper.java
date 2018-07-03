@@ -64,7 +64,7 @@ public class ContactMapper {
 	 * Diese Methode trägt einen Kontakt in die Datenbank ein.
 	 * 
 	 * @param c
-	 *            Das <code>Contact</code> Objekt, dass in die Datenbank eingetragen
+	 *            das <code>Contact</code> Objekt, dass in die Datenbank eingetragen
 	 *            werden soll.
 	 * @return Das als Parameter übergebene- <code>Contact</code> Objekt.
 	 */
@@ -74,22 +74,21 @@ public class ContactMapper {
 		Connection con = DBConnection.connection();
 
 		try {
-			// Deklaration und Initialisierung eines
-			String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
-
-			// Erzeugen eines ungefüllten SQL-Statements
+			// Zwei ungefüllte SQL-Statements erzeugen
 			Statement stmt = con.createStatement();
-
-			//
-			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-			ResultSet rs = stmt.getGeneratedKeys();
-
 			Statement stmt2 = con.createStatement();
 
+			// String mit SQL-Statement erzeugen
+			String query = ("INSERT INTO contact (nickname) VALUES ('" + c.getName() + "') ");
+
+			// Ausführen des SQL-Statements und ID verfügbar machen
+			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+			// Resultsets erzeugen
+			ResultSet rs = stmt.getGeneratedKeys();
 			ResultSet rs2;
 
-			// Ergebnis-Tupel in Objekt überführen
+			// Contact Objekt mit ID, Erstellungsdatum und letztem Update befüllen
 			if (rs.next()) {
 				rs2 = stmt2.executeQuery("SELECT * FROM contact WHERE contactID = " + rs.getInt(1));
 				c.setId(rs.getInt(1));
@@ -98,14 +97,20 @@ public class ContactMapper {
 					c.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 				}
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
-			stmt2.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!stmt2.isClosed()) {
+				stmt2.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
-			// Rückgabe des <code>Contact</code> Objekts.
+			// Rückgabe des Objekts.
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -114,8 +119,8 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
-	 * einem <code>Contact</code> Objekt in die Datenbank ein.
+	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code>
+	 * Objekts zu einem <code>Contact</code> Objekt in die Datenbank ein.
 	 * 
 	 * @param u
 	 *            der User der an einem Kontakt Teilhaberschaftsrechte erlangen
@@ -125,7 +130,7 @@ public class ContactMapper {
 	 * @param IsOwner
 	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
 	 *            zuzuweisende Teilhaber auch der Owner ist.
-	 * @return das übergebene <code>Contact</code> Objekt
+	 * @return Das übergebene <code>Contact</code> Objekt
 	 */
 	public Contact insertCollaboration(JabicsUser u, Contact c, boolean IsOwner) {
 		// Erzeugen der Datenbankverbindung
@@ -135,15 +140,18 @@ public class ContactMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Einfügen der Teilhaberschaft in die contactCollaboration-Tabelle.
+			// Befüllen und ausführen des SQL-Statements
 			stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + c.getId() + ", " + u.getId() + ")");
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe des Contact-Objekts
 			return c;
@@ -165,31 +173,38 @@ public class ContactMapper {
 		Connection con = DBConnection.connection();
 
 		try {
-			// Erzeugen eines ungefüllten SQL-Statements
+			// Zwei ungefüllte SQL-Statements erzeugen
 			Statement stmt = con.createStatement();
 			Statement stmt2 = con.createStatement();
-			System.out.println(">>>>>>>>>>>" + c.getName());
-			// Aktualisieren des Updatedatums des <code>Contact</code> Objekts.
-			stmt.executeUpdate("UPDATE contact SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
-			ResultSet rs = stmt2
-					.executeQuery("SELECT dateCreated, dateUpdated FROM pValue WHERE pValueID = " + c.getId());
 
+			// Befüllen und ausführen des ersten SQL-Statements
+			stmt.executeUpdate("UPDATE contact SET nickname = '" + c.getName() + "' WHERE contactID = " + c.getId());
+
+			// Befüllen und ausführen des zweiten SQL-Statements
+			ResultSet rs = stmt2.executeQuery("SELECT dateUpdated FROM contact WHERE contactID = " + c.getId());
+
+			// Auslesen und setzen des letzten Updates
 			if (rs.next()) {
-				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
-			// Schließen der SQL-Statements
-			stmt.close();
-			stmt2.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!stmt2.isClosed()) {
+				stmt2.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;
 		}
-		// Rückgabe des <code>Contact</code> Objekts.
+		// Rückgabe des Contact Objekts.
 		return c;
 	}
 
@@ -205,17 +220,24 @@ public class ContactMapper {
 		Connection con = DBConnection.connection();
 
 		try {
-			// Erzeugen eines ungefüllten SQL-Statements
+			// Zwei ungefüllt SQL-Statements erstellen
 			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
 
-			// Löschen des Kontakts.
-			stmt.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId());
+			// Befüllen und ausführen des ersten SQL-Statements
+			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID = " + c.getId());
 
-			// Schließen des SQL-Statements
-			stmt.close();
+			// Befüllen und ausführen des zweiten SQL-Statements
+			stmt2.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId());
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -223,14 +245,15 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code>
-	 * Objekt und einem <code>Contact</code> Objekt.
+	 * Diese Methode löscht eine Teilhaberschaft zwischen einem
+	 * <code>JabicsUser</code> Objekt und einem <code>Contact</code> Objekt.
 	 * 
 	 * @param c
-	 *            der ausgewählte Kontakt.
+	 *            das <code>Contact</code> Objekt, zu welchem die Teilhaberschaft
+	 *            gelöscht werden soll.
 	 * @param u
-	 *            der Nutzer der die Teilhaberschaft zu dem <code>Contact</code>
-	 *            Objekt verlieren soll.
+	 *            das <code>JabicsUser</code> Objekt, welches die Teilhaberschaft zu
+	 *            dem <code>Contact</code> Objekt verlieren soll.
 	 */
 	public void deleteCollaboration(Contact c, JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -240,15 +263,18 @@ public class ContactMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Löschen der Teilhaberschaft.
-			stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID= " + u.getId() + " AND contactID= "
-					+ c.getId());
+			// Befüllen und ausführen des SQL-Statements
+			stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID = " + u.getId()
+					+ " AND contactID = " + c.getId());
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -256,13 +282,13 @@ public class ContactMapper {
 
 	/**
 	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code>
-	 * Objekten eines <code>User</code> Objekts aus der Datenbank zurück.
+	 * Objekten eines <code>JabicsUser</code> Objekts aus der Datenbank zurück.
 	 * 
 	 * @param u
-	 *            Das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
-	 *            sollen.
+	 *            Das <code>JabicsUser</code> Objekt, dessen Kontakte wiedergegeben
+	 *            werden sollen.
 	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des
-	 *         <code>User</code> Objekts.
+	 *         <code>JabicsUser</code> Objekts.
 	 */
 	public ArrayList<Contact> findAllContacts(JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -277,32 +303,34 @@ public class ContactMapper {
 			ArrayList<Contact> al = new ArrayList<Contact>();
 
 			// Join zwischen Contact und ContactCollaboration und Auswählen der Stellen mit
-			// einer bestimmten User-ID.
+			// einer bestimmten UserID.
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt
 					.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated, contact.nickname"
 							+ " FROM contact"
 							+ " LEFT JOIN contactCollaboration ON contact.contactID = contactCollaboration.contactID"
 							+ " WHERE contactCollaboration.systemUserID = " + u.getId());
+
+			// Für jedes Tupel wird ein Nutzer erstellt, mit Werten befüllt und an die
+			// ArrayList angehängt.
 			while (rs.next()) {
-				// Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
-				// Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				c.setName(rs.getString("nickname"));
-
 				al.add(c);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
-
-			for (Contact c : al) {
-				System.out.println("Alle Kontakte Finden " + c.getName() + c.getId());
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
 			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
 			// Rückgabe der mit <code>Contact</code>-Objekt befüllten ArrayList.
 			return al;
 		} catch (SQLException e) {
@@ -327,25 +355,30 @@ public class ContactMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Auswählen eines Kontakts mit einer bestimmten ID.
+			// Befüllen und ausführen eines SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT * FROM contact WHERE contactID = " + id);
 
-			// Erzeugen eines Kontakt-Objektes
+			// Erzeugen eines Contact Objektes
 			Contact c = new Contact();
+
+			// Befüllen des Contact Objekts
 			if (rs.next()) {
-				// Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				c.setName(rs.getString("nickname"));
-				System.out.println(c.getName());
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
+			// Rückgabe des Contact Objekts
 			return c;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -360,13 +393,13 @@ public class ContactMapper {
 	 * @param cl
 	 *            das <code>ContactList</code> Objekt aus welchem alle Kontakte
 	 *            ermittelt werden sollen.
-	 * @return Die gewollten <code>Contact</code> Objekte in Form einer ArrayList.
+	 * @return Die <code>Contact</code> Objekte in Form einer ArrayList.
 	 */
 
 	public ArrayList<Contact> findContactsOfContactList(ContactList cl) {
-
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
@@ -376,32 +409,34 @@ public class ContactMapper {
 
 			// Join zwischen Contact und ContactContactlist um <code>Contact</code> Objekte
 			// einer Liste auszuwählen.
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt
 					.executeQuery("SELECT contact.contactID, contact.dateCreated, contact.dateUpdated, contact.nickname"
 							+ " FROM contact"
 							+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
 							+ " WHERE contactContactLists.contactListID = " + cl.getId());
 
-			// Befüllen des Kontaktlisten-Objekts
+			// Für jedes Tupel wird ein Contact Objekt erstellt, mit Werten befüllt und an
+			// die ArrayList angehängt.
 			while (rs.next()) {
-
-				// Instanzierung eines Kontaktobjekts.
 				Contact c = new Contact();
-
-				// Befüllen des Kontakt-Objekts und hinzufügen in die ArrayList.
 				c.setId(rs.getInt("contactID"));
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				c.setName(rs.getString("nickname"));
 				al.add(c);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
-			// Rückgabe der mit Contact-Objekten befüllten ArrayList
+			// Rückgabe der mit Contact Objekten befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -410,8 +445,9 @@ public class ContactMapper {
 	}
 
 	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>User</code>
-	 * Objekten die eine Teilhaberschaft an einem bestimmten Kontakt besitzen.
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen
+	 * <code>JabicsUser</code> Objekten die eine Teilhaberschaft an einem bestimmten
+	 * Kontakt besitzen.
 	 * 
 	 * @param c
 	 *            das <code>Contact</code> Objekt, dessen Teilhaber gesucht werden.
@@ -430,23 +466,28 @@ public class ContactMapper {
 
 			// Auswählen von Usern mit einer Bestimmten ID in der contactCollaboration
 			// Tabelle.
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
 					+ " WHERE contactCollaboration.contactID = " + c.getId());
 
+			// Für jedes Tupel wird ein Nutzer erstellt, mit Werten befüllt und an die ArrayList angehängt.
 			while (rs.next()) {
-				// Befüllen des User-Objekts und hinzufügen in die ArrayList.
 				JabicsUser u = new JabicsUser(rs.getString("email"));
 				u.setId(rs.getInt("systemUserID"));
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe der mit JabicsUsern befüllten ArrayList
 			return al;
@@ -472,13 +513,12 @@ public class ContactMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Deklaration und Initialisierung einer ArrayList<BoStatus>
+			// Erzeugen einer ArrayList
 			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
 
-			// Deklaration und Initialisierung eines StringBuffers
+			// Erzeugen eines StringBuffers
 			StringBuffer contactIDs = new StringBuffer();
 
-			if (alContact != null) {
 			// contactIDs an den StringBuffer anhängen
 			for (Contact c : alContact) {
 				contactIDs.append(c.getId());
@@ -487,21 +527,21 @@ public class ContactMapper {
 
 			// Letztes Komma im StringBuffer löschen
 			contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
-			
-			}
 
 			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "
 					+ " WHERE isOwner = 0 AND contactID IN (" + contactIDs + ")");
 
-			// Das Resultset in ein Array aus BoStatus überführen
+			// Erzeugen einer ArrayList
 			ArrayList<Integer> ids = new ArrayList<Integer>();
 
+			// Für jedes Tupel wird die contactID an die ArrayList angehängt
 			while (rs.next()) {
 				ids.add(new Integer(rs.getInt("contactID")));
 			}
 
-			// Setzen des Shared Status für jeden Contact in ArrayList<Contact>
+			// Setzen des Shared Status für jeden Contact in ArrayList<Contact>.
+			// Wenn die übergebene contactID in der Datenbank steht, ist der Kontakt geteilt.
 			for (Contact c : alContact) {
 				Boolean bol = false;
 				for (Integer i : ids) {
@@ -516,11 +556,14 @@ public class ContactMapper {
 				}
 			}
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe der ArrayList<BoStatus>
 			return al;

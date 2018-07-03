@@ -92,7 +92,7 @@ public class ContactListTreeTab implements TreeViewModel {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			GWT.log("selectionchange");
 			if (selection instanceof Contact) {
-				;
+				
 				setSelectedContact((Contact) selection);
 			} else if (selection instanceof ContactList) {
 				setSelectedContactList((ContactList) selection);
