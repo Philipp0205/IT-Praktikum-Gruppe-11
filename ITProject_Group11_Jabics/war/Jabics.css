@@ -23,6 +23,18 @@
 
 #footer {
 	text-align: center;
+#footer, trailer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    color: 	black;
+    text-align: center;
+}
+
+#trailer{
+	margin-bottom: 5px;
 }
 
 #menu {
@@ -531,6 +543,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #fff;
 	background: #008fd1;
+  
 }
 
 #btn2 {
@@ -547,6 +560,19 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 0px;
 	margin-left: 20px;
 	margin-right: 20px;
+.btn2 {
+    float: right;
+  background: #8cd2f0;
+  font-family: Arial;
+    font-weight: 700;
+    font-size: 18px !important;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+ padding: 18px 20px 18px 20px;
+  margin-top: -40px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #btn2:hover {

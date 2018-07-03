@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
- * Diese Mapper-Klasse realisiert die Abbildung von <code>User</code> Objekten
+ * Diese Mapper-Klasse realisiert die Abbildung von <code>JabicsUser</code> Objekten
  * auf die relationale Datenbank. Sie stellt alle notwendigen Methoden zur
  * Verwaltung der User in der Datenbank zur Verfügung.
  * 
@@ -61,12 +61,12 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode trägt ein <code>User</code> Objekt in die Datenbank ein.
+	 * Diese Methode trägt ein <code>JabicsUser</code> Objekt in die Datenbank ein.
 	 * 
 	 * @param u
-	 *            das <code>User</code> Objekt, dass in die Datenbank eingetragen
+	 *            das <code>JabicsUser</code> Objekt, dass in die Datenbank eingetragen
 	 *            werden soll.
-	 * @return Das als Parameter übergebene <code>User</code> Objekt.
+	 * @return Das als Parameter übergebene <code>JabicsUser</code> Objekt.
 	 */
 	public JabicsUser insertUser(JabicsUser u) {
 
@@ -107,10 +107,10 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode löscht ein <code>User</code> Objekt aus der Datenbank.
+	 * Diese Methode löscht ein <code>JabicsUser</code> Objekt aus der Datenbank.
 	 * 
 	 * @param u
-	 *            das <code>User</code> Objekt, dass gelöscht werden soll.
+	 *            das <code>JabicsUser</code> Objekt, dass gelöscht werden soll.
 	 */
 	public void deleteUser(JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -137,12 +137,12 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode erlaubt die Suche eines <code>User</code> Objekts in der
+	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts in der
 	 * Datenbank.
 	 * 
 	 * @param id
 	 *            Die id nach der gesucht werden soll.
-	 * @return Das gesuchte <code>User</code> Objekt.
+	 * @return Das gesuchte <code>JabicsUser</code> Objekt.
 	 */
 	public JabicsUser findUserById(int id) {
 		// Erzeugen der Datenbankverbindung
@@ -195,7 +195,7 @@ public class UserMapper {
 			// Erzeugen einer ArrayList
 			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
-			// Auswählen der <code>User</code> Objekte geordnet nach ihrer E-Mail Adresse.
+			// Auswählen der <code>JabicsUser</code> Objekte geordnet nach ihrer E-Mail Adresse.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser ORDER BY email");
 
 			while (rs.next()) {
