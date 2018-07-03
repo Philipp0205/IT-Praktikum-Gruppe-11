@@ -22,8 +22,6 @@ import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
-import de.hdm.group11.jabics.shared.bo.Type;
-import de.hdm.group11.jabics.shared.bo.Property;
 
 public class ShowContactForm extends VerticalPanel {
 
@@ -71,13 +69,10 @@ public class ShowContactForm extends VerticalPanel {
 				if (object.getShareStatus() == BoStatus.IS_SHARED) {
 					return "Geteilt";
 				}
-				if (object.getShareStatus() == BoStatus.PARTIALLY_SHARED) {
-					return "Teilweise Geteilt";
-				}
 				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
 					return "Nicht Geteilt";
 				}
-				return "Keine Ahnung";
+				return "NoStatus";
 			}
 		};
 		

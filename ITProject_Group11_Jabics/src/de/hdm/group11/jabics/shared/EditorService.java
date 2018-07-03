@@ -2,6 +2,7 @@ package de.hdm.group11.jabics.shared;
 
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -31,7 +32,9 @@ public interface EditorService extends RemoteService {
 	public ArrayList<ContactList> getListsOf(JabicsUser u);
 
 	public ArrayList<Contact> getContactsOf(JabicsUser u);
-
+	
+	public Contact getUpdatedContact(Contact c);
+	
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u);
 
 	public JabicsUser getUserById(int id);
@@ -68,7 +71,7 @@ public interface EditorService extends RemoteService {
 
 	public JabicsUser deleteCollaboration(Contact c, JabicsUser u);
 
-	public void deleteCollaboration(ContactList cl, JabicsUser u);
+	public ContactList deleteCollaboration(ContactList cl, JabicsUser u);
 
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u);
 

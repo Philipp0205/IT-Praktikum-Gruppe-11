@@ -290,7 +290,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println("log");
 
 		ArrayList<Property> results = new ArrayList<Property>();
-		
+
 		for (Contact c : cMapper.findAllContacts(u)) {
 			for (PValue pv : pvMapper.findPValueForContact(c)) {
 				results.add(pv.getProperty());
@@ -353,15 +353,32 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
+	 * Eine geupdatete Version des Kontakts frisch aus der Datenbank lesen. Der
+	 * Kontakt bekommt seinen share Status gesetzt
+	 * 
+	 * @return Contact c, einen aktuellen Kontakt
+	 */
+	public Contact getUpdatedContact(Contact c) {
+		Contact updated = cMapper.findContactById(c.getId());
+		ArrayList<Contact> con = new ArrayList<Contact>();
+		con.add(updated);
+		ArrayList<BoStatus> status = cMapper.findShareStatus(con);
+		if (status.isEmpty()) {
+			updated.setShareStatus(status.get(1));
+		}
+		return updated;
+	}
+
+	/**
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
-	
+
 		ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
 		ArrayList<PValue> result = new ArrayList<PValue>();
 		ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
 		int i = 0;
-		//PValues filtern, wenn nicht geteilt und den Share Status setzen
+		// PValues filtern, wenn nicht geteilt und den Share Status setzen
 		for (PValue pv : allPV) {
 			pv.setShareStatus(status.get(i));
 			i++;
@@ -447,16 +464,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public Contact addValueToContact(PValue pv, Contact c, JabicsUser u) {
 		ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);
 		JabicsUser owner = uMapper.findUserByContact(c);
-		/*if(u.getId() == owner.getId()) {
-			
-		}
-		for(JabicsUser u : collaborators) {
-			
-		}
-		if (.contains(u)) {
-			c.addPValue(pv);
-			// pvMapper.insertPValue():
-		}*/
+		/*
+		 * if(u.getId() == owner.getId()) {
+		 * 
+		 * } for(JabicsUser u : collaborators) {
+		 * 
+		 * } if (.contains(u)) { c.addPValue(pv); // pvMapper.insertPValue(): }
+		 */
 		return cMapper.updateContact(c);
 	}
 
@@ -716,8 +730,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			return c;
 		} else
 			c = cMapper.findContactById(c.getId());
-			c.setValues(getPValueOf(c,u));
-			return c;
+		c.setValues(getPValueOf(c, u));
+		return c;
 	}
 
 	/**
@@ -824,8 +838,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return u;
 	}
 
-	public void deleteCollaboration(ContactList cl, JabicsUser u) {
+	public ContactList deleteCollaboration(ContactList cl, JabicsUser u) {
 		clMapper.deleteCollaboration(cl, u);
+		ArrayList<ContactList> cls = new ArrayList<ContactList>();
+		cls.add(cl);
+		ArrayList<BoStatus> status = clMapper.findShareStatus(cls);
+		if (!status.isEmpty()) {
+			cl.setShareStatus(status.get(0));
+		}
+		return cl;
+
 	}
 
 	public void deleteCollaboration(PValue pv, JabicsUser u) {
@@ -933,7 +955,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return contacts;
 
 	}
-	
+
 	// /**
 	// * Eine Kontaktliste nach Int-Values durchsuchen
 	// *

@@ -66,7 +66,7 @@ public class UserMapper {
 	 * @param u
 	 *            das <code>User</code> Objekt, dass in die Datenbank eingetragen
 	 *            werden soll.
-	 * @return Das als Parameter übergebene- <code>User</code> Objekt.
+	 * @return Das als Parameter übergebene <code>User</code> Objekt.
 	 */
 	public JabicsUser insertUser(JabicsUser u) {
 
@@ -74,25 +74,31 @@ public class UserMapper {
 		Connection con = DBConnection.connection();
 
 		try {
-			// Einfügen des Users in die Datenbank.
+			// Strings mit einem SQL-Statement befüllen
 			String query = ("INSERT INTO systemUser (email, name) VALUES " + "('" + u.getEmail() + "','"
 					+ u.getUsername() + "')");
 
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
+			// Ausführen des SQL-Statements und gesetzte ID verfügbar machen
 			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
+			// Auslesen der gesetzten ID
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
 				u.setId(rs.getInt(1));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
+			// Rückgabe des JabicsUsers mit ID
 			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -116,11 +122,14 @@ public class UserMapper {
 
 			// Löschen des Users.
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -153,11 +162,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			return u;
 		} catch (SQLException e) {
@@ -168,14 +180,9 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>Contact</code>
-	 * Objekten eines <code>User</code> Objekts aus der Datenbank zurück.
+	 * Auslesen aller <code>JabicsUser</code> Objekte aus der Datenbank
 	 * 
-	 * @param u
-	 *            das <code>User</code> Objekt, dessen Kontakte wiedergegeben werden
-	 *            sollen.
-	 * @return Die <code>ArrayList</code> mit den <code>Contact</code> Objekten des
-	 *         <code>User</code> Objekts.
+	 * @return Liste mit allen <code>JabicsUser</code> Objekten.
 	 */
 	public ArrayList<JabicsUser> findAllUser() {
 		// Erzeugen der Datenbankverbindung
@@ -202,11 +209,14 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			return al;
 		} catch (SQLException e) {
@@ -216,11 +226,12 @@ public class UserMapper {
 	}
 
 	/**
-	 * Gibt den Besitzer/Ersteller eines Kontakts zurück.
+	 * Auslesen eines <code>JabicsUser</code> Objektes, welches der Besitzer eines
+	 * <code>Contact</code> Objektes ist.
 	 * 
-	 * @param Contact
-	 *            c Der Kontakt für den der Besitzer gefunden werden soll
-	 * @return JabicsUser u
+	 * @param c
+	 *            <code>Contact</code> Objekt für welches der Beitzer gesucht wird.
+	 * @return Besitzer in Form eines <code>JabicsUser</code> Objektes
 	 */
 	public JabicsUser findUserByContact(Contact c) {
 		// Erzeugen der Datenbankverbindung
@@ -243,11 +254,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -255,6 +269,15 @@ public class UserMapper {
 		return u;
 	}
 
+	/**
+	 * Auslesen eines <code>JabicsUser</code> Objektes, welches der Besitzer eines
+	 * <code>ContactList</code> Objektes ist.
+	 * 
+	 * @param cl
+	 *            <code>ContactList</code> Objekt für welches der Beitzer gesucht
+	 *            wird.
+	 * @return Besitzer in Form eines <code>JabicsUser</code> Objektes
+	 */
 	public JabicsUser findUserByContactList(ContactList cl) {
 
 		// Erzeugen der Datenbankverbindung
@@ -279,11 +302,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -291,6 +317,14 @@ public class UserMapper {
 		return u;
 	}
 
+	/**
+	 * Auslesen eines <code>JabicsUser</code> Objektes, welches der Besitzer eines
+	 * <code>PValue</code> Objektes ist.
+	 * 
+	 * @param pv
+	 *            <code>PValue</code> Objekt für welches der Beitzer gesucht wird.
+	 * @return Besitzer in Form eines <code>JabicsUser</code> Objektes
+	 */
 	public JabicsUser findUserByPValue(PValue pv) {
 
 		// Erzeugen der Datenbankverbindung
@@ -315,11 +349,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -328,12 +365,13 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode erlaubt die Suche eines <code>User</code> Objekts in der
+	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts in der
 	 * Datenbank nach seiner E-Mail-Adresse.
 	 * 
 	 * @param email
-	 *            die email nach der gesucht werden soll.
-	 * @return das gesuchte <code>User</code> Objekt.
+	 *            die E-Mail-Adresse, für welche das <code>JabicsUser</code> Objekt
+	 *            gesucht wird.
+	 * @return das gesuchte <code>JabicsUser</code> Objekt.
 	 */
 	public JabicsUser findUserByEmail(String email) {
 		// Erzeugen der Datenbankverbindung
@@ -354,11 +392,14 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 
-				// Schließen des SQL-Statements
-				stmt.close();
-
-				// Schließen der Datenbankverbindung
-				con.close();
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+				// werden diese geschlossen.
+				if (!stmt.isClosed()) {
+					stmt.close();
+				}
+				if (!con.isClosed()) {
+					con.close();
+				}
 
 				return u;
 			} else
