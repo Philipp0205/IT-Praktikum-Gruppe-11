@@ -63,9 +63,11 @@ public class PValueMapper {
 	/**
 	 * Diese Methode trägt eine Eigenschaftsausprägung in die Datenbank ein.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dass in die Datenbank eingetragen
-	 *           werden soll.
-	 * @param c  der Kontakt zu dem das <code>PValue</code> Objekt gehört.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dass in die Datenbank eingetragen
+	 *            werden soll.
+	 * @param c
+	 *            der Kontakt zu dem das <code>PValue</code> Objekt gehört.
 	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
 	 */
 	public PValue insertPValue(PValue pv, Contact c) {
@@ -100,12 +102,17 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-				// Schließen des SQL-Statements
-				stmt.close();
-				stmt2.close();
 
-				// Schließen der Datenbankverbindung
-				con.close();
+				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				if (!stmt.isClosed()) {
+					stmt.close();
+				}
+				if (!stmt2.isClosed()) {
+					stmt2.close();
+				}
+				if (!con.isClosed()) {
+					con.close();
+				}
 
 				break;
 			}
@@ -125,12 +132,17 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-				// Schließen des SQL-Statements
-				stmt.close();
-				stmt2.close();
 
-				// Schließen der Datenbankverbindung
-				con.close();
+				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				if (!stmt.isClosed()) {
+					stmt.close();
+				}
+				if (!stmt2.isClosed()) {
+					stmt2.close();
+				}
+				if (!con.isClosed()) {
+					con.close();
+				}
 
 				break;
 			}
@@ -154,12 +166,17 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-				// Schließen des SQL-Statements
-				stmt.close();
-				stmt2.close();
 
-				// Schließen der Datenbankverbindung
-				con.close();
+				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				if (!stmt.isClosed()) {
+					stmt.close();
+				}
+				if (!stmt2.isClosed()) {
+					stmt2.close();
+				}
+				if (!con.isClosed()) {
+					con.close();
+				}
 
 				break;
 			}
@@ -180,12 +197,17 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-				// Schließen des SQL-Statements
-				stmt.close();
-				stmt2.close();
 
-				// Schließen der Datenbankverbindung
-				con.close();
+				// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+				if (!stmt.isClosed()) {
+					stmt.close();
+				}
+				if (!stmt2.isClosed()) {
+					stmt2.close();
+				}
+				if (!con.isClosed()) {
+					con.close();
+				}
 
 				break;
 			}
@@ -202,12 +224,15 @@ public class PValueMapper {
 	 * Diese Methode trägt eine Teilhaberschaft eines <code>User</code> Objekts zu
 	 * einem <code>PValue</code> Objekt in die Datenbank ein.
 	 * 
-	 * @param u       der User der an einer Eigenschaftsausprägung
-	 *                Teilhaberschaftsrechte erlangen soll.
-	 * @param pv      die Eigenschaftsausprägung an der ein User Teilhaberschaft
-	 *                haben soll.
-	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der
-	 *                zuzuweisende Teilhaber auch der Owner ist.
+	 * @param u
+	 *            der User der an einer Eigenschaftsausprägung
+	 *            Teilhaberschaftsrechte erlangen soll.
+	 * @param pv
+	 *            die Eigenschaftsausprägung an der ein User Teilhaberschaft haben
+	 *            soll.
+	 * @param IsOwner
+	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
+	 *            zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>PValue</code> Objekt.
 	 */
 	public PValue insertCollaboration(JabicsUser u, PValue pv, boolean IsOwner) {
@@ -242,7 +267,8 @@ public class PValueMapper {
 	/**
 	 * Diese Methode aktualisiert ein <code>PValue</code> Objekt in der Datenbank.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dass aktualisiert werden soll.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dass aktualisiert werden soll.
 	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
 	 */
 	public PValue updatePValue(PValue pv) {
@@ -282,11 +308,13 @@ public class PValueMapper {
 			}
 			}
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe des PValue-Objekts
 			return pv;
@@ -299,7 +327,8 @@ public class PValueMapper {
 	/**
 	 * Diese Methode löscht ein <code>PValue</code> Objekt aus der Datenbank.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dass gelöscht werden soll.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dass gelöscht werden soll.
 	 * 
 	 */
 	public void deletePValue(PValue pv) {
@@ -313,11 +342,13 @@ public class PValueMapper {
 			// Füllen des Statements
 			stmt.executeUpdate("DELETE FROM pValue WHERE pValueID = " + pv.getId());
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -328,9 +359,11 @@ public class PValueMapper {
 	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>User</code>
 	 * Objekt und einem <code>PValue</code> Objekt.
 	 * 
-	 * @param pv das ausgewählte <code>PValue</code> Objekt.
-	 * @param u  der Nutzer der die Teilhaberschaft zu dem <code>PValue</code>
-	 *           Objekt verlieren soll.
+	 * @param pv
+	 *            das ausgewählte <code>PValue</code> Objekt.
+	 * @param u
+	 *            der Nutzer der die Teilhaberschaft zu dem <code>PValue</code>
+	 *            Objekt verlieren soll.
 	 */
 	public void deleteCollaboration(PValue pv, JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -344,11 +377,13 @@ public class PValueMapper {
 			stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID = " + u.getId() + " AND pValueID = "
 					+ pv.getId());
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -358,7 +393,8 @@ public class PValueMapper {
 	 * Diese Methode gibt ein <code>PValue</code> Objekt zurück, dass eine bestimmte
 	 * ID hat.
 	 * 
-	 * @param id die Id nach welcher gesucht werden soll.
+	 * @param id
+	 *            die Id nach welcher gesucht werden soll.
 	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
 	 */
 	public PValue findPValueById(int id) {
@@ -398,11 +434,14 @@ public class PValueMapper {
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				pv.setProperty(p);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe des PValue-Objekts
 			return pv;
@@ -416,8 +455,9 @@ public class PValueMapper {
 	 * Diese Methode sucht die <code>PValue</code> Objekte eines Kontaktes und gibt
 	 * sie in Form einer ArrayList zurück.
 	 * 
-	 * @param c der Kontakt zu welchem die <code>PValue</code> Objekte ermittelt
-	 *          werden sollen.
+	 * @param c
+	 *            der Kontakt zu welchem die <code>PValue</code> Objekte ermittelt
+	 *            werden sollen.
 	 * @return Die ArrayList mit <code>PValue</code> Objekten.
 	 */
 	public ArrayList<PValue> findPValueForContact(Contact c) {
@@ -473,11 +513,13 @@ public class PValueMapper {
 				// System.out.println(pv.getPointer());
 			}
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe der mit PValues gefüllten ArrayList
 			return al;
@@ -492,7 +534,8 @@ public class PValueMapper {
 	 * Objekten die eine Teilhaberschaft an einem bestimmten <code>PValue</code>
 	 * Objekt besitzen.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dessen Teilhaber gesucht werden.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
 	public ArrayList<JabicsUser> findCollaborators(PValue pv) {
@@ -519,11 +562,14 @@ public class PValueMapper {
 				u.setId(rs.getInt("systemUserID"));
 				al.add(u);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe der mit JabicsUsern befüllten ArrayList
 			return al;
@@ -543,10 +589,10 @@ public class PValueMapper {
 
 			// Deklaration und Initialisierung einer ArrayList<BoStatus>
 			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
-			
+
 			// Deklaration und Initialisierung eines StringBuffers
 			StringBuffer pValueIDs = new StringBuffer();
-			
+
 			if (alPValue != null) {
 				// pValueIDs an den StringBuffer anhängen
 				for (PValue pv : alPValue) {
@@ -556,7 +602,7 @@ public class PValueMapper {
 				// Letztes Komma im StringBuffer löschen
 				pValueIDs.deleteCharAt(pValueIDs.lastIndexOf(","));
 			}
-			
+
 			ResultSet rs = stmt.executeQuery("SELECT pValueID " + " FROM pValueCollaboration "
 					+ " WHERE isOwner = 0 AND pValueID IN (" + pValueIDs + ")");
 
@@ -581,11 +627,13 @@ public class PValueMapper {
 				}
 			}
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Verbindungen bestehen, falls ja, werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe der ArrayList<BoStatus>
 			return al;
