@@ -9,19 +9,39 @@
 #menuButton {
 	text-decoration: none;
 	color: black;
-	
 }
 
 #OuterTabel, #Tabellenstruktur {
 	width: 100%;
 }
 
+#footline{
+	text-align: center;
+}
 
+#footer{
+	text-align: center;
+}
 
-.logo{
-	width: 100px;
-	max-width: 100%;
-	padding: 5px;
+#menu{
+    float: left;
+    margin-left: 100px;
+}
+
+#content{
+    float: left;
+}
+
+#details{
+    margin-right: 200px;
+}
+
+#headlinereport{
+	float: left;
+}
+
+#trailer{
+    text-align: center;
 }
 
 .gwt-DecoratedStackPanel {
@@ -104,6 +124,7 @@ html>body .gwt-DecoratedStackPanel {
   background: #14b5ff !important;
   padding: 6px 14px 6px 14px !important;
   border: solid #000000 0px !important;
+  border-radius: 0px;
   text-decoration: none;
 }
 
@@ -117,6 +138,7 @@ html>body .gwt-DecoratedStackPanel {
   text-decoration: none;
   cursor: pointer;
 }
+
 .btn {
   font-family: Arial;
   color: #ffffff !important;
@@ -124,6 +146,7 @@ html>body .gwt-DecoratedStackPanel {
   background: #14b5ff !important;
   padding: 6px 14px 6px 14px !important;
   border: solid #000000 0px !important;
+  border-radius: 0px;
   text-decoration: none;
 }
 
@@ -229,6 +252,102 @@ html>body .gwt-DecoratedStackPanel {
 .buttonPanel .gwt-Button {
 	margin-left: 5px;
 }
+
+.logout{
+	float: right;
+}
+
+.topPanel{
+	color: black;	
+	
+}
+
+.navbar{
+    display: block;
+    margin-right: -10px;
+    margin-left: -10px;
+    height: 58px;
+    margin-top: 20px;
+    color: #000;
+    background-color: #8cd2f0;
+    display: block;
+    visibility: visible;
+}
+
+.logbutton{
+    float: right;
+    background: #8cd2f0;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+    color: #000;
+    display: block;
+    visibility: visible;
+}
+
+.navbrand{
+    max-width: 20%;
+    max-height: 40px;
+    
+}
+
+.navbarlogo{
+    margin-left: 70px;
+    align-content: center;
+    margin-top: 1000px;
+    color: #000;
+    background-color: #8cd2f0;
+    visibility: visible;
+}
+
+#btn1 {
+    display:block;
+    float: right;
+  background: #8cd2f0;
+  font-family: Arial;
+    font-weight: 700;
+    font-size: 18px !important;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+  padding: 18px 20px 18px 20px;
+  margin-top: 0px;
+    margin-left: 20px;
+}
+
+#btn1:hover {
+  font-family: Arial;
+  color: #fff;
+  background: #008fd1;
+  
+}
+#btn2 {
+    display:block;
+    float: right;
+  background: #8cd2f0;
+  font-family: Arial;
+    font-weight: 700;
+    font-size: 18px !important;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+ padding: 18px 20px 18px 20px;
+  margin-top: 0px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#btn2:hover {
+  font-family: Arial;
+  color: #fff;
+  background: #008fd1;
+  margin-right: 20px;
+  
+}
+/*
+table, th, td {
+   	border: 1px solid black;
+}*/
 
 
 

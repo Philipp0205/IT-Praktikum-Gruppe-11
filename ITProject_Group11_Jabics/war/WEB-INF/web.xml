@@ -30,7 +30,7 @@
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
     <url-pattern>/itproject_group11_jabics_editor/login</url-pattern>
-    <url-pattern>/jabics/login</url-pattern>
+    <url-pattern>/itproject_group11_jabics_report/login</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
@@ -42,6 +42,6 @@
   <servlet-mapping>
     <servlet-name>reportGeneratorService</servlet-name>
     <url-pattern>/itproject_group11_jabics_report/report</url-pattern>
-    <url-pattern>/itproject_group11_jabics/report</url-pattern>
+    <url-pattern>/itproject_group11_jabics_editor/report</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -389,7 +389,6 @@ public class SearchForm extends VerticalPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			ClientsideSettings.getLogger().severe("Fehler beim Laden der Eigenschaften");
 		}
 
 		@Override

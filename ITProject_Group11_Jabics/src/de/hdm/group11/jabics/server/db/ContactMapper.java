@@ -478,6 +478,7 @@ public class ContactMapper {
 			// Deklaration und Initialisierung eines StringBuffers
 			StringBuffer contactIDs = new StringBuffer();
 
+			if (alContact != null) {
 			// contactIDs an den StringBuffer anhängen
 			for (Contact c : alContact) {
 				contactIDs.append(c.getId());
@@ -486,6 +487,8 @@ public class ContactMapper {
 
 			// Letztes Komma im StringBuffer löschen
 			contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
+			
+			}
 
 			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "
