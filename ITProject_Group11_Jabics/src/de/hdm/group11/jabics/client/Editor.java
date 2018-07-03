@@ -47,6 +47,7 @@ public class Editor implements EntryPoint {
 		JabicsUser u = new JabicsUser(1);
 		u.setEmail("test@mail.com");
 		u.setUsername("ein nutzer");
+		u.setId(1);
 		
 		editor = new EditorAdmin(u);
 //		editor.setLoginInfo(logon);
