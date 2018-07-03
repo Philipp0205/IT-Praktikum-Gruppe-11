@@ -19,8 +19,18 @@
 	text-align: center;
 }
 
-#footer{
-	text-align: center;
+#footer, trailer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    color: 	black;
+    text-align: center;
+}
+
+#trailer{
+	margin-bottom: 5px;
 }
 
 #menu{
@@ -300,8 +310,7 @@ html>body .gwt-DecoratedStackPanel {
     visibility: visible;
 }
 
-#btn1 {
-    display:block;
+.btn1 {
     float: right;
   background: #8cd2f0;
   font-family: Arial;
@@ -315,14 +324,13 @@ html>body .gwt-DecoratedStackPanel {
     margin-left: 20px;
 }
 
-#btn1:hover {
+.btn1:hover {
   font-family: Arial;
   color: #fff;
   background: #008fd1;
   
 }
-#btn2 {
-    display:block;
+.btn2 {
     float: right;
   background: #8cd2f0;
   font-family: Arial;
@@ -332,12 +340,12 @@ html>body .gwt-DecoratedStackPanel {
   color: #fff;
   font-size: 14px;
  padding: 18px 20px 18px 20px;
-  margin-top: 0px;
+  margin-top: -40px;
     margin-left: 20px;
     margin-right: 20px;
 }
 
-#btn2:hover {
+.btn2:hover {
   font-family: Arial;
   color: #fff;
   background: #008fd1;
