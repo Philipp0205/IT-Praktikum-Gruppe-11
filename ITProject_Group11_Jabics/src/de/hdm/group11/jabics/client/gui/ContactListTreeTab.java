@@ -99,16 +99,6 @@ public class ContactListTreeTab implements TreeViewModel {
 			} else if (selection instanceof ContactList) {
 				setSelectedContactList((ContactList) selection);
 			}
-			
-			new java.util.Timer().schedule( 
-			        new java.util.TimerTask() {
-			            @Override
-			            public void run() {
-			                selectionModel.clear();
-			            }
-			        }, 
-			        5000
-			);
 
 		}
 
