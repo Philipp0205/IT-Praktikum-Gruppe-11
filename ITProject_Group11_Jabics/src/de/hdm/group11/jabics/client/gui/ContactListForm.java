@@ -114,7 +114,7 @@ public class ContactListForm extends VerticalPanel {
 		searchlabel.setStyleName("clsearchlabel");
 		removeButton.setStyleName("cdeleteBtn");
 		addButton.setStyleName("caddButton");
-		listBox.setStyleName("CLlistBox");
+		listBox.setStyleName("TextBox");
 		searchInListButton.setStyleName("searchButton");
 
 		Label deleteLabel = new Label("Liste löschen");
