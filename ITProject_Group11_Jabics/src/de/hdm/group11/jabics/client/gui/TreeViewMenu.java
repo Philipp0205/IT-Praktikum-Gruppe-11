@@ -46,15 +46,15 @@ public class TreeViewMenu extends VerticalPanel {
 		String tip = new String("▶");
 		Label tip2 = new Label("tip");
 		
-		safeHtml = SafeHtmlUtils.fromString("Schließen ");
+		safeHtml = SafeHtmlUtils.fromString("X ");
 
 		stackPanel1 = new StackPanel();
 		stackPanel2 = new StackPanel();
 		stackPanel1.add(createContactListTreeTab(u));
 		
 		stackPanel2.add(new Label(""), safeHtml);
-		stackPanel2.add(createContactCellListTab(u), "▶ Alle Kontakte");
-		stackPanel2.add(createSharedContactListTreeTab(u), "▶  Mir geteilte Kontakte");
+		stackPanel2.add(createContactCellListTab(u), " ▶ Alle Kontakte");
+		stackPanel2.add(createSharedContactListTreeTab(u), " ▶  Mir geteilte Kontakte");
 		stackPanel2.setStyleName("stackPanel2");
 		stackPanel1.setStyleName("stackPanel1");
 		

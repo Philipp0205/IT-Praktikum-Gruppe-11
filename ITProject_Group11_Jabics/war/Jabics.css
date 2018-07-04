@@ -202,6 +202,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ffffff !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-left: 15px;
+	margin-top:4px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -214,11 +215,58 @@ html>body .gwt-DecoratedStackPanel {
 	color: #53f4af !important;
 	font-size: 16px !important;
 	background: #ffffff !important;
-	margin-left: 0px;
+	margin-left: 7px;
+	margin-top: 7px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
 	font-weight: bold;
+}
+
+.editclabel{
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 15px;
+	margin-left:10px;
+	/*color: #ff5e5e !important;*/
+	color: #19376E
+}
+.propertylabel{
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 10px;
+	margin-left:10px;
+	/*color: #ff5e5e !important;*/
+	color: #19376E
+}
+
+.pvBox{
+	padding: 0px;
+	height: 30px;
+	position: relative;
+	left: 0;
+	margin-left: 5px;
+	margin-top: 5px;
+	outline: none;
+	width: 150px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	background-color: white;
+	font-size: 12px;
+}
+
+.paddbutton{
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top:17px;
 }
 /*--------------------ContactListForm--------------------*/
 .clremlabel {
@@ -503,7 +551,28 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 10px;
 	width: 280px;
 }
-
+/*-------------------ExistingContactEditForm-------------------*/
+.edit4all{
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 3px;
+	text-decoration: none;
+	margin-left:30px;
+}
+.removeexisting{
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 3px;
+	text-decoration: none;
+}
 /*-------------------ContactShowForm-------------------*/
 /*.get.textCell{
 }
@@ -559,7 +628,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 12px;
-	margin-left: 50;
+	margin-left: 10px;
 	color: #19376E;
 	white-space: nowrap;
 }
@@ -607,7 +676,7 @@ html>body .gwt-DecoratedStackPanel {
 	test-align: center;
 	margin-top: 12px;
 	color: #19376E;
-	margin-left: -20px;
+	margin-left: 10px;
 	white-space: nowrap;
 }
 
@@ -638,6 +707,8 @@ html>body .gwt-DecoratedStackPanel {
 	background-color: white;
 	font-family: Arial;
 	border-style: hidden;
+	
+	margin-left:10px;
 }
 
 .gwt-StackPanelItem {
@@ -648,7 +719,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	background: #9FB8E0 !important;
 	color: white !important;;
-	padding: 6px 0px 6px 0px !important;
+	padding: 6px 14px 6px 14px !important;
 }
 
 .tree {
@@ -670,6 +741,8 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 	outline: none;
 	color: white;
+	padding: 0px 0px 0px 0px !important;
+	text-margin-left:10px;
 }
 
 .stackPanel2:hover {
@@ -801,7 +874,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 14px;
 	padding: 18px 20px 18px 20px;
 	margin-top: -44px;
-	margin-left: 350px;
+	margin-left: 360px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
@@ -822,7 +895,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	color: #fff;
 	margin-top: -44px;
-	margin-left: -17px;
+	margin-left: -15px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
 	border-radius: 0px;

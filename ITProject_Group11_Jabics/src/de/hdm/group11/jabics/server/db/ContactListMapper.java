@@ -321,7 +321,7 @@ public class ContactListMapper {
 			// Zwei ungefüllte SQL-Statements erzeugen
 			Statement stmt = con.createStatement();
 			Statement stmt2 = con.createStatement();
-			
+
 			// Löschen des Kontakts aus der Liste.
 			// Befüllen und ausführen des ersten SQL-Statements
 			stmt.executeUpdate("DELETE FROM contactContactLists WHERE contactID = " + c.getId()
@@ -399,7 +399,7 @@ public class ContactListMapper {
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-			
+
 			// Erzeugen eines Kontaktlisten-Objektes
 			ContactList cl = new ContactList();
 

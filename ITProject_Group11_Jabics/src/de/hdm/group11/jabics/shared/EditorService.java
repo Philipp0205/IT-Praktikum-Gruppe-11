@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import de.hdm.group11.jabics.shared.bo.*;
 
+/**
+ * Interface der Klasse <code>EditorServiceImpl</code>.
+ */
 @RemoteServiceRelativePath("editor")
 public interface EditorService extends RemoteService {
 
@@ -104,8 +107,6 @@ public interface EditorService extends RemoteService {
 	public ArrayList<Property> getStandardProperties() throws IllegalArgumentException;
 
 	public void initialise();
-	
-	public String testmethod();
 
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) throws IllegalArgumentException;
 

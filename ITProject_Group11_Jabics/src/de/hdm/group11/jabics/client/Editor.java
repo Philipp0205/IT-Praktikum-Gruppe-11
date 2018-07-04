@@ -19,7 +19,7 @@ import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
- * In der Klasse "Editor" werden die einzelnen Teile der Gui zusammengeführt und
+ * In der Klasse <code>Editor</code> werden die einzelnen Teile der Gui zusammengeführt und
  * die Darstellung der einzelnen Klassen initiiert. Editor kann wie eine
  * Verwalterklasse gesehen werden, die zu jedem Zeitpunkt über das Geschehen im
  * Editor Bescheid weiß. Folgende Klassen werden verwaltet: ShowContactForm,
