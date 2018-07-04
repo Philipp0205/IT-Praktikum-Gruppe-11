@@ -46,26 +46,26 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 					loginInfo.setCurrentUser(existingJabicsUser);
 					System.out.println("6########" + existingJabicsUser.getId() + existingJabicsUser.getEmail());
 					loginInfo.setLoggedIn(true);
+					loginInfo.setIsNewUser(false);
 					System.out.println("7##################################");
-					// loginInfo.setEmailAddress(user.getEmail());
-					// loginInfo.setNickname(user.getNickname());
-					// loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
+					loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 				} else {
-					System.out.println("Nutzer nicht gefunden");
-					JabicsUser newUser = new JabicsUser();
-					newUser.setEmail(user.getEmail());
+					System.out.println("neuer Nutzer");
+					JabicsUser newJabicsUser = new JabicsUser();
+					newJabicsUser.setEmail(user.getEmail());
+					// Temporär den Nutzernamen aus Google setzen, damit der Nutzer wenigstens
+					// irgendetwas hat
 					try {
-						newUser.setUsername(user.getNickname());
+						newJabicsUser.setUsername(user.getNickname());
 					} catch (Exception e) {
 						System.err.println("Username not found" + e.toString());
-						newUser.setUsername("not found");
+						newJabicsUser.setUsername("not found");
 					}
-					//Nutzer in DB einfügen und mit Id zurückbekommen
-					newUser = uMapper.insertUser(newUser);
 					loginInfo.setLoggedIn(true);
-					loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
-
-					loginInfo.setCurrentUser(newUser);
+					loginInfo.setIsNewUser(true);
+					// Für den Fall, dass etwas nicht tut LoginURL neu setzen
+					String s = userService.createLoginURL(requestUri);
+					loginInfo.setLoginUrl(s);
 				}
 				return loginInfo;
 
@@ -75,14 +75,60 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 				String s = userService.createLoginURL(requestUri);
 				loginInfo.setLoginUrl(s);
 				loginInfo.setLoggedIn(false);
+				loginInfo.setIsNewUser(true);
 				return loginInfo;
 			}
 		} else {
 			System.err.println("Nutzer konnte nicht ermittelt werden");
 			loginInfo.setLoggedIn(false);
+			loginInfo.setIsNewUser(true);
 			String s = userService.createLoginURL(requestUri);
 			loginInfo.setLoginUrl(s);
 			return loginInfo;
 		}
 	}
+
+	public LoginInfo createUser(LoginInfo logon, String requestUri) {
+
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+
+		try {
+			System.out.println("Nutzer erstellen");
+			// Sicherheitshalber neues LoginInfo Objekt erstellen
+			LoginInfo newLogon = new LoginInfo();
+			//Neuen Nutzer setzen mit dem gesetzten Nutzernamen
+			JabicsUser newUser = logon.getCurrentUser();
+			
+			//Ist es auch wirklich der gleiche Nutzer
+			if (newUser.getEmail() == user.getEmail()) {
+				newUser.setEmail(logon.getCurrentUser().getEmail());
+				// Nutzer in DB einfügen und mit Id zurückbekommen
+				newUser = uMapper.insertUser(newUser);
+				newLogon.setLoggedIn(true);
+				newLogon.setIsNewUser(false);
+				newLogon.setLogoutUrl(userService.createLogoutURL(requestUri));
+				newLogon.setCurrentUser(newUser);
+			} else {
+				System.out.println("Nicht die gleiche Mail");
+				String s = userService.createLoginURL(requestUri);
+				newLogon.setLoginUrl(s);
+				newLogon.setLoggedIn(false);
+				newLogon.setIsNewUser(true);
+			}
+
+			return newLogon;
+		} catch (Exception e) {
+			System.out.println("Beim Erstellen des neuen Nutzers ist etwas schief gelaufen");
+			System.err.println(e.toString());
+			LoginInfo loginInfo = new LoginInfo();
+			loginInfo.setLoggedIn(false);
+			loginInfo.setIsNewUser(true);
+			String s = userService.createLoginURL(requestUri);
+			loginInfo.setLoginUrl(s);
+			return loginInfo;
+		}
+
+	}
+
 }

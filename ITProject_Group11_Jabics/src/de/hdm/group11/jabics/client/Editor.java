@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.gui.EditorAdmin;
+import de.hdm.group11.jabics.client.gui.SignUpForm;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
@@ -32,13 +33,16 @@ public class Editor implements EntryPoint {
 	
 	private LoginInfo logon;
 	private JabicsUser currentUser;
+	
 	private EditorAdmin editor;
+	private SignUpForm signUp;
 
 	private LoginServiceAsync loginService;
 	
 	private VerticalPanel loginPanel = new VerticalPanel();
 	@Override
 	public void onModuleLoad() {
+		
 		/*
 		 * Login
 		 */
@@ -89,6 +93,10 @@ public class Editor implements EntryPoint {
 	public LoginInfo getLoginInfo() {
 		return this.logon;
 	}
+	
+	public Editor getEditor() {
+		return this;
+	}
 
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
@@ -111,6 +119,9 @@ public class Editor implements EntryPoint {
 					editor.setJabicsUser(logon.getCurrentUser());
 					// Den Editor laden
 					editor.loadEditor();
+				} else if(logon.getIsLoggedIn() && logon.isNewUser()){
+					signUp = new SignUpForm(logon, getEditor());
+					signUp.onLoad();
 				} else {
 					Window.alert("User not logged in");
 					setLoginInfo(logon);

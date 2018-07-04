@@ -2,7 +2,6 @@ package de.hdm.group11.jabics.client.gui;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
@@ -114,7 +113,7 @@ public class ContactListForm extends VerticalPanel {
 		searchlabel.setStyleName("clsearchlabel");
 		removeButton.setStyleName("cdeleteBtn");
 		addButton.setStyleName("caddButton");
-		listBox.setStyleName("CLlistBox");
+		listBox.setStyleName("TextBox");
 		searchInListButton.setStyleName("searchButton");
 
 		Label deleteLabel = new Label("Liste löschen");
@@ -627,6 +626,8 @@ public class ContactListForm extends VerticalPanel {
 
 				currentList.addContact(contact);
 				e.addContactToListInTree(currentList, contact);
+				
+				
 				// e.updateContactListInTree(list);
 
 				// onLoad();
@@ -648,7 +649,6 @@ public class ContactListForm extends VerticalPanel {
 		public void onSuccess(Contact contact) {
 			if (contact != null) {
 
-				Window.alert("Kontakt" + contact.getName() + " aus Liste gelöscht.");
 				GWT.log("7.5  " + "remove " + contact.getName() + " from " + currentList.getListName() + "in Tree"
 						+ currentList.getContacts().toString());
 

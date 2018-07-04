@@ -440,7 +440,9 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, " + "pValue.stringValue, " + "pValue.intValue, "
 					+ "pValue.floatValue, " + "pValue.dateValue, " + "pValue.dateCreated, " + "pValue.dateUpdated, "
 					+ "pValue.contactID, " + "property.propertyID, " + "property.isStandard, " + "property.name, "
+
 					+ "property.type " + "FROM pValue "
+
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE pValueID = " + id);
 
 			// Wenn ein Tupel in der Datenbank existiert, wird das PValue und das Property
@@ -631,7 +633,7 @@ public class PValueMapper {
 			StringBuffer pValueIDs = new StringBuffer();
 
 			// pValueIDs an den StringBuffer anhängen
-			if (alPValue != null) {
+			if (!alPValue.isEmpty()) {
 				for (PValue pv : alPValue) {
 					pValueIDs.append(pv.getId());
 					pValueIDs.append(",");

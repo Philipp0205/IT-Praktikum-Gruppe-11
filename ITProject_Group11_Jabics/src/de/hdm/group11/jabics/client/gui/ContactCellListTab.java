@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.thirdparty.guava.common.io.Resources;
 import com.google.gwt.user.cellview.client.CellList;
@@ -39,6 +40,7 @@ public class ContactCellListTab {
 	TreeViewMenu treeViewMenu;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
+	private CellListResources clRes = GWT.create(CellListResources.class);
 
 	// private final ArrayList<Contact> allcontacts =
 	// cMapper.findAllContacts(loginfo.getCurrentUser());
@@ -51,7 +53,7 @@ public class ContactCellListTab {
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
+		contactCell = new CellList<Contact>(new ContactCell(),clRes, keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
@@ -65,15 +67,23 @@ public class ContactCellListTab {
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
+		contactCell = new CellList<Contact>(new ContactCell(), clRes, keyProvider);
 		contactDataProvider = new ListDataProvider<Contact>();
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 	}
+	
+	public interface CellListResources extends CellList.Resources {
+		 @Override
+			@Source("JabicsCellList.css")
+		    CellList.Style cellListStyle(); 
+	}
 
+	
+	
 	public CellList<Contact> createContactTabForSearchForm() {
 		keyProvider = new ContactKeyProvider();
-		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
+		contactCell = new CellList<Contact>(new ContactCell(),clRes, keyProvider);
 		selectionModel.clear();
 
 		contactDataProvider = new ListDataProvider<Contact>();
@@ -142,10 +152,10 @@ public class ContactCellListTab {
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
-			
-//			treeViewMenu.clearSelectionModelContactListTab();
-//			treeViewMenu.clearSelectionModelSharedContactTab();
-			
+
+
+			treeViewMenu.clearSelectionModelSharedContactTab();	
+			//treeViewMenu.clearSelectionModelContactListTab();
 
 		}
 
@@ -153,6 +163,8 @@ public class ContactCellListTab {
 			GWT.log("3.1 Kontakt anzeigen " + c.getName());
 			editor.showContact(c);
 			
+			
+
 
 
 		}
@@ -205,7 +217,7 @@ public class ContactCellListTab {
 	public void clearSelectionModel() {
 		if (selectionModel != null) {
 			this.selectionModel.clear();
-		}
+		} else return;
 
 	}
 
