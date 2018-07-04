@@ -336,6 +336,9 @@ public class ContactListForm extends VerticalPanel {
 	void save() {
 		currentList.setListName(listBox.getValue());
 		editorService.updateContactList(currentList, new UpdateContactListCallback());
+		
+		
+		valueProvider.flush();
 
 	}
 
@@ -491,16 +494,11 @@ public class ContactListForm extends VerticalPanel {
 
 				for (Contact c : selectionModel.getSelectedSet()) {
 
-					GWT.log("7.4 Remove Contact " + c.getName() + "from List " + currentList.getId() + " "
-							+ currentList.getListName() + " " + currentList.getContacts().toString());
+					GWT.log("7.4 Remove Contact " + c.getName() + " from List " + currentList.getId() + " "
+							+ currentList.getListName() );
 
 					editorService.removeContactFromList(c, currentList, new RemoveContactFromListCallback());
-					// editorService.removeContactFromList(c, currentList, new
-					// RemoveContactFromListCallback());
-					/*
-					 * currentList.removeContact(c); editorService.updateContact(c,
-					 * UpdateContactCallback);
-					 */
+
 				}
 			}
 		});
@@ -562,7 +560,9 @@ public class ContactListForm extends VerticalPanel {
 				 * TODO: die geupdatete ContactList in den TreeView wieder einfügen bzw
 				 * anzeigen?
 				 */
+				//e.removeContactListFromTree(cl);
 				e.updateContactListInTree(cl);
+				
 
 				setCurrentList(cl);
 				onLoad();
@@ -653,7 +653,10 @@ public class ContactListForm extends VerticalPanel {
 						+ currentList.getContacts().toString());
 
 				currentList.removeContact(contact);
+				
 				e.removeContactFromContactListInTree(currentList, contact);
+				
+				
 
 			}
 

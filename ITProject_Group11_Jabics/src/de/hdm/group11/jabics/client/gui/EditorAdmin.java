@@ -324,7 +324,7 @@ public class EditorAdmin {
 	}
 
 	public void updateContactListInTree(ContactList cl) {
-		treeViewMenu.addContactList(cl);
+		treeViewMenu.updateContactListInTree(cl);
 	}
 
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {

@@ -361,10 +361,10 @@ public class ContactListTreeTab implements TreeViewModel {
 		contactsProvider.getList().remove(c);
 
 
-		selectionModel.setSelected(cl, true);
+		//selectionModel.setSelected(cl, true);
 		
 		contactListDataProviders.flush();
-		contactsProvider.refresh();
+
 	}
 
 	public void clearSelectionModel() {
