@@ -630,7 +630,7 @@ public class PValueMapper {
 			StringBuffer pValueIDs = new StringBuffer();
 
 			// pValueIDs an den StringBuffer anhängen
-			if (alPValue != null) {
+			if (!alPValue.isEmpty()) {
 				for (PValue pv : alPValue) {
 					pValueIDs.append(pv.getId());
 					pValueIDs.append(",");
