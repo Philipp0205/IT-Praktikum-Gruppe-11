@@ -95,10 +95,10 @@ public class PValueMapper {
 
 				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
 				// letztem Update
-				while (rs.next()) {
+				if (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
@@ -131,10 +131,10 @@ public class PValueMapper {
 
 				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
 				// letztem Update
-				while (rs.next()) {
+				if (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
@@ -173,10 +173,10 @@ public class PValueMapper {
 
 				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
 				// letztem Update
-				while (rs.next()) {
+				if (rs.next()) {
 					rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
@@ -208,10 +208,10 @@ public class PValueMapper {
 
 				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
 				// letztem Update
-				while (rs.next()) {
+				if (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}

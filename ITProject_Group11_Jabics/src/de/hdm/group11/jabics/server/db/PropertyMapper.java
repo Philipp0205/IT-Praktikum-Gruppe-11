@@ -86,8 +86,7 @@ public class PropertyMapper {
 			// Resultsets erzeugen
 			ResultSet rs = stmt.getGeneratedKeys();
 
-
-			// Property Objekt mit ID, Erstellungsdatum und letztem Update befüllen
+			// Property Objekt mit ID befüllen
 			if (rs.next()) {
 				p.setId(rs.getInt(1));
 			}
