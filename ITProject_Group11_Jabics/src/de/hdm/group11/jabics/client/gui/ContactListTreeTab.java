@@ -351,7 +351,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	}
 
 	public void removeContactOfContactList(ContactList cl, Contact c) {
-		GWT.log("Kontakt aus Liste entfernen");
+		GWT.log("Kontakt aus Liste entfernen " + c.getName());
 		ListDataProvider<Contact> contactsProvider = contactDataProviders.get(cl);
 
 		GWT.log("Folgende Kontakte in Liste " + cl.getListName());
@@ -359,11 +359,8 @@ public class ContactListTreeTab implements TreeViewModel {
 		GWT.log("Kontakt entfernen: " + c.getName());
 		
 		contactsProvider.getList().remove(c);
-
-
-		//selectionModel.setSelected(cl, true);
 		
-		contactListDataProviders.flush();
+		contactDataProviders.get(cl).flush();
 
 	}
 
