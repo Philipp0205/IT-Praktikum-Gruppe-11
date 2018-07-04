@@ -449,16 +449,11 @@ html>body .gwt-DecoratedStackPanel {
 
 .stackPanel2 {
 	background: #4D70A8;
-	  font-family: Arial;
+	font-family: Arial;
   font-weight: bold;
   outline: none;
-  
   color: white;
 }
-.Kontakte{
-	font-size: 18px !important;	
-}
-
 .stackPanel2:hover {
 	cursor: pointer;
 }
@@ -466,6 +461,7 @@ html>body .gwt-DecoratedStackPanel {
 .stackPanel1 {
 	color: white;
 	background: #4D70A8;
+	  outline: none;
 }
 
 .MeineListen {
