@@ -148,9 +148,10 @@ public class ShowContactForm extends VerticalPanel {
 
 		try {
 			GWT.log("ShowCont panels hinzufügen");
-			this.add(horp1);
+			
 			this.add(values);
 			this.add(haupthorp);
+			this.add(horp1);
 
 		} catch (Exception caught) {
 			Window.alert(caught.toString());

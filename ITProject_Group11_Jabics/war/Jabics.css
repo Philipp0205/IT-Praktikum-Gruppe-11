@@ -559,7 +559,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 12px;
-	margin-left: 50;
+	margin-left: 10px;
 	color: #19376E;
 	white-space: nowrap;
 }
@@ -607,7 +607,7 @@ html>body .gwt-DecoratedStackPanel {
 	test-align: center;
 	margin-top: 12px;
 	color: #19376E;
-	margin-left: -20px;
+	margin-left: 10px;
 	white-space: nowrap;
 }
 
@@ -638,6 +638,8 @@ html>body .gwt-DecoratedStackPanel {
 	background-color: white;
 	font-family: Arial;
 	border-style: hidden;
+	
+	margin-left:10px;
 }
 
 .gwt-StackPanelItem {
@@ -648,7 +650,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	background: #9FB8E0 !important;
 	color: white !important;;
-	padding: 6px 0px 6px 0px !important;
+	padding: 6px 14px 6px 14px !important;
 }
 
 .tree {
@@ -670,6 +672,8 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 	outline: none;
 	color: white;
+	padding: 0px 0px 0px 0px !important;
+	text-margin-left:10px;
 }
 
 .stackPanel2:hover {
@@ -800,7 +804,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 14px;
 	padding: 18px 20px 18px 20px;
 	margin-top: -44px;
-	margin-left: 350px;
+	margin-left: 360px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
@@ -821,7 +825,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	color: #fff;
 	margin-top: -44px;
-	margin-left: -17px;
+	margin-left: -15px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
