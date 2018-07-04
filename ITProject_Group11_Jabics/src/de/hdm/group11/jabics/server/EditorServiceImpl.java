@@ -38,29 +38,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	public String testmethod() {
-		/*
-		 * Contact c = cMapper.findContactById(1); //PValue pv =
-		 * pvMapper.findPValueById(1); System.out.println(c.getId());
-		 * System.out.println(c.getDateCreated().toString());
-		 * c.setOwner(uMapper.findUserByContact(c)); return c.getOwner().getEmail();
-		 */
 		return "Testmethode geglückt!";
-//		ContactList cl = clMapper.findContactListById(1);
-//		ArrayList<Contact> c = cMapper.findContactsOfContactList(cl);
-//		for (Contact cnew : c) {
-//			for (PValue pv : pvMapper.findPValueForContact(cnew)) {
-//				cnew.addPValue(pv);
-//				System.out.println(pv.getStringValue());
-//			}
-//			;
-//		}
-//		return c.get(1).getValues().get(1).toString();
-
-		// ArrayList<PValue> lol = pvMapper.findPValueForContact(c);
-		// for(int i= 0; i< lol.size(); i++) {
-		// System.out.println(lol.get(i).getStringValue());
-		// }
-		// return lol.get(1).getStringValue();
 	}
 
 	/**
@@ -255,25 +233,22 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
 
-		ArrayList<ContactList> result = new ArrayList<ContactList>();
-		// ArrayList<BoStatus> status = clMapper.findShareStatus(result);
+		ArrayList<ContactList> result = clMapper.findContactListOfUser(u);
+		ArrayList<BoStatus> status = clMapper.findShareStatus(result);
 
-		int i = 0;
-		for (ContactList cl : clMapper.findContactListOfUser(u)) {
+		
+		for (ContactList cl : result) {
 			cl.setOwner(uMapper.findUserByContactList(cl));
 			System.out.println("2.2 getListsOf " + cl.getListName());
 			result.add(cl);
-
-			// if (status.size() == result.size()) {
-			// System.out.println("BOStatus für Kontaktliste: " + cl.getId() +
-			// status.get(i).toString());
-			//
-			// // ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
-			// c.setShareStatus(status.get(i));
-			// i++;
-			// }
+			
+			int i = 0;
+			if (status.size() == result.size()) {
+				System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
+				cl.setShareStatus(status.get(i));
+				i++;
+			}
 		}
-
 		return result;
 	}
 
@@ -406,7 +381,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Einen <code>Contact</code> in eine Liste einfügen. Es wird überprüft, ob der
 	 * Kontakt bereits ind er Liste liegt.
 	 * 
-	 * @param Contact c
+	 * @param Contact     c
 	 * @param ContactList cl
 	 * @return updated ContactList
 	 */
@@ -438,8 +413,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			System.err.println("Liste den Kontakt hinzufügen: " + c.getName());
 			clMapper.insertContactIntoContactList(cl, c);
 			return c;
-		}else return null;
-		
+		} else
+			return null;
+
 	}
 
 	/**
@@ -452,10 +428,25 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		// cl.removeContact(c);
 
-//		System.err.println("Kollaboratoren finden:");
-//		for (JabicsUser u : cMapper.findCollaborators(c)) {
-//			deleteCollaboration(c, u);
-//		}
+		System.err.println("Kollaboratoren finden:");
+		for (JabicsUser u : cMapper.findCollaborators(c)) {
+			try {
+				boolean bol = true;
+				for (ContactList clAll : clMapper.findContactListOfUser(u)) {
+					for (Contact cAll : getContactsOfList(cl, u)) {
+						if (cAll.getId() == c.getId())
+							bol = false;
+					}
+				}
+
+				if (bol) {
+					deleteCollaboration(c, u);
+				}
+			} catch (Exception e) {
+				System.err.println(e.toString());
+				deleteCollaboration(c, u);
+			}
+		}
 
 		System.err.println("editorSerivce -> removeContactFromList: Kontakt in Liste löschen: " + c.getName());
 
@@ -566,9 +557,37 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			clMapper.deleteContactList(cl);
 			System.out.println("Delete ContactList " + cl.getListName());
 
+		} else {
+			System.out.println("Löschversuch Liste ohne Besitz");
+			clMapper.deleteCollaboration(cl, ju);
 		}
 		return cl;
 
+	}
+
+	/**
+	 * Einen JabicsUser aus dem System löschen. Löscht alle Listen und Kontakte, die
+	 * dieser Nutzer hat. PValue-Objekte werden bei Kontakten, die dem Nutzer
+	 * geteilt waren, nicht gelöscht.
+	 * 
+	 * @param JabicsUser u
+	 */
+	public void deleteUser(JabicsUser u) {
+		ArrayList<ContactList> allListsOfUser = getListsOf(u);
+		ArrayList<Contact> allContactsOfUser = getContactsOf(u);
+
+		// Die Kontrolle, ob übergebener Nutzer der Eigentümer ist, regeln die
+		// jeweiligen Methoden
+		for (ContactList cl : allListsOfUser) {
+			deleteContactList(cl, u);
+		}
+		for (Contact c : allContactsOfUser) {
+			deleteContact(c, u);
+		}
+
+		uMapper.deleteUser(u);
+
+		return;
 	}
 
 	/**
@@ -1075,12 +1094,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<JabicsUser> getAllUsers() {
 		return uMapper.findAllUser();
-	}
-
-	public JabicsUser setJabicsUser(JabicsUser u) {
-		this.jabicsUser = u;
-
-		return jabicsUser;
 	}
 
 	public ArrayList<Property> getStandardProperties() {
