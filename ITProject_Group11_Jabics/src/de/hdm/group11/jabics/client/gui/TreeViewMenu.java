@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.client.gui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -196,13 +197,13 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public interface CellTreeResources extends CellTree.Resources {
-//		@Override
-//		@Source("cellTreeClosedItem.gif")
-//	    ImageResource cellTreeClosedItem();
-//
-//	    @Override
-//		@Source("cellTreeOpenItem.gif")
-//	    ImageResource cellTreeOpenItem();
+		@Override
+		@Source("cellTreeClosedItem.png")
+	    ImageResource cellTreeClosedItem();
+
+	    @Override
+		@Source("cellTreeOpenItem.png")
+	    ImageResource cellTreeOpenItem();
 
 		@Override
 		@Source("JabicsCellTree.css")
