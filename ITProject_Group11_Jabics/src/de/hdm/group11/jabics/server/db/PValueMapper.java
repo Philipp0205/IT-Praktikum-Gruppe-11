@@ -429,9 +429,10 @@ public class PValueMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Erzeugen eines PValue-Objektes
+			// Erzeugen eines PValue-Objekts
 			PValue pv = new PValue();
 
+			// Erzeugen eines Property-Objekts
 			Property p = new Property();
 
 			// Füllen des Statements
@@ -439,11 +440,12 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, " + "pValue.stringValue, " + "pValue.intValue, "
 					+ "pValue.floatValue, " + "pValue.dateValue, " + "pValue.dateCreated, " + "pValue.dateUpdated, "
 					+ "pValue.contactID, " + "property.propertyID, " + "property.isStandard, " + "property.name, "
-					+ "property.type "
-					+ "FROM pValue "
+					+ "property.type " + "FROM pValue "
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE pValueID = " + id);
+
+			// Wenn ein Tupel in der Datenbank existiert, wird das PValue und das Property
+			// Objekt befüllt
 			if (rs.next()) {
-				// Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 				pv.setId(rs.getInt("pValueID"));
 				pv.setStringValue(rs.getString("stringValue"));
 				pv.setIntValue(rs.getInt("intValue"));
@@ -499,8 +501,7 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, " + "pValue.stringValue, " + "pValue.intValue, "
 					+ "pValue.floatValue, " + "pValue.dateValue, " + "pValue.dateCreated, " + "pValue.dateUpdated, "
 					+ "pValue.contactID, " + "property.propertyID, " + "property.isStandard, " + "property.name, "
-					+ "property.type, " 
-					+ "FROM pValue "
+					+ "property.type, " + "FROM pValue "
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE contactID = "
 					+ c.getId());
 
