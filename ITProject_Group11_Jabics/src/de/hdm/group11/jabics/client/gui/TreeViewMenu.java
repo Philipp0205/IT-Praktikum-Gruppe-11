@@ -1,11 +1,14 @@
 package de.hdm.group11.jabics.client.gui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,17 +41,20 @@ public class TreeViewMenu extends VerticalPanel {
 	private CellTreeResources ctRes = GWT.create(CellTreeResources.class);
 
 	public TreeViewMenu(JabicsUser u) {
+		
 		stackPanel = new StackPanel();
 		stackPanel.add(createContactListTreeTab(u), "Meine Listen");
 		stackPanel.add(createContactCellListTab(u), "Alle Kontakte");
 		stackPanel.add(createSharedContactListTreeTab(u), "Mir geteilte Kontakte");
 		
 		stackPanel.setWidth("250px");
-		// stackPanel.ensureDebugId("cwStackPanel");
+		stackPanel.ensureDebugId("cwStackPanel");
 	}
 
 	public void onLoad() {
 		this.add(this.stackPanel);
+		
+		//this.add(this.stackLayoutPanel);
 	}
 
 	public void addContactList(ContactList cl) {
@@ -66,7 +72,7 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public void setUser(JabicsUser u) {
 		this.user = u;
-		// contactListTab.setUser(u);
+		contactListTab.setUser(u);
 		contactTab.setUser(u);
 		sharedContactListTab.setUser(u);
 	}
@@ -94,19 +100,20 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public StackPanel getStackPanel() {
-		return this.stackPanel;
+		return this.stackPanel;	
 	}
 
 	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in tree view");
 		GWT.log("Editor: " + editor.hashCode());
 		this.e = editor;
+		
 		contactListTab.setEditor(editor);
 		contactTab.setEditor(editor);
 		sharedContactListTab.setEditor(editor);
 	}
 
-	public CellList<Contact> createContactCellListTab(JabicsUser u) {
+	public Widget createContactCellListTab(JabicsUser u) {
 		this.contactTab = new ContactCellListTab(u, this);
 		contactTab.onLoad();
 		return contactTab.getCellList();
@@ -120,18 +127,13 @@ public class TreeViewMenu extends VerticalPanel {
 
 		GWT.log("TreeViewMenu: createListTab");
 		
-		tree.setStyleName("cellTree");
 		return tree;
 	}
 
-	public CellList<Contact> createSharedContactListTreeTab(JabicsUser u) {
+	public Widget createSharedContactListTreeTab(JabicsUser u) {
 		this.sharedContactListTab = new SharedContactCellListTab(u, this);
 		sharedContactListTab.onLoad();
 		return sharedContactListTab.getCellList();
-	}
-
-	public void flushContactListsProvider() {
-		contactListTab.flushContactListProvider();
 	}
 
 	public void clearSelectionModelContactListTab() {
@@ -159,6 +161,10 @@ public class TreeViewMenu extends VerticalPanel {
 		 return sharedContactListTab.getSelectionModel();
 	}
 	
+	public void removeContactsPanel() { 
+		stackPanel.remove(2);
+	}
+	
 	public interface CellTreeResources extends CellTree.Resources {
 //		@Override
 //		@Source("cellTreeClosedItem.gif")
@@ -172,6 +178,7 @@ public class TreeViewMenu extends VerticalPanel {
 		@Source("JabicsCellTree.css")
 	    CellTree.Style cellTreeStyle(); 
 	}
+
 	
 
 }

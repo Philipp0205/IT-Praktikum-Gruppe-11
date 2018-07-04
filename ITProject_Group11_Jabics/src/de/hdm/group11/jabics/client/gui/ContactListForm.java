@@ -627,6 +627,8 @@ public class ContactListForm extends VerticalPanel {
 
 				currentList.addContact(contact);
 				e.addContactToListInTree(currentList, contact);
+				
+				
 				// e.updateContactListInTree(list);
 
 				// onLoad();
@@ -648,7 +650,6 @@ public class ContactListForm extends VerticalPanel {
 		public void onSuccess(Contact contact) {
 			if (contact != null) {
 
-				Window.alert("Kontakt" + contact.getName() + " aus Liste gelöscht.");
 				GWT.log("7.5  " + "remove " + contact.getName() + " from " + currentList.getListName() + "in Tree"
 						+ currentList.getContacts().toString());
 

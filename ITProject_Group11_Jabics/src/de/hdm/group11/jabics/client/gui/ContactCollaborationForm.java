@@ -357,7 +357,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erolgreich geteilt!");
-			e.updateContactInTree(sharedContact);
+			updateShareStatus();
+			//e.updateContactInTree(sharedContact);
 		}
 	}
 

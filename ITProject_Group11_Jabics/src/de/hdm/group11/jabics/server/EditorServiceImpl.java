@@ -422,6 +422,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public Contact addContactToList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
+		
+		
 		ArrayList<Contact> clOld = cMapper.findContactsOfContactList(cl);
 		Boolean bol = true;
 		for (Contact cOld : clOld) {
@@ -458,17 +460,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Contact removeContactFromList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
-
-		// cl.removeContact(c);
-
-//		System.err.println("Kollaboratoren finden:");
-//		for (JabicsUser u : cMapper.findCollaborators(c)) {
-//			deleteCollaboration(c, u);
-//		}
-
-		System.err.println("editorSerivce -> removeContactFromList: Kontakt in Liste löschen: " + c.getName());
-
-		clMapper.deleteContactfromContactList(cl, c);
+		
+		System.err.println("Kollaboratoren finden:");
+		ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
+		for (JabicsUser u : clMapper.findCollaborators(cl)) {
+			System.err.println("Kollaborator:" + u.getUsername());
+			for (PValue pv : pVals) {
+				deleteCollaboration(pv, u);
+			}
+		}
+		System.err.println("Liste den Kontakt entfernen: " + c.getName());
+		
+		clMapper.deleteContactfromContactList(cl, c); 
 		return c;
 	}
 
