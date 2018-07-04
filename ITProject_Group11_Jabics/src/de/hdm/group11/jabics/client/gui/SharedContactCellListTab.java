@@ -135,8 +135,8 @@ public class SharedContactCellListTab extends Widget {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
 			
-//			treeViewMenu.clearSelectionModelContactListTab();
-//			treeViewMenu.clearSelectionModelContactTab();
+			treeViewMenu.clearSelectionModelContactListTab();
+			treeViewMenu.clearSelectionModelContactTab();
 			
 			
 
@@ -186,7 +186,7 @@ public class SharedContactCellListTab extends Widget {
 	public void clearSelectionModel() {
 		if (selectionModel != null) {
 			this.selectionModel.clear();
-		}
+		} else return;
 
 	}
 	

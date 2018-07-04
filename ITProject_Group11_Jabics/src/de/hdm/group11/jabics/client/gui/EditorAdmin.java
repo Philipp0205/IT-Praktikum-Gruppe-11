@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -49,6 +50,9 @@ public class EditorAdmin {
 	private SearchForm sForm;
 
 	private TreeViewMenu treeViewMenu;
+	
+	
+	RootLayoutPanel rp;
 
 
 	public EditorAdmin(JabicsUser u) {
@@ -80,9 +84,10 @@ public class EditorAdmin {
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
 
-		menuPanel.setWidth("400px");
+		//menuPanel.setWidth("400px");
 
 		menuPanel.setStyleName("menuPanel");
+		menuPanel.setPixelSize(200, 400);
 	}
 	
 
@@ -328,11 +333,6 @@ public class EditorAdmin {
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
 	}
-
-	public void flushContactLists() {
-		treeViewMenu.flushContactListsProvider();
-	}
-
 	/**
 	 * ClickHandler um einen neuen Kontakt zu erstellen und zu bearbeiten
 	 */

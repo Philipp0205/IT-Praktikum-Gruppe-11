@@ -39,6 +39,7 @@ public class Editor implements EntryPoint {
 	private VerticalPanel loginPanel = new VerticalPanel();
 	@Override
 	public void onModuleLoad() {
+		
 		/*
 		 * Login
 		 */

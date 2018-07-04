@@ -152,10 +152,10 @@ public class ContactCellListTab {
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
-			
-//			treeViewMenu.clearSelectionModelContactListTab();
-//			treeViewMenu.clearSelectionModelSharedContactTab();
-			
+
+
+			treeViewMenu.clearSelectionModelSharedContactTab();	
+			//treeViewMenu.clearSelectionModelContactListTab();
 
 		}
 
@@ -163,6 +163,8 @@ public class ContactCellListTab {
 			GWT.log("3.1 Kontakt anzeigen " + c.getName());
 			editor.showContact(c);
 			
+			
+
 
 
 		}
@@ -215,7 +217,7 @@ public class ContactCellListTab {
 	public void clearSelectionModel() {
 		if (selectionModel != null) {
 			this.selectionModel.clear();
-		}
+		} else return;
 
 	}
 

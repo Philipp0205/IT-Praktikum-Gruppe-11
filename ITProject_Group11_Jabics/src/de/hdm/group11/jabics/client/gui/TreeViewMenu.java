@@ -43,6 +43,8 @@ public class TreeViewMenu extends VerticalPanel {
 	
 
 	public TreeViewMenu(JabicsUser u) {
+
+
 		String tip = new String("▶");
 		Label tip2 = new Label("tip");
 		
@@ -62,6 +64,7 @@ public class TreeViewMenu extends VerticalPanel {
 	public void onLoad() {
 		this.add(this.stackPanel1);
 		this.add(this.stackPanel2);
+
 	}
 
 	public void addContactList(ContactList cl) {
@@ -79,7 +82,7 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public void setUser(JabicsUser u) {
 		this.user = u;
-		// contactListTab.setUser(u);
+		contactListTab.setUser(u);
 		contactTab.setUser(u);
 		sharedContactListTab.setUser(u);
 	}
@@ -106,24 +109,27 @@ public class TreeViewMenu extends VerticalPanel {
 		sharedContactListTab.updateContact(c);
 	}
 
+
 	public StackPanel getStackPanel1() {
 		return this.stackPanel1;
 	}
 	
 	public StackPanel getStackPanel2() {
 		return this.stackPanel2;
+
 	}
 
 	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in tree view");
 		GWT.log("Editor: " + editor.hashCode());
 		this.e = editor;
+		
 		contactListTab.setEditor(editor);
 		contactTab.setEditor(editor);
 		sharedContactListTab.setEditor(editor);
 	}
 
-	public CellList<Contact> createContactCellListTab(JabicsUser u) {
+	public Widget createContactCellListTab(JabicsUser u) {
 		this.contactTab = new ContactCellListTab(u, this);
 		contactTab.onLoad();
 		return contactTab.getCellList();
@@ -137,18 +143,13 @@ public class TreeViewMenu extends VerticalPanel {
 
 		GWT.log("TreeViewMenu: createListTab");
 		
-		tree.setStyleName("cellTree");
 		return tree;
 	}
 
-	public CellList<Contact> createSharedContactListTreeTab(JabicsUser u) {
+	public Widget createSharedContactListTreeTab(JabicsUser u) {
 		this.sharedContactListTab = new SharedContactCellListTab(u, this);
 		sharedContactListTab.onLoad();
 		return sharedContactListTab.getCellList();
-	}
-
-	public void flushContactListsProvider() {
-		contactListTab.flushContactListProvider();
 	}
 
 	public void clearSelectionModelContactListTab() {
@@ -177,6 +178,10 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	
+	public void removeContactsPanel() { 
+		stackPanel.remove(2);
+	}
+	
 	public interface CellTreeResources extends CellTree.Resources {
 //		@Override
 //		@Source("cellTreeClosedItem.gif")
@@ -190,6 +195,7 @@ public class TreeViewMenu extends VerticalPanel {
 		@Source("JabicsCellTree.css")
 	    CellTree.Style cellTreeStyle(); 
 	}
+
 	
 
 }
