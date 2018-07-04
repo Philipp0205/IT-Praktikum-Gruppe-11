@@ -33,7 +33,7 @@
 }
 
 .cellTreeItemImage {
-	
+	margin-left:1px;
 }
 
 .cellTreeItemImageValue {
@@ -65,7 +65,7 @@
 
 .cellTreeTopItemImageValue {
 	border-bottom: 1px solid #6f7277;
-	padding-bottom: 1px;
+	margin-left:10px;
 }
 
 .cellTreeKeyboardSelectedItem {

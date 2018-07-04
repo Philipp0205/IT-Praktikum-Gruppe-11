@@ -92,7 +92,6 @@ public class EditorAdmin {
 		//menuPanel.setWidth("400px");
 
 		menuPanel.setStyleName("menuPanel");
-		menuPanel.setPixelSize(200, 400);
 	}
 
 	public void loadEditor() {
