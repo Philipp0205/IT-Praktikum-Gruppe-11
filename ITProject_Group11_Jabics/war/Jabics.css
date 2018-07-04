@@ -21,20 +21,21 @@
 	text-align: center;
 }
 
-#footer, trailer{
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    margin-bottom: 10px;
-    width: 100%;
-    color: 	black;
-    text-align: center;
+#footer, trailer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	margin-bottom: 10px;
+	width: 100%;
+	color: black;
+	text-align: center;
 }
 
-#trailer{
+#trailer {
 	margin-bottom: 5px;
 	text-align: center;
 }
+
 #menu {
 	float: left;
 	margin-left: 100px;
@@ -51,8 +52,6 @@
 #headlinereport {
 	float: left;
 }
-
-
 
 .gwt-DecoratedStackPanel {
 	border-bottom: 1px solid #bbbbbb;
@@ -187,6 +186,18 @@ html>body .gwt-DecoratedStackPanel {
 	text-decoration: none;
 	cursor: pointer;
 }
+/*--------------------ContactForm--------------------*/
+.showContactTable{
+	font-family: Arial; 
+	font-size: 20px
+}
+
+.gwt-CellTableItem{
+	font-family: Arial; 
+	font-size: 20px
+}
+
+/*--------------------EditContactForm--------------------*/
 
 .deleteBtn {
 	font-family: Arial;
@@ -213,7 +224,7 @@ html>body .gwt-DecoratedStackPanel {
 	cursor: pointer;
 	font-weight: bold;
 }
-
+/*--------------------ContactListForm--------------------*/
 .clremlabel {
 	cursor: pointer;
 	font-family: Arial;
@@ -333,7 +344,6 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 29px;
 	color: #19376E;
 	margin-left: 25px;
-	white-space: nowrap;
 }
 
 .cldeleteButton {
@@ -483,6 +493,7 @@ html>body .gwt-DecoratedStackPanel {
 	color: black;
 }
 
+/*--------------------- NAVBAR ----------------------*/
 .navbar {
 	display: block;
 	margin-right: -10px;
@@ -490,20 +501,34 @@ html>body .gwt-DecoratedStackPanel {
 	height: 58px;
 	margin-top: 20px;
 	color: #000;
-	background-color: #8cd2f0;
+	background-color: #9FB8E0;
 	display: block;
 	visibility: visible;
 }
 
 .logbutton {
+	font-family: Arial;
+	font-weight: 700;
+	font-size: 18px !important;
 	float: right;
-	background: #8cd2f0;
-	margin-left: 100px;
+	background: #9FB8E0;
+	margin-left: 800px;
 	margin-right: 100px;
-	margin-top: 50px;
+	margin-top: -44px;
 	color: #000;
 	display: block;
 	visibility: visible;
+	padding: 18px 20px 18px 20px;
+	color: white;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.logbutton:hover {
+	color: #fff;
+	background: #008fd1;
 }
 
 .navbrand {
@@ -521,46 +546,47 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .btn1 {
-  float: right;
-  background: #8cd2f0;
-  font-family: Arial;
-  font-weight: 700;
-  font-size: 18px !important;
-  text-decoration: none;
-  color: #fff;
-  font-size: 14px;
-  padding: 18px 20px 18px 20px;
-  margin-top: -44px;
-  margin-left: 350px;
-  margin-right: 20px;
-  border: solid #000000 0px !important;
-  border-radius: 0px;
+	float: right;
+	background: #9FB8E0;
+	font-family: Arial;
+	font-weight: 700;
+	font-size: 18px !important;
+	text-decoration: none;
+	color: #fff;
+	font-size: 14px;
+	padding: 18px 20px 18px 20px;
+	margin-top: -44px;
+	margin-left: 350px;
+	margin-right: 20px;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	cursor: pointer;
+	white-space: nowrap;
 }
 
 .btn1:hover {
-	font-family: Arial;
 	color: #fff;
 	background: #008fd1;
-	  
 }
 
 .btn2 {
 	float: right;
-  font-family: Arial;
-    background: #8cd2f0;
-  font-weight: 700;
-  font-size: 18px !important;
-  color: #fff;
-  margin-top: -44px;
-  margin-left: -17px;
-  margin-right: 20px;
-  border: solid #000000 0px !important;
-  border-radius: 0px;
-  padding: 18px 20px 18px 20px;
+	font-family: Arial;
+	background: #9FB8E0;
+	font-weight: 700;
+	font-size: 18px !important;
+	color: #fff;
+	margin-top: -44px;
+	margin-left: -17px;
+	margin-right: 20px;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	padding: 18px 20px 18px 20px;
+	cursor: pointer;
+	white-space: nowrap;
 }
 
 .btn2:hover {
-	font-family: Arial;
 	color: #fff;
 	background: #008fd1;
 }

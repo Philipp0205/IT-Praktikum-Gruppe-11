@@ -34,7 +34,7 @@ public class TreeViewMenu extends VerticalPanel {
 		stackPanel = new StackPanel();
 		stackPanel.add(createContactListTreeTab(u), "Meine Listen");
 		stackPanel.add(createContactCellListTab(u), "Alle Kontakte");
-		stackPanel.add(createSharedContactListTreeTab(u), "Mir geteilte Kontakte");
+		stackPanel.add(createSharedContactListTreeTab(u), "Mit mir geteilte Kontakte");
 		//stackPanel.ensureDebugId("cwStackPanel");
 	}
 
