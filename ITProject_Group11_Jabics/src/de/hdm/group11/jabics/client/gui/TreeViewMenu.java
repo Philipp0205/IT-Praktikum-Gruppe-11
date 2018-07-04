@@ -7,7 +7,7 @@ import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -34,27 +34,37 @@ public class TreeViewMenu extends VerticalPanel {
 	ContactListTreeTab contactListTab;
 	SharedContactCellListTab sharedContactListTab;
 	ContactCellListTab contactTab;
-	StackPanel stackPanel;
+	StackPanel stackPanel1;
+	StackPanel stackPanel2;
 	CellTree tree;
 	ContactCellListTab cellListTab;
 	
 	private CellTreeResources ctRes = GWT.create(CellTreeResources.class);
+	
 
 	public TreeViewMenu(JabicsUser u) {
+
+
+		String tip = new String("▶");
+		Label tip2 = new Label("tip");
 		
-		stackPanel = new StackPanel();
-		stackPanel.add(createContactListTreeTab(u), "Meine Listen");
-		stackPanel.add(createContactCellListTab(u), "Alle Kontakte");
-		stackPanel.add(createSharedContactListTreeTab(u), "Mir geteilte Kontakte");
-		
-		stackPanel.setWidth("250px");
-		stackPanel.ensureDebugId("cwStackPanel");
-	}
+		stackPanel1 = new StackPanel();
+		stackPanel2 = new StackPanel();
+		stackPanel1.add(createContactListTreeTab(u));
+		stackPanel2.add(createContactCellListTab(u), "Alle Kontakte");
+		stackPanel2.add(createSharedContactListTreeTab(u), "Mir geteilte Kontakte");
+		stackPanel2.setStyleName("stackPanel2");
+		stackPanel1.setStyleName("stackPanel1");
+		stackPanel2.setWidth("250px");
+		stackPanel1.setWidth("250px");
+//		stackPanel1.getWidget(0).setStyleName("MeineListen");
+		// stackPanel.ensureDebugId("cwStackPanel");
+}
 
 	public void onLoad() {
-		this.add(this.stackPanel);
-		
-		//this.add(this.stackLayoutPanel);
+		this.add(this.stackPanel1);
+		this.add(this.stackPanel2);
+
 	}
 
 	public void addContactList(ContactList cl) {
@@ -99,8 +109,14 @@ public class TreeViewMenu extends VerticalPanel {
 		sharedContactListTab.updateContact(c);
 	}
 
-	public StackPanel getStackPanel() {
-		return this.stackPanel;	
+
+	public StackPanel getStackPanel1() {
+		return this.stackPanel1;
+	}
+	
+	public StackPanel getStackPanel2() {
+		return this.stackPanel2;
+
 	}
 
 	public void setEditor(EditorAdmin editor) {
@@ -160,6 +176,7 @@ public class TreeViewMenu extends VerticalPanel {
 	public SingleSelectionModel<Contact> getSelectionModelSharedContactsTab() {
 		 return sharedContactListTab.getSelectionModel();
 	}
+
 	
 	public void removeContactsPanel() { 
 		stackPanel.remove(2);

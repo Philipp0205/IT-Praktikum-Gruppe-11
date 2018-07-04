@@ -52,6 +52,7 @@ public class ShowContactForm extends VerticalPanel {
 		values = new CellTable<PValue>();
 		valueProvider = new ListDataProvider<PValue>();
 		valueProvider.addDataDisplay(values);
+		values.setStyleName("showContactTable");
 
 		prop = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {

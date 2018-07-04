@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
- * Diese Mapper-Klasse realisiert die Abbildung von <code>JabicsUser</code> Objekten
- * auf die relationale Datenbank. Sie stellt alle notwendigen Methoden zur
- * Verwaltung der User in der Datenbank zur Verfügung.
+ * Diese Mapper-Klasse realisiert die Abbildung von <code>JabicsUser</code>
+ * Objekten auf die relationale Datenbank. Sie stellt alle notwendigen Methoden
+ * zur Verwaltung der User in der Datenbank zur Verfügung.
  * 
  * @author Thies
  * @author Brase
@@ -64,8 +64,8 @@ public class UserMapper {
 	 * Diese Methode trägt ein <code>JabicsUser</code> Objekt in die Datenbank ein.
 	 * 
 	 * @param u
-	 *            das <code>JabicsUser</code> Objekt, dass in die Datenbank eingetragen
-	 *            werden soll.
+	 *            das <code>JabicsUser</code> Objekt, dass in die Datenbank
+	 *            eingetragen werden soll.
 	 * @return Das als Parameter übergebene <code>JabicsUser</code> Objekt.
 	 */
 	public JabicsUser insertUser(JabicsUser u) {
@@ -90,7 +90,8 @@ public class UserMapper {
 				u.setId(rs.getInt(1));
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -120,25 +121,25 @@ public class UserMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Löschen des Users.
+			// Befüllen und ausführen des SQL-Statements
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
 			if (!con.isClosed()) {
 				con.close();
 			}
-
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
 	}
 
 	/**
-	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts in der
-	 * Datenbank.
+	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts mit der
+	 * ID
 	 * 
 	 * @param id
 	 *            Die id nach der gesucht werden soll.
@@ -147,23 +148,26 @@ public class UserMapper {
 	public JabicsUser findUserById(int id) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-		JabicsUser u = new JabicsUser();
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE systemUserID = " + id);
 
-			if (rs.next()) {
+			// Erzeugen eines Nutzer Objekts
+			JabicsUser u = new JabicsUser();
 
-				// Befüllen des Kontakt-Objekts
+			// Wenn ein Tupel existiert wird das Nutzer Objekt mit Werten befüllt
+			if (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -171,6 +175,7 @@ public class UserMapper {
 				con.close();
 			}
 
+			// Rückgabe des Nutzer Objekts
 			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -195,22 +200,21 @@ public class UserMapper {
 			// Erzeugen einer ArrayList
 			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
 
-			// Auswählen der <code>JabicsUser</code> Objekte geordnet nach ihrer E-Mail Adresse.
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser ORDER BY email");
 
+			// Für jedes Tupel in der Datenbank wird ein Nutzer Objekt erstellt, mit Werten
+			// befüllt und an die Liste angehängt
 			while (rs.next()) {
-
-				// Erstellen eines User-Objekts
 				JabicsUser u = new JabicsUser();
-
-				// Befüllen des Kontakt-Objekts und Einfügen in die Arraylist.
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 				al.add(u);
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -218,6 +222,7 @@ public class UserMapper {
 				con.close();
 			}
 
+			// Rückgabe der Liste mit Nutzer Objekten
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -236,8 +241,6 @@ public class UserMapper {
 	public JabicsUser findUserByContact(Contact c) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-		// Erzeugen eines neuen JabicUser-Objekts
-		JabicsUser u = new JabicsUser();
 
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -245,17 +248,24 @@ public class UserMapper {
 
 			// Join zwischen SystemUser und ContactCollaboration um den Besitzer eines
 			// Kontaktes zu finden.
+			// Befüllen und ausführen des Nutzer Objekts
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name"
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
 					+ " WHERE contactCollaboration.contactID = " + c.getId() + " AND isOwner = 1");
-			while (rs.next()) {
+
+			// Erzeugen eines neuen JabicUser-Objekts
+			JabicsUser u = new JabicsUser();
+
+			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
+			if (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -263,10 +273,12 @@ public class UserMapper {
 				con.close();
 			}
 
+			// Rückgabe des Nutzer Objekts
+			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
+			return null;
 		}
-		return u;
 	}
 
 	/**
@@ -283,38 +295,43 @@ public class UserMapper {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
-		// Erzeugen eines neuen JabicUser-Objekts
-		JabicsUser u = new JabicsUser();
-
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
 			// Join zwischen SystemUser und ContactlistCollaboration um den Besitzer einer
 			// Kontaktliste zu finden.
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID"
 					+ " WHERE contactlistCollaboration.contactListID = " + cl.getId() + " AND isOwner = 1");
 
-			while (rs.next()) {
+			// Erzeugen eines neuen JabicUser-Objekts
+			JabicsUser u = new JabicsUser();
+
+			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
+			if (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
 			if (!con.isClosed()) {
 				con.close();
 			}
+			// Rückgabe des Nutzer Objekts
+			return u;
 
 		} catch (SQLException e) {
 			System.err.print(e);
+			return null;
 		}
-		return u;
 	}
 
 	/**
@@ -326,12 +343,8 @@ public class UserMapper {
 	 * @return Besitzer in Form eines <code>JabicsUser</code> Objektes
 	 */
 	public JabicsUser findUserByPValue(PValue pv) {
-
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-
-		// Erzeugen eines neuen JabicUser-Objekts
-		JabicsUser u = new JabicsUser();
 
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -339,29 +352,36 @@ public class UserMapper {
 
 			// Join zwischen SystemUser und pValueCollaboration um den Besitzer einer
 			// Ausprägung zu finden.
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
 					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
 					+ " WHERE pValueCollaboration.pValueID = " + pv.getId() + " AND isOwner = 1");
 
+			// Erzeugen eines neuen JabicUser-Objekts
+			JabicsUser u = new JabicsUser();
+
+			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
 			if (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
 			if (!con.isClosed()) {
 				con.close();
 			}
-
+			// Rückgabe des Nutzer Objekts
+			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
+			return null;
 		}
-		return u;
 	}
 
 	/**
@@ -384,26 +404,26 @@ public class UserMapper {
 			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
 			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE email = '" + email + "'");
 
-			if (rs.next()) {
-				JabicsUser u = new JabicsUser();
+			// Erzeugen eines Nutzer Objekts
+			JabicsUser u = new JabicsUser();
 
-				// Befüllen des Kontakt-Objekts
+			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
+			if (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
+			}
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-				// werden diese geschlossen.
-				if (!stmt.isClosed()) {
-					stmt.close();
-				}
-				if (!con.isClosed()) {
-					con.close();
-				}
-
-				return u;
-			} else
-				return null;
+			// Rückgabe des Nutzer Objekts
+			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;
