@@ -27,22 +27,26 @@ import de.hdm.group11.jabics.resource.*;
 
 public class ContactCellListTab {
 
-	private Contact selectedContact;
 	EditorAdmin editor;
 	JabicsUser user;
+
 
 	private EditorServiceAsync eService = ClientsideSettings.getEditorService();
 	CellList<Contact> contactCell;
 	ListDataProvider<Contact> contactDataProvider;
 	private ContactKeyProvider keyProvider = null;
+	
+	TreeViewMenu treeViewMenu;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
 
 	// private final ArrayList<Contact> allcontacts =
 	// cMapper.findAllContacts(loginfo.getCurrentUser());
-
+	
 	public ContactCellListTab(JabicsUser u) {
+		
 		this.user = u;
+		
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
@@ -51,7 +55,20 @@ public class ContactCellListTab {
 		contactDataProvider = new ListDataProvider<Contact>();
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
+	}
 
+	public ContactCellListTab(JabicsUser u, TreeViewMenu tvm) {
+		this.user = u;
+		this.treeViewMenu = tvm;
+		
+		keyProvider = new ContactKeyProvider();
+		// "A simple selection model, that allows only one item to be selected a time."
+		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
+		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
+		contactDataProvider = new ListDataProvider<Contact>();
+		contactDataProvider.addDataDisplay(contactCell);
+		contactCell.setSelectionModel(selectionModel);
 	}
 
 	public CellList<Contact> createContactTabForSearchForm() {
@@ -125,11 +142,19 @@ public class ContactCellListTab {
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
+			
+//			treeViewMenu.clearSelectionModelContactListTab();
+//			treeViewMenu.clearSelectionModelSharedContactTab();
+			
+
 		}
 
 		private void setSelectedContact(Contact c) {
 			GWT.log("3.1 Kontakt anzeigen " + c.getName());
 			editor.showContact(c);
+			
+
+
 		}
 	}
 
@@ -171,6 +196,17 @@ public class ContactCellListTab {
 
 	public ListDataProvider<Contact> getContactDataProvider() {
 		return this.contactDataProvider;
+	}
+	
+	public SingleSelectionModel<Contact> getSelectionModel() {
+		return this.selectionModel;
+	}
+	
+	public void clearSelectionModel() {
+		if (selectionModel != null) {
+			this.selectionModel.clear();
+		}
+
 	}
 
 	public class AsyncDataProvider extends AbstractCell<Contact> {

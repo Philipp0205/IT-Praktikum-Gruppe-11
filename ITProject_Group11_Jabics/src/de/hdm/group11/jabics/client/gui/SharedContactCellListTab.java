@@ -23,9 +23,10 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 public class SharedContactCellListTab extends Widget {
 	
-	private Contact selectedContact;
 	EditorAdmin editor;
 	JabicsUser user;
+	
+	TreeViewMenu treeViewMenu;
 
 	private EditorServiceAsync eService;
 	CellList<Contact> contactCell;
@@ -39,7 +40,7 @@ public class SharedContactCellListTab extends Widget {
 	
 	public SharedContactCellListTab(JabicsUser u) {
 		this.user = u;
-
+		
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
@@ -53,6 +54,27 @@ public class SharedContactCellListTab extends Widget {
 		contactDataProvider = new ListDataProvider<Contact>();
 		
 		contactsProvider = new ListDataProvider<Contact>();
+	}
+	
+	public SharedContactCellListTab(JabicsUser u, TreeViewMenu tvm) {
+		this.user = u;
+		this.treeViewMenu = tvm;
+		
+		keyProvider = new ContactKeyProvider();
+		// "A simple selection model, that allows only one item to be selected a time."
+		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
+		GWT.log("ContactsConstructor");
+		
+		GWT.log("4.1 createContactTab");
+		eService = ClientsideSettings.getEditorService();
+		
+		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
+		contactDataProvider = new ListDataProvider<Contact>();
+		
+		contactsProvider = new ListDataProvider<Contact>();
+		
+		
 		
 	}
 	
@@ -112,12 +134,22 @@ public class SharedContactCellListTab extends Widget {
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
+			
+//			treeViewMenu.clearSelectionModelContactListTab();
+//			treeViewMenu.clearSelectionModelContactTab();
+			
+			
+
 		}
 
 		private void setSelectedContact(Contact c) {
 			GWT.log("4.1 Kontakt anzeigen" + c.getName());
 			editor.showContact(c);
+			
+
 		}
+		
+
 	}
 
 	public void setEditor(EditorAdmin editor) {
@@ -149,6 +181,17 @@ public class SharedContactCellListTab extends Widget {
 			}
 		}
 		contactDataProvider.refresh();
+	}
+	
+	public void clearSelectionModel() {
+		if (selectionModel != null) {
+			this.selectionModel.clear();
+		}
+
+	}
+	
+	public SingleSelectionModel<Contact> getSelectionModel() {
+		return this.selectionModel;
 	}
 	
 	public class AsyncDataProvider extends AbstractCell<Contact> {
