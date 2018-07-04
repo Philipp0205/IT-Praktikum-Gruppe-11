@@ -102,7 +102,7 @@ public class SearchForm extends VerticalPanel {
 		datepicker = new DatePicker();
 		finalPVal = new PValue();
 		back = new Button("Zurück");
-		ct = new ContactCellListTab(currentUser);
+		ct = new ContactCellListTab(currentUser, null);
 		list = ct.createContactTabForSearchForm();
 
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");

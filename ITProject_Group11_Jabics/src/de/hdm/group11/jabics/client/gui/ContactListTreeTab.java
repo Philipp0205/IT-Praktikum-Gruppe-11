@@ -37,6 +37,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	// private LoginInfo loginfo = LoginInfo.getloginInfo();
 	JabicsUser jabicsUser;
 	EditorAdmin editor;
+	
+	TreeViewMenu treeViewMenu;
 
 	// ContactList currentCL;
 
@@ -65,10 +67,11 @@ public class ContactListTreeTab implements TreeViewModel {
 	private BusinessObjectKeyProvider boKeyProvider;
 
 	private SingleSelectionModel<BusinessObject> selectionModel;
-
+	
 	public ContactListTreeTab(JabicsUser u) {
 		GWT.log("2: Konstruktor ContactListTreeTab");
 		this.jabicsUser = u;
+		
 		boKeyProvider = new BusinessObjectKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
 
@@ -82,13 +85,33 @@ public class ContactListTreeTab implements TreeViewModel {
 		 * (wird weiter unten deklariert)
 		 */
 		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
+	}
 
+	public ContactListTreeTab(JabicsUser u, TreeViewMenu tvm) {
+		this.jabicsUser = u;
+		this.treeViewMenu = tvm;
+		
+		boKeyProvider = new BusinessObjectKeyProvider();
+		// "A simple selection model, that allows only one item to be selected a time."
+
+		selectionModel = new SingleSelectionModel<BusinessObject>(boKeyProvider);
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
+
+		/*
+		 * Assoziativspeicher, bei dem Kontakte Kontaktlisten zugeordnet werden. Freunde
+		 * --> Max Mustermann
+		 * 
+		 * (wird weiter unten deklariert)
+		 */
+		contactDataProviders = new HashMap<ContactList, ListDataProvider<Contact>>();
+		
 	}
 
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
 
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
+
 			BusinessObject selection = selectionModel.getSelectedObject();
 			GWT.log("selectionchange");
 			if (selection instanceof Contact) {
@@ -97,6 +120,8 @@ public class ContactListTreeTab implements TreeViewModel {
 			} else if (selection instanceof ContactList) {
 				setSelectedContactList((ContactList) selection);
 			}
+
+
 
 		}
 
@@ -307,6 +332,17 @@ public class ContactListTreeTab implements TreeViewModel {
 		selectionModel.setSelected(c, true);
 
 		contactsProvider.flush();
+	}
+	
+	public void clearSelectionModel() {
+		if (selectionModel != null) {
+			this.selectionModel.clear();
+		}
+
+	}
+	
+	public SingleSelectionModel<BusinessObject> getSelectionModel() {
+		return this.selectionModel;
 	}
 
 	/*
