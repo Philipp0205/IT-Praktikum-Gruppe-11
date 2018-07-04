@@ -10,8 +10,6 @@ import de.hdm.group11.jabics.shared.bo.*;
 
 public interface EditorServiceAsync {
 
-	void createUser(String name, String email, AsyncCallback<JabicsUser> callback) throws IllegalArgumentException;
-
 	void createContact(ArrayList<PValue> cArray, JabicsUser u, AsyncCallback<Contact> callback);
 
 	void createContactList(String name, ArrayList<Contact> cArray, JabicsUser u, AsyncCallback<ContactList> callback);
@@ -49,6 +47,8 @@ public interface EditorServiceAsync {
 	void deleteContact(Contact c, JabicsUser u, AsyncCallback<Void> callback);
 
 	void deleteContactList(ContactList cl, JabicsUser u, AsyncCallback<ContactList> callback);
+	
+	void deleteUser(JabicsUser u, AsyncCallback<Void> callback);
 
 	void deleteProperty(Property p, AsyncCallback<Void> callback);
 
@@ -97,8 +97,6 @@ public interface EditorServiceAsync {
 	void getCollaborators(PValue pv, AsyncCallback<ArrayList<JabicsUser>> callback);
 
 	void getAllUsers(AsyncCallback<ArrayList<JabicsUser>> callback);
-
-	void setJabicsUser(JabicsUser u, AsyncCallback<JabicsUser> callback);
 
 	void getStandardProperties(AsyncCallback<ArrayList<Property>> callback) throws IllegalArgumentException;
 

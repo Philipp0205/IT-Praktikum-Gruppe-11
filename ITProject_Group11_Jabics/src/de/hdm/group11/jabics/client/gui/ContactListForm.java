@@ -2,7 +2,6 @@ package de.hdm.group11.jabics.client.gui;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;

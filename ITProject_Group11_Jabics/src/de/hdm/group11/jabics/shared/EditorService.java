@@ -13,8 +13,6 @@ import de.hdm.group11.jabics.shared.bo.*;
 @RemoteServiceRelativePath("editor")
 public interface EditorService extends RemoteService {
 
-	public JabicsUser createUser(String name, String email) throws IllegalArgumentException;
-
 	public Contact createContact(ArrayList<PValue> cArray, JabicsUser u);
 
 	public ContactList createContactList(String name, ArrayList<Contact> cArray, JabicsUser u);
@@ -50,6 +48,8 @@ public interface EditorService extends RemoteService {
 	public void deleteContact(Contact c, JabicsUser u);
 	
 	public ContactList deleteContactList(ContactList cl, JabicsUser u);
+	
+	public void deleteUser(JabicsUser u);
 
 	public void deleteProperty(Property p);
 
@@ -100,8 +100,6 @@ public interface EditorService extends RemoteService {
 	public ArrayList<JabicsUser> getCollaborators(PValue pv);
 
 	public ArrayList<JabicsUser> getAllUsers();
-
-	public JabicsUser setJabicsUser(JabicsUser u) throws IllegalArgumentException;
 
 	public ArrayList<Property> getStandardProperties() throws IllegalArgumentException;
 

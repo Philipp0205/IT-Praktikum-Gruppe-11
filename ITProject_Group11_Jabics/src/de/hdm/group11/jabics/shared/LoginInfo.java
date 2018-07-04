@@ -29,6 +29,8 @@ public class LoginInfo implements Serializable {
 	 * Login-Status einer Instanz dieser Klasse.
 	 */
 	private boolean isLoggedIn;
+	
+	private boolean isNewUser;
 
 	private JabicsUser currentUser;
 
@@ -63,6 +65,14 @@ public class LoginInfo implements Serializable {
 	 */
 	public void setLoggedIn(boolean isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
+	}
+	
+	public boolean isNewUser() {
+		return isNewUser;
+	}
+
+	public void setIsNewUser(boolean isNewUser) {
+		this.isNewUser = isNewUser;
 	}
 
 
