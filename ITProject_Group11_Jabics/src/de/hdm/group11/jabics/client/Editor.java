@@ -51,15 +51,15 @@ public class Editor implements EntryPoint {
 		u.setUsername("ein nutzer");
 		u.setId(1);
 		
-		editor = new EditorAdmin(u);
+		//editor = new EditorAdmin(u);
 //		editor.setLoginInfo(logon);
 //		editor.setJabicsUser(logon.getCurrentUser());
-		editor.loadEditor();
+		//editor.loadEditor();
 		
 //		GWT.log("Load");
-//		loginService = ClientsideSettings.getLoginService();
+		loginService = ClientsideSettings.getLoginService();
 //		GWT.log(GWT.getHostPageBaseURL());
-//		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 
 	}
 	
@@ -67,7 +67,6 @@ public class Editor implements EntryPoint {
 		// Assemble login panel.
 		Label l1 = new Label("Sie sind nicht eingeloggt");
 		Label l2 = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
-		Label tempurl = new Label(logon.getLoginUrl());
 		Button b = new Button("Anmelden");
 		b.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ck) {
@@ -78,7 +77,6 @@ public class Editor implements EntryPoint {
 		
 		loginPanel.add(l1);
 		loginPanel.add(l2);
-		loginPanel.add(tempurl);
 		RootPanel.get("details").add(loginPanel);
 		RootPanel.get("nav").add(b);
 	}
@@ -110,7 +108,7 @@ public class Editor implements EntryPoint {
 		@Override
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
-				if (logon.getIsLoggedIn()) {
+				if (logon.getIsLoggedIn() && !logon.isNewUser()) {
 					Window.alert("Login success");
 					currentUser = logon.getCurrentUser();
 					editor = new EditorAdmin(currentUser);
@@ -120,8 +118,10 @@ public class Editor implements EntryPoint {
 					// Den Editor laden
 					editor.loadEditor();
 				} else if(logon.getIsLoggedIn() && logon.isNewUser()){
+					Window.alert("Neuer Nutzer");
+					GWT.log("!!" + logon.getCurrentUser().getEmail());
 					signUp = new SignUpForm(logon, getEditor());
-					signUp.onLoad();
+					
 				} else {
 					Window.alert("User not logged in");
 					setLoginInfo(logon);

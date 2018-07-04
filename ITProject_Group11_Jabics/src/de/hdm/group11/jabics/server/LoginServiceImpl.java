@@ -26,7 +26,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		UserService userService = UserServiceFactory.getUserService();
 		System.out.println("2##################################");
 		User user = userService.getCurrentUser();
-		System.out.println("3################################## "); // + user.getEmail());
+		System.out.println("heyyooooo");
+		System.out.println("3################################## ");
 		LoginInfo loginInfo = new LoginInfo();
 		System.out.println("4##################################");
 		// return new LoginInfo();
@@ -37,7 +38,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		if (user != null) {
 
 			try {
-
 				JabicsUser existingJabicsUser = UserMapper.userMapper().findUserByEmail(user.getEmail());
 
 				if (existingJabicsUser != null) {
@@ -57,15 +57,18 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 					// irgendetwas hat
 					try {
 						newJabicsUser.setUsername(user.getNickname());
+						System.out.println(newJabicsUser.getEmail());
+						System.out.println("nick:" + newJabicsUser.getUsername());
 					} catch (Exception e) {
 						System.err.println("Username not found" + e.toString());
 						newJabicsUser.setUsername("not found");
 					}
 					loginInfo.setLoggedIn(true);
 					loginInfo.setIsNewUser(true);
+					loginInfo.setCurrentUser(newJabicsUser);
 					// Für den Fall, dass etwas nicht tut LoginURL neu setzen
-					String s = userService.createLoginURL(requestUri);
-					loginInfo.setLoginUrl(s);
+					String s = userService.createLogoutURL(requestUri);
+					loginInfo.setLogoutUrl(s);
 				}
 				return loginInfo;
 
@@ -101,7 +104,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 			JabicsUser newUser = logon.getCurrentUser();
 			
 			//Ist es auch wirklich der gleiche Nutzer
-			if (newUser.getEmail() == user.getEmail()) {
+			System.out.println(logon.getCurrentUser().getEmail() + ":" + user.getEmail());
+			if (newUser.getEmail().contentEquals(user.getEmail())) {
 				newUser.setEmail(logon.getCurrentUser().getEmail());
 				// Nutzer in DB einfügen und mit Id zurückbekommen
 				newUser = uMapper.insertUser(newUser);

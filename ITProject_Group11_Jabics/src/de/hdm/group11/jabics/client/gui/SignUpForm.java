@@ -60,16 +60,18 @@ public class SignUpForm extends VerticalPanel{
 		namePanel.add(lastnamePanel);
 		buttonPanel.add(exitButton);
 		buttonPanel.add(loginButton);
+		
+		this.add(namePanel);
+		this.add(buttonPanel);
+		
+		RootPanel.get("details").add(this);
 	}
 	
 	public void onLoad() {
 		if(loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
-		this.add(namePanel);
-		this.add(buttonPanel);
-		
-		RootPanel.get("details").add(this);
+		GWT.log("HI");
 		
 	}
 	
@@ -95,7 +97,7 @@ public class SignUpForm extends VerticalPanel{
 	
 	private class ExitClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
-			getEditor().onModuleLoad();
+			Window.Location.assign(loginfo.getLogoutUrl());
 		}
 	}
 	
@@ -106,7 +108,6 @@ public class SignUpForm extends VerticalPanel{
 			Window.alert("Nutzer erstellen fehlgeschlagen. Bitte probieren Sie es später erneut.");
 			
 		}
-
 		@Override
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {

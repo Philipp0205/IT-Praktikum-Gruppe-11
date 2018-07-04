@@ -54,8 +54,6 @@ public class EditorAdmin {
 
 	private TreeViewMenu treeViewMenu;
 	
-	
-	RootLayoutPanel rp;
 
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
@@ -100,7 +98,7 @@ public class EditorAdmin {
 
 		// Menu hinzufügen
 		loadLogout();
-
+		RootPanel.get("details").clear();
 		RootPanel.get("nav").add(topPanel);
 		RootPanel.get("menu").add(menuPanel);
 		RootPanel.get("details").add(mainPanel);
@@ -340,10 +338,6 @@ public class EditorAdmin {
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
 	}
-/*TODO: wird das benötigt
-	public void flushContactLists() {
-		treeViewMenu.flushContactListsProvider();
-	}*/
 
 	private class DeleteUserClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
@@ -363,6 +357,7 @@ public class EditorAdmin {
 		public DeleteUserDialogBox() {
 			this.setSize("300px", "150px");
 			exitButton.addClickHandler(new ExitDialogBoxClickHandler());
+			confirmButton.addClickHandler(new DeleteClickHandler());
 			buttons.add(exitButton);
 			buttons.add(confirmButton);
 			mainPanel.add(confirmation);
@@ -400,9 +395,6 @@ public class EditorAdmin {
 	private class CreateCClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
-			Window.alert(
-					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
-
 			Contact newContact = new Contact();
 			newContact(newContact);
 		}
@@ -414,12 +406,9 @@ public class EditorAdmin {
 	private class CreateCLClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
-//			Window.alert(
-//					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
 
 			ContactList newContactList = new ContactList();
 			newContactList(newContactList);
-			// showContactList(newContactList);
 		}
 	}
 

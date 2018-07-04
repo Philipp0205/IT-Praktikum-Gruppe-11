@@ -757,8 +757,8 @@ html>body .gwt-DecoratedStackPanel {
 	float: right;
 	background: #9FB8E0;
 	margin-left: 800px;
-	margin-right: 100px;
-	margin-top: -44px;
+	margin-right: 200px;
+	margin-top: 0px; /* (waren mal -44, fals was falsch wird) */
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -781,6 +781,7 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .navbarlogo {
+	width: 10px;
 	margin-left: 70px;
 	align-content: center;
 	margin-top: 1000px;
