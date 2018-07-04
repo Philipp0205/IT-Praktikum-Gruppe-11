@@ -512,6 +512,102 @@ html>body .gwt-DecoratedStackPanel {
 	width: 280px;
 }
 
+/*-------------------ContactShowForm-------------------*/
+
+.Tabelle{
+	margin-top:15px;
+	margin-bottom:15px;
+	font-family: Arial;
+	font-size: 20px !important;
+}
+
+.editButton{
+		font-family: Arial;
+	color: #19376E;
+	font-size: 20px !important;
+	background: #ffffff !important;
+margin-top:7px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+.editLabel{
+		cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+margin-top:12px;
+margin-left:50;
+	color: #19376E;
+	white-space: nowrap;
+}
+.shareContactButton{
+		font-family: Arial;
+	color: #19376E;
+	font-size: 30px !important;
+	background: #ffffff !important;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+	margin-top:-2px;
+}
+.shareLabel{
+		cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top:12px;
+	color: #19376E;
+	margin-left: 0px;
+	white-space: nowrap;
+}
+.shareExistingContactButton{
+		font-family: Arial;
+	color: #19376E;
+	font-size: 20px !important;
+	background: #ffffff !important;
+margin-top:7px;
+margin-right:20px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+.shareEditLabel{
+		cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+margin-top:12px;
+	color: #19376E;
+	margin-left: -20px;
+	white-space: nowrap;
+}
+.deleteButton{
+		font-family: Arial;
+	color: #19376E;
+	font-size: 20px !important;
+	background: #ffffff !important;
+margin-top:8px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+.deleteLabel{
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+margin-top:12px;
+	color: #19376E;
+	margin-left: 20px;
+	white-space: nowrap;
+}
+
+
+
 /*-------------------STACKPANEL-------------------*/
 .gwt-StackPanel {
 	background-color: white;
