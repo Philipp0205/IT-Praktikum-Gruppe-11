@@ -13,6 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+ 
 .cellTreeWidget {
   
 }
@@ -53,7 +54,7 @@
 
 .cellTreeTopItem {
   font-weight: bold;
-  color: #4b4a4a;
+  color: white;
   margin-top: 20px;
   padding: 3px 13px 3px 10px !important;
 }

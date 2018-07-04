@@ -593,4 +593,13 @@ html>body .gwt-DecoratedStackPanel {
 /*
 table, th, td {
    	border: 1px solid black;
+
 }*/
+
+
+
+.cellTree .gwt-CellTree{
+  color: red;
+
+}
+
