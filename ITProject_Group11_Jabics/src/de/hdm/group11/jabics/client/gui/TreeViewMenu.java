@@ -6,6 +6,7 @@ import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -31,26 +32,33 @@ public class TreeViewMenu extends VerticalPanel {
 	ContactListTreeTab contactListTab;
 	SharedContactCellListTab sharedContactListTab;
 	ContactCellListTab contactTab;
-	StackPanel stackPanel;
+	StackPanel stackPanel1;
+	StackPanel stackPanel2;
 	CellTree tree;
 	ContactCellListTab cellListTab;
 	
 	private CellTreeResources ctRes = GWT.create(CellTreeResources.class);
 
 	public TreeViewMenu(JabicsUser u) {
-		stackPanel = new StackPanel();
-		stackPanel.add(createContactListTreeTab(u), "Meine Listen");
-		stackPanel.add(createContactCellListTab(u), "Alle Kontakte");
-
-		stackPanel.add(createSharedContactListTreeTab(u), "Mir geteilte Kontakte");
+		String tip = new String("▶");
+		Label tip2 = new Label("tip");
 		
-		stackPanel.setWidth("250px");
+		stackPanel1 = new StackPanel();
+		stackPanel2 = new StackPanel();
+		stackPanel1.add(createContactListTreeTab(u));
+		stackPanel2.add(createContactCellListTab(u), "Alle Kontakte");
+		stackPanel2.add(createSharedContactListTreeTab(u), "Mir geteilte Kontakte");
+		stackPanel2.setStyleName("stackPanel2");
+		stackPanel1.setStyleName("stackPanel1");
+		stackPanel2.setWidth("250px");
+		stackPanel1.setWidth("250px");
+		stackPanel1.getWidget(0).setStyleName("MeineListen");
 		// stackPanel.ensureDebugId("cwStackPanel");
-
-	}
+}
 
 	public void onLoad() {
-		this.add(this.stackPanel);
+		this.add(this.stackPanel1);
+		this.add(this.stackPanel2);
 	}
 
 	public void addContactList(ContactList cl) {
@@ -95,8 +103,12 @@ public class TreeViewMenu extends VerticalPanel {
 		sharedContactListTab.updateContact(c);
 	}
 
-	public StackPanel getStackPanel() {
-		return this.stackPanel;
+	public StackPanel getStackPanel1() {
+		return this.stackPanel1;
+	}
+	
+	public StackPanel getStackPanel2() {
+		return this.stackPanel2;
 	}
 
 	public void setEditor(EditorAdmin editor) {
@@ -110,6 +122,7 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public CellList<Contact> createContactCellListTab(JabicsUser u) {
 		this.contactTab = new ContactCellListTab(u, this);
+		contactTab.getCellList().setStyleName("Kontakte");
 		contactTab.onLoad();
 		return contactTab.getCellList();
 	}
@@ -129,6 +142,7 @@ public class TreeViewMenu extends VerticalPanel {
 	public CellList<Contact> createSharedContactListTreeTab(JabicsUser u) {
 		this.sharedContactListTab = new SharedContactCellListTab(u, this);
 		sharedContactListTab.onLoad();
+		sharedContactListTab.getCellList().setStyleName("Kontakte");
 		return sharedContactListTab.getCellList();
 	}
 
@@ -159,6 +173,11 @@ public class TreeViewMenu extends VerticalPanel {
 	
 	public SingleSelectionModel<Contact> getSelectionModelSharedContactsTab() {
 		 return sharedContactListTab.getSelectionModel();
+	}
+	public interface CellListResources extends CellList.Resources {
+		 @Override
+			@Source("JabicsCellList.css")
+		    CellList.Style cellListStyle(); 
 	}
 	
 	public interface CellTreeResources extends CellTree.Resources {
