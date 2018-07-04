@@ -2,12 +2,11 @@ package de.hdm.group11.jabics.shared;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
+public interface LoginServiceAsync {
 
-	
-	public interface LoginServiceAsync {
-		
-		public void login(String requestUri, AsyncCallback<LoginInfo> async);
+	public void login(String requestUri, AsyncCallback<LoginInfo> async);
 
-	}
+	public void createUser(LoginInfo log, String requestUri, AsyncCallback<LoginInfo> async);
+
+}

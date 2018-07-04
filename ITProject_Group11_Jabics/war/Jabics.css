@@ -1,7 +1,7 @@
 /** Add css rules here for your application. */
 #content {
 	width: 2000px;
-	margin-left: -50px;
+	margin-left: 50px;
 }
 
 #menuButton {
@@ -17,6 +17,7 @@
 	width: 100px;
 	max-width: 100%;
 	padding: 5px;*/
+	
 #footline {
 	text-align: center;
 }
@@ -38,7 +39,7 @@
 
 #menu {
 	float: left;
-	margin-left: 100px;
+	margin-left: 50px;
 	margin-top: -10px;
 }
 
@@ -191,16 +192,6 @@ html>body .gwt-DecoratedStackPanel {
 	cursor: pointer;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
-}
-/*--------------------ContactForm--------------------*/
-.showContactTable {
-	font-family: Arial;
-	font-size: 20px
-}
-
-.gwt-CellTableItem {
-	font-family: Arial;
-	font-size: 20px
 }
 
 /*--------------------EditContactForm--------------------*/
@@ -478,9 +469,10 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 72px;
 	margin-left: 10px;
 }
+
 .finden:hover {
 	cursor: pointer;
-	background-color: #9FB8E0 ;
+	background-color: #9FB8E0;
 }
 
 .back {
@@ -495,21 +487,150 @@ html>body .gwt-DecoratedStackPanel {
 	text-decoration: none;
 	margin-top: 10px;
 }
-.back:hover{
+
+.back:hover {
 	cursor: pointer;
 	background-color: #9FB8E0;
 }
 
-.sp{
-	
+.sp {
 	font-family: Arial;
 	font-weight: bold;
 	font-size: 18px !important;
 	background: #9FB8E0 !important;
 	color: white !important;
-	margin-top:10px;
+	margin-top: 10px;
 	margin-left: 10px;
 	width: 280px;
+}
+
+/*-------------------ContactShowForm-------------------*/
+/*.get.textCell{
+}
+.gwt-cellTableFirstColumn {
+}*/
+.prop {
+	background: #9FB8E0;
+	color: white;
+	font-family: Arial;
+	font-size: 20px !important;
+	/*font-weight: bold;*/
+}
+
+.pval {
+	background: #9FB8E0;
+	color: white;
+	font-family: Arial;
+	font-size: 20px !important;
+	/*font-weight: bold;*/
+}
+
+.shareStatus {
+	background: #9FB8E0;
+	color: white;
+	font-family: Arial;
+	font-size: 20px !important;
+	/*font-weight: bold;*/
+}
+
+.Tabelle {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	font-family: Arial;
+	font-size: 20px !important;
+	color: #19376E;
+}
+
+.editButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 20px !important;
+	background: #ffffff !important;
+	margin-top: 7px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.editLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 12px;
+	margin-left: 50;
+	color: #19376E;
+	white-space: nowrap;
+}
+
+.shareContactButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 30px !important;
+	background: #ffffff !important;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+	margin-top: -2px;
+}
+
+.shareLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 12px;
+	color: #19376E;
+	margin-left: 0px;
+	white-space: nowrap;
+}
+
+.shareExistingContactButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 20px !important;
+	background: #ffffff !important;
+	margin-top: 7px;
+	margin-right: 20px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.shareEditLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 12px;
+	color: #19376E;
+	margin-left: -20px;
+	white-space: nowrap;
+}
+
+.deleteButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 20px !important;
+	background: #ffffff !important;
+	margin-top: 8px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.deleteLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	margin-top: 12px;
+	color: #19376E;
+	margin-left: 20px;
+	white-space: nowrap;
 }
 
 /*-------------------STACKPANEL-------------------*/

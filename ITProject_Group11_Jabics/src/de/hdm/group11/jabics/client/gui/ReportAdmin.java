@@ -47,7 +47,6 @@ import de.hdm.group11.jabics.shared.report.ContactReport;
 import de.hdm.group11.jabics.shared.report.FilteredContactsOfUserReport;
 import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
 
-
 /**
  * Diese Klasse realisiert die Abbildung aller zum Report Generator gehörigen
  * GUI-Elemente. Im Report Generator kann nach individuellen, vom jeweiligen
@@ -62,6 +61,7 @@ import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
 public class ReportAdmin {
 	private JabicsUser currentUser;
 	private LoginInfo loginfo;
+	private Button logoutButton;
 
 	private ReportGeneratorServiceAsync reportGenerator = null;
 	private EditorServiceAsync editorService = null;
@@ -129,48 +129,45 @@ public class ReportAdmin {
 		// Instantitierung relevanter Variablen für UserSuggestion
 		sharedContactsButton = new Button("gemeinsame Kontakte");
 		finalUser = new ArrayList<JabicsUser>();
+		finalPVal = new PValue();
 		userSelectionModel = new SingleSelectionModel<JabicsUser>();
 		userDataProvider = new ListDataProvider<JabicsUser>();
 		userTable = new CellTable<JabicsUser>();
-
-		// Verhalten der Buttons
-		createSelectionMenu();
-		createUserSuggestMenu();
+		userToSuggest = new MultiWordSuggestOracle();
+		userSuggest = new SuggestBox(userToSuggest);
+		
+		removeUserButton = new Button("Nutzer entfernen");
+		addUserButton = new Button("Nutzer hinzufügen");
 		
 		otherReportsPanel.add(allReportsInSystemButton);
 		otherReportsPanel.add(allReportButton);
-
 		datatypemenu.addItem("Text");
 		datatypemenu.addItem("Datum");
 		datatypemenu.addItem("Dezimalzahl");
 		datatypemenu.addItem("Ganzzahl");
 		datatypemenu.setSelectedIndex(4);
-
 		verPanel1.add(propertyl);
 		verPanel2.add(valuelabel);
 		verPanel2.add(valueBox);
 		verPanel3.add(datatypel);
 		verPanel3.add(datatypemenu);
 		// verPanel4.add(db);
-
 		datepicker.setValue(null);
 		verPanel4.add(datepicker);
 		datepicker.setVisible(false);
-
 		navPanel.add(verPanel1);
 		navPanel.add(verPanel2);
 		navPanel.add(verPanel3);
 		navPanel.add(verPanel4);
 		navPanel.add(filteredReportButton);
-		
 		userPanel.add(userSuggest);
 		userPanel.add(userTable);
-		
+		GWT.log("Report6");
 		navPanel.add(userPanel);
 		navPanel.add(addUserButton);
 		navPanel.add(removeUserButton);
 		navPanel.add(sharedContactsButton);
-
+		GWT.log("Report");
 		mainPanel.add(navPanel);
 		mainPanel.add(otherReportsPanel);
 
@@ -185,12 +182,27 @@ public class ReportAdmin {
 		}
 
 		// Alle Properties holen, nach denen vom Nutzer gefiltern werden kann
+		//Der Callback ruft createSelectionMenu() auf
 		reportGenerator.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
 
+		// Nutzer selection aufbauen
+		retrieveUser();
 		
 		// Aufbauen des RootPanels
-		RootPanel.get("navigator").add(mainPanel);
+		RootPanel.get("nav").add(logoutPanel);
+		RootPanel.get("content").add(mainPanel);
 
+	}
+	
+	public void loadLogout() {
+		logoutButton = new Button("Abmelden");
+		logoutButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				Window.Location.assign(loginfo.getLogoutUrl());
+			}
+		});
+		logoutButton.setStyleName("logbutton");
+		logoutPanel.add(logoutButton);
 	}
 
 	/**
@@ -202,17 +214,6 @@ public class ReportAdmin {
 
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
-	}
-	
-	public void loadLogout() {
-		Button logoutButton = new Button("Abmelden");
-		logoutButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.Location.assign(loginfo.getLogoutUrl());
-			}
-		});
-		logoutPanel.add(logoutButton);
-		mainPanel.add(logoutPanel);
 	}
 
 	// Alle Nutzer des Systems holen
@@ -303,17 +304,11 @@ public class ReportAdmin {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO: folgende Zeilen ersetzen
-				JabicsUser u = new JabicsUser();
-				u.setId(1);
-				u.setEmail("stahl.alexander@live.de");
-				u.setUsername("Stahlex");
-				// u.setLoggedIn(true);
 
 				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
 
 					GWT.log("Gefilterten Report erstellen");
-					reportGenerator.createFilteredContactsOfUserReport(finalPVal, u,
+					reportGenerator.createFilteredContactsOfUserReport(finalPVal, currentUser,
 							new CreateFilteredContactsOfUserReportCallback());
 				} else
 					Window.alert("Bitte in mindestens ein Feld ein Filterkriterium eingeben");
@@ -352,13 +347,8 @@ public class ReportAdmin {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				JabicsUser u = new JabicsUser();
-				u.setId(1);
-				u.setEmail("stahl.alexander@live.de");
-				u.setUsername("Stahlex");
-				// u.setLoggedIn(true);
 				System.out.println(finalUser.get(0).getUsername());
-				reportGenerator.createAllSharedContactsReport(u, finalUser,
+				reportGenerator.createAllSharedContactsReport(currentUser, finalUser,
 						new CreateAllSharedContactsReportCallback());
 			}
 		});
@@ -369,7 +359,6 @@ public class ReportAdmin {
 			}
 		});
 
-		addUserButton = new Button("Nutzer hinzufügen");
 		addUserButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if (suggestedUser != null) {
@@ -382,7 +371,7 @@ public class ReportAdmin {
 		});
 
 		GWT.log("SuggestBox4");
-		removeUserButton = new Button("Nutzer entfernen");
+		
 		removeUserButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if (selectedUser != null) {
@@ -403,10 +392,8 @@ public class ReportAdmin {
 		userTable.addColumn(username, "Nutzer");
 
 		/**
-		 * SuggestBox hinzufügen und mit Optionen befüllen
+		 * SuggestBox mit Optionen befüllen
 		 */
-		userToSuggest = new MultiWordSuggestOracle();
-		userSuggest = new SuggestBox(userToSuggest);
 
 		for (JabicsUser u : allUser) {
 			GWT.log("SuggestBoxalluser");
@@ -570,7 +557,7 @@ public class ReportAdmin {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			
+
 		}
 
 		@Override

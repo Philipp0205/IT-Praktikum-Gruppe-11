@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -13,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.Editor;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -25,19 +27,20 @@ public class EditorAdmin {
 
 	private LoginInfo loginfo;
 	private JabicsUser currentUser;
-	
+
 	private Button logoutButton;
+	private Button deleteUserButton;
 	private Button createC;
-	private Button createCL; 
+	private Button createCL;
 
 	private HorizontalPanel topPanel = new HorizontalPanel();
 	private VerticalPanel menuPanel = new VerticalPanel();
 	private VerticalPanel mainPanel = new VerticalPanel();
-	
+
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
 	private HorizontalPanel widgetPanel = new HorizontalPanel();
 	private HorizontalPanel formPanel = new HorizontalPanel();
-	
+
 	/**
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
@@ -54,17 +57,19 @@ public class EditorAdmin {
 	
 	RootLayoutPanel rp;
 
-
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
 
-		createC= new Button("Neuer Kontakt");
+		createC = new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
 		createC.setStyleName("btn1");
 		createCL = new Button("Neue Liste");
 		createCL.addClickHandler(new CreateCLClickHandler());
 		createCL.setStyleName("btn2");
+		deleteUserButton = new Button("Konto löschen");
+		deleteUserButton.setStyleName("deleteAccount");
+		deleteUserButton.addClickHandler(new DeleteUserClickHandler());
 
 		topPanel.add(createC);
 		topPanel.add(createCL);
@@ -73,9 +78,9 @@ public class EditorAdmin {
 		topPanel.setStyleName("topPanel");
 
 		mainPanel.add(widgetPanel);
-		//widgetPanel.add(menuPanel);
+		// widgetPanel.add(menuPanel);
 		widgetPanel.add(formPanel);
-		
+
 		treeViewMenu = new TreeViewMenu(currentUser);
 		treeViewMenu.setEditor(this);
 
@@ -84,25 +89,22 @@ public class EditorAdmin {
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
 
-		//menuPanel.setWidth("400px");
-
 		menuPanel.setStyleName("menuPanel");
-		menuPanel.setPixelSize(200, 400);
 	}
-	
 
 	public void loadEditor() {
 		GWT.log("hallo gwt");
 		if (editorService == null) {
 			editorService = ClientsideSettings.getEditorService();
 		}
-		
+
 		// Menu hinzufügen
 		loadLogout();
-		
+
 		RootPanel.get("nav").add(topPanel);
 		RootPanel.get("menu").add(menuPanel);
 		RootPanel.get("details").add(mainPanel);
+		RootPanel.get("deleteAccount").add(deleteUserButton);
 	}
 
 	/**
@@ -114,9 +116,9 @@ public class EditorAdmin {
 
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
-	//	treeViewMenu.setUser(u);
+		// treeViewMenu.setUser(u);
 	}
-	
+
 	public void loadLogout() {
 		logoutButton = new Button("Abmelden");
 		logoutButton.addClickHandler(new ClickHandler() {
@@ -299,6 +301,11 @@ public class EditorAdmin {
 		widgetPanel.add(clForm);
 	}
 
+	public void deleteUser() {
+		Window.alert("Achtung nicht auf ok drücken");
+		editorService.deleteUser(currentUser, new DeleteUserCallback());
+	}
+
 	/**
 	 * TreeView manipulieren
 	 */
@@ -313,7 +320,7 @@ public class EditorAdmin {
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
 	}
-	
+
 	public void updateContactInTree(Contact c) {
 		treeViewMenu.updateContact(c);
 	}
@@ -333,6 +340,60 @@ public class EditorAdmin {
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
 	}
+/*TODO: wird das benötigt
+	public void flushContactLists() {
+		treeViewMenu.flushContactListsProvider();
+	}*/
+
+	private class DeleteUserClickHandler implements ClickHandler {
+		public void onClick(ClickEvent event) {
+			DeleteUserDialogBox deleteBox = new DeleteUserDialogBox();
+			deleteBox.show();
+		}
+	}
+
+	private class DeleteUserDialogBox extends DialogBox {
+		private Label confirmation = new Label("Damit löschen Sie Ihr Konto bei Jabics, alle zugehörigen Kontakte, "
+				+ "Listen und Freigaben. Sind Sie sicher?");
+		private VerticalPanel mainPanel = new VerticalPanel();
+		private HorizontalPanel buttons = new HorizontalPanel();
+		private Button exitButton = new Button("Abbruch");
+		private Button confirmButton = new Button("Ja, ich bin sicher");
+
+		public DeleteUserDialogBox() {
+			this.setSize("300px", "150px");
+			exitButton.addClickHandler(new ExitDialogBoxClickHandler());
+			buttons.add(exitButton);
+			buttons.add(confirmButton);
+			mainPanel.add(confirmation);
+			mainPanel.add(buttons);
+			this.add(mainPanel);
+			this.center();
+		}
+
+		/**
+		 * ClickHandler, der die DialogBox verschwinden lässt
+		 */
+		private class ExitDialogBoxClickHandler implements ClickHandler {
+			public void onClick(ClickEvent event) {
+				DeleteUserDialogBox.this.hide();
+			}
+		}
+
+		/**
+		 * ClickHandler, der den <code>User</code> löscht
+		 */
+		private class DeleteClickHandler implements ClickHandler {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if (currentUser != null) {
+					deleteUser();
+				}
+			}
+		}
+	}
+
 	/**
 	 * ClickHandler um einen neuen Kontakt zu erstellen und zu bearbeiten
 	 */
@@ -365,7 +426,7 @@ public class EditorAdmin {
 	/**
 	 * RPC++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 */
-	private class SetJabicsUserCallback implements AsyncCallback<JabicsUser> {
+	private class DeleteUserCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -373,10 +434,14 @@ public class EditorAdmin {
 		}
 
 		@Override
-		public void onSuccess(JabicsUser u) {
+		public void onSuccess(Void v) {
 			try {
+				Window.alert("Account erfolgreich gelöscht");
+				Editor e = new Editor();
+				e.onModuleLoad();
+
 			} catch (Exception e) {
-				e.printStackTrace();
+				Window.alert("Account erfolgreich gelöscht");
 			}
 		}
 	}
