@@ -64,15 +64,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Diese Methode erstelle einen Nutzer, indem ihr ein String mit dem Namen und
-	 * der email des Nutzers übergeben wird.
-	 */
-	public JabicsUser createUser(String name, String email) {
-		JabicsUser newUser = new JabicsUser(name, email);
-		return uMapper.insertUser(newUser);
-	}
-
-	/**
 	 * Diese Methode erstellt einen neuen Kontakt aus einem Array aus PValues und
 	 * dem Nutzer, der den Kontakt erstellt.
 	 */
