@@ -37,6 +37,7 @@ import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.Type;
 
 
+
 /**
  * Diese Klasse realisiert die Abbildung einer Suchoberfläche für Kontaktlisten
  * auf das GUI. Es kann nach individuellen, vom jeweiligen Nutzer angelegten
@@ -96,17 +97,23 @@ public class SearchForm extends VerticalPanel {
 		verPanel4 = new VerticalPanel();
 		verPanel5 = new VerticalPanel();
 		pvalueLabel = new Label("Wert:");
+		pvalueLabel.setStyleName("wertlabel");
 		propertyLabel = new Label("Eigenschaft:");
+		propertyLabel.setStyleName("eigenschaftlabel");
 		datatypemenu = new ListBox();
+		datatypemenu.setStyleName("datatypeMenu");
 		datatypeLabel = new Label("Datentyp:");
+		datatypeLabel.setStyleName("datentyplabel");
 		datepicker = new DatePicker();
 		finalPVal = new PValue();
-		back = new Button("Zurück");
-		ct = new ContactCellListTab(currentUser);
+		back = new Button("↩");
+		back.setStyleName("back");
+		ct = new ContactCellListTab(currentUser, null);
 		list = ct.createContactTabForSearchForm();
 
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
-
+		listInfoLabel.setStyleName("contactListHeadline");
+		
 		verPanel1.add(propertyLabel);
 		mainpanel.add(verPanel1);
 
@@ -321,9 +328,12 @@ public class SearchForm extends VerticalPanel {
 	 */
 	public SearchForm() {
 		sp = new StackPanel();
+		sp.setStyleName("sp");
 
 		sb = new Button("Finden");
+		sb.setStyleName("finden");
 		valueBox = new TextBox();
+		valueBox.setStyleName("TextBox");
 	}
 
 	/**
@@ -395,6 +405,7 @@ public class SearchForm extends VerticalPanel {
 		public void onSuccess(ArrayList<Property> result) {
 			GWT.log("result!");
 			propertyToSuggest = new MultiWordSuggestOracle();
+			
 
 			ArrayList<Property> userproperties = result;
 			for (Property p : userproperties) {
@@ -403,6 +414,7 @@ public class SearchForm extends VerticalPanel {
 			}
 
 			propertySuggest = new SuggestBox(propertyToSuggest);
+			propertySuggest.setStyleName("TextBox");
 
 			/**
 			 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch

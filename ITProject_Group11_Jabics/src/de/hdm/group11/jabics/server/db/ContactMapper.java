@@ -284,7 +284,6 @@ public class ContactMapper {
 	public ArrayList<Contact> findAllContacts(JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-		System.out.println("Alle Kontakte Finden");
 
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -405,7 +404,7 @@ public class ContactMapper {
 							+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
 							+ " WHERE contactContactLists.contactListID = " + cl.getId());
 
-			// Für jedes Tupel wird ein Contact Objekt erstellt, mit Werten befüllt und an
+			// Für jedes Tupel wird ein Kontakt Objekt erstellt, mit Werten befüllt und an
 			// die ArrayList angehängt.
 			while (rs.next()) {
 				Contact c = new Contact();
@@ -508,13 +507,16 @@ public class ContactMapper {
 			StringBuffer contactIDs = new StringBuffer();
 
 			// contactIDs an den StringBuffer anhängen
-			for (Contact c : alContact) {
-				contactIDs.append(c.getId());
-				contactIDs.append(",");
+			if (alContact != null) {
+				for (Contact c : alContact) {
+					contactIDs.append(c.getId());
+					contactIDs.append(",");
+				}
+				// Letztes Komma im StringBuffer löschen
+				contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
+			} else {
+				return null;
 			}
-
-			// Letztes Komma im StringBuffer löschen
-			contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
 
 			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "

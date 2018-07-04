@@ -63,7 +63,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		newContact = cMapper.insertCollaboration(u, newContact, true);
 		System.out.println("Kontakt id: " + newContact.getId());
 
-		ArrayList<PValue> testArray = cArray;
+		ArrayList<PValue> testArray = new ArrayList<PValue>();
 
 		/*
 		 * neu erstellte pv von alten trennen und inserten Es wird überprüft, ob ein
@@ -80,16 +80,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				switch (pv.getProperty().getType()) {
 				case STRING:
 					newPVal = createPValue(pv.getProperty(), pv.getStringValue(), newContact, u);
+					testArray.add(newPVal);
 					System.out.println("Switch String " + pv.getId());
 					break;
 				case DATE:
 					newPVal = createPValue(pv.getProperty(), pv.getDateValue(), newContact, u);
+					testArray.add(newPVal);
 					break;
 				case FLOAT:
 					newPVal = createPValue(pv.getProperty(), pv.getFloatValue(), newContact, u);
+					testArray.add(newPVal);
 					break;
 				case INT:
 					newPVal = createPValue(pv.getProperty(), pv.getIntValue(), newContact, u);
+					testArray.add(newPVal);
 					break;
 				}
 				if (newPVal.containsValue() && pv.getId() != 0) {
@@ -388,6 +392,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public Contact addContactToList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
+		
+		
 		ArrayList<Contact> clOld = cMapper.findContactsOfContactList(cl);
 		Boolean bol = true;
 		for (Contact cOld : clOld) {
@@ -421,13 +427,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Entfernt einen <code>Contact</code> aus einer <code>ContactList</code>
 	 * 
-	 * @return Die ContactList ohne den zu entfernenden Contact
+	 * @return Der Kontakt ohne den zu entfernenden Contact
 	 */
 	public Contact removeContactFromList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
 
 		// cl.removeContact(c);
-
+    ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
 		System.err.println("Kollaboratoren finden:");
 		for (JabicsUser u : cMapper.findCollaborators(c)) {
 			try {
@@ -440,6 +446,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 
 				if (bol) {
+          for (PValue pv : pVals) {
+				     deleteCollaboration(pv, u);
+			    }
 					deleteCollaboration(c, u);
 				}
 			} catch (Exception e) {
@@ -606,6 +615,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void deletePValue(PValue pv, Contact c) {
 		System.err.println("PValue löschen" + pv.toString());
 		ArrayList<JabicsUser> cols = pvMapper.findCollaborators(pv);
+
+		System.err.println("PValue löschen2" + pv.toString());
+		/**
+		 * glöckchen (bzw. überhaupt sinnvoll): if(pv.getOwner().getId() == u.getId()) {
+		 */
+		for (JabicsUser u : cols) {
+			pvMapper.deleteCollaboration(pv, u);
+			pvMapper.deletePValue(pv);
+		}
+		System.err.println("PValue löschen3" + pv.toString());
 		// überprüfen, ob dieses PV das letzte seiner Art ist und wenn ja die zugehörige
 		// Property löschen
 		if (!pv.getProperty().isStandard()) {
@@ -618,15 +637,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			if (bol)
 				pMapper.deleteProperty(pv.getProperty());
 		}
-		System.err.println("PValue löschen2" + pv.toString());
-		/**
-		 * glöckchen (bzw. überhaupt sinnvoll): if(pv.getOwner().getId() == u.getId()) {
-		 */
-		for (JabicsUser u : cols) {
-			pvMapper.deleteCollaboration(pv, u);
-			pvMapper.deletePValue(pv);
-		}
-		System.err.println("PValue löschen3" + pv.toString());
 		return;
 	}
 

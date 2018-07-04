@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -52,6 +53,9 @@ public class EditorAdmin {
 	private SearchForm sForm;
 
 	private TreeViewMenu treeViewMenu;
+	
+	
+	RootLayoutPanel rp;
 
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
@@ -81,12 +85,14 @@ public class EditorAdmin {
 		treeViewMenu.setEditor(this);
 
 		treeViewMenu.setStyleName("treeView");
+		
+		menuPanel.add(treeViewMenu.getStackPanel1());
+		menuPanel.add(treeViewMenu.getStackPanel2());
 
-		menuPanel.add(treeViewMenu.getStackPanel());
-
-		menuPanel.setWidth("400px");
+		//menuPanel.setWidth("400px");
 
 		menuPanel.setStyleName("menuPanel");
+		menuPanel.setPixelSize(200, 400);
 	}
 
 	public void loadEditor() {
@@ -337,10 +343,10 @@ public class EditorAdmin {
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
 	}
-
+/*TODO: wird das benötigt
 	public void flushContactLists() {
 		treeViewMenu.flushContactListsProvider();
-	}
+	}*/
 
 	private class DeleteUserClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {

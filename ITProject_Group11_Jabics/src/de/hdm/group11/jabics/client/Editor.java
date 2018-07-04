@@ -42,6 +42,7 @@ public class Editor implements EntryPoint {
 	private VerticalPanel loginPanel = new VerticalPanel();
 	@Override
 	public void onModuleLoad() {
+		
 		/*
 		 * Login
 		 */
@@ -53,7 +54,8 @@ public class Editor implements EntryPoint {
 		editor = new EditorAdmin(u);
 //		editor.setLoginInfo(logon);
 //		editor.setJabicsUser(logon.getCurrentUser());
-		editor.loadEditor();		
+		editor.loadEditor();
+		
 //		GWT.log("Load");
 //		loginService = ClientsideSettings.getLoginService();
 //		GWT.log(GWT.getHostPageBaseURL());

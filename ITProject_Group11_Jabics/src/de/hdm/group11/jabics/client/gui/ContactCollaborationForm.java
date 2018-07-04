@@ -93,6 +93,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				return object.toString();
 			}
 		};
+		
+		property.setCellStyleNames("prop");
+		propertyvalue.setCellStyleNames("pval");
 
 		valueTable.addColumn(checkbox, "Auswahl");
 		valueTable.setColumnWidth(checkbox, "10px");
@@ -357,7 +360,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erolgreich geteilt!");
-			e.updateContactInTree(sharedContact);
+			updateShareStatus();
+			//e.updateContactInTree(sharedContact);
 		}
 	}
 

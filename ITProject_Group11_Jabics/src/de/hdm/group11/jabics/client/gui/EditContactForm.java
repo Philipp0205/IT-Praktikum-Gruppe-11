@@ -313,6 +313,7 @@ public class EditContactForm extends VerticalPanel {
 							addPPanel.setVisible(true);
 							exitButton.setText("Kontakt anzeigen");
 							saveButton.setText("Änderungen speichern");
+							setNewContact(false);
 							deleteContactButton.setVisible(true);
 						}
 
