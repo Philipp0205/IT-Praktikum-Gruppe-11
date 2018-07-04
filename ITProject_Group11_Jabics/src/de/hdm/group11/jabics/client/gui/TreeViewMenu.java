@@ -176,11 +176,6 @@ public class TreeViewMenu extends VerticalPanel {
 	public SingleSelectionModel<Contact> getSelectionModelSharedContactsTab() {
 		 return sharedContactListTab.getSelectionModel();
 	}
-
-	
-	public void removeContactsPanel() { 
-		stackPanel.remove(2);
-	}
 	
 	public interface CellTreeResources extends CellTree.Resources {
 //		@Override

@@ -240,12 +240,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<ContactList> result = clMapper.findContactListOfUser(u);
 		ArrayList<BoStatus> status = clMapper.findShareStatus(result);
 
-		
 		for (ContactList cl : result) {
 			cl.setOwner(uMapper.findUserByContactList(cl));
 			System.out.println("2.2 getListsOf " + cl.getListName());
 			result.add(cl);
-			
+
 			int i = 0;
 			if (status.size() == result.size()) {
 				System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
@@ -392,8 +391,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	public Contact addContactToList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
-		
-		
+
 		ArrayList<Contact> clOld = cMapper.findContactsOfContactList(cl);
 		Boolean bol = true;
 		for (Contact cOld : clOld) {
@@ -433,7 +431,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.err.println("Liste ändern: " + cl.getListName());
 
 		// cl.removeContact(c);
-    ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
+		ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
 		System.err.println("Kollaboratoren finden:");
 		for (JabicsUser u : cMapper.findCollaborators(c)) {
 			try {
@@ -446,9 +444,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 
 				if (bol) {
-          for (PValue pv : pVals) {
-				     deleteCollaboration(pv, u);
-			    }
+					for (PValue pv : pVals) {
+						deleteCollaboration(pv, u);
+					}
 					deleteCollaboration(c, u);
 				}
 			} catch (Exception e) {
