@@ -21,8 +21,6 @@
 	text-align: center;
 }
 
-#footer {
-	text-align: center;
 #footer, trailer{
     position: fixed;
     left: 0;
@@ -35,8 +33,8 @@
 
 #trailer{
 	margin-bottom: 5px;
+	text-align: center;
 }
-
 #menu {
 	float: left;
 	margin-left: 100px;
@@ -54,9 +52,7 @@
 	float: left;
 }
 
-#trailer {
-	text-align: center;
-}
+
 
 .gwt-DecoratedStackPanel {
 	border-bottom: 1px solid #bbbbbb;
@@ -525,25 +521,24 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .btn1 {
-	display: block;
-	float: right;
-	background: #8cd2f0;
-	font-family: Arial;
-	font-weight: 700;
-	font-size: 18px !important;
-	text-decoration: none;
-	color: #fff;
-	font-size: 14px;
-	padding: 18px 20px 18px 20px;
-	margin-top: 0px;
-	margin-left: 20px;
+    float: right;
+  background: #8cd2f0;
+  font-family: Arial;
+    font-weight: 700;
+    font-size: 18px !important;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+ padding: 18px 20px 18px 20px;
+  margin-top: -40px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .btn1:hover {
 	font-family: Arial;
 	color: #fff;
 	background: #008fd1;
-  
 }
 
 #btn2 {
@@ -560,19 +555,6 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 0px;
 	margin-left: 20px;
 	margin-right: 20px;
-.btn2 {
-    float: right;
-  background: #8cd2f0;
-  font-family: Arial;
-    font-weight: 700;
-    font-size: 18px !important;
-  text-decoration: none;
-  color: #fff;
-  font-size: 14px;
- padding: 18px 20px 18px 20px;
-  margin-top: -40px;
-    margin-left: 20px;
-    margin-right: 20px;
 }
 
 #btn2:hover {
