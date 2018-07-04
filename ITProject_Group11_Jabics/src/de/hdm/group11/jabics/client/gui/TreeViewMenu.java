@@ -1,12 +1,14 @@
 package de.hdm.group11.jabics.client.gui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -52,7 +54,7 @@ public class TreeViewMenu extends VerticalPanel {
 		stackPanel1.setStyleName("stackPanel1");
 		stackPanel2.setWidth("250px");
 		stackPanel1.setWidth("250px");
-		stackPanel1.getWidget(0).setStyleName("MeineListen");
+//		stackPanel1.getWidget(0).setStyleName("MeineListen");
 		// stackPanel.ensureDebugId("cwStackPanel");
 }
 
