@@ -118,7 +118,11 @@ public class ContactListTreeTab implements TreeViewModel {
 
 				setSelectedContact((Contact) selection);
 			} else if (selection instanceof ContactList) {
+
 				setSelectedContactList((ContactList) selection);
+				
+				treeViewMenu.showEmptyTab();
+				
 			}
 
 			treeViewMenu.clearSelectionModelContactTab();
