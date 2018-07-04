@@ -1,9 +1,7 @@
 /** Add css rules here for your application. */
-
-
 #content {
-	width: 1200px;
-	margin: 0 auto;
+	width: 2000px;
+	margin-left: -50px;
 }
 
 #menuButton {
@@ -15,213 +13,436 @@
 	width: 100%;
 }
 
-#footline{
+/*.logo {
+	width: 100px;
+	max-width: 100%;
+	padding: 5px;*/
+#footline {
 	text-align: center;
 }
 
-#footer{
-	text-align: center;
-}
-
-#menu{
-    float: left;
-    margin-left: 100px;
-}
-
-#content{
-    float: left;
-}
-
-#details{
-    margin-right: 200px;
-}
-
-#headlinereport{
-	float: left;
-}
-
-#trailer{
+#footer, trailer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    color: 	black;
     text-align: center;
 }
 
+#trailer{
+	margin-bottom: 5px;
+	text-align: center;
+}
+#menu {
+	float: left;
+	margin-left: 100px;
+}
+
+#content {
+	float: left;
+}
+
+#details {
+	margin-right: 200px;
+}
+
+#headlinereport {
+	float: left;
+}
+
+
+
 .gwt-DecoratedStackPanel {
-  border-bottom: 1px solid #bbbbbb;
+	border-bottom: 1px solid #bbbbbb;
 }
+
 .gwt-DecoratedStackPanel .gwt-StackPanelContent {
-  border: 1px solid #bbbbbb;
-  border-bottom: 0px;
-  background: white;
-  padding: 2px 2px 10px 5px;
+	border: 1px solid #bbbbbb;
+	border-bottom: 0px;
+	background: white;
+	padding: 2px 2px 10px 5px;
 }
+
 .gwt-DecoratedStackPanel .gwt-StackPanelItem {
-  cursor: pointer;
-  cursor: hand;
+	cursor: pointer;
+	cursor: hand;
 }
-.gwt-DecoratedStackPanel .stackItemTopLeft,
-.gwt-DecoratedStackPanel .stackItemTopRight {
-  height: 6px;
-  width: 6px;
-  zoom: 1;
+
+.gwt-DecoratedStackPanel .stackItemTopLeft, .gwt-DecoratedStackPanel .stackItemTopRight
+	{
+	height: 6px;
+	width: 6px;
+	zoom: 1;
 }
+
 .gwt-DecoratedStackPanel .stackItemTopLeft {
-  border-left: 1px solid #bbbbbb;
-  background: #d3def6 url(images/corner.png) no-repeat 0px -49px;
-  -background: #d3def6 url(images/corner_ie6.png) no-repeat 0px -49px;
+	border-left: 1px solid #bbbbbb;
+	background: #d3def6 url(images/corner.png) no-repeat 0px -49px;
+	-background: #d3def6 url(images/corner_ie6.png) no-repeat 0px -49px;
 }
+
 .gwt-DecoratedStackPanel .stackItemTopRight {
-  border-right: 1px solid #bbbbbb;
-  background: #d3def6 url(images/corner.png) no-repeat -6px -49px;
-  -background: #d3def6 url(images/corner_ie6.png) no-repeat -6px -49px;
+	border-right: 1px solid #bbbbbb;
+	background: #d3def6 url(images/corner.png) no-repeat -6px -49px;
+	-background: #d3def6 url(images/corner_ie6.png) no-repeat -6px -49px;
 }
+
 .gwt-DecoratedStackPanel .stackItemTopLeftInner,
-.gwt-DecoratedStackPanel .stackItemTopRightInner {
-  width: 1px;
-  height: 1px;
+	.gwt-DecoratedStackPanel .stackItemTopRightInner {
+	width: 1px;
+	height: 1px;
 }
+
 .gwt-DecoratedStackPanel .stackItemTopCenter {
-  background: url(images/hborder.png) 0px -21px repeat-x;
+	background: url(images/hborder.png) 0px -21px repeat-x;
 }
+
 .gwt-DecoratedStackPanel .stackItemMiddleLeft {
-  background: #d3def6 url(images/hborder.png) repeat-x 0px -989px;
-  border-left: 1px solid #bbbbbb;
+	background: #d3def6 url(images/hborder.png) repeat-x 0px -989px;
+	border-left: 1px solid #bbbbbb;
 }
+
 .gwt-DecoratedStackPanel .stackItemMiddleLeftInner,
-.gwt-DecoratedStackPanel .stackItemMiddleRightInner {
-  width: 1px;
-  height: 1px;
+	.gwt-DecoratedStackPanel .stackItemMiddleRightInner {
+	width: 1px;
+	height: 1px;
 }
+
 .gwt-DecoratedStackPanel .stackItemMiddleRight {
-  background: #d3def6 url(images/hborder.png) repeat-x 0px -989px;
-  border-right: 1px solid #bbbbbb;
+	background: #d3def6 url(images/hborder.png) repeat-x 0px -989px;
+	border-right: 1px solid #bbbbbb;
 }
+
 .gwt-DecoratedStackPanel .stackItemMiddleCenter {
-  font-weight: bold;
-  font-size: 1.3em;
-  background: #d3def6 url(images/hborder.png) repeat-x 0px -989px;
+	font-weight: bold;
+	font-size: 1.3em;
+	background: #d3def6 url(images/hborder.png) repeat-x 0px -989px;
 }
+
 .gwt-DecoratedStackPanel .gwt-StackPanelItem-first .stackItemTopRight,
-.gwt-DecoratedStackPanel .gwt-StackPanelItem-first .stackItemTopLeft {
-  border: 0px;
-  background-color: white;
+	.gwt-DecoratedStackPanel .gwt-StackPanelItem-first .stackItemTopLeft {
+	border: 0px;
+	background-color: white;
 }
+
 .gwt-DecoratedStackPanel .gwt-StackPanelItem-below-selected .stackItemTopLeft,
-.gwt-DecoratedStackPanel .gwt-StackPanelItem-below-selected .stackItemTopRight {
-  background-color: white;
+	.gwt-DecoratedStackPanel .gwt-StackPanelItem-below-selected .stackItemTopRight
+	{
+	background-color: white;
 }
+
 html>body .gwt-DecoratedStackPanel {
+	
 }
-* html .gwt-DecoratedStackPanel .stackItemTopLeftInner,
-* html .gwt-DecoratedStackPanel .stackItemTopRightInner {
-  width: 6px;
-  height: 6px;
-  overflow: hidden;
+
+* html .gwt-DecoratedStackPanel .stackItemTopLeftInner, * html .gwt-DecoratedStackPanel .stackItemTopRightInner
+	{
+	width: 6px;
+	height: 6px;
+	overflow: hidden;
 }
 
 .gwt-Button {
-  font-family: Arial;
-  color: #ffffff !important;
-  font-size: 14px !important;
-  background: #14b5ff !important;
-  padding: 6px 14px 6px 14px !important;
-  border: solid #000000 0px !important;
-  border-radius: 0px;
-  text-decoration: none;
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
 }
 
 .gwt-Button:hover {
-   background: #accbf0!important;
-  background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
-  text-decoration: none;
-  cursor: pointer;
+	background: #accbf0 !important;
+	background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .btn {
-  font-family: Arial;
-  color: #ffffff !important;
-  font-size: 14px !important;
-  background: #14b5ff !important;
-  padding: 6px 14px 6px 14px !important;
-  border: solid #000000 0px !important;
-  border-radius: 0px;
-  text-decoration: none;
+	font-family: Arial;
+	color: #ffffff !important;
+	font-size: 14px !important;
+	background: #19376E !important;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
 }
 
 .btn:hover {
-  background: #14b5ff;
-  background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
-  background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
-  text-decoration: none;
-  cursor: pointer;
+	background: #14b5ff;
+	background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
+	text-decoration: none;
+	cursor: pointer;
 }
 
-.deleteBtn{
-  font-family: Arial;
-  color: #ff5e5e!important;
-  font-size: 14px !important;
-  background: #ffffff!important;
-  padding: 5px 2px 2px 2px !important;
-  margin-left: 15px;
-  border: solid #000000 0px !important;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: bold;
+.deleteBtn {
+	font-family: Arial;
+	color: #ff5e5e !important;
+	font-size: 14px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-left: 15px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
 }
 
-.addButton{
-  padding: 2px 2px 2px 2px !important;
-  font-family: Arial;
-  color: #53f4af!important;
-  font-size: 16px !important;
-  background: #ffffff!important;
-  margin-left: 0px;
-  border: solid #000000 0px !important;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: bold;
+.addButton {
+	padding: 2px 2px 2px 2px !important;
+	font-family: Arial;
+	color: #53f4af !important;
+	font-size: 16px !important;
+	background: #ffffff !important;
+	margin-left: 0px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.clremlabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	/*color: #ff5e5e !important;*/
+	color: #19376E;
+	margin-left: 20px;
+}
+
+.cdeleteBtn {
+	font-family: Arial;
+	/*color: #ff5e5e !important;*/
+	color: #19376E;
+	font-size: 39px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 7px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.claddlabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-left: 20px;
+	margin-top: 29px;
+	color: #19376E;
+	/*color: #53f4af !important;*/
+}
+
+.caddButton {
+	padding: 2px 2px 2px 2px !important;
+	font-family: Arial;
+	/*color: #53f4af !important;*/
+	color: #19376E;
+	font-size: 29px !important;
+	background: #ffffff !important;
+	margin-top: 19px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.clsearchlabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	margin-left: 10px;
+	color: #19376E;
+	margin-left: 25px;
+}
+
+.searchButton {
+	padding: 2px 2px 2px 2px !important;
+	font-family: Arial;
+	color: #53f4af !important;
+	font-size: 18px !important;
+	background: #ffffff !important;
+	margin-top: 22px;
+	margin-left: 6px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.contactListHeadline {
+	font-family: Arial;
+	color: white;
+	padding: 7px 17px 17px 7px !important;
+	font-weight: bold;
+	background-color: #9FB8E0;
+	font-size: 20px !important;
+	margin-left: 20px;
+	margin-top: 20px;
+	text-align: center;
+}
+
+.CLlistBox {
+	padding: 3px;
+	height: 30px;
+	position: relative;
+	left: 0;
+	margin-left: 10px;
+	margin-top: 20px;
+	outline: none;
+	width: 90px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	background-color: white;
+	font-size: 16px;
+}
+
+.Listenname {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+}
+
+.cldeleteLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.cldeleteButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 33px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 7px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.clsaveLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	margin-left: 10px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.clsaveButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 33px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 7px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.clshareLabel {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	margin-left: 10px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.clshareButton {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 39px !important;
+	background: #ffffff !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 4px;
+	margin-left: 10px;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
 }
 
 .gwt-StackPanel {
 	background-color: white;
-	border-style:hidden;
-	
+	font-family: Arial;
+	border-style: hidden;
 }
+
 .gwt-StackPanelItem {
-/*	text-align: center;
+	/*	text-align: center;
 	    align-content: center; */
-    
-    font-size: 14px !important;
-	background: #14b5ff !important;
-	color:white !important;;
+	font-family: Arial;
+	font-size: 14px !important;
+	background: #4D70A8 !important;
+	color: white !important;;
 	padding: 6px 14px 6px 14px !important;
-	
-	}
-	
+}
+
+.tree {
+	background-color: #19376E;
+	color: white;
+}
+
 .gwt-StackPanel:hover {
 	
 }
-.gwt-StackPanelItem:hover {
 
-   background: #accbf0!important;
+.gwt-StackPanelItem:hover {
+	background: #accbf0 !important;
 	cursor: pointer;
-	}
+}
+
 .cw-StackPanelHeader {
-  padding-left: 7px;
-  font-weight: bold;
-  font-size: 2em;
+	padding-left: 7px;
+	font-weight: bold;
+	font-size: 2em;
 }
 
 .topPanel {
 	
 }
 
-.topPanel .gwt-Button  {
+.topPanel .gwt-Button {
 	margin-right: 5px;
 }
 
@@ -253,100 +474,100 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 5px;
 }
 
-.logout{
+}
+.logout {
 	float: right;
 }
 
-.topPanel{
-	color: black;	
-	
+.topPanel {
+	color: black;
 }
 
-.navbar{
-    display: block;
-    margin-right: -10px;
-    margin-left: -10px;
-    height: 58px;
-    margin-top: 20px;
-    color: #000;
-    background-color: #8cd2f0;
-    display: block;
-    visibility: visible;
+.navbar {
+	display: block;
+	margin-right: -10px;
+	margin-left: -10px;
+	height: 58px;
+	margin-top: 20px;
+	color: #000;
+	background-color: #8cd2f0;
+	display: block;
+	visibility: visible;
 }
 
-.logbutton{
-    float: right;
-    background: #8cd2f0;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 50px;
-    color: #000;
-    display: block;
-    visibility: visible;
+.logbutton {
+	float: right;
+	background: #8cd2f0;
+	margin-left: 100px;
+	margin-right: 100px;
+	margin-top: 50px;
+	color: #000;
+	display: block;
+	visibility: visible;
 }
 
-.navbrand{
-    max-width: 20%;
-    max-height: 40px;
-    
+.navbrand {
+	max-width: 20%;
+	max-height: 40px;
 }
 
-.navbarlogo{
-    margin-left: 70px;
-    align-content: center;
-    margin-top: 1000px;
-    color: #000;
-    background-color: #8cd2f0;
-    visibility: visible;
+.navbarlogo {
+	margin-left: 70px;
+	align-content: center;
+	margin-top: 1000px;
+	color: #000;
+	background-color: #8cd2f0;
+	visibility: visible;
 }
 
-#btn1 {
-    display:block;
-    float: right;
+.btn1 {
+  float: right;
   background: #8cd2f0;
   font-family: Arial;
-    font-weight: 700;
-    font-size: 18px !important;
+  font-weight: 700;
+  font-size: 18px !important;
   text-decoration: none;
   color: #fff;
   font-size: 14px;
   padding: 18px 20px 18px 20px;
-  margin-top: 0px;
-    margin-left: 20px;
-}
-
-#btn1:hover {
-  font-family: Arial;
-  color: #fff;
-  background: #008fd1;
-  
-}
-#btn2 {
-    display:block;
-    float: right;
-  background: #8cd2f0;
-  font-family: Arial;
-    font-weight: 700;
-    font-size: 18px !important;
-  text-decoration: none;
-  color: #fff;
-  font-size: 14px;
- padding: 18px 20px 18px 20px;
-  margin-top: 0px;
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-#btn2:hover {
-  font-family: Arial;
-  color: #fff;
-  background: #008fd1;
+  margin-top: -44px;
+  margin-left: 350px;
   margin-right: 20px;
-  
+  border: solid #000000 0px !important;
+  border-radius: 0px;
+}
+
+.btn1:hover {
+	font-family: Arial;
+	color: #fff;
+	background: #008fd1;
+	  
+}
+
+.btn2 {
+	float: right;
+  font-family: Arial;
+    background: #8cd2f0;
+  font-weight: 700;
+  font-size: 18px !important;
+  color: #fff;
+  margin-top: -44px;
+  margin-left: -17px;
+  margin-right: 20px;
+  border: solid #000000 0px !important;
+  border-radius: 0px;
+  padding: 18px 20px 18px 20px;
+}
+
+.btn2:hover {
+	font-family: Arial;
+	color: #fff;
+	background: #008fd1;
 }
 /*
 table, th, td {
    	border: 1px solid black;
+
 }*/
 
 
@@ -355,8 +576,4 @@ table, th, td {
   color: red;
 
 }
-
-
-
-
 

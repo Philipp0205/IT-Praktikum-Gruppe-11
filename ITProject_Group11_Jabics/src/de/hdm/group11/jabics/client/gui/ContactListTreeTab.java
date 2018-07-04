@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -27,7 +25,7 @@ import de.hdm.group11.jabics.resource.JabicsResources;
 
 /**
  * 
- * @author Kurrle, oririentiert an @Rathke und @Thies
+ * @author Kurrle, orientiert an @Rathke und @Thies
  */
 public class ContactListTreeTab implements TreeViewModel {
 
@@ -44,7 +42,7 @@ public class ContactListTreeTab implements TreeViewModel {
 
 	// ContactList currentCL;
 
-	/*
+	/**
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer
 	 * wenn etwas geändert wird. Also Controller (m-v-c-Modell), zwischen der
 	 * Anzeige (CellTable) und dem Modell (Liste von Objekten).
@@ -53,7 +51,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 */
 	private ListDataProvider<ContactList> contactListDataProviders;
 
-	/*
+	/**
 	 * In der Map werden die ListDataProviders für die expandierten Kontakte
 	 * gepespeichert.
 	 * 
@@ -122,21 +120,8 @@ public class ContactListTreeTab implements TreeViewModel {
 			} else if (selection instanceof ContactList) {
 				setSelectedContactList((ContactList) selection);
 			}
-			
-			treeViewMenu.clearSelectionModelContactTab();
-			treeViewMenu.clearSelectionModelSharedContactTab();
-			
 
-			
-//			new java.util.Timer().schedule( 
-//			        new java.util.TimerTask() {
-//			            @Override
-//			            public void run() {
-//			                selectionModel.clear();
-//			            }
-//			        }, 
-//			        5000
-//			);
+
 
 		}
 

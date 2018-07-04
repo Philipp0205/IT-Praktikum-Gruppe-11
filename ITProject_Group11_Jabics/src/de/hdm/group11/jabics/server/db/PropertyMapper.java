@@ -60,7 +60,7 @@ public class PropertyMapper {
 	}
 
 	/**
-	 * Diese Methode trägt eine Eigenschaft in die Datenbank ein.
+	 * Diese Methode trägt ein <code>Property</code> Obejekt in die Datenbank ein.
 	 * 
 	 * @param p
 	 *            das <code>Property</code> Objekt, dass in die Datenbank
@@ -70,32 +70,47 @@ public class PropertyMapper {
 	public Property insertProperty(Property p) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+
 		try {
-			// Einfügen der neuen Eigenschaft in die Datenbank.
+			// Zwei ungefüllte SQL-Statements erzeugen
+			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
+
+			// String mit SQL-Statement erzeugen
 			String query = ("INSERT INTO property (isStandard, type, name) VALUES " + "(" + p.isStandard() + ", '"
 					+ p.getTypeInString() + "' , '" + p.getLabel() + "' ) ");
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs = stmt.getGeneratedKeys();
-			Statement stmt2 = con.createStatement();
-			ResultSet rs2;
-			while (rs.next()) {
-				rs2 = stmt2.executeQuery("SELECT * FROM property WHERE propertyID = " + rs.getInt(1));
-				p.setId(rs.getInt(1));
 
-				while (rs2.next()) {
+			// Ausführen des SQL-Statements und ID verfügbar machen
+			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+			// Resultsets erzeugen
+			ResultSet rs = stmt.getGeneratedKeys();
+			ResultSet rs2;
+
+			// Property Objekt mit ID, Erstellungsdatum und letztem Update befüllen
+			if (rs.next()) {
+				rs2 = stmt2.executeQuery(
+						"SELECT dateCreated, dateUpdated FROM property WHERE propertyID = " + rs.getInt(1));
+				p.setId(rs.getInt(1));
+				if (rs2.next()) {
 					p.setDateCreated(rs2.getTimestamp("dateCreated"));
 					p.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 				}
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
-			stmt2.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!stmt2.isClosed()) {
+				stmt2.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
+			// Rückgabe des Property Objekts
 			return p;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -117,22 +132,24 @@ public class PropertyMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Löschen der Eigenschaft aus der Datenbank.
+			// Ausführen des SQL-Statements
 			stmt.executeUpdate("DELETE FROM property WHERE propertyID = " + p.getId());
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
-
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
 	}
 
 	/**
-	 * Diese Methode gibt ein <code>Property</code> Objekt zurück, dass eine
-	 * bestimmte ID hat.
+	 * Auslesen eines <code>Property</code> Objekts mit einer bestimmten ID.
 	 * 
 	 * @param id
 	 *            die Id nach welcher gesucht werden soll.
@@ -152,22 +169,26 @@ public class PropertyMapper {
 			// Erzeugen eines Property-Objektes
 			Property p = new Property();
 
+			// Prüfen ob Tupel vorhanden, wenn ja befüllen des Objekts
 			if (rs.next()) {
-				// Befüllen des Property-Objekts
 				p.setId(rs.getInt("propertyID"));
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
 				p.setDateCreated(rs.getTimestamp("dateCreated"));
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
-
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
+			// Rückgabe des Property Objekts
 			return p;
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -176,12 +197,10 @@ public class PropertyMapper {
 	}
 
 	/**
-	 * Diese Methode gibt ein <code>Property</code> Objekt zurück, dass eine
-	 * bestimmte ID hat.
+	 * Auslesen aller <code>Property</code> Objekte, welche zu den Standard
+	 * Eigenschaften gehören.
 	 * 
-	 * @param id
-	 *            die Id nach welcher gesucht werden soll.
-	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
+	 * @return Liste der <code>Property</code> Objekte, welche Standard sind.
 	 */
 	public ArrayList<Property> findAllStandardPropertys() {
 		// Erzeugen der Datenbankverbindung
@@ -194,14 +213,12 @@ public class PropertyMapper {
 			// Erzeugen einer ArrayList
 			ArrayList<Property> al = new ArrayList<Property>();
 
-			// Auswählen der Eigenschaften mit einer bestimmten id.
+			// SQL-Statement ausführen
 			ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE isStandard = 1 ");
 
+			// Für jedes Tupel in der Datenbank wird ein Property Objekt erstellt und befüllt.
 			while (rs.next()) {
-				// Erzeugen eines Property-Objektes
 				Property p = new Property();
-
-				// Befüllen des Property-Objekts
 				p.setId(rs.getInt("propertyID"));
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
@@ -210,12 +227,17 @@ public class PropertyMapper {
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(p);
 			}
-			// Schließen des SQL-Statements
-			stmt.close();
 
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
+			// Rückgabe der ArrayList
 			return al;
 		} catch (SQLException e) {
 			System.err.print(e);

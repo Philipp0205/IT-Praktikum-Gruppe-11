@@ -113,11 +113,11 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public Widget createContactListTreeTab(JabicsUser u) {
+
 		this.contactListTab = new ContactListTreeTab(u, this);
-		
-		CellTree tree = new CellTree(contactListTab, "Root", ctRes);
-		
+		CellTree tree = new CellTree(contactListTab, "Root", ctRes);	
 		tree.setAnimationEnabled(true);
+
 		GWT.log("TreeViewMenu: createListTab");
 		
 		tree.setStyleName("cellTree");

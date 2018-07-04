@@ -75,8 +75,7 @@ public class ShowContactForm extends VerticalPanel {
 				return "NoStatus";
 			}
 		};
-		
-		
+
 		editButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				e.editContact(currentContact);
@@ -97,7 +96,7 @@ public class ShowContactForm extends VerticalPanel {
 				});
 			}
 		});
-		
+
 		shareContactButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				GWT.log(currentContact.getName());
@@ -142,14 +141,55 @@ public class ShowContactForm extends VerticalPanel {
 		} else {
 			sharePanel.setVisible(false);
 		}
-		
+
 		GWT.log("Kontakte holen");
 		if (valueProvider.getList().isEmpty()) {
 			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
 			GWT.log("4OnLoad SHOWContact");
+		} else {
+			renderTable(currentContact.getValues());
 		}
 	}
-	
+
+	/**
+	 * Die PValues in die richtige Reihenfolge bringen und zur Anzeige bringen.
+	 * 
+	 * @param values
+	 */
+	public void renderTable(ArrayList<PValue> values) {
+		ArrayList<PValue> result = new ArrayList<PValue>();
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		//(Dieser Algorithmus lässt sich wahrscheinlich deutlich effizienter implementieren)
+		for (PValue pv : values) {
+			Integer i = new Integer(pv.getProperty().getId());
+			boolean bol = true;
+			// Alle bekannten P-Ids durchlaufen und schauen ob bereits vorhanden
+			for (Integer ii : ids) {
+				if (ii.equals(i)) bol = false;
+			}
+			// Wenn Id noch nicht gefunden, einfach hinzufügen
+			if (bol) {
+				ids.add(i);
+				result.add(pv);
+			} else { // Wenn id schonmal gefunden, an der stelle des PValue mit der gleichen ID im
+				// result array einfügen
+				pv.getProperty().setLabel("");
+				int iterator = 0;
+				boolean cancel = true;
+				for(PValue pVal : result) {
+					if(pVal.getProperty().getId() == i && cancel) {
+						result.add(iterator, pv);
+						cancel = false;
+					}
+					iterator++;
+				}
+			}
+		}
+		valueProvider.setList(result);
+		GWT.log(result.get(1).getStringValue());
+		valueProvider.flush();
+	}
+
 	public void userIsOwner() {
 		GWT.log("userIsOwner");
 		try {
@@ -162,7 +202,8 @@ public class ShowContactForm extends VerticalPanel {
 				} else
 					userIsOwner = false;
 				GWT.log("userIsOwner4");
-			} else editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
+			} else
+				editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
 			GWT.log("userIsOwner fertig");
 		} catch (Exception e) {
 			GWT.log("Besitzer in Kontakt nicht gesetzt");
@@ -186,7 +227,6 @@ public class ShowContactForm extends VerticalPanel {
 		this.e = e;
 	}
 
-
 	class GetOwnerOfContactCallback implements AsyncCallback<JabicsUser> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
@@ -199,7 +239,6 @@ public class ShowContactForm extends VerticalPanel {
 		}
 	}
 
-	
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
@@ -209,9 +248,7 @@ public class ShowContactForm extends VerticalPanel {
 
 			if (result != null) {
 				currentContact.setValues(result);
-				valueProvider.setList(result);
-				GWT.log(result.get(1).getStringValue());
-				valueProvider.flush();
+				renderTable(result);
 			}
 		}
 	}

@@ -55,7 +55,7 @@ public class EditorAdmin {
 		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
 
-		createC= new Button("Neuer ...Kontakt");
+		createC= new Button("Neuer Kontakt");
 		createC.addClickHandler(new CreateCClickHandler());
 		createC.setStyleName("btn1");
 		createCL = new Button("Neue Liste");

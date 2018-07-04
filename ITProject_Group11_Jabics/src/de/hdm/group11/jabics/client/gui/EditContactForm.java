@@ -108,7 +108,11 @@ public class EditContactForm extends VerticalPanel {
 			exitButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					e.showContact(contact);
+					if (!isNewContact) {
+						e.showContact(contact);
+					} else {
+						e.showMenuOnly();
+					}
 				}
 			});
 

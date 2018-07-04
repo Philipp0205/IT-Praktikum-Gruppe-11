@@ -412,28 +412,43 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * This Method inserts a specified <code>Contact</code> into a list
+	 * Einen <code>Contact</code> in eine Liste einfügen. Es wird überprüft, ob der
+	 * Kontakt bereits ind er Liste liegt.
 	 * 
-	 * @param Contact     c
+	 * @param Contact c
 	 * @param ContactList cl
-	 * @return updated contact list
+	 * @return updated ContactList
 	 */
 
 	public Contact addContactToList(Contact c, ContactList cl) {
 		System.err.println("Liste ändern: " + cl.getListName());
-
-		cl.addContact(c);
-		// Für alle Nutzer, mit denen der Kontakt geteilt ist, eine Collab einfügen. Die
-		// überprüfung, ob der Kontakt bereits geteilt ist, passiert in
-		// addCollaboration()
-		System.err.println("Kollaboratoren finden:");
-		for (JabicsUser u : clMapper.findCollaborators(cl)) {
-			System.err.println("Kollaborator:" + u.getUsername());
-			addCollaboration(c, u);
+		ArrayList<Contact> clOld = cMapper.findContactsOfContactList(cl);
+		Boolean bol = true;
+		for (Contact cOld : clOld) {
+			if (c.getId() == cOld.getId())
+				bol = false;
 		}
-		System.err.println("Liste den Kontakt hinzufügen: " + c.getName());
-		clMapper.insertContactIntoContactList(cl, c);
-		return c;
+		// Wenn der Kontakt wirklich neu in der Liste ist
+		if (bol) {
+			cl.addContact(c);
+			// Für alle Nutzer, mit denen der Kontakt geteilt ist, eine Collab für den
+			// Kontakt und dessen PValues einfügen. Die
+			// Überprüfung, ob der Kontakt bereits geteilt ist, passiert in
+			// addCollaboration()
+			System.err.println("Kollaboratoren finden:");
+			ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
+			for (JabicsUser u : clMapper.findCollaborators(cl)) {
+				System.err.println("Kollaborator:" + u.getUsername());
+				addCollaboration(c, u);
+				for (PValue pv : pVals) {
+					addCollaboration(pv, u);
+				}
+			}
+			System.err.println("Liste den Kontakt hinzufügen: " + c.getName());
+			clMapper.insertContactIntoContactList(cl, c);
+			return c;
+		}else return null;
+		
 	}
 
 	/**
