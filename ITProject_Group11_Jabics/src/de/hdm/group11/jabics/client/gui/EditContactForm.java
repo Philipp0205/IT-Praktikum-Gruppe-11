@@ -53,6 +53,7 @@ public class EditContactForm extends VerticalPanel {
 	ArrayList<PValue> allPV;
 
 	ArrayList<PropForm> val;
+	
 	ArrayList<Property> standardProperties;
 
 	ListBox formattype = new ListBox();
@@ -64,7 +65,6 @@ public class EditContactForm extends VerticalPanel {
 	Date tempDate;
 
 	public void onLoad() {
-
 		if (contact != null) {
 			GWT.log("EditCont");
 			pPanel = new VerticalPanel();
@@ -156,6 +156,7 @@ public class EditContactForm extends VerticalPanel {
 			Label type = new Label("Art:");
 			Label pvaluelabel = new Label("Wert:");
 			Button addPropertyButton = new Button("Hinzufügen");
+			addPropertyButton.setStyleName("paddbutton");
 			addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 
 			propertyAddBox.setWidget(0, 0, prop);
@@ -168,6 +169,13 @@ public class EditContactForm extends VerticalPanel {
 			propertyAddBox.setWidget(2, 4, dp2);
 			propertyAddBox.setWidget(1, 4, done2);
 			addPPanel.add(propertyAddBox);
+			
+			prop.setStyleName("editclabel");
+			type.setStyleName("editclabel");
+			pvaluelabel.setStyleName("editclabel");
+			pValueTextBox.setStyleName("TextBox");
+			propertyName.setStyleName("TextBox");
+			formattype.setStyleName("datatypeMenu");
 
 			this.insert(pPanel, 0);
 			this.insert(addPPanel, 1);
@@ -608,7 +616,8 @@ public class EditContactForm extends VerticalPanel {
 
 		PropForm(Property pp) {
 			this.p = pp;
-			property = new Label(p.getLabel());
+			property = new Label(p.getLabel()+":");
+			property.setStyleName("propertylabel");
 			addButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -670,8 +679,10 @@ public class EditContactForm extends VerticalPanel {
 		Button delete = new Button("x");
 		Button done = new Button("Fertig");
 		TextBox val = new TextBox();
+		
 
 		public void show() {
+			val.setStyleName("pvBox");
 			this.insert(val, 0);
 			delete.setStyleName("deleteBtn");
 			this.insert(delete, 1);
