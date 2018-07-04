@@ -15,20 +15,22 @@
  */
  
 .cellTreeWidget {
+	
   
 }
 
 .cellTreeEmptyMessage {
   padding-left: 16px;
-  font-style: italic;
+  font-style: Arial;
 }
 
 .cellTreeItem {
-  padding-top: 1px;
-  padding-bottom: 2px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   cursor: hand;
   cursor: pointer;
   zoom: 1;
+  font-size:20px;
   
   text-align: left;
   
@@ -45,22 +47,27 @@
 .cellTreeItemValue {
   padding-left: 1px;
   padding-right: 1px;
+  font-family: Arial;
+  font-weight: bold;
   outline: none;
+  font-size: 18px !important;
+   color: white;
+   
 }
 
 .cellTreeOpenItem {
-  
 }
 
 .cellTreeTopItem {
-  font-weight: bold;
+  
   color: white;
+  background:#9FB8E0;
   margin-top: 20px;
   padding: 3px 13px 3px 10px !important;
 }
 
 .cellTreeTopItemImage {
-  
+ 
 }
 
 .cellTreeTopItemImageValue {

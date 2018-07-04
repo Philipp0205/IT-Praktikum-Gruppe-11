@@ -77,7 +77,8 @@ public class EditorAdmin {
 
 		treeViewMenu.setStyleName("treeView");
 		
-		menuPanel.add(treeViewMenu.getStackPanel());
+		menuPanel.add(treeViewMenu.getStackPanel1());
+		menuPanel.add(treeViewMenu.getStackPanel2());
 
 		menuPanel.setWidth("400px");
 

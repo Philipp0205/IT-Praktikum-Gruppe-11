@@ -39,6 +39,7 @@
 #menu {
 	float: left;
 	margin-left: 100px;
+	margin-top:-10px;
 }
 
 #content {
@@ -187,18 +188,17 @@ html>body .gwt-DecoratedStackPanel {
 	cursor: pointer;
 }
 /*--------------------ContactForm--------------------*/
-.showContactTable{
-	font-family: Arial; 
+.showContactTable {
+	font-family: Arial;
 	font-size: 20px
 }
 
-.gwt-CellTableItem{
-	font-family: Arial; 
+.gwt-CellTableItem {
+	font-family: Arial;
 	font-size: 20px
 }
 
 /*--------------------EditContactForm--------------------*/
-
 .deleteBtn {
 	font-family: Arial;
 	color: #ff5e5e !important;
@@ -412,18 +412,23 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 }
 
+/*-------------------STACKPANEL-------------------*/
+
 .gwt-StackPanel {
 	background-color: white;
 	font-family: Arial;
 	border-style: hidden;
+	
+
 }
 
 .gwt-StackPanelItem {
 	/*	text-align: center;
 	    align-content: center; */
 	font-family: Arial;
-	font-size: 14px !important;
-	background: #4D70A8 !important;
+	font-weight: bold;
+	font-size: 18px !important;
+	background: #9FB8E0 !important;
 	color: white !important;;
 	padding: 6px 14px 6px 14px !important;
 }
@@ -438,8 +443,33 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .gwt-StackPanelItem:hover {
-	background: #accbf0 !important;
+
 	cursor: pointer;
+}
+
+.stackPanel2 {
+	background: #4D70A8;
+	  font-family: Arial;
+  font-weight: bold;
+  outline: none;
+  
+  color: white;
+}
+.Kontakte{
+	font-size: 18px !important;	
+}
+
+.stackPanel2:hover {
+	cursor: pointer;
+}
+
+.stackPanel1 {
+	color: white;
+	background: #4D70A8;
+}
+
+.MeineListen {
+	background: background: #19376E;
 }
 
 .cw-StackPanelHeader {
@@ -595,11 +625,6 @@ table, th, td {
    	border: 1px solid black;
 
 }*/
-
-
-
-.cellTree .gwt-CellTree{
-  color: red;
-
+.cellTree .gwt-CellTree {
+	color: red;
 }
-
