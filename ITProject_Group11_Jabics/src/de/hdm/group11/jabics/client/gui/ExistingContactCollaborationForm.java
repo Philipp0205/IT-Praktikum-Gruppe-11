@@ -146,6 +146,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		selUser.setSelectionModel(userSelectionModel);
 
 		removeButton = new Button("Freigabe entfernen");
+		removeButton.setStyleName("removeexisting");
 		removeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if (selectedUser != null) {
@@ -172,6 +173,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 		shareContactWAll = new Button("Für alle Nutzer ändern");
+		shareContactWAll.setStyleName("edit4all");
 		shareContactWAll.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				Window.alert(
