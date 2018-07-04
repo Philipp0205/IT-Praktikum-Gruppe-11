@@ -39,7 +39,7 @@
 #menu {
 	float: left;
 	margin-left: 100px;
-	margin-top:-10px;
+	margin-top: -10px;
 }
 
 #content {
@@ -164,6 +164,8 @@ html>body .gwt-DecoratedStackPanel {
 	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
 	text-decoration: none;
 	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
 }
 
 .btn {
@@ -178,6 +180,7 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .btn:hover {
+	cursor: pointer;
 	background: #14b5ff;
 	background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
 	background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
@@ -186,6 +189,8 @@ html>body .gwt-DecoratedStackPanel {
 	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
 	text-decoration: none;
 	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
 }
 /*--------------------ContactForm--------------------*/
 .showContactTable {
@@ -314,7 +319,7 @@ html>body .gwt-DecoratedStackPanel {
 	text-align: center;
 }
 
-.CLlistBox {
+.TextBox {
 	padding: 3px;
 	height: 30px;
 	position: relative;
@@ -322,7 +327,7 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 10px;
 	margin-top: 20px;
 	outline: none;
-	width: 90px;
+	width: 120px;
 	border: 1px solid #cdcdcd;
 	border-color: #9FB8E0;
 	background-color: white;
@@ -412,14 +417,106 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 }
 
-/*-------------------STACKPANEL-------------------*/
+/*-------------------SearchForm-------------------*/
+.eigenschaftlabel {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	margin-left: 13px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
 
+.datentyplabel {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	margin-left: 15px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.wertlabel {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 29px;
+	padding-left: 25px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+
+.datatypeMenu {
+	padding: 3px;
+	height: 38px;
+	position: relative;
+	left: 0;
+	margin-left: 10px;
+	margin-top: 20px;
+	outline: none;
+	width: 120px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	background-color: white;
+	font-size: 16px;
+}
+
+.finden {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 72px;
+	margin-left: 10px;
+}
+.finden:hover {
+	cursor: pointer;
+	background-color: #9FB8E0 ;
+}
+
+.back {
+	margin-left: 10px;
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 10px;
+}
+.back:hover{
+	cursor: pointer;
+	background-color: #9FB8E0;
+}
+
+.sp{
+	
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 18px !important;
+	background: #9FB8E0 !important;
+	color: white !important;
+	margin-top:10px;
+	margin-left: 10px;
+	width: 280px;
+}
+
+/*-------------------STACKPANEL-------------------*/
 .gwt-StackPanel {
 	background-color: white;
 	font-family: Arial;
 	border-style: hidden;
-	
-
 }
 
 .gwt-StackPanelItem {
@@ -443,17 +540,17 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .gwt-StackPanelItem:hover {
-
 	cursor: pointer;
 }
 
 .stackPanel2 {
 	background: #4D70A8;
 	font-family: Arial;
-  font-weight: bold;
-  outline: none;
-  color: white;
+	font-weight: bold;
+	outline: none;
+	color: white;
 }
+
 .stackPanel2:hover {
 	cursor: pointer;
 }
@@ -461,7 +558,7 @@ html>body .gwt-DecoratedStackPanel {
 .stackPanel1 {
 	color: white;
 	background: #4D70A8;
-	  outline: none;
+	outline: none;
 }
 
 .MeineListen {
