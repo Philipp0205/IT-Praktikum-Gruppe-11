@@ -93,6 +93,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				return object.toString();
 			}
 		};
+		
+		property.setCellStyleNames("prop");
+		propertyvalue.setCellStyleNames("pval");
 
 		valueTable.addColumn(checkbox, "Auswahl");
 		valueTable.setColumnWidth(checkbox, "10px");

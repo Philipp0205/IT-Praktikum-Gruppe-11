@@ -115,6 +115,9 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 		};
 		
+		property.setCellStyleNames("prop");
+		propertyvalue.setCellStyleNames("pval");
+		
 		selValues.addColumn(checkbox, "Auswahl");
 		selValues.setColumnWidth(checkbox, "50px");
 		selValues.addColumn(property, "Merkmal");
