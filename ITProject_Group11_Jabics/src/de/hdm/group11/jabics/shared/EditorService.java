@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import de.hdm.group11.jabics.shared.bo.*;
 
 /**
- * 
- *
+ * Interface der Klasse <code>EditorServiceImpl</code>.
  */
 @RemoteServiceRelativePath("editor")
 public interface EditorService extends RemoteService {
