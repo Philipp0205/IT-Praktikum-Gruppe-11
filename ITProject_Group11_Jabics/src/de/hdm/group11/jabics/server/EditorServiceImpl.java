@@ -25,7 +25,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instanz der Klasse <code>Contact</code>
+	 * Instanz der Klasse <code>ContactMapper</code>
 	 */
 	ContactMapper cMapper = ContactMapper.contactMapper();
 
