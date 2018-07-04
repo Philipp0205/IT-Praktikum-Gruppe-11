@@ -752,59 +752,19 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return pvMapper.findPValueById(pv.getId());
 	}
 
-	public ContactList updateContactList(ContactList cl) {
-		ContactList cltemp = clMapper.findContactListById(cl.getId());
-		// TODO: gescheite .equals für Kontaktlisten
-		if (cl != cltemp) {
-
-			// Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist,
-			// wenn ja, einfügen. Allen freigegebenen Nutzern den Kontakt freigeben
-			for (Contact c : cl.getContacts()) {
-				boolean bol = false;
-				for (Contact ctemp : cltemp.getContacts()) {
-					if (c.getId() == ctemp.getId())
-						bol = true;
-				}
-				if (bol == false) {
-					clMapper.insertContactIntoContactList(cl, c);
-					for (JabicsUser u : clMapper.findCollaborators(cl)) {
-						addCollaboration(c, u);
-					}
-				}
-			}
-			// Alle Kontakte in der neuen Liste durchlaufen, ob einer weggefallen ist, wenn
-			// ja, löschen, Allen freigegebenen Nutzern den Kontakt entziehen
-			for (Contact ctemp : cltemp.getContacts()) {
-				boolean bol = false;
-				for (Contact c : cl.getContacts()) {
-					if (c.getId() == ctemp.getId())
-						bol = true;
-				}
-				if (bol == false) {
-					clMapper.deleteContactfromContactList(cl, ctemp);
-					for (JabicsUser u : clMapper.findCollaborators(cl)) {
-						deleteCollaboration(ctemp, u);
-					}
-				}
-			}
-			return clMapper.updateContactList(cl);
-		} else
-			return clMapper.findContactListById(cl.getId());
-	}
-
 	/**
 	 * Diese Methode überprüft, ob der Contact in dieser Form in der DB vorhanden
 	 * ist, wenn nicht wird alles auf Konsitenz geprüft und fehlende Inhalte werden
 	 * upgedated
 	 */
 	public Contact updateContact(Contact c, JabicsUser u) {
-
+	
 		// Nickname neu setzen
 		c.updateNickname();
 		System.out.println("5.1 updateContact");
 		// GWT.log("5.1 Contact:" + c.getName());
 		System.out.println("5.1 Contact:" + c.getName());
-
+	
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
@@ -816,7 +776,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		}
 		System.out.println("5.1 ctemp" + "ist kontakt gleich?" + c.equals(ctemp) + " kontaktename: " + ctemp.getName());
 		if (c.equals(ctemp) == false) {
-
+	
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				boolean bol = false;
@@ -861,6 +821,47 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		c.setValues(getPValueOf(c, u));
 		return c;
 	}
+
+	public ContactList updateContactList(ContactList cl) {
+		ContactList cltemp = clMapper.findContactListById(cl.getId());
+		// TODO: gescheite .equals für Kontaktlisten
+		if (cl != cltemp) {
+
+			// Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist,
+			// wenn ja, einfügen. Allen freigegebenen Nutzern den Kontakt freigeben
+			for (Contact c : cl.getContacts()) {
+				boolean bol = false;
+				for (Contact ctemp : cltemp.getContacts()) {
+					if (c.getId() == ctemp.getId())
+						bol = true;
+				}
+				if (bol == false) {
+					clMapper.insertContactIntoContactList(cl, c);
+					for (JabicsUser u : clMapper.findCollaborators(cl)) {
+						addCollaboration(c, u);
+					}
+				}
+			}
+			// Alle Kontakte in der neuen Liste durchlaufen, ob einer weggefallen ist, wenn
+			// ja, löschen, Allen freigegebenen Nutzern den Kontakt entziehen
+			for (Contact ctemp : cltemp.getContacts()) {
+				boolean bol = false;
+				for (Contact c : cl.getContacts()) {
+					if (c.getId() == ctemp.getId())
+						bol = true;
+				}
+				if (bol == false) {
+					clMapper.deleteContactfromContactList(cl, ctemp);
+					for (JabicsUser u : clMapper.findCollaborators(cl)) {
+						deleteCollaboration(ctemp, u);
+					}
+				}
+			}
+			return clMapper.updateContactList(cl);
+		} else
+			return clMapper.findContactListById(cl.getId());
+	}
+	
 
 	/**
 	 * Eine Freigabe zwischen einem Nutzer und einer Kontaktliste einfügen. Diese

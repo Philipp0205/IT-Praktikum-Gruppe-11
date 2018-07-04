@@ -312,10 +312,12 @@ public class EditContactForm extends VerticalPanel {
 					public void onSuccess(Contact result) {
 
 						if (result != null) {
+							
 							GWT.log("Kontakt " + result.getName() + " erfolgreich gespeichert mit diesen PV:");
 							for (PValue pv : result.getValues()) {
 								GWT.log(pv.toString());
 							}
+							
 							setContact(result);
 							e.addContactToTree(result);
 							addPPanel.setVisible(true);

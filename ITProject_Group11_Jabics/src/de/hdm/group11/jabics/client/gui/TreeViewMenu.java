@@ -82,6 +82,10 @@ public class TreeViewMenu extends VerticalPanel {
 	public void removeContactListFromTree(ContactList cl) {
 		contactListTab.removeContactList(cl);
 	}
+	
+	public void updateContactListInTree(ContactList cl) {
+		contactListTab.updateContactList(cl);
+	}
 
 	public void setUser(JabicsUser u) {
 		this.user = u;
