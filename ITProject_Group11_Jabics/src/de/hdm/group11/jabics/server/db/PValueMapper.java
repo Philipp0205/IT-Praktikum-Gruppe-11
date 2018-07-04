@@ -63,24 +63,26 @@ public class PValueMapper {
 	/**
 	 * Diese Methode trägt eine Eigenschaftsausprägung in die Datenbank ein.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dass in die Datenbank eingetragen
-	 *           werden soll.
-	 * @param c  der Kontakt zu dem das <code>PValue</code> Objekt gehört.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dass in die Datenbank eingetragen
+	 *            werden soll.
+	 * @param c
+	 *            der Kontakt zu dem das <code>PValue</code> Objekt gehört.
 	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
 	 */
 	public PValue insertPValue(PValue pv, Contact c) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
+		
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
-			/**
-			 * Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code>
-			 * Objekts und trägt den Wert in die Datenbank ein
-			 */
+
+			 // Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code>
+			 // Objekts und trägt den Wert in die Datenbank ein
 			switch (pv.getProperty().getType()) {
 			case STRING: {
-				// Füllen des Statements
+				// Füllen und ausführen des SQL-Statements
 				stmt.executeUpdate(
 						"INSERT INTO pValue (stringValue, intValue, floatValue, "
 								+ "dateValue, propertyID, contactID) VALUES " + "( '" + pv.getStringValue() + "' , "
@@ -91,17 +93,18 @@ public class PValueMapper {
 
 				Statement stmt2 = con.createStatement();
 
-				while (rs.next()) {
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
+				if (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					System.err.println("PValID " + pv.getId());
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
 
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+				// werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -115,23 +118,28 @@ public class PValueMapper {
 				break;
 			}
 			case INT: {
+				// Befüllen und ausführen des SQL-Statements
 				stmt.executeUpdate(
 						"INSERT INTO pValue (stringValue, intValue, floatValue, "
 								+ "dateValue, propertyID, contactID) VALUES " + "(" + "null, " + pv.getIntValue() + ", "
 								+ "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")",
 						Statement.RETURN_GENERATED_KEYS);
+				
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
-				while (rs.next()) {
+				
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
+				if (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
 
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+				// werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -148,24 +156,31 @@ public class PValueMapper {
 				//
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+				// String mit SQL-Statement befüllen
 				String query = ("INSERT INTO pValue (stringValue, intValue, floatValue, "
 						+ " dateValue, propertyID, contactID) VALUES " + "( " + "NULL, " + "NULL, " + "NULL,'"
 						+ dateFormat.format(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId()
 						+ " ) ");
+				
+				// SQL-Statement ausführen
 				stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+				
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
 				ResultSet rs2;
-				while (rs.next()) {
+				
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
+				if (rs.next()) {
 					rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
 
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+				// werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -179,24 +194,27 @@ public class PValueMapper {
 				break;
 			}
 			case FLOAT: {
-				// Füllen des Statements
+				// Füllen und ausführen des SQL-Statements
 				stmt.executeUpdate("INSERT INTO pValue (stringValue, intValue, floatValue, "
 						+ " dateValue, propertyID, contactID) VALUES " + "( " + "null, " + "null, " + pv.getFloatValue()
 						+ ", " + "null" + ", " + pv.getProperty().getId() + ", " + c.getId() + ")",
 						Statement.RETURN_GENERATED_KEYS);
+				
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
-				while (rs.next()) {
+				
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
+				if (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-
-					while (rs2.next()) {
+					if (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
 
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+				// werden diese geschlossen.
 				if (!stmt.isClosed()) {
 					stmt.close();
 				}
@@ -219,15 +237,18 @@ public class PValueMapper {
 	}
 
 	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code> Objekts zu
-	 * einem <code>PValue</code> Objekt in die Datenbank ein.
+	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code>
+	 * Objekts zu einem <code>PValue</code> Objekt in die Datenbank ein.
 	 * 
-	 * @param u       der User der an einer Eigenschaftsausprägung
-	 *                Teilhaberschaftsrechte erlangen soll.
-	 * @param pv      die Eigenschaftsausprägung an der ein User Teilhaberschaft
-	 *                haben soll.
-	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der
-	 *                zuzuweisende Teilhaber auch der Owner ist.
+	 * @param u
+	 *            der User der an einer Eigenschaftsausprägung
+	 *            Teilhaberschaftsrechte erlangen soll.
+	 * @param pv
+	 *            die Eigenschaftsausprägung an der ein User Teilhaberschaft haben
+	 *            soll.
+	 * @param IsOwner
+	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
+	 *            zuzuweisende Teilhaber auch der Owner ist.
 	 * @return das übergebene <code>PValue</code> Objekt.
 	 */
 	public PValue insertCollaboration(JabicsUser u, PValue pv, boolean IsOwner) {
@@ -238,18 +259,18 @@ public class PValueMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			System.err.println("pvid" + pv.getId());
-			System.err.println("uid" + u.getId());
-			System.err.println("tbool: " + IsOwner);
-			// Füllen des Statements
+			// Füllen und ausführen des Statements
 			stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + pv.getId() + ", " + u.getId() + ")");
 
-			// Schließen des SQL-Statements
-			stmt.close();
-
-			// Schließen der Datenbankverbindung
-			con.close();
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
 
 			// Rückgabe des pValue-Objekts
 			return pv;
@@ -262,7 +283,8 @@ public class PValueMapper {
 	/**
 	 * Diese Methode aktualisiert ein <code>PValue</code> Objekt in der Datenbank.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dass aktualisiert werden soll.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dass aktualisiert werden soll.
 	 * @return Das als Parameter übergebene- <code>PValue</code> Objekt.
 	 */
 	public PValue updatePValue(PValue pv) {
@@ -302,7 +324,8 @@ public class PValueMapper {
 			}
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -321,7 +344,8 @@ public class PValueMapper {
 	/**
 	 * Diese Methode löscht ein <code>PValue</code> Objekt aus der Datenbank.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dass gelöscht werden soll.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dass gelöscht werden soll.
 	 * 
 	 */
 	public void deletePValue(PValue pv) {
@@ -335,7 +359,8 @@ public class PValueMapper {
 			// Füllen des Statements
 			stmt.executeUpdate("DELETE FROM pValue WHERE pValueID = " + pv.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -349,12 +374,14 @@ public class PValueMapper {
 	}
 
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem <code>JabicsUser</code>
-	 * Objekt und einem <code>PValue</code> Objekt.
+	 * Diese Methode löscht eine Teilhaberschaft zwischen einem
+	 * <code>JabicsUser</code> Objekt und einem <code>PValue</code> Objekt.
 	 * 
-	 * @param pv das ausgewählte <code>PValue</code> Objekt.
-	 * @param u  der Nutzer der die Teilhaberschaft zu dem <code>PValue</code>
-	 *           Objekt verlieren soll.
+	 * @param pv
+	 *            das ausgewählte <code>PValue</code> Objekt.
+	 * @param u
+	 *            der Nutzer der die Teilhaberschaft zu dem <code>PValue</code>
+	 *            Objekt verlieren soll.
 	 */
 	public void deleteCollaboration(PValue pv, JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -368,14 +395,15 @@ public class PValueMapper {
 			stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID = " + u.getId() + " AND pValueID = "
 					+ pv.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
 			if (!con.isClosed()) {
 				con.close();
 			}
-      
+
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -385,7 +413,8 @@ public class PValueMapper {
 	 * Diese Methode gibt ein <code>PValue</code> Objekt zurück, dass eine bestimmte
 	 * ID hat.
 	 * 
-	 * @param id die Id nach welcher gesucht werden soll.
+	 * @param id
+	 *            die Id nach welcher gesucht werden soll.
 	 * @return Das <code>PValue</code> Objekt mit der gesuchten id.
 	 */
 	public PValue findPValueById(int id) {
@@ -425,8 +454,9 @@ public class PValueMapper {
 				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				pv.setProperty(p);
 			}
-      
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -446,8 +476,9 @@ public class PValueMapper {
 	 * Diese Methode sucht die <code>PValue</code> Objekte eines Kontaktes und gibt
 	 * sie in Form einer ArrayList zurück.
 	 * 
-	 * @param c der Kontakt zu welchem die <code>PValue</code> Objekte ermittelt
-	 *          werden sollen.
+	 * @param c
+	 *            der Kontakt zu welchem die <code>PValue</code> Objekte ermittelt
+	 *            werden sollen.
 	 * @return Die ArrayList mit <code>PValue</code> Objekten.
 	 */
 	public ArrayList<PValue> findPValueForContact(Contact c) {
@@ -461,18 +492,18 @@ public class PValueMapper {
 			// Erzeugen einer ArrayList
 			ArrayList<PValue> al = new ArrayList<PValue>();
 
-			// Füllen des Statements
+			// Füllen und ausführen des Statements
 			ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, " + "pValue.stringValue, " + "pValue.intValue, "
 					+ "pValue.floatValue, " + "pValue.dateValue, " + "pValue.dateCreated, " + "pValue.dateUpdated, "
 					+ "pValue.contactID, " + "property.propertyID, " + "property.isStandard, " + "property.name, "
 					+ "property.type, " + "property.dateCreated, " + "property.dateUpdated " + "FROM pValue "
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE contactID = "
 					+ c.getId());
+			
+			// Erzeugen einer Eigenschaft und einer Ausprägung, befüllen dieser und anhängen an eine ArrayList
 			while (rs.next()) {
-
 				PValue pv = new PValue();
 				Property p = new Property();
-				// Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
 				pv.setId(rs.getInt("pValueID"));
 				pv.setStringValue(rs.getString("stringValue"));
 				pv.setIntValue(rs.getInt("intValue"));
@@ -499,11 +530,10 @@ public class PValueMapper {
 					pv.setPointer(0);
 				}
 				al.add(pv);
-				// System.out.println(pv.getStringValue());
-				// System.out.println(pv.getPointer());
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -520,11 +550,12 @@ public class PValueMapper {
 	}
 
 	/**
-	 * Diese Methode gibt eine <code>ArrayList</code> mit allen <code>JabicsUser</code>
-	 * Objekten die eine Teilhaberschaft an einem bestimmten <code>PValue</code>
-	 * Objekt besitzen.
+	 * Diese Methode gibt eine <code>ArrayList</code> mit allen
+	 * <code>JabicsUser</code> Objekten die eine Teilhaberschaft an einem bestimmten
+	 * <code>PValue</code> Objekt besitzen.
 	 * 
-	 * @param pv das <code>PValue</code> Objekt, dessen Teilhaber gesucht werden.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, dessen Teilhaber gesucht werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
 	public ArrayList<JabicsUser> findCollaborators(PValue pv) {
@@ -540,19 +571,21 @@ public class PValueMapper {
 
 			// Auswählen der <code>JabicsUser</code> Objekte mit einer bestimmten ID aus der
 			// Teilhaberschaftstabelle.
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email" + " FROM systemUser"
+			// Befüllen und ausführen des SQL-Statements
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name " + " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
 					+ " WHERE pValueCollaboration.pValueID = " + pv.getId());
 
-			//
+			// Für jedes Tupel wird ein User Objekt erstellt und befüllt und an die ArrayList angehängt
 			while (rs.next()) {
-				// Befüllen des User-Objekts und Hinzufügen zur ArrayList.
 				JabicsUser u = new JabicsUser(rs.getString("email"));
 				u.setId(rs.getInt("systemUserID"));
+				u.setEmail(rs.getString("name"));
 				al.add(u);
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja, werden diese geschlossen.
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
@@ -568,6 +601,14 @@ public class PValueMapper {
 		}
 	}
 
+	/**
+	 * Diese Methode ermittelt den Share-Status von in einer Liste übergebenen
+	 * <code>PValue</code> Objekten
+	 * 
+	 * @param alPValue
+	 *            ArrayList mit <code>PValue</code> Objekten
+	 * @return ArrayList, welche den BoStatus der übergebenen Kontakte enthält
+	 */
 	public ArrayList<BoStatus> findShareStatus(ArrayList<PValue> alPValue) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
@@ -576,32 +617,38 @@ public class PValueMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Deklaration und Initialisierung einer ArrayList<BoStatus>
+			// Erzeugen einer neuen ArrayList
 			ArrayList<BoStatus> al = new ArrayList<BoStatus>();
-			
-			// Deklaration und Initialisierung eines StringBuffers
+
+			// Erzeugen eines neuen StringBuffers
 			StringBuffer pValueIDs = new StringBuffer();
-			
+
+			// pValueIDs an den StringBuffer anhängen
 			if (alPValue != null) {
-				// pValueIDs an den StringBuffer anhängen
 				for (PValue pv : alPValue) {
 					pValueIDs.append(pv.getId());
 					pValueIDs.append(",");
 				}
 				// Letztes Komma im StringBuffer löschen
 				pValueIDs.deleteCharAt(pValueIDs.lastIndexOf(","));
+			} else {
+				return null;
 			}
-			
+
+			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT pValueID " + " FROM pValueCollaboration "
 					+ " WHERE isOwner = 0 AND pValueID IN (" + pValueIDs + ")");
 
-			// Das Resultset in ein Array aus BoStatus überführen
+			// Erzeugen einer neuen ArrayList
 			ArrayList<Integer> ids = new ArrayList<Integer>();
 
+			// Für jedes Tupel wird die pValueID an die ArrayList angehängt
 			while (rs.next()) {
 				ids.add(new Integer(rs.getInt("pValueID")));
 			}
 
+			// Setzen des Shared Status für jedes PValue in ArrayList<PValue>.
+			// Wenn die übergebene pValueID in der Datenbank steht, ist der Kontakt geteilt.
 			for (PValue p : alPValue) {
 				Boolean bol = false;
 				for (Integer i : ids) {
