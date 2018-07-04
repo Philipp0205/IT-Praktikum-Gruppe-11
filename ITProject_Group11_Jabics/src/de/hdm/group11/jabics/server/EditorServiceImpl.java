@@ -333,9 +333,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Auslesen aller <code>Property</code> Objekte eines <code>JabicsUser</code>.
 	 * 
-	 * @param
-	 * der aktuelle <code>Property</code>
-	 * @return
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Liste aus <code>Property</code> Objekten.
 	 */
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
 		System.out.println("log");
@@ -1096,34 +1096,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 	}
 
-	// /**
-	// * Eine Kontaktliste nach Int-Values durchsuchen
-	// *
-	// * @return ArrayList<Contact>
-	// */
-	// public ArrayList<Contact> searchInList(int i, ContactList cl) {
-	// ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-	// for (Contact c : contacts) {
-	// c.setValues(pvMapper.findPValueForContact(c));
-	// }
-	// ArrayList<Contact> alc = Filter.filterContactsByInt(contacts, i);
-	// return alc;
-	// }
-	//
-	// /**
-	// * Eine Kontaktliste nach float-Values durchsuchen
-	// *
-	// * @return ArrayList<Contact>
-	// */
-	// public ArrayList<Contact> searchInList(float f, ContactList cl) {
-	// ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-	// for (Contact c : contacts) {
-	// c.setValues(pvMapper.findPValueForContact(c));
-	// }
-	// ArrayList<Contact> alc = Filter.filterContactsByFloat(contacts, f);
-	// return alc;
-	// }
-
 	/**
 	 * Eine Liste nach Nutzern durchsuchen, zB Kollaboratoren oder Eigentümer
 	 * 
@@ -1170,14 +1142,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Den Besitzer eines Kontakt-Objekts ermitteln und zurückgeben
+	 * Auslesen des <code>JabicsUser</code> Objekte, welche eine Collaboration zu
+	 * einem <code>PValue</code> Objekt besitzen.
+	 * 
+	 * @return der
 	 */
 	public JabicsUser getOwnerOfContact(Contact c) {
 		return uMapper.findUserByContact(c);
 	}
 
 	/**
-	 * Erhalten aller kollaborierenden Nutzer für einen Kontakt
+	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
+	 * einem <code>Contact</code> Objekt besitzen.
+	 * 
+	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(Contact c) {
 		System.out.println("Kollaboratoren holen");
@@ -1185,7 +1163,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Erhalten aller kollaborierenden Nutzer für eine KontaktListe
+	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
+	 * einem <code>ContactList</code> Objekt besitzen.
+	 * 
+	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
 		ArrayList<JabicsUser> result = clMapper.findCollaborators(cl);
@@ -1198,21 +1179,28 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Erhalten aller kollaborierenden Nutzer für ein PValue
+	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
+	 * einem <code>PValue</code> Objekt besitzen.
+	 * 
+	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(PValue pv) {
 		return pvMapper.findCollaborators(pv);
 	}
 
 	/**
-	 * Erhalten aller Nutzer im System
+	 * Auslesen aller <code>JabicsUser</code> Objekte.
+	 * 
+	 * @return Liste aller <code>JabicsUser</code>.
 	 */
 	public ArrayList<JabicsUser> getAllUsers() {
 		return uMapper.findAllUser();
 	}
 
 	/**
+	 * Auslesen aller Standard <code>Property</code> Objekte.
 	 * 
+	 * @return Liste von Standard <code>Property</code>.
 	 */
 	public ArrayList<Property> getStandardProperties() {
 		return pMapper.findAllStandardPropertys();
