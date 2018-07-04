@@ -293,7 +293,6 @@ public class ContactMapper {
 	public ArrayList<Contact> findAllContacts(JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-		System.out.println("Alle Kontakte Finden");
 
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
@@ -416,7 +415,7 @@ public class ContactMapper {
 							+ " LEFT JOIN contactContactLists ON contact.contactID = contactContactLists.contactID"
 							+ " WHERE contactContactLists.contactListID = " + cl.getId());
 
-			// Für jedes Tupel wird ein Contact Objekt erstellt, mit Werten befüllt und an
+			// Für jedes Tupel wird ein Kontakt Objekt erstellt, mit Werten befüllt und an
 			// die ArrayList angehängt.
 			while (rs.next()) {
 				Contact c = new Contact();
@@ -472,7 +471,8 @@ public class ContactMapper {
 					+ " LEFT JOIN contactCollaboration ON systemUser.systemUserID = contactCollaboration.systemUserID"
 					+ " WHERE contactCollaboration.contactID = " + c.getId());
 
-			// Für jedes Tupel wird ein Nutzer erstellt, mit Werten befüllt und an die ArrayList angehängt.
+			// Für jedes Tupel wird ein Nutzer erstellt, mit Werten befüllt und an die
+			// ArrayList angehängt.
 			while (rs.next()) {
 				JabicsUser u = new JabicsUser(rs.getString("email"));
 				u.setId(rs.getInt("systemUserID"));
@@ -520,13 +520,16 @@ public class ContactMapper {
 			StringBuffer contactIDs = new StringBuffer();
 
 			// contactIDs an den StringBuffer anhängen
-			for (Contact c : alContact) {
-				contactIDs.append(c.getId());
-				contactIDs.append(",");
+			if (alContact != null) {
+				for (Contact c : alContact) {
+					contactIDs.append(c.getId());
+					contactIDs.append(",");
+				}
+				// Letztes Komma im StringBuffer löschen
+				contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
+			} else {
+				return null;
 			}
-
-			// Letztes Komma im StringBuffer löschen
-			contactIDs.deleteCharAt(contactIDs.lastIndexOf(","));
 
 			// Befüllen und ausführen des SQL-Statements
 			ResultSet rs = stmt.executeQuery("SELECT contactID " + " FROM contactCollaboration "
@@ -541,7 +544,8 @@ public class ContactMapper {
 			}
 
 			// Setzen des Shared Status für jeden Contact in ArrayList<Contact>.
-			// Wenn die übergebene contactID in der Datenbank steht, ist der Kontakt geteilt.
+			// Wenn die übergebene contactID in der Datenbank steht, ist der Kontakt
+			// geteilt.
 			for (Contact c : alContact) {
 				Boolean bol = false;
 				for (Integer i : ids) {
