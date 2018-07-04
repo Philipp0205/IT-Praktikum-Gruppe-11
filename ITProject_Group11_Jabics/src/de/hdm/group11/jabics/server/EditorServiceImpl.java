@@ -237,20 +237,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
 
-		ArrayList<ContactList> result = clMapper.findContactListOfUser(u);
+		ArrayList<ContactList> allLists= clMapper.findContactListOfUser(u);
+		ArrayList<ContactList> result = new ArrayList<ContactList>();
 		ArrayList<BoStatus> status = clMapper.findShareStatus(result);
 
-		for (ContactList cl : result) {
+		for (ContactList cl : allLists) {
+
 			cl.setOwner(uMapper.findUserByContactList(cl));
 			System.out.println("2.2 getListsOf " + cl.getListName());
 			result.add(cl);
 
-			int i = 0;
-			if (status.size() == result.size()) {
-				System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
-				cl.setShareStatus(status.get(i));
-				i++;
-			}
+
+//			int i = 0;
+//			if (status.size() == allLists.size()) {
+//				System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
+//				cl.setShareStatus(status.get(i));
+//				i++;
+//			}
+
 		}
 		return result;
 	}

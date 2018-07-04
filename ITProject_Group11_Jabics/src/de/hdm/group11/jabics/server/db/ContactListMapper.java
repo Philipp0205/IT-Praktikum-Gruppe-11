@@ -567,7 +567,7 @@ public class ContactListMapper {
 			StringBuffer contactListIDs = new StringBuffer();
 
 			// contactListIDs an den StringBuffer anhängen
-			if (alContactList != null) {
+			if (!alContactList.isEmpty()) {
 				for (ContactList cl : alContactList) {
 					contactListIDs.append(cl.getId());
 					contactListIDs.append(",");
