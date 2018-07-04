@@ -503,9 +503,8 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, " + "pValue.stringValue, " + "pValue.intValue, "
 					+ "pValue.floatValue, " + "pValue.dateValue, " + "pValue.dateCreated, " + "pValue.dateUpdated, "
 					+ "pValue.contactID, " + "property.propertyID, " + "property.isStandard, " + "property.name, "
-
-					+ "property.type, " + "FROM pValue "
-
+					+ "property.type " 
+					+ "FROM pValue "
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE contactID = "
 					+ c.getId());
 
