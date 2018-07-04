@@ -207,7 +207,8 @@ public class PropertyMapper {
 			// SQL-Statement ausführen
 			ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE isStandard = 1 ");
 
-			// Für jedes Tupel in der Datenbank wird ein Property Objekt erstellt und befüllt.
+			// Für jedes Tupel in der Datenbank wird ein Property Objekt erstellt und
+			// befüllt.
 			while (rs.next()) {
 				Property p = new Property();
 				p.setId(rs.getInt("propertyID"));
