@@ -236,14 +236,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Gibt alle Kontaktlisten eines Nutzers zurück.
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
+
 		ArrayList<ContactList> allLists= clMapper.findContactListOfUser(u);
 		ArrayList<ContactList> result = new ArrayList<ContactList>();
 		ArrayList<BoStatus> status = clMapper.findShareStatus(result);
 
 		for (ContactList cl : allLists) {
+
 			cl.setOwner(uMapper.findUserByContactList(cl));
 			System.out.println("2.2 getListsOf " + cl.getListName());
 			result.add(cl);
+
 
 //			int i = 0;
 //			if (status.size() == allLists.size()) {
@@ -251,6 +254,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 //				cl.setShareStatus(status.get(i));
 //				i++;
 //			}
+
 		}
 		return result;
 	}

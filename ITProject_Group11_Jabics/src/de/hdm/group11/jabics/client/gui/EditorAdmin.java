@@ -89,10 +89,7 @@ public class EditorAdmin {
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
 
-		//menuPanel.setWidth("400px");
-
 		menuPanel.setStyleName("menuPanel");
-		menuPanel.setPixelSize(200, 400);
 	}
 
 	public void loadEditor() {
