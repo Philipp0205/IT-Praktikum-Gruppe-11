@@ -40,6 +40,7 @@ public class TreeViewMenu extends VerticalPanel {
 	ContactCellListTab cellListTab;
 	
 	private CellTreeResources ctRes = GWT.create(CellTreeResources.class);
+	
 
 	public TreeViewMenu(JabicsUser u) {
 		String tip = new String("▶");
@@ -124,7 +125,6 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public CellList<Contact> createContactCellListTab(JabicsUser u) {
 		this.contactTab = new ContactCellListTab(u, this);
-		contactTab.getCellList().setStyleName("Kontakte");
 		contactTab.onLoad();
 		return contactTab.getCellList();
 	}
@@ -144,7 +144,6 @@ public class TreeViewMenu extends VerticalPanel {
 	public CellList<Contact> createSharedContactListTreeTab(JabicsUser u) {
 		this.sharedContactListTab = new SharedContactCellListTab(u, this);
 		sharedContactListTab.onLoad();
-		sharedContactListTab.getCellList().setStyleName("Kontakte");
 		return sharedContactListTab.getCellList();
 	}
 
@@ -176,11 +175,7 @@ public class TreeViewMenu extends VerticalPanel {
 	public SingleSelectionModel<Contact> getSelectionModelSharedContactsTab() {
 		 return sharedContactListTab.getSelectionModel();
 	}
-	public interface CellListResources extends CellList.Resources {
-		 @Override
-			@Source("JabicsCellList.css")
-		    CellList.Style cellListStyle(); 
-	}
+
 	
 	public interface CellTreeResources extends CellTree.Resources {
 //		@Override
