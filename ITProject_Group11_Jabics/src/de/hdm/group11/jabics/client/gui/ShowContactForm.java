@@ -7,7 +7,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,6 +20,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.TreeViewMenu.CellTreeResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -50,6 +53,8 @@ public class ShowContactForm extends VerticalPanel {
 	Label shareEditLabel = new Label("Teilen bearbeiten");
 	Button deleteButton = new Button("🗑");
 	Label deleteLabel = new Label("Kontakt löschen");
+	
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	public ShowContactForm() {
 		
@@ -90,19 +95,19 @@ public class ShowContactForm extends VerticalPanel {
 		values = new CellTable<PValue>();
 		valueProvider = new ListDataProvider<PValue>();
 		valueProvider.addDataDisplay(values);
-		values.setStyleName("showContactTable");
 
 		prop = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
 				return object.getProperty().getLabel();
 			}
 		};
+		
 		pval = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
 				return object.toString();
 			}
 		};
-
+		
 		shareStatus = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
 				if (object.getShareStatus() == BoStatus.IS_SHARED) {
@@ -114,6 +119,10 @@ public class ShowContactForm extends VerticalPanel {
 				return "NoStatus";
 			}
 		};
+		
+		prop.setCellStyleNames("prop");
+		pval.setCellStyleNames("pval");
+		shareStatus.setCellStyleNames("shareStatus");
 
 		editButton.addClickHandler(new editClickHandler());
 		
@@ -147,6 +156,16 @@ public class ShowContactForm extends VerticalPanel {
 			Window.alert(caught.toString());
 		}
 
+	}
+	
+	//Ressourcen für die CellTable
+	
+	public interface CellTableResources extends CellTable.Resources {
+
+
+	    @Override
+		@Source("JabicsCellTable.css")
+	    CellTable.Style cellTableStyle(); 
 	}
 
 	public void onLoad() {
