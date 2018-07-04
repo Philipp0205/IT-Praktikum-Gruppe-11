@@ -85,17 +85,11 @@ public class PropertyMapper {
 
 			// Resultsets erzeugen
 			ResultSet rs = stmt.getGeneratedKeys();
-			ResultSet rs2;
+
 
 			// Property Objekt mit ID, Erstellungsdatum und letztem Update befüllen
 			if (rs.next()) {
-				rs2 = stmt2.executeQuery(
-						"SELECT dateCreated, dateUpdated FROM property WHERE propertyID = " + rs.getInt(1));
 				p.setId(rs.getInt(1));
-				if (rs2.next()) {
-					p.setDateCreated(rs2.getTimestamp("dateCreated"));
-					p.setDateUpdated(rs2.getTimestamp("dateUpdated"));
-				}
 			}
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
@@ -175,8 +169,6 @@ public class PropertyMapper {
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
-				p.setDateCreated(rs.getTimestamp("dateCreated"));
-				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 			}
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
@@ -223,8 +215,6 @@ public class PropertyMapper {
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
-				p.setDateCreated(rs.getTimestamp("dateCreated"));
-				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				al.add(p);
 			}
 

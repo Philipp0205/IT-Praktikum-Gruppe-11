@@ -73,13 +73,13 @@ public class PValueMapper {
 	public PValue insertPValue(PValue pv, Contact c) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			 // Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code>
-			 // Objekts und trägt den Wert in die Datenbank ein
+			// Dieser switch-case sucht den richtigen Datentyp des <code>PValue</code>
+			// Objekts und trägt den Wert in die Datenbank ein
 			switch (pv.getProperty().getType()) {
 			case STRING: {
 				// Füllen und ausführen des SQL-Statements
@@ -93,11 +93,12 @@ public class PValueMapper {
 
 				Statement stmt2 = con.createStatement();
 
-				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
-				if (rs.next()) {
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
+				// letztem Update
+				while (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					if (rs2.next()) {
+					while (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
@@ -124,15 +125,16 @@ public class PValueMapper {
 								+ "dateValue, propertyID, contactID) VALUES " + "(" + "null, " + pv.getIntValue() + ", "
 								+ "null, null, " + pv.getProperty().getId() + ", " + c.getId() + ")",
 						Statement.RETURN_GENERATED_KEYS);
-				
+
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
-				
-				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
-				if (rs.next()) {
+
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
+				// letztem Update
+				while (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					if (rs2.next()) {
+					while (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
@@ -161,19 +163,20 @@ public class PValueMapper {
 						+ " dateValue, propertyID, contactID) VALUES " + "( " + "NULL, " + "NULL, " + "NULL,'"
 						+ dateFormat.format(pv.getDateValue()) + "', " + pv.getProperty().getId() + " , " + c.getId()
 						+ " ) ");
-				
+
 				// SQL-Statement ausführen
 				stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-				
+
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
 				ResultSet rs2;
-				
-				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
-				if (rs.next()) {
+
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
+				// letztem Update
+				while (rs.next()) {
 					rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					if (rs2.next()) {
+					while (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
@@ -199,15 +202,16 @@ public class PValueMapper {
 						+ " dateValue, propertyID, contactID) VALUES " + "( " + "null, " + "null, " + pv.getFloatValue()
 						+ ", " + "null" + ", " + pv.getProperty().getId() + ", " + c.getId() + ")",
 						Statement.RETURN_GENERATED_KEYS);
-				
+
 				ResultSet rs = stmt.getGeneratedKeys();
 				Statement stmt2 = con.createStatement();
-				
-				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und letztem Update
-				if (rs.next()) {
+
+				// Wenn ein Tupel existiert, befüllen des PValue mit ID, Erstellungsdatum und
+				// letztem Update
+				while (rs.next()) {
 					ResultSet rs2 = stmt2.executeQuery("SELECT * FROM pValue WHERE pValueID = " + rs.getInt(1));
 					pv.setId(rs.getInt(1));
-					if (rs2.next()) {
+					while (rs2.next()) {
 						pv.setDateCreated(rs2.getTimestamp("dateCreated"));
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
@@ -435,7 +439,8 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, " + "pValue.stringValue, " + "pValue.intValue, "
 					+ "pValue.floatValue, " + "pValue.dateValue, " + "pValue.dateCreated, " + "pValue.dateUpdated, "
 					+ "pValue.contactID, " + "property.propertyID, " + "property.isStandard, " + "property.name, "
-					+ "property.type, " + "property.dateCreated, " + "property.dateUpdated " + "FROM pValue "
+					+ "property.type, "
+					+ "FROM pValue "
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE pValueID = " + id);
 			if (rs.next()) {
 				// Befüllen des PValue-Objekts und Hinzufügen zur ArrayList.
@@ -450,8 +455,6 @@ public class PValueMapper {
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
-				p.setDateCreated(rs.getTimestamp("dateCreated"));
-				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				pv.setProperty(p);
 			}
 
@@ -496,11 +499,13 @@ public class PValueMapper {
 			ResultSet rs = stmt.executeQuery("SELECT pValue.pValueID, " + "pValue.stringValue, " + "pValue.intValue, "
 					+ "pValue.floatValue, " + "pValue.dateValue, " + "pValue.dateCreated, " + "pValue.dateUpdated, "
 					+ "pValue.contactID, " + "property.propertyID, " + "property.isStandard, " + "property.name, "
-					+ "property.type, " + "property.dateCreated, " + "property.dateUpdated " + "FROM pValue "
+					+ "property.type, " 
+					+ "FROM pValue "
 					+ "LEFT JOIN property ON pValue.propertyID = property.propertyID " + " WHERE contactID = "
 					+ c.getId());
-			
-			// Erzeugen einer Eigenschaft und einer Ausprägung, befüllen dieser und anhängen an eine ArrayList
+
+			// Erzeugen einer Eigenschaft und einer Ausprägung, befüllen dieser und anhängen
+			// an eine ArrayList
 			while (rs.next()) {
 				PValue pv = new PValue();
 				Property p = new Property();
@@ -515,8 +520,6 @@ public class PValueMapper {
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
-				p.setDateCreated(rs.getTimestamp("dateCreated"));
-				p.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				pv.setProperty(p);
 				if (p.getType().equals(Type.STRING)) {
 					pv.setPointer(2);
@@ -572,11 +575,13 @@ public class PValueMapper {
 			// Auswählen der <code>JabicsUser</code> Objekte mit einer bestimmten ID aus der
 			// Teilhaberschaftstabelle.
 			// Befüllen und ausführen des SQL-Statements
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name " + " FROM systemUser"
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID, systemUser.email, systemUser.name "
+					+ " FROM systemUser"
 					+ " LEFT JOIN pValueCollaboration ON systemUser.systemUserID = pValueCollaboration.systemUserID"
 					+ " WHERE pValueCollaboration.pValueID = " + pv.getId());
 
-			// Für jedes Tupel wird ein User Objekt erstellt und befüllt und an die ArrayList angehängt
+			// Für jedes Tupel wird ein User Objekt erstellt und befüllt und an die
+			// ArrayList angehängt
 			while (rs.next()) {
 				JabicsUser u = new JabicsUser(rs.getString("email"));
 				u.setId(rs.getInt("systemUserID"));
