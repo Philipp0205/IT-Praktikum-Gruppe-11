@@ -70,9 +70,14 @@ public class ContactListForm extends VerticalPanel {
 	Button shareButton = new Button("⋲");
 	Button removeButton = new Button("-");
 	Button addButton = new Button("+");
+	
+	Button done2 = new Button("Fertig");
+	Button remove = new Button("Ausgewählte Kontakte aus Liste entfernen");
+	Button done = new Button("Fertig");
+	Button add = new Button("Ausgewählte Kontakte hinzufügen");
 
 	Button searchInListButton = new Button("🔍");
-
+	
 	ArrayList<Contact> cArray;
 
 	ListDataProvider<Contact> contactDataProvider;
@@ -85,6 +90,8 @@ public class ContactListForm extends VerticalPanel {
 		Label listname = new Label("Name:");
 		listname.setStyleName("Listenname");
 		listBox = new TextBox();
+
+		cArray = new ArrayList<Contact>();
 
 		Label addlabel = new Label("Kontakt");
 		addlabel.addClickHandler(new addClickHandler());
@@ -145,40 +152,153 @@ public class ContactListForm extends VerticalPanel {
 		shareButton.setStyleName("clshareButton");
 
 		headline = new Label("Liste: ");
+		
+		
+		
+		selValues = new CellTable<Contact>();
+		valueProvider = new ListDataProvider<Contact>();
+		valueProvider.addDataDisplay(selValues);
+		selectionModel = new MultiSelectionModel<Contact>();
+		selValues.setSelectionModel(selectionModel);
 
+
+
+		/*
+		 * RemovePanel
+		 */
+
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				/**
+				 * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
+				 * add abgedeckt!
+				 */
+				HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
+				Window.alert("Auswahl geändert");
+			}
+		});
+
+
+
+		Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)) {
+			public Boolean getValue(Contact object) {
+				GWT.log("7.3 selected getPValue");
+				return selectionModel.isSelected(object);
+			}
+		};
+		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
+			public String getValue(Contact object) {
+				GWT.log("7.3 selected getPValue");
+
+				return object.toString();
+			}
+		};
+
+		selValues.addColumn(checkbox, "Auswahl");
+		selValues.setColumnWidth(checkbox, 50, Unit.PX);
+		selValues.addColumn(contact, "Kontakt");
+		selValues.setColumnWidth(contact, 50, Unit.EM);
+		
 		/*
 		 * ---------- Clickhandler für alle Buttons -----------------
 		 */
+
+		remove.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+
+				removeRemovePanel();
+
+				/*
+				 * TODO hier gibt es zwei möglichkeiten der Implementierung nummer 2 ist
+				 * auskommatiert, noch entscheiden welhes besser ist!
+				 */
+
+				GWT.log("7.4 RemoveContactsButton ");
+				GWT.log("7.4 currentList: " + currentList.getListName());
+
+				for (Contact c : selectionModel.getSelectedSet()) {
+
+					GWT.log("7.4 Remove Contact " + c.getName() + " from List " + currentList.getId() + " "
+							+ currentList.getListName());
+
+					editorService.removeContactFromList(c, currentList, new RemoveContactFromListCallback());
+
+				}
+			}
+		});
+		
+
+
+		
+		add.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+
+				removeAddPanel();
+
+				GWT.log("7.4 AddContactsButton ");
+				GWT.log("7.4 currentList: " + currentList.getListName());
+
+				for (Contact c : selectionModel.getSelectedSet()) {
+
+					GWT.log("7.4 Add Contact " + c.getName() + "to List " + currentList.getId() + " "
+							+ currentList.getListName() + " " + currentList.getContacts().toString());
+
+					/*
+					 * TODO hier gibt es zwei möglichkeiten der Implementierung: nummer 2 ist
+					 * auskommatiert, noch entscheiden welhes besser ist!
+					 */
+					editorService.addContactToList(c, currentList, new AddContactToListCallback());
+					editPanel.setVisible(false);
+
+					/*
+					 * currentList.addContact(c); editorService.updateContact(c,
+					 * UpdateContactCallback);
+					 */
+				}
+			}
+		});
+
+		done2.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				// addPanel.clear();
+				// removePanel.clear();
+				// addPanel.remove(0);
+				removeAddPanel();
+				valueProvider.setList(null);
+				valueProvider.flush();
+			}
+		});
+		
+		done.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				// addPanel.clear();
+				// removePanel.clear();
+				// addPanel.remove(0);
+				removeAddPanel();
+				valueProvider.setList(null);
+				valueProvider.flush();
+			}
+		});
+
 		deleteButton.addClickHandler(new deleteClickHandler());
-
-		/*
-		 * Kontakte hinzufügen
-		 */
 		addButton.addClickHandler(new addClickHandler());
-
 		/**
 		 * 3 Reihen Die erste bietet die Optionen auf Listenebene an (Liste teilen1,
 		 * Liste teilen 2). Die zweite bietet die Option an, die Liste zu löschen. Die
 		 * dritte bietet die Optionen innerhalb der Liste an (Kontakt hinzufügen,
 		 * Kontakt entfernen)
 		 */
-
 		shareButton.addClickHandler(new shareClickHandler());
-
 		saveButton.addClickHandler(new saveClickHandler());
-
-		/*
-		 * Kontakte entfernen
-		 */
 		removeButton.addClickHandler(new removeClickHandler());
-
-		GWT.log("isNewList " + isNewList);
-
-		selValues = new CellTable<Contact>();
-		valueProvider = new ListDataProvider<Contact>();
-		valueProvider.addDataDisplay(selValues);
-
-		selectionModel = new MultiSelectionModel<Contact>();
+		
+		removePanel.add(selValues);
+		removePanel.add(remove);
+		removePanel.add(done);
+		
+		addPanel.add(selValues);
+		addPanel.add(add);
+		addPanel.add(done2);
 
 	}
 
@@ -221,12 +341,12 @@ public class ContactListForm extends VerticalPanel {
 			GWT.log("7.2 User: " + u.getId());
 			addButton.setEnabled(false);
 			removeButton.setEnabled(false);
-			cArray = new ArrayList<Contact>();
+
 			if (isNewList) {
 				editorService.createContactList(listBox.getText(), cArray, u, new CreateContactListCallback());
 
 			} else {
-				
+
 				GWT.log("7.2 updateList " + currentList.getListName());
 				// editorService.updateContactList(currentList, new
 				// UpdateContactListCallback());
@@ -242,13 +362,10 @@ public class ContactListForm extends VerticalPanel {
 			editorService.getContactsOfList(currentList, u, new GetContactsOfListCallback());
 			addButton.setEnabled(false);
 			removeButton.setEnabled(false);
+
 			GWT.log("7.2 RemoveContactButton");
 			GWT.log("7.2 User: " + u.getId());
 
-			// editorService.updateContactList(currentList, new
-			// UpdateContactListCallback());
-
-			// editorService.getContactsOf(u, new GetAllContactsOfUserCallback());
 		}
 	}
 
@@ -321,7 +438,11 @@ public class ContactListForm extends VerticalPanel {
 	 * Entfernt das Panel, das die Möglichkeit gibt, Kontakte hizuzufügen
 	 */
 	void removeAddPanel() {
+		
+
+		
 		GWT.log("7.4 removeAddPanel");
+		addPanel.clear();
 		this.remove(addPanel);
 	}
 
@@ -330,14 +451,14 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	void removeRemovePanel() {
 		GWT.log("7.4 removeRemovePanel");
+		removePanel.clear();
 		this.remove(removePanel);
 	}
 
 	void save() {
 		currentList.setListName(listBox.getValue());
 		editorService.updateContactList(currentList, new UpdateContactListCallback());
-		
-		
+
 		valueProvider.flush();
 
 	}
@@ -348,85 +469,15 @@ public class ContactListForm extends VerticalPanel {
 	 * allgemeinen Informationen) ein. Es können Kontakte ausgewählt werden und
 	 * durch Klick auf einen Button der Liste hinzugefügt werden.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
 	public void addContactPanel(ArrayList<Contact> allC) {
+		
+
 
 		valueProvider.setList(allC);
-
-		// selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-		// public void onSelectionChange(SelectionChangeEvent event) {
-		// /**
-		// * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
-		// * add abgedeckt!
-		// */
-		// HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
-		// // Window.alert("Auswahl geändert");
-		// }
-		// });
-
-		selValues.setSelectionModel(selectionModel);
-
-		Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)) {
-			public Boolean getValue(Contact object) {
-				GWT.log("7.3 selected getPValue");
-				return selectionModel.isSelected(object);
-			}
-		};
-		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
-			public String getValue(Contact object) {
-				// GWT.log("7.3 selected getPValue 2");
-				return object.toString();
-			}
-		};
-
-		selValues.addColumn(checkbox, "Auswahl");
-		selValues.setColumnWidth(checkbox, 50, Unit.PX);
-		selValues.addColumn(contact, "Kontakt");
-		selValues.setColumnWidth(contact, 50, Unit.EM);
-
-		Button add = new Button("Ausgewählte Kontakte hinzufügen");
-		add.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-
-				GWT.log("7.4 AddContactsButton ");
-				GWT.log("7.4 currentList: " + currentList.getListName());
-
-				for (Contact c : selectionModel.getSelectedSet()) {
-
-					GWT.log("7.4 Add Contact " + c.getName() + "to List " + currentList.getId() + " "
-							+ currentList.getListName() + " " + currentList.getContacts().toString());
-
-					/*
-					 * TODO hier gibt es zwei möglichkeiten der Implementierung: nummer 2 ist
-					 * auskommatiert, noch entscheiden welhes besser ist!
-					 */
-					editorService.addContactToList(c, currentList, new AddContactToListCallback());
-
-					/*
-					 * currentList.addContact(c); editorService.updateContact(c,
-					 * UpdateContactCallback);
-					 */
-				}
-			}
-		});
-		Button done2 = new Button("Fertig");
-		done2.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-				// addPanel.clear();
-				// removePanel.clear();
-				// addPanel.remove(0);
-				removeAddPanel();
-				valueProvider.setList(null);
-				valueProvider.flush();
-			}
-		});
-
-		addPanel.add(selValues);
-		addPanel.add(add);
-		addPanel.add(done2);
 		valueProvider.flush();
+
 	}
 
 	/**
@@ -436,88 +487,22 @@ public class ContactListForm extends VerticalPanel {
 	 * ein. Es können Kontakte ausgewählt werden und durch Klick auf einen Button
 	 * aus der Liste entfernt werden.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
 	public void removeContactPanel(ArrayList<Contact> allC) {
+		
+
+
+		
 		GWT.log("7.7 removeContactPanel");
 		// PValue selectedPV;
 		// selValues = new CellTable<Contact>();
 		valueProvider.setList(allC);
+		valueProvider.flush();
 		// valueProvider.addDataDisplay(selValues);
 		// finalC;
 		// Es kann sein, dass hier noch kexprovider benötigt werden
 
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			public void onSelectionChange(SelectionChangeEvent event) {
-				/**
-				 * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
-				 * add abgedeckt!
-				 */
-				HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
-				Window.alert("Auswahl geändert");
-			}
-		});
-
-		selValues.setSelectionModel(selectionModel);
-
-		Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)) {
-			public Boolean getValue(Contact object) {
-				GWT.log("7.3 selected getPValue");
-				return selectionModel.isSelected(object);
-			}
-		};
-		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
-			public String getValue(Contact object) {
-				GWT.log("7.3 selected getPValue");
-
-				return object.toString();
-			}
-		};
-
-		selValues.addColumn(checkbox, "Auswahl");
-		selValues.setColumnWidth(checkbox, 50, Unit.PX);
-		selValues.addColumn(contact, "Kontakt");
-		selValues.setColumnWidth(contact, 50, Unit.EM);
-
-		Button remove = new Button("Ausgewählte Kontakte aus Liste entfernen");
-		remove.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-
-				/*
-				 * TODO hier gibt es zwei möglichkeiten der Implementierung nummer 2 ist
-				 * auskommatiert, noch entscheiden welhes besser ist!
-				 */
-
-				GWT.log("7.4 RemoveContactsButton ");
-				GWT.log("7.4 currentList: " + currentList.getListName());
-
-				for (Contact c : selectionModel.getSelectedSet()) {
-
-					GWT.log("7.4 Remove Contact " + c.getName() + " from List " + currentList.getId() + " "
-							+ currentList.getListName() );
-
-					editorService.removeContactFromList(c, currentList, new RemoveContactFromListCallback());
-
-				}
-			}
-		});
-		Button done = new Button("Fertig");
-		done.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-				// addPanel.clear();
-				// removePanel.clear();
-				// addPanel.remove(0);
-				removeAddPanel();
-				valueProvider.setList(null);
-				valueProvider.flush();
-			}
-		});
-
-		removePanel.add(selValues);
-		removePanel.add(remove);
-		removePanel.add(done);
-		valueProvider.flush();
 	}
 
 	public void setEditor(EditorAdmin e) {
@@ -560,9 +545,8 @@ public class ContactListForm extends VerticalPanel {
 				 * TODO: die geupdatete ContactList in den TreeView wieder einfügen bzw
 				 * anzeigen?
 				 */
-				//e.removeContactListFromTree(cl);
+				// e.removeContactListFromTree(cl);
 				e.updateContactListInTree(cl);
-				
 
 				setCurrentList(cl);
 				onLoad();
@@ -626,8 +610,7 @@ public class ContactListForm extends VerticalPanel {
 
 				currentList.addContact(contact);
 				e.addContactToListInTree(currentList, contact);
-				
-				
+
 				// e.updateContactListInTree(list);
 
 				// onLoad();
@@ -653,10 +636,8 @@ public class ContactListForm extends VerticalPanel {
 						+ currentList.getContacts().toString());
 
 				currentList.removeContact(contact);
-				
+
 				e.removeContactFromContactListInTree(currentList, contact);
-				
-				
 
 			}
 
