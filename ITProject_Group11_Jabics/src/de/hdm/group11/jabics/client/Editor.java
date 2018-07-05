@@ -89,8 +89,8 @@ public class Editor implements EntryPoint {
 	/**
 	 * LoginInfo setzen
 	 * 
-	 * @param LoginInfo,
-	 *            die gesetzt werden soll
+	 * @param logon,
+	 *            LoginInfo, die gesetzt werden soll
 	 */
 	public void setLoginInfo(LoginInfo logon) {
 		this.logon = logon;
@@ -108,7 +108,7 @@ public class Editor implements EntryPoint {
 	/**
 	 * Editor erhalten (ist für anonymeKlasse notwendig)
 	 * 
-	 * @returns this
+	 * @returns this (Editor)
 	 */
 	public Editor getEditor() {
 		return this;
