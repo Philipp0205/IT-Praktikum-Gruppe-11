@@ -336,10 +336,15 @@ public class SearchForm extends VerticalPanel {
 		valueBox.setStyleName("TextBox");
 	}
 
+	
+	public void showNoResults() {
+		
+		
+	}
 	/**
 	 * Eine Methode zum Setzen der zu durchsuchenden Kontaktliste.
 	 */
-	void setContactList(ContactList cl) {
+	public void setContactList(ContactList cl) {
 		this.cl = cl;
 	}
 
@@ -347,14 +352,14 @@ public class SearchForm extends VerticalPanel {
 	 * Eine Methode zum Setzen der Editorklasse. Dies ist wichtig, wenn der Nutzer
 	 * wieder zurück zur Kontaktlisten Ansicht gelangen will.
 	 */
-	void setEditor(EditorAdmin e) {
+	public void setEditor(EditorAdmin e) {
 		this.e = e;
 	}
 
 	/**
 	 * Eine Methode zum Setzen des Nutzers der Aktiven Sitzung.
 	 */
-	void setJabicsUser(JabicsUser u) {
+	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
 }
 
@@ -373,19 +378,23 @@ public class SearchForm extends VerticalPanel {
 		@Override
 		public void onSuccess(ArrayList<Contact> result) {
 			if (result != null) {
-				list = ct.createContactTabForSearchForm();
-				for (Contact c : result) {
-					ct.addsearchedContact(c);
-				}
-				sp.setVisible(true);
-				sp.clear();
-				sp.add(list, "Ergebnis:");
-				if (valueBox.getText().equals("")) {
-					ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText() + "' gesucht.");
+				if(result.isEmpty()) {
+					showNoResults();
 				} else {
-					ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
+					list = ct.createContactTabForSearchForm();
+					for (Contact c : result) {
+						ct.addsearchedContact(c);
+					}
+					sp.setVisible(true);
+					sp.clear();
+					sp.add(list, "Ergebnis:");
+					if (valueBox.getText().equals("")) {
+						ausgabeLabel.setText("Es wurde nach '" + propertySuggest.getText() + "' gesucht.");
+					} else {
+						ausgabeLabel.setText("Es wurde nach '" + valueBox.getValue() + "' gesucht.");
+					}
+					ausgabeLabel.setVisible(true);
 				}
-				ausgabeLabel.setVisible(true);
 			}
 		}
 }

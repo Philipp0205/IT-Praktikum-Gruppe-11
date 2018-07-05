@@ -408,7 +408,7 @@ public class ContactListTreeTab implements TreeViewModel {
 
 		// contactsProvider.flush();
 
-		selectionModel.setSelected(c, true);
+		//selectionModel.setSelected(c, true);
 	}
 
 	/**
