@@ -13,11 +13,17 @@ public interface JabicsResources extends ClientBundle  {
 	 @Source("greendot.png")
 	  ImageResource greendot();
 	 
+	 @Source("greendot.png")
+	  ImageResource greendotlist();
+	 
 	 @Source("yellowdot.png")
 	  ImageResource yellowdot();
 	 
 	 @Source("reddot.png")
 	  ImageResource reddot();
+	 
+	 @Source("reddot.png")
+	  ImageResource reddotlist();
 	 
 	 @Source("Save.png")
 	  ImageResource save();
