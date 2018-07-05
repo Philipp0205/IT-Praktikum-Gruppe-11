@@ -45,7 +45,7 @@ public class ContactCell extends AbstractCell<Contact> {
 			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
 			          break;
 			        default:
-			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
 			        }
 			      } catch (Exception e) {
 			        GWT.log("ShareStatus undefined for Contact" + c.getName());

@@ -2,11 +2,14 @@ package de.hdm.group11.jabics.client.gui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.cell.client.ImageResourceCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ImageResource;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -18,6 +21,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.resource.JabicsResources;
+
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -38,7 +43,7 @@ public class ShowContactForm extends VerticalPanel {
 
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
-	Column<PValue, String> shareStatus;
+	Column<PValue, ImageResource> shareStatus;
 
 	HorizontalPanel sharePanel = new HorizontalPanel();
 
@@ -50,8 +55,6 @@ public class ShowContactForm extends VerticalPanel {
 	Label shareEditLabel = new Label("Teilen bearbeiten");
 	Button deleteButton = new Button("🗑");
 	Label deleteLabel = new Label("Kontakt löschen");
-
-	// private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	public ShowContactForm() {
 
@@ -102,26 +105,31 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		};
 
-		shareStatus = new Column<PValue, String>(new TextCell()) {
-			public String getValue(PValue object) {
+
+		shareStatus = new Column<PValue, ImageResource>(new ImageResourceCell()) {
+			@Override
+			public ImageResource getValue(PValue object) {
 				if (object.getShareStatus() == BoStatus.IS_SHARED) {
-					return "Geteilt";
+					return JabicsResources.INSTANCE.greendot();
 				}
 				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
-					return "Nicht Geteilt";
+					return JabicsResources.INSTANCE.reddot();
 				}
-				return "NoStatus";
+				return null; 
+				
 			}
 		};
+		shareStatus.setHorizontalAlignment(ALIGN_CENTER);
+
+		shareStatus.setHorizontalAlignment(ALIGN_CENTER);
+
 
 		prop.setCellStyleNames("prop");
 		pval.setCellStyleNames("pval");
 		shareStatus.setCellStyleNames("shareStatus");
-
 		editButton.addClickHandler(new editClickHandler());
 
 		deleteButton.addClickHandler(new deleteClickHandler());
-
 		shareContactButton.addClickHandler(new shareClickHandler());
 
 		shareExistingContactButton.addClickHandler(new shareExistingClickHandler());
@@ -149,7 +157,9 @@ public class ShowContactForm extends VerticalPanel {
 
 	// Ressourcen für die CellTable
 
+
 	public interface CellTableResources extends CellTable.Resources {
+
 
 		@Override
 		@Source("JabicsCellTable.css")
@@ -184,6 +194,7 @@ public class ShowContactForm extends VerticalPanel {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		// (Dieser Algorithmus lässt sich wahrscheinlich deutlich effizienter
 		// implementieren)
+
 		if (values != null) {
 			for (PValue pv : values) {
 				Integer i = new Integer(pv.getProperty().getId());
@@ -208,6 +219,7 @@ public class ShowContactForm extends VerticalPanel {
 							cancel = false;
 						}
 						iterator++;
+
 					}
 				}
 			}
