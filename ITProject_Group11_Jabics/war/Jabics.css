@@ -17,7 +17,6 @@
 	width: 100px;
 	max-width: 100%;
 	padding: 5px;*/
-	
 #footline {
 	text-align: center;
 }
@@ -193,6 +192,38 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 }
+/*--------------------CListCollabForm--------------------*/
+.listpanel {
+	margin-top: 20px;
+	margin-bottom: 12px;
+	margin-left: 11px;
+}
+
+.clcbtn {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 22px;
+	margin-left: 13px;
+}
+
+.clcbtn:hover {
+	background: #accbf0 !important;
+	background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
+	text-decoration: none;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+}
 
 /*--------------------EditContactForm--------------------*/
 .deleteBtn {
@@ -202,7 +233,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ffffff !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-left: 15px;
-	margin-top:4px;
+	margin-top: 4px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -223,26 +254,27 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: bold;
 }
 
-.editclabel{
+.editclabel {
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 15px;
-	margin-left:10px;
-	/*color: #ff5e5e !important;*/
-	color: #19376E
-}
-.propertylabel{
-	font-family: Arial;
-	font-size: 16px !important;
-	test-align: center;
-	margin-top: 10px;
-	margin-left:10px;
+	margin-left: 10px;
 	/*color: #ff5e5e !important;*/
 	color: #19376E
 }
 
-.pvBox{
+.propertylabel {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 10px;
+	margin-left: 10px;
+	/*color: #ff5e5e !important;*/
+	color: #19376E
+}
+
+.pvBox {
 	padding: 0px;
 	height: 30px;
 	position: relative;
@@ -257,7 +289,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 12px;
 }
 
-.paddbutton{
+.paddbutton {
 	color: #ffffff !important;
 	font-size: 16px !important;
 	background: #4D70A8 !important;
@@ -266,7 +298,7 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 	text-decoration: none;
-	margin-top:17px;
+	margin-top: 17px;
 }
 /*--------------------ContactListForm--------------------*/
 .clremlabel {
@@ -520,10 +552,10 @@ html>body .gwt-DecoratedStackPanel {
 
 .finden:hover {
 	cursor: pointer;
-	background-color: #9FB8E0;
+	background: #9FB8E0 !important;
 }
 
-.back {
+.sfback {
 	margin-left: 10px;
 	color: #ffffff !important;
 	font-size: 16px !important;
@@ -536,9 +568,9 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 10px;
 }
 
-.back:hover {
+.sfback:hover {
 	cursor: pointer;
-	background-color: #9FB8E0;
+	background: #9FB8E0 !important;
 }
 
 .sp {
@@ -552,7 +584,7 @@ html>body .gwt-DecoratedStackPanel {
 	width: 280px;
 }
 /*-------------------ExistingContactEditForm-------------------*/
-.edit4all{
+.edit4all {
 	color: #ffffff !important;
 	font-size: 16px !important;
 	background: #4D70A8 !important;
@@ -561,9 +593,10 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 3px;
 	text-decoration: none;
-	margin-left:30px;
+	margin-left: 30px;
 }
-.removeexisting{
+
+.removeexisting {
 	color: #ffffff !important;
 	font-size: 16px !important;
 	background: #4D70A8 !important;
@@ -707,8 +740,7 @@ html>body .gwt-DecoratedStackPanel {
 	background-color: white;
 	font-family: Arial;
 	border-style: hidden;
-	
-	margin-left:10px;
+	margin-left: 10px;
 }
 
 .gwt-StackPanelItem {
@@ -742,7 +774,7 @@ html>body .gwt-DecoratedStackPanel {
 	outline: none;
 	color: white;
 	padding: 0px 0px 0px 0px !important;
-	text-margin-left:10px;
+	text-margin-left: 10px;
 }
 
 .stackPanel2:hover {
@@ -804,11 +836,81 @@ html>body .gwt-DecoratedStackPanel {
 }
 .logout {
 	float: right;
-	
 }
 
 .topPanel {
 	color: black;
+}
+/*--------------------- REPORTGENERATOR ----------------------*/
+.repl {
+	cursor: pointer;
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 20px;
+	margin-left: 30px;
+	color: #19376E;
+	white-space: nowrap;
+}
+
+.repBoxes {
+	padding: 3px;
+	height: 30px;
+	position: relative;
+	left: 0;
+	margin-left: 10px;
+	margin-top: 12px;
+	outline: none;
+	width: 120px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	background-color: white;
+	font-size: 14px;
+}
+
+.RepBtn {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 50px;
+	margin-left: 20px;
+}
+
+.RepBtn:hover {
+	background: #accbf0 !important;
+	background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
+	text-decoration: none;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+}
+
+.repnav {
+	
+	padding-bottom:30px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	padding-bottom: 20px;
+	margin-top: 10px;
+	padding-right:20px;
+}
+
+.repusernav {
+	padding:10px;
+	padding-bottom:15px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	margin-left:20px;
+	margin-top:10px;
 }
 
 /*--------------------- NAVBAR ----------------------*/
@@ -830,8 +932,8 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	float: right;
 	background: #9FB8E0;
-	margin-left: 600px;
-	margin-top: 0px; /* (waren mal -44, fals was falsch wird) */
+	margin-left: 500px;
+	margin-top: -44px;
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -841,7 +943,9 @@ html>body .gwt-DecoratedStackPanel {
 	border-radius: 0px;
 	cursor: pointer;
 	white-space: nowrap;
+	height: 57px;
 }
+
 .loginbutton {
 	font-family: Arial;
 	font-weight: 700;
@@ -870,7 +974,7 @@ html>body .gwt-DecoratedStackPanel {
 	color: #fff;
 	background: #008fd1;
 }
-	
+
 .navbrand {
 	max-width: 20%;
 	max-height: 40px;
@@ -888,6 +992,7 @@ html>body .gwt-DecoratedStackPanel {
 
 .btn1 {
 	float: right;
+	height: 57px;
 	background: #9FB8E0;
 	font-family: Arial;
 	font-weight: 700;
@@ -913,6 +1018,7 @@ html>body .gwt-DecoratedStackPanel {
 .btn2 {
 	float: right;
 	font-family: Arial;
+	height: 57px;
 	background: #9FB8E0;
 	font-weight: 700;
 	font-size: 18px !important;

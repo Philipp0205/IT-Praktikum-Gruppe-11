@@ -12,6 +12,9 @@ import de.hdm.group11.jabics.shared.bo.*;
 
 /**
  * Interface der Klasse <code>EditorServiceImpl</code>.
+ * 
+ * @author Kurrle
+ * @author Anders
  */
 @RemoteServiceRelativePath("editor")
 public interface EditorService extends RemoteService {
@@ -38,11 +41,7 @@ public interface EditorService extends RemoteService {
 	
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u);
 
-	public JabicsUser getUserById(int id);
-
 	public Contact addContactToList(Contact c, ContactList cl);
-
-	public Contact addValueToContact(PValue pv, Contact c, JabicsUser u);
 
 	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u);
 

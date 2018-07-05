@@ -66,9 +66,9 @@ public class ReportAdmin {
 	private ReportGeneratorServiceAsync reportGenerator = null;
 	private EditorServiceAsync editorService = null;
 
-	private Button allReportsInSystemButton = new Button("Alle Kontakte aller Nutzer im System");
-	private Button filteredReportButton = new Button("Alle Kontakte mit diesen Filterkriterien");
-	private Button allReportButton = new Button("Alle meine Kontakte");
+	private Button allReportsInSystemButton = new Button("systemweiter Report");
+	private Button filteredReportButton = new Button("Finden");
+	private Button allReportButton = new Button("Alle Kontakte");
 
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
@@ -136,11 +136,10 @@ public class ReportAdmin {
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
 		
-		removeUserButton = new Button("Nutzer entfernen");
-		addUserButton = new Button("Nutzer hinzufügen");
+		removeUserButton = new Button("entfernen");
+		addUserButton = new Button("hinzufügen");
 		
-		otherReportsPanel.add(allReportsInSystemButton);
-		otherReportsPanel.add(allReportButton);
+//		otherReportsPanel.add(allReportsInSystemButton);
 		datatypemenu.addItem("Text");
 		datatypemenu.addItem("Datum");
 		datatypemenu.addItem("Dezimalzahl");
@@ -167,9 +166,27 @@ public class ReportAdmin {
 		navPanel.add(addUserButton);
 		navPanel.add(removeUserButton);
 		navPanel.add(sharedContactsButton);
+		navPanel.add(allReportButton);
 		GWT.log("Report");
 		mainPanel.add(navPanel);
 		mainPanel.add(otherReportsPanel);
+		
+		//Stylenames
+		
+		datatypel.setStyleName("repl");
+		valuelabel.setStyleName("repl");
+		propertyl.setStyleName("repl");
+		valueBox.setStyleName("repBoxes");
+		datatypemenu.setStyleName("repBoxes");
+		filteredReportButton.setStyleName("RepBtn");
+		allReportButton.setStyleName("RepBtn");
+		
+		removeUserButton.setStyleName("RepBtn");
+		addUserButton.setStyleName("RepBtn");
+		sharedContactsButton.setStyleName("RepBtn");
+		navPanel.setStyleName("repnav");
+		userPanel.setStyleName("repusernav");
+		
 
 	}
 
@@ -605,6 +622,8 @@ public class ReportAdmin {
 					GWT.log("Wert geändert " + finalPVal.getProperty().getLabel());
 				}
 			});
+
+			propertySuggest.setStyleName("repBoxes");
 			verPanel1.add(propertySuggest);
 
 		}

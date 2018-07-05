@@ -3,12 +3,15 @@ package de.hdm.group11.jabics.client.gui;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ClientBundle.Source;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -23,6 +26,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
@@ -81,6 +85,9 @@ public class ContactListForm extends VerticalPanel {
 	ArrayList<Contact> cArray;
 
 	ListDataProvider<Contact> contactDataProvider;
+	
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
+
 
 	/**
 	 * Eine neue ContactListForm erstellen
@@ -175,7 +182,7 @@ public class ContactListForm extends VerticalPanel {
 
 		cArray = new ArrayList<Contact>();
 
-		selValues = new CellTable<Contact>();
+		selValues = new CellTable<Contact>(100,ctRes);
 		valueProvider = new ListDataProvider<Contact>();
 		valueProvider.addDataDisplay(selValues);
 		selectionModel = new MultiSelectionModel<Contact>();
@@ -344,15 +351,9 @@ public class ContactListForm extends VerticalPanel {
 	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
 	public void removeContactPanel(ArrayList<Contact> allC) {
-
 		GWT.log("7.7 removeContactPanel");
-		// PValue selectedPV;
-		// selValues = new CellTable<Contact>();
 		valueProvider.setList(allC);
 		valueProvider.flush();
-		// valueProvider.addDataDisplay(selValues);
-		// finalC;
-		// Es kann sein, dass hier noch kexprovider benötigt werden
 
 	}
 
@@ -559,12 +560,13 @@ public class ContactListForm extends VerticalPanel {
 	private class AddContactToListCallback implements AsyncCallback<Contact> {
 
 		public void onFailure(Throwable arg0) {
-			Window.alert("Fehler 3! Kontakt konnte nicht hinzugefügt werden");
+			Window.alert("Kontakt konnte nicht hinzugefügt werden");
 		}
 
 		public void onSuccess(Contact contact) {
 
 			if (contact != null) {
+
 				GWT.log("7.5  " + "add " + contact.getName() + " to " + currentList.getListName() + " to Tree"
 						+ currentList.getContacts().toString());
 				currentList.addContact(contact);
@@ -623,4 +625,5 @@ public class ContactListForm extends VerticalPanel {
 			e.removeContactListFromTree(cl);
 		}
 	}
+
 }

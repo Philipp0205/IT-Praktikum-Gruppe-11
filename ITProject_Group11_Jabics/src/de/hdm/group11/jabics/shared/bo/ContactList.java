@@ -5,11 +5,12 @@ import java.util.ArrayList;
 
 /**
  * <p>
- * Die Klasse <code>ContactList</code> implementiert Kontaktlisten in Jabics. In einer
- * Kontaktliste sind mehrere <code>Contact</code> Objekte gespeichert.
+ * Die Klasse <code>ContactList</code> implementiert Kontaktlisten in Jabics. In
+ * einer Kontaktliste sind mehrere <code>Contact</code> Objekte gespeichert.
  * </p>
  * 
  * @author Anders
+ * @author Stahl
  *
  */
 public class ContactList extends BusinessObject implements Serializable {
@@ -39,7 +40,8 @@ public class ContactList extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * 
+	 * Konstruktor um eine Instanz dieser Klasse mit Liste aus <code>Contact</code>
+	 * Objekten zu erzeugen.
 	 * 
 	 * @param al
 	 */
@@ -49,7 +51,8 @@ public class ContactList extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * 
+	 * Konstruktor um eine Instanz dieser Klasse mit Liste aus <code>Contact</code>
+	 * Objekten und Besitzer zu erzeugen.
 	 * 
 	 * @param al
 	 * @param u
@@ -60,7 +63,8 @@ public class ContactList extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * 
+	 * Konstruktor um eine Instanz dieser Klasse mit Liste aus <code>Contact</code>
+	 * Objekten, Name und Besitzer zu erzeugen.
 	 * 
 	 * @param al
 	 * @param ln
@@ -143,10 +147,10 @@ public class ContactList extends BusinessObject implements Serializable {
 	public void setListName(String listName) {
 		this.listName = listName;
 	}
-	
-//	public void updateListName(String listName) {
-//		
-//	}
+
+	// public void updateListName(String listName) {
+	//
+	// }
 
 	/**
 	 * Auslesen des Share-Status.
@@ -165,6 +169,5 @@ public class ContactList extends BusinessObject implements Serializable {
 	public void setShareStatus(BoStatus shareStatus) {
 		this.shareStatus = shareStatus;
 	}
-	
 
 }
