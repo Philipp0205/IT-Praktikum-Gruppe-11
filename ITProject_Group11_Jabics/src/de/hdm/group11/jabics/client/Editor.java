@@ -50,10 +50,10 @@ public class Editor implements EntryPoint {
 		u.setUsername("ein nutzer");
 		u.setId(1);
 
-		// editor = new EditorAdmin(u);
+		 editor = new EditorAdmin(u);
 		// editor.setLoginInfo(logon);
 		// editor.setJabicsUser(logon.getCurrentUser());
-		// editor.loadEditor();
+		 editor.loadEditor();
 
 		// GWT.log("Load");
 		loginService = ClientsideSettings.getLoginService();

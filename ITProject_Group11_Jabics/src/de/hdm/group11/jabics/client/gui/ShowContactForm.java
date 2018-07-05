@@ -7,6 +7,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ClientBundle.Source;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -50,8 +52,17 @@ public class ShowContactForm extends VerticalPanel {
 	Label shareEditLabel = new Label("Teilen bearbeiten");
 	Button deleteButton = new Button("🗑");
 	Label deleteLabel = new Label("Kontakt löschen");
+	
+	//cellTable Ressourcen	
+	public interface CellTableResources extends CellTable.Resources {
 
-	private CellTableResources ctRes = GWT.create(CellTableResources.class);
+		@Source("JabicsCellTable.css")
+		CellTable.Style cellTableStyle();
+	}
+
+private CellTableResources ctRes = GWT.create(CellTableResources.class);
+
+	
 
 	public ShowContactForm() {
 
@@ -149,14 +160,7 @@ public class ShowContactForm extends VerticalPanel {
 
 	}
 
-	// Ressourcen für die CellTable
 
-	public interface CellTableResources extends CellTable.Resources {
-
-		@Override
-		@Source("JabicsCellTable.css")
-		CellTable.Style cellTableStyle();
-	}
 
 	public void onLoad() {
 
