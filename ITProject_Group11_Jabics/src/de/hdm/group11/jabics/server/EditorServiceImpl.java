@@ -204,8 +204,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public PValue createPValue(Property p, int i, Contact c, JabicsUser u) {
 		PValue newPValue = new PValue(p, i, u);
-		/*
-		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		/* erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
 		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
 		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
 		 * Zeitstempel bekommt.
