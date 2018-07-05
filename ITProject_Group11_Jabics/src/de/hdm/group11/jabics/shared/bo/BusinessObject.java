@@ -18,12 +18,6 @@ public abstract class BusinessObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Leerer Konstruktor.
-	 */
-	public BusinessObject() {
-	}
-
-	/**
 	 * ID einer Instanz dieser Klasse.
 	 */
 	int id;
@@ -44,13 +38,9 @@ public abstract class BusinessObject implements Serializable {
 	Timestamp dateCreated;
 
 	/**
-	 * Erzeugen einer ID.
-	 * 
-	 * @return id
+	 * Leerer Konstruktor.
 	 */
-	@Override
-	public int hashCode() {
-		return this.id;
+	public BusinessObject() {
 	}
 
 	/**
@@ -72,39 +62,12 @@ public abstract class BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Auslesen der ID.
+	 * Auslesen des Erstellungsdatums.
 	 * 
-	 * @return id
+	 * @return dateCreated
 	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * Setzen der ID.
-	 * 
-	 * @param id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Auslesen des Owners.
-	 * 
-	 * @return owner
-	 */
-	public JabicsUser getOwner() {
-		return this.owner;
-	}
-
-	/**
-	 * Setzen der Owner.
-	 * 
-	 * @param owner
-	 */
-	public void setOwner(JabicsUser owner) {
-		this.owner = owner;
+	public Timestamp getDateCreated() {
+		return dateCreated;
 	}
 
 	/**
@@ -117,21 +80,31 @@ public abstract class BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Setzen des letzten Updates.
+	 * Auslesen der ID.
 	 * 
-	 * @param dateUpdated
+	 * @return id
 	 */
-	public void setDateUpdated(Timestamp dateUpdated) {
-		this.dateUpdated = dateUpdated;
+	public int getId() {
+		return id;
 	}
 
 	/**
-	 * Auslesen des Erstellungsdatums.
+	 * Auslesen des Owners.
 	 * 
-	 * @return dateCreated
+	 * @return owner
 	 */
-	public Timestamp getDateCreated() {
-		return dateCreated;
+	public JabicsUser getOwner() {
+		return this.owner;
+	}
+
+	/**
+	 * Erzeugen einer ID.
+	 * 
+	 * @return id
+	 */
+	@Override
+	public int hashCode() {
+		return this.id;
 	}
 
 	/**
@@ -141,6 +114,33 @@ public abstract class BusinessObject implements Serializable {
 	 */
 	public void setDateCreated(Timestamp dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	/**
+	 * Setzen des letzten Updates.
+	 * 
+	 * @param dateUpdated
+	 */
+	public void setDateUpdated(Timestamp dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	/**
+	 * Setzen der ID.
+	 * 
+	 * @param id
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * Setzen der Owner.
+	 * 
+	 * @param owner
+	 */
+	public void setOwner(JabicsUser owner) {
+		this.owner = owner;
 	}
 
 }

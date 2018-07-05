@@ -177,7 +177,11 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
+	 * <code>Contect</code> vergleichen.
 	 * 
+	 * @param c
+	 * 
+	 * @return int
 	 */
 	public int compareTo(Contact c) {
 		if (c.getId() == this.id) {
