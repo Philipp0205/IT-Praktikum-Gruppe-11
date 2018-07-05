@@ -816,12 +816,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList
 		// gespeichert.
 		System.out.println("Got all Contacts of User " + u.getId());
-		// Besitzer und Share
-    
-    
-    
-    
-		ArrayList<BoStatus> status = cMapper.find(cons);
+		// Besitzer und ShareStatus setzen
+		ArrayList<BoStatus> status = cMapper.findShareStatus(cons);
 		if (status != null && cons != null) {
 			if (status.size() == cons.size()) {
 				int i = 0;
