@@ -205,6 +205,8 @@ public class ReportAdmin {
 		
 		loadReport();
 		createSelectionMenu();
+		loadLogout();
+		createUserSuggestMenu();
 	}
 
 	public void loadReport() {
