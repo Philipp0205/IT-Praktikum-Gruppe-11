@@ -61,6 +61,136 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
+	 * <code>Contact</code> Objekt einem <code>JabicsUser</code> freigeben.
+	 * 
+	 * @param c
+	 *            der <code>Contact</code> für welchen die Freigabe erfolgen soll.
+	 * @param u
+	 *            der <code>JabicsUser</code> für welchen die Freigabe erfolgen
+	 *            soll.
+	 */
+	public void addCollaboration(Contact c, JabicsUser u) {
+		System.err.println("Kollab: " + c.getName() + u.getUsername());
+		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
+		boolean bol = true;
+		// Überprüfen, ob der Kontakt bereits freigegeben ist
+		for (JabicsUser user : users) {
+			if (user.getId() == u.getId()) {
+				bol = false;
+			}
+		}
+		// Wenn der Kontakt dem Nutzer noch nicht freigegeben ist
+		if (bol) {
+			c.setShareStatus(BoStatus.IS_SHARED);
+			System.err.println("Kollab einfügen: " + c.getName() + u.getUsername());
+			cMapper.insertCollaboration(u, c, false);
+		} else
+			return;
+	}
+
+	/**
+	 * <code>ContactList</code> Objekt einem <code>JabicsUser</code> freigeben.
+	 * 
+	 * @param cl
+	 *            die <code>ContactList</code> für welche die Freigabe erfolgen
+	 *            soll.
+	 * @param u
+	 *            der <code>JabicsUser</code> für welchen die Freigabe erfolgen
+	 *            soll.
+	 */
+	public JabicsUser addCollaboration(ContactList cl, JabicsUser u) {
+		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
+		boolean bol = true;
+		// Überprüfen, ob die Liste bereits freigegeben ist
+		for (JabicsUser user : users) {
+			if (user.getId() == u.getId()) {
+				bol = false;
+			}
+		}
+		// Wenn die Liste dem Nutzer noch nicht freigegeben ist
+		if (bol) {
+			cl.setShareStatus(BoStatus.IS_SHARED);
+			clMapper.insertCollaboration(u, cl, false);
+			ArrayList<Contact> contactsInList = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contactsInList) {
+				addCollaboration(c, u);
+			}
+		}
+		return u;
+	}
+
+	/**
+	 * <code>PValue</code> Objekt einem <code>JabicsUser</code> freigeben.
+	 * 
+	 * @param pv
+	 *            die <code>PValue</code> für welches die Freigabe erfolgen soll.
+	 * @param u
+	 *            der <code>JabicsUser</code> für welchen die Freigabe erfolgen
+	 *            soll.
+	 */
+	public void addCollaboration(PValue pv, JabicsUser u) {
+		ArrayList<JabicsUser> users = pvMapper.findCollaborators(pv);
+		boolean bol = true;
+		// Überprüfen, ob der Kontakt bereits freigegeben ist
+		for (JabicsUser user : users) {
+			if (user.getId() == u.getId()) {
+				bol = false;
+			}
+		}
+		// Wenn das PValue dem Nutzer noch nicht freigegeben ist
+		if (bol) {
+			pv.setShareStatus(BoStatus.IS_SHARED);
+			pvMapper.insertCollaboration(u, pv, false);
+		} else
+			return;
+	}
+
+	/**
+	 * Ein <code>Contact</code> Objekt einer <code>ContactList</code> hinzufügen.
+	 * 
+	 * @param c
+	 *            das <code>Contact</code> Objekt welches einer
+	 *            <code>ContactList</code> hinzugefügt werden soll.
+	 * @param cl
+	 *            die <code>ContactList</code> zu welcher der <code>Contact</code>
+	 *            hinzugefügt werden soll.
+	 * @return Der <code>Contact</code> welcher der <code>ContactList</code>
+	 *         hinzugefügt wurde.
+	 */
+	public Contact addContactToList(Contact c, ContactList cl) {
+		System.err.println("Liste ändern: " + cl.getListName());
+
+		ArrayList<Contact> clOld = cMapper.findContactsOfContactList(cl);
+		Boolean bol = true;
+		for (Contact cOld : clOld) {
+			if (c.getId() == cOld.getId())
+				bol = false;
+		}
+		// Wenn der Kontakt wirklich neu in der Liste ist
+		if (bol) {
+			cl.addContact(c);
+			// Für alle Nutzer, mit denen der Kontakt geteilt ist, eine Collab für den
+			// Kontakt und dessen PValues einfügen. Die
+			// Überprüfung, ob der Kontakt bereits geteilt ist, passiert in
+			// addCollaboration()
+			System.err.println("Kollaboratoren finden:");
+			ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
+			for (JabicsUser u : clMapper.findCollaborators(cl)) {
+				System.err.println("Kollaborator:" + u.getUsername());
+				addCollaboration(c, u);
+				for (PValue pv : pVals) {
+					addCollaboration(pv, u);
+				}
+			}
+			System.err.println("Liste den Kontakt hinzufügen: " + c.getName());
+			clMapper.insertContactIntoContactList(cl, c);
+			return c;
+		} else
+			return null;
+
+	}
+
+	/**
 	 * Erzeugen eines <code>Contact</code> Objekts.
 	 * 
 	 * @param pArray
@@ -153,71 +283,17 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
-	 * <code>String</code>
+	 * Erzeugen eines <code>Property</code> Objekts.
 	 * 
-	 * @param p
-	 *            die zugeordnete <code>Property</code>.
-	 * @param s
-	 *            die Ausprägung des <code>String</code>.
-	 * @param c
-	 *            das zugeordnete <code>Contact</code> Objekt.
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
-	 * @return Das erzeugte <code>PValue</code> Objekt.
+	 * @param label
+	 *            der Bezeichner in Form eines <code>String</code>.
+	 * @param type
+	 *            der <code>Type</code> <code>STRING</code>, <code>INT</code>,
+	 *            <code>DATE</code> oder <code>FLOAT</code>.
+	 * @return Das erzeugte <code>Property</code> Objekt.
 	 */
-	public PValue createPValue(Property p, String s, Contact c, JabicsUser u) {
-		System.out.println(p.getLabel());
-		System.out.println(p.getTypeInString());
-		PValue newPValue = new PValue(p, s, u);
-		/*
-		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
-		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
-		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
-		 * Zeitstempel bekommt.
-		 */
-		newPValue = pvMapper.insertPValue(newPValue, c);
-		System.out.println("newPValue " + newPValue.getId());
-		pvMapper.insertCollaboration(u, newPValue, true);
-
-		JabicsUser usertemp = uMapper.findUserByContact(c);
-		if (u.getId() != usertemp.getId()) {
-			pvMapper.insertCollaboration(usertemp, newPValue, false);
-		}
-		cMapper.updateContact(c);
-		return newPValue;
-	}
-
-	/**
-	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
-	 * <code>int</code>.
-	 * 
-	 * @param p
-	 *            die zugeordnete <code>Property</code>.
-	 * @param i
-	 *            die Ausprägung des <code>int</code>.
-	 * @param c
-	 *            das zugeordnete <code>Contact</code> Objekt.
-	 * @param u
-	 *            der aktueller <code>JabicsUser</code>.
-	 * @return Das erzeugte <code>PValue</code> Objekt.
-	 */
-	public PValue createPValue(Property p, int i, Contact c, JabicsUser u) {
-		PValue newPValue = new PValue(p, i, u);
-		/* erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
-		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
-		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
-		 * Zeitstempel bekommt.
-		 */
-		newPValue = pvMapper.insertPValue(newPValue, c);
-		System.out.println("createPValue: Neue ID: " + newPValue.getId());
-		pvMapper.insertCollaboration(u, newPValue, true);
-		JabicsUser usertemp = uMapper.findUserByContact(c);
-		if (u.getId() != usertemp.getId()) {
-			pvMapper.insertCollaboration(usertemp, newPValue, false);
-		}
-		cMapper.updateContact(c);
-		return newPValue;
+	public Property createProperty(String label, Type type) {
+		return pMapper.insertProperty(new Property(label, type));
 	}
 
 	/**
@@ -285,342 +361,148 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Erzeugen eines <code>Property</code> Objekts.
+	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
+	 * <code>int</code>.
 	 * 
-	 * @param label
-	 *            der Bezeichner in Form eines <code>String</code>.
-	 * @param type
-	 *            der <code>Type</code> <code>STRING</code>, <code>INT</code>,
-	 *            <code>DATE</code> oder <code>FLOAT</code>.
-	 * @return Das erzeugte <code>Property</code> Objekt.
-	 */
-	public Property createProperty(String label, Type type) {
-		return pMapper.insertProperty(new Property(label, type));
-	}
-
-	/**
-	 * Liste aller <code>ContactList</code> Objekte eines <code>JabicsUser</code>.
-	 * 
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
-	 * @return die Liste von <code>ContactList</code> Objekten.
-	 */
-	public ArrayList<ContactList> getListsOf(JabicsUser u) {
-
-		ArrayList<ContactList> allLists = clMapper.findContactListOfUser(u);
-		ArrayList<ContactList> result = new ArrayList<ContactList>();
-		ArrayList<BoStatus> status = clMapper.findShareStatus(allLists);
-
-		if (allLists != null) {
-			int i = 0;
-			for (ContactList cl : allLists) {
-
-				cl.setOwner(uMapper.findUserByContactList(cl));
-				System.out.println("2.2 getListsOf " + cl.getListName());
-				result.add(cl);
-				if (status != null) {
-					if (status.size() == allLists.size()) {
-						System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
-						cl.setShareStatus(status.get(i));
-					}
-				}
-				i++;
-			}
-			return result;
-		} else
-			return null;
-	}
-
-	/**
-	 * Auslesen aller <code>Property</code> Objekte eines <code>JabicsUser</code>.
-	 * 
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
-	 * @return Liste aus <code>Property</code> Objekten.
-	 */
-	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
-		System.out.println("log");
-
-		ArrayList<Property> results = new ArrayList<Property>();
-
-		for (Contact c : cMapper.findAllContacts(u)) {
-			for (PValue pv : pvMapper.findPValueForContact(c)) {
-				results.add(pv.getProperty());
-			}
-		}
-		return results;
-	}
-
-	/**
-	 * Auslesen aller <code>Contact</code> Objekte eines <code>ContactList</code>
-	 * Objekts.
-	 * 
-	 * @param cl das <code>ContactList</code> Objekt, für welche die
-	 *           <code>Contact</code> Objekte gesucht werden.
-	 * @param u  der aktuelle <code>JabicsUser</code>.
-	 * @return Die Liste der <code>Contact</code> Objekte, welche in einer
-	 *         <code>ContactList</code> liegen.
-	 */
-	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
-
-		ArrayList<Contact> allC = cMapper.findContactsOfContactList(cl);
-		ArrayList<Contact> result = new ArrayList<Contact>();
-		System.out.println("Got all Contacts of List " + cl.toString());
-
-		ArrayList<BoStatus> status = cMapper.findShareStatus(allC);
-		int i = 0;
-
-		for (Contact c : allC) {
-			System.out.println("2.2 find Contact" + c.toString());
-			// Eine Liste ist immer komplett geteilt oder nicht geteilt
-			// ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);
-
-			if (status.size() == allC.size()) {
-				System.out.println("BOStatus für Kontakt: " + c.getId() + status.get(i).toString());
-
-				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
-				c.setShareStatus(status.get(i));
-				i++;
-			}
-			c.setOwner(uMapper.findUserByContact(c));
-			result.add(c);
-		}
-		return result;
-	}
-
-	/**
-	 * Auslesen aller <code>Contact</code> Objekte, welche einem
-	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
-	 * 
-	 * @param u der aktuelle <code>JabicsUser</code>.
-	 * @return Die Liste der <code>Contact</code> Objekte.
-	 */
-	public ArrayList<Contact> getContactsOf(JabicsUser u) {
-		ArrayList<Contact> cons = cMapper.findAllContacts(u);
-		// ArrayList<Contact> result = new ArrayList<Contact>();
-		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList
-		// gespeichert.
-		System.out.println("Got all Contacts of User " + u.getId());
-		// Besitzer und ShareStatus setzen
-		ArrayList<BoStatus> status = cMapper.findShareStatus(cons);
-		if (status != null && cons != null) {
-			if (status.size() == cons.size()) {
-				int i = 0;
-				for (Contact c : cons) {
-					// System.out.println("BOStatus für Kontakt: " + c.getId() +
-					// status.get(i).toString());
-					c.setOwner(uMapper.findUserByContact(c));
-					// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
-
-					c.setShareStatus(status.get(i));
-
-					i++;
-				}
-				// result.add(c);
-			}
-			return cons;
-		} else
-			return null;
-	}
-
-	/**
-	 * Auslesen des aktualisierten <code>Contact</code> Objektes.
-	 * 
+	 * @param p
+	 *            die zugeordnete <code>Property</code>.
+	 * @param i
+	 *            die Ausprägung des <code>int</code>.
 	 * @param c
-	 *            der <code>Contact</code>, der aktualisiert wurde.
-	 * @return Den aktuellen <code>Contact</code>.
-	 */
-	public Contact getUpdatedContact(Contact c) {
-		Contact updated = cMapper.findContactById(c.getId());
-		ArrayList<Contact> con = new ArrayList<Contact>();
-		con.add(updated);
-		ArrayList<BoStatus> status = cMapper.findShareStatus(con);
-		if (status.isEmpty()) {
-			updated.setShareStatus(status.get(1));
-		}
-		return updated;
-	}
-
-	/**
-	 * Auslesen aller <code>PValue</code> Objekte eines <code>Contact</code>, welche
-	 * einem <code>JabicsUser</code> geteilt sind oder die ihm gehören.
-	 * 
-	 * @param c
-	 *            die <code>Contact</code> Objekt für welches die
-	 *            <code>PValue</code> Objekte benötigt werden.
+	 *            das zugeordnete <code>Contact</code> Objekt.
 	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
-	 * @return Liste der sichtbaren <code>PValue</code> Objekte.
+	 *            der aktueller <code>JabicsUser</code>.
+	 * @return Das erzeugte <code>PValue</code> Objekt.
 	 */
-	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
-		if (c != null && u != null) {
-			System.out.println("getpvof" + u.getUsername() + c.getId());
-
-			ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
-			ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
-			ArrayList<PValue> result = new ArrayList<PValue>();
-			int i = 0;
-			
-			// Im Fall, dass der Owner des Kontakt vorliegt, schnellere Abfertigung
-			JabicsUser owner = uMapper.findUserByContact(c);
-			if(u.getId() == owner.getId()) {
-				
-				for (PValue pv : allPV) {
-					System.out.println("gefunden: " + pv.toString());
-					pv.setShareStatus(status.get(i));
-					result.add(pv);
-					i++;
-				}
-				return result;
-			} else {
-			
-				// PValues filtern, wenn nicht geteilt und den Share Status setzen
-				for (PValue pv : allPV) {
-					System.out.println("gefunden: " + pv.toString());
-					pv.setShareStatus(status.get(i));
-					i++;
-					for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
-						if (u.getId() == uu.getId()) {
-							result.add(pv);
-						}
-					}
-				}
-				return result;
-			}
-		} else
-			return null;
-	}
-
-	/**
-	 * Auslesen aller <code>Contact</code> Objekte, welche einem
-	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
-	 * 
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
-	 * @return Die Liste der sichtbaren <code>Contact</code> Objekte.
-	 */
-	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
-		System.err.println("Alle Geteilten Kontakte");
-		ArrayList<Contact> result = new ArrayList<Contact>();
-		ArrayList<Contact> allC = getContactsOf(u);
-		if (allC != null) {
-			for (Contact c : getContactsOf(u)) {
-
-				// nicht notwendig, da in getContacsOf() schon gesetzt:
-				// c.setOwner(uMapper.findUserByContact(c));
-				if (c.getOwner().getId() != u.getId()) {
-					result.add(c);
-					System.err.println("Geteilter Kontakt 1:" + c.getId());
-				}
-			}
-			return result;
-		} else
-			return null;
-	}
-
-	/**
-	 * Ein <code>Contact</code> Objekt einer <code>ContactList</code> hinzufügen.
-	 * 
-	 * @param c
-	 *            das <code>Contact</code> Objekt welches einer
-	 *            <code>ContactList</code> hinzugefügt werden soll.
-	 * @param cl
-	 *            die <code>ContactList</code> zu welcher der <code>Contact</code>
-	 *            hinzugefügt werden soll.
-	 * @return Der <code>Contact</code> welcher der <code>ContactList</code>
-	 *         hinzugefügt wurde.
-	 */
-	public Contact addContactToList(Contact c, ContactList cl) {
-		System.err.println("Liste ändern: " + cl.getListName());
-
-		ArrayList<Contact> clOld = cMapper.findContactsOfContactList(cl);
-		Boolean bol = true;
-		for (Contact cOld : clOld) {
-			if (c.getId() == cOld.getId())
-				bol = false;
+	public PValue createPValue(Property p, int i, Contact c, JabicsUser u) {
+		PValue newPValue = new PValue(p, i, u);
+		/*
+		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
+		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
+		 * Zeitstempel bekommt.
+		 */
+		newPValue = pvMapper.insertPValue(newPValue, c);
+		System.out.println("createPValue: Neue ID: " + newPValue.getId());
+		pvMapper.insertCollaboration(u, newPValue, true);
+		JabicsUser usertemp = uMapper.findUserByContact(c);
+		if (u.getId() != usertemp.getId()) {
+			pvMapper.insertCollaboration(usertemp, newPValue, false);
 		}
-		// Wenn der Kontakt wirklich neu in der Liste ist
-		if (bol) {
-			cl.addContact(c);
-			// Für alle Nutzer, mit denen der Kontakt geteilt ist, eine Collab für den
-			// Kontakt und dessen PValues einfügen. Die
-			// Überprüfung, ob der Kontakt bereits geteilt ist, passiert in
-			// addCollaboration()
-			System.err.println("Kollaboratoren finden:");
-			ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
-			for (JabicsUser u : clMapper.findCollaborators(cl)) {
-				System.err.println("Kollaborator:" + u.getUsername());
-				addCollaboration(c, u);
-				for (PValue pv : pVals) {
-					addCollaboration(pv, u);
-				}
-			}
-			System.err.println("Liste den Kontakt hinzufügen: " + c.getName());
-			clMapper.insertContactIntoContactList(cl, c);
-			return c;
-		} else
-			return null;
-
+		cMapper.updateContact(c);
+		return newPValue;
 	}
 
 	/**
-	 * Entfernen eines <code>Contact</code> aus einer <code>ContactList</code>.
+	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
+	 * <code>String</code>
 	 * 
-	 * @param c
-	 *            der zu entfernende <code>Contact</code>.
-	 * @param cl
-	 *            die <code>ContactList</code> aus welcher der <code>Contact</code>
-	 *            entfernt werden soll.
-	 * @return Das entfernte <code>Contact</code> Objekt.
-	 */
-	public Contact removeContactFromList(Contact c, ContactList cl) {
-		System.err.println("Liste ändern: " + cl.getListName());
-
-		// cl.removeContact(c);
-		ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
-		System.err.println("Kollaboratoren finden:");
-		for (JabicsUser u : cMapper.findCollaborators(c)) {
-			try {
-				boolean bol = true;
-				for (ContactList clAll : clMapper.findContactListOfUser(u)) {
-					for (Contact cAll : getContactsOfList(cl, u)) {
-						if (cAll.getId() == c.getId())
-							bol = false;
-					}
-				}
-
-				if (bol) {
-					for (PValue pv : pVals) {
-						deleteCollaboration(pv, u);
-					}
-					deleteCollaboration(c, u);
-				}
-			} catch (Exception e) {
-				System.err.println(e.toString());
-				deleteCollaboration(c, u);
-			}
-		}
-		System.err.println("editorSerivce -> removeContactFromList: Kontakt in Liste löschen: " + c.getName());
-
-		clMapper.deleteContactfromContactList(cl, c);
-		return c;
-	}
-
-	/**
-	 * Suche nach allen <code>Contact</code> Objekten eines <code>JabicsUser</code>,
-	 * deren <code>Property</code> und <code>PValue</code> einen bestimmten
-	 * <code>String</code> enthalten.
-	 * 
+	 * @param p
+	 *            die zugeordnete <code>Property</code>.
 	 * @param s
-	 *            der Wert des <code>String</code>.
+	 *            die Ausprägung des <code>String</code>.
+	 * @param c
+	 *            das zugeordnete <code>Contact</code> Objekt.
 	 * @param u
 	 *            der aktuelle <code>JabicsUser</code>.
-	 * @return Liste der <code>Contact</code> Objekte, welche den gesuchten
-	 *         <code>String</code> enthalten.
+	 * @return Das erzeugte <code>PValue</code> Objekt.
 	 */
-	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u) {
-		ContactList cl = new ContactList(getContactsOf(u));
-		return this.searchExpressionInList(s, cl);
+	public PValue createPValue(Property p, String s, Contact c, JabicsUser u) {
+		System.out.println(p.getLabel());
+		System.out.println(p.getTypeInString());
+		PValue newPValue = new PValue(p, s, u);
+		/*
+		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
+		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
+		 * Zeitstempel bekommt.
+		 */
+		newPValue = pvMapper.insertPValue(newPValue, c);
+		System.out.println("newPValue " + newPValue.getId());
+		pvMapper.insertCollaboration(u, newPValue, true);
+
+		JabicsUser usertemp = uMapper.findUserByContact(c);
+		if (u.getId() != usertemp.getId()) {
+			pvMapper.insertCollaboration(usertemp, newPValue, false);
+		}
+		cMapper.updateContact(c);
+		return newPValue;
+	}
+
+	/**
+	 * <p>
+	 * Teilhaberschaft eines <code>JabicsUser</code> an einem <code>Contact</code>
+	 * entfernen.
+	 * </p>
+	 * <b>Folge</b> Wenn der <code>Contact</code> in einer dem
+	 * <code>JabicsUser</code> geteilten <code>ContactList</code> liegt, wird die
+	 * Teilhaberschaft an dieser ebenfalls entfernt.
+	 * 
+	 * @param c
+	 *            das <code>Contact</code> Objekt, zu welchem die Teilhaberschaft
+	 *            entzogen werden soll.
+	 * @param u
+	 *            der <code>JabicsUser</code>, welchem die Teilhaberschaft entzogen
+	 *            werden soll.
+	 * @return Der <code>JabicsUser</code> welchem der <code>Contact</code> enzogen
+	 *         wurde.
+	 */
+	public JabicsUser deleteCollaboration(Contact c, JabicsUser u) {
+		System.out.println("Lösche Kollaboration für User " + c.getId());
+		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
+		ArrayList<PValue> pVal = pvMapper.findPValueForContact(c);
+		for (PValue pv : pVal) {
+			for (JabicsUser uu : users) {
+				if (u.getId() == uu.getId()) {
+					pvMapper.deleteCollaboration(pv, u);
+				}
+			}
+		}
+		// if (users.isEmpty() || (users.size() == 1 && (users.get(0).getId() ==
+		// u.getId()))) {
+		// c.setShareStatus(BoStatus.NOT_SHARED);
+		// }
+		cMapper.deleteCollaboration(c, u);
+		return u;
+	}
+
+	/**
+	 * Teilhaberschaft eines <code>JabicsUser</code> an einer
+	 * <code>ContactList</code> entfernen.
+	 * 
+	 * @param cl
+	 *            das <code>ContactList</code> Objekt, zu welchem die
+	 *            Teilhaberschaft entzogen werden soll.
+	 * @param u
+	 *            der <code>JabicsUser</code>, welchem die Teilhaberschaft entzogen
+	 *            werden soll.
+	 * @return Die <code>ContactList</code>
+	 */
+	public ContactList deleteCollaboration(ContactList cl, JabicsUser u) {
+		clMapper.deleteCollaboration(cl, u);
+		ArrayList<ContactList> cls = new ArrayList<ContactList>();
+		cls.add(cl);
+		ArrayList<BoStatus> status = clMapper.findShareStatus(cls);
+		if (!status.isEmpty()) {
+			cl.setShareStatus(status.get(0));
+		}
+		return cl;
+
+	}
+
+	/**
+	 * Teilhaberschaft eines <code>JabicsUser</code> an einem <code>PValue</code>
+	 * entfernen.
+	 * 
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, zu welchem die Teilhaberschaft
+	 *            entzogen werden soll.
+	 * @param u
+	 *            der <code>JabicsUser</code>, welchem die Teilhaberschaft entzogen
+	 *            werden soll.
+	 */
+	public void deleteCollaboration(PValue pv, JabicsUser u) {
+		pvMapper.deleteCollaboration(pv, u);
 	}
 
 	/**
@@ -707,34 +589,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * <p>
-	 * Ein <code>JabicsUser</code> Objekt löschen.
-	 * </p>
-	 * Alle <code>PValue</code>, <code>Contact</code> und <code>ContactList</code>
-	 * Objekte des <code>JabicsUser</code> werden dabei gelöscht.
-	 * 
-	 * @param u
-	 *            das zu löschende <code>JabicsUser</code> Objekt.
-	 */
-	public void deleteUser(JabicsUser u) {
-		ArrayList<ContactList> allListsOfUser = getListsOf(u);
-		ArrayList<Contact> allContactsOfUser = getContactsOf(u);
-
-		// Die Kontrolle, ob übergebener Nutzer der Eigentümer ist, regeln die
-		// jeweiligen Methoden
-		for (ContactList cl : allListsOfUser) {
-			deleteContactList(cl, u);
-		}
-		for (Contact c : allContactsOfUser) {
-			deleteContact(c, u);
-		}
-
-		uMapper.deleteUser(u);
-
-		return;
-	}
-
-	/**
 	 * Ein <code>Property</code> Objekt löschen.
 	 * 
 	 * @param p
@@ -785,22 +639,597 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Aktualisieren eines <code>PValue</code>.
+	 * <p>
+	 * Ein <code>JabicsUser</code> Objekt löschen.
+	 * </p>
+	 * Alle <code>PValue</code>, <code>Contact</code> und <code>ContactList</code>
+	 * Objekte des <code>JabicsUser</code> werden dabei gelöscht.
+	 * 
+	 * @param u
+	 *            das zu löschende <code>JabicsUser</code> Objekt.
+	 */
+	public void deleteUser(JabicsUser u) {
+		ArrayList<ContactList> allListsOfUser = getListsOf(u);
+		ArrayList<Contact> allContactsOfUser = getContactsOf(u);
+
+		// Die Kontrolle, ob übergebener Nutzer der Eigentümer ist, regeln die
+		// jeweiligen Methoden
+		for (ContactList cl : allListsOfUser) {
+			deleteContactList(cl, u);
+		}
+		for (Contact c : allContactsOfUser) {
+			deleteContact(c, u);
+		}
+
+		uMapper.deleteUser(u);
+
+		return;
+	}
+
+	/**
+	 * Auslesen aller nicht kollaborierenden <code>JabicsUser</code> Objekte an
+	 * einem <code>Contact</code> Objekt
+	 * 
+	 * @param c
+	 *            <code>Contact</code> für welchen die nicht kollaborierenden
+	 *            <code>JabicsUser</code> benötigt werden.
+	 * @return Liste der <code>JabicsUser</code> ohne Collaboration.
+	 */
+	public ArrayList<JabicsUser> getAllNotCollaboratingUser(Contact c) {
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
+		ArrayList<JabicsUser> allUser = uMapper.findAllUser();
+		for (JabicsUser u : allUser) {
+			boolean bol = true;
+			for (JabicsUser uu : cMapper.findCollaborators(c)) {
+				if (u.getId() == uu.getId())
+					bol = false;
+			}
+			if (bol)
+				result.add(u);
+		}
+		return result;
+	}
+
+	/**
+	 * Auslesen aller nicht kollaborierenden <code>JabicsUser</code> Objekte an
+	 * einem <code>ContactList</code> Objekt
+	 * 
+	 * @param cl
+	 *            <code>ContactList</code> für welche die nicht kollaborierenden
+	 *            <code>JabicsUser</code> benötigt werden.
+	 * @return Liste der <code>JabicsUser</code> ohne Collaboration.
+	 */
+	public ArrayList<JabicsUser> getAllNotCollaboratingUser(ContactList cl) {
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
+		ArrayList<JabicsUser> allUser = uMapper.findAllUser();
+		for (JabicsUser u : allUser) {
+			boolean bol = true;
+			for (JabicsUser uu : clMapper.findCollaborators(cl)) {
+				if (u.getId() == uu.getId())
+					bol = false;
+			}
+			if (bol)
+				result.add(u);
+		}
+		return result;
+	}
+
+	/**
+	 * Auslesen aller <code>Contact</code> Objekte, welche einem
+	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
+	 * 
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Die Liste der sichtbaren <code>Contact</code> Objekte.
+	 */
+	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
+		System.err.println("Alle Geteilten Kontakte");
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		ArrayList<Contact> allC = getContactsOf(u);
+		if (allC != null) {
+			for (Contact c : getContactsOf(u)) {
+
+				// nicht notwendig, da in getContacsOf() schon gesetzt:
+				// c.setOwner(uMapper.findUserByContact(c));
+				if (c.getOwner().getId() != u.getId()) {
+					result.add(c);
+					System.err.println("Geteilter Kontakt 1:" + c.getId());
+				}
+			}
+			return result;
+		} else
+			return null;
+	}
+
+	/**
+	 * Auslesen aller <code>JabicsUser</code> Objekte.
+	 * 
+	 * @return Liste aller <code>JabicsUser</code>.
+	 */
+	public ArrayList<JabicsUser> getAllUsers() {
+		return uMapper.findAllUser();
+	}
+
+	/**
+	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
+	 * einem <code>Contact</code> Objekt besitzen.
+	 *
+	 * @param c
+	 *            der <code>Contact</code> für welchen die Collaborator gesucht
+	 *            werden.
+	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
+	 */
+	public ArrayList<JabicsUser> getCollaborators(Contact c) {
+		ArrayList<JabicsUser> allCollabs = cMapper.findCollaborators(c);
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
+		JabicsUser owner = uMapper.findUserByContact(c);
+		for (JabicsUser u : allCollabs) {
+			if (u.getId() != owner.getId())
+				result.add(u);
+		}
+		return result;
+	}
+
+	/**
+	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
+	 * einem <code>ContactList</code> Objekt besitzen. Der Besitzer wird nicht
+	 * zurückgegeben.
+	 * 
+	 * @param cl
+	 *            die <code>ContactList</code> für welche die Collaborator gesucht
+	 *            werden.
+	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
+	 */
+	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
+		ArrayList<JabicsUser> allCollabs = clMapper.findCollaborators(cl);
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
+		JabicsUser owner = uMapper.findUserByContactList(cl);
+		for (JabicsUser u : allCollabs) {
+			if (u.getId() != owner.getId())
+				result.add(u);
+		}
+		return result;
+	}
+
+	/**
+	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
+	 * einem <code>PValue</code> Objekt besitzen.
 	 * 
 	 * @param pv
-	 *            der <code>PValue</code> die aktualisiert werden soll.
-	 * @return Die aktualisierte <code>PValue</code>.
+	 *            die <code>PValue</code> für welche die Collaborator gesucht werde.
+	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
-	public PValue updatePValue(PValue pv) {
-		System.out.println(pv.getId());
-		PValue pvtemp = pvMapper.findPValueById(pv.getId());
-		if (pv != pvtemp) {
-			PValue p = pvMapper.updatePValue(pv);
-			System.out.println(p.toString());
-			return p;
+	public ArrayList<JabicsUser> getCollaborators(PValue pv) {
+		return pvMapper.findCollaborators(pv);
+	}
+
+	/**
+	 * Auslesen aller <code>Contact</code> Objekte, welche einem
+	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
+	 * 
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Die Liste der <code>Contact</code> Objekte.
+	 */
+	public ArrayList<Contact> getContactsOf(JabicsUser u) {
+		ArrayList<Contact> cons = cMapper.findAllContacts(u);
+		// ArrayList<Contact> result = new ArrayList<Contact>();
+		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList
+		// gespeichert.
+		System.out.println("Got all Contacts of User " + u.getId());
+		// Besitzer und ShareStatus setzen
+		ArrayList<BoStatus> status = cMapper.findShareStatus(cons);
+		if (status != null && cons != null) {
+			if (status.size() == cons.size()) {
+				int i = 0;
+				for (Contact c : cons) {
+					// System.out.println("BOStatus für Kontakt: " + c.getId() +
+					// status.get(i).toString());
+					c.setOwner(uMapper.findUserByContact(c));
+					// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+
+					c.setShareStatus(status.get(i));
+
+					i++;
+				}
+				// result.add(c);
+			}
+			return cons;
 		} else
-			System.out.println("updatePValue unnötig oder fehlgeschlagen");
-		return pvMapper.findPValueById(pv.getId());
+			return null;
+	}
+
+	/**
+	 * Auslesen aller <code>Contact</code> Objekte eines <code>ContactList</code>
+	 * Objekts.
+	 * 
+	 * @param cl
+	 *            das <code>ContactList</code> Objekt, für welche die
+	 *            <code>Contact</code> Objekte gesucht werden.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Die Liste der <code>Contact</code> Objekte, welche in einer
+	 *         <code>ContactList</code> liegen.
+	 */
+	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
+
+		ArrayList<Contact> allC = cMapper.findContactsOfContactList(cl);
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		System.out.println("Got all Contacts of List " + cl.toString());
+
+		ArrayList<BoStatus> status = cMapper.findShareStatus(allC);
+		int i = 0;
+
+		for (Contact c : allC) {
+			System.out.println("2.2 find Contact" + c.toString());
+			// Eine Liste ist immer komplett geteilt oder nicht geteilt
+			// ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);
+
+			if (status.size() == allC.size()) {
+				System.out.println("BOStatus für Kontakt: " + c.getId() + status.get(i).toString());
+
+				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+				c.setShareStatus(status.get(i));
+				i++;
+			}
+			c.setOwner(uMapper.findUserByContact(c));
+			result.add(c);
+		}
+		return result;
+	}
+
+	/**
+	 * Liste aller <code>ContactList</code> Objekte eines <code>JabicsUser</code>.
+	 * 
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return die Liste von <code>ContactList</code> Objekten.
+	 */
+	public ArrayList<ContactList> getListsOf(JabicsUser u) {
+
+		ArrayList<ContactList> allLists = clMapper.findContactListOfUser(u);
+		ArrayList<ContactList> result = new ArrayList<ContactList>();
+		ArrayList<BoStatus> status = clMapper.findShareStatus(allLists);
+
+		if (allLists != null) {
+			int i = 0;
+			for (ContactList cl : allLists) {
+
+				cl.setOwner(uMapper.findUserByContactList(cl));
+				System.out.println("2.2 getListsOf " + cl.getListName());
+				result.add(cl);
+				if (status != null) {
+					if (status.size() == allLists.size()) {
+						System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
+						cl.setShareStatus(status.get(i));
+					}
+				}
+				i++;
+			}
+			return result;
+		} else
+			return null;
+	}
+
+	/**
+	 * Auslesen des <code>JabicsUser</code> Objekts, welches der Besitzer eines
+	 * <code>Contact</code> Objekts ist.
+	 * 
+	 * @param c
+	 *            <code>Contact</code> Objekt für welches der Besitzer ermittelt
+	 *            werden soll.
+	 * @return Der besitzende <code>JabicsUser</code>
+	 */
+	public JabicsUser getOwnerOfContact(Contact c) {
+		return uMapper.findUserByContact(c);
+	}
+
+	/**
+	 * Auslesen aller <code>Property</code> Objekte eines <code>JabicsUser</code>.
+	 * 
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Liste aus <code>Property</code> Objekten.
+	 */
+	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
+		System.out.println("log");
+
+		ArrayList<Property> results = new ArrayList<Property>();
+
+		for (Contact c : cMapper.findAllContacts(u)) {
+			for (PValue pv : pvMapper.findPValueForContact(c)) {
+				results.add(pv.getProperty());
+			}
+		}
+		return results;
+	}
+
+	/**
+	 * Auslesen aller <code>PValue</code> Objekte eines <code>Contact</code>, welche
+	 * einem <code>JabicsUser</code> geteilt sind oder die ihm gehören.
+	 * 
+	 * @param c
+	 *            die <code>Contact</code> Objekt für welches die
+	 *            <code>PValue</code> Objekte benötigt werden.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Liste der sichtbaren <code>PValue</code> Objekte.
+	 */
+	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
+		if (c != null && u != null) {
+			System.out.println("getpvof" + u.getUsername() + c.getId());
+
+			ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
+			ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
+			ArrayList<PValue> result = new ArrayList<PValue>();
+			int i = 0;
+
+			// Im Fall, dass der Owner des Kontakt vorliegt, schnellere Abfertigung
+			JabicsUser owner = uMapper.findUserByContact(c);
+			if (u.getId() == owner.getId()) {
+
+				for (PValue pv : allPV) {
+					System.out.println("gefunden: " + pv.toString());
+					pv.setShareStatus(status.get(i));
+					result.add(pv);
+					i++;
+				}
+				return result;
+			}
+
+			// PValues filtern, wenn nicht geteilt und den Share Status setzen
+			for (PValue pv : allPV) {
+				System.out.println("gefunden: " + pv.toString());
+				pv.setShareStatus(status.get(i));
+				i++;
+				for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
+					if (u.getId() == uu.getId()) {
+						result.add(pv);
+					}
+				}
+			}
+			return result;
+		} else
+			return null;
+	}
+
+	/**
+	 * Auslesen aller Standard <code>Property</code> Objekte.
+	 * 
+	 * @return Liste von Standard <code>Property</code>.
+	 */
+	public ArrayList<Property> getStandardProperties() {
+		return pMapper.findAllStandardPropertys();
+	}
+
+	/**
+	 * Auslesen des aktualisierten <code>Contact</code> Objektes.
+	 * 
+	 * @param c
+	 *            der <code>Contact</code>, der aktualisiert wurde. * @return Den
+	 *            aktuellen <code>Contact</code>.
+	 */
+	public Contact getUpdatedContact(Contact c) {
+		Contact updated = cMapper.findContactById(c.getId());
+		JabicsUser owner = uMapper.findUserByContact(c);
+		ArrayList<PValue> pvalues = getPValueOf(c, owner);
+		ArrayList<Contact> con = new ArrayList<Contact>();
+		con.add(updated);
+		ArrayList<BoStatus> status = cMapper.findShareStatus(con);
+		updated.setValues(pvalues);
+		try {
+			if (!status.isEmpty()) {
+				updated.setShareStatus(status.get(0));
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		return updated;
+	}
+
+	public void initialise() {
+	}
+
+	/**
+	 * Entfernen eines <code>Contact</code> aus einer <code>ContactList</code>.
+	 * 
+	 * @param c
+	 *            der zu entfernende <code>Contact</code>.
+	 * @param cl
+	 *            die <code>ContactList</code> aus welcher der <code>Contact</code>
+	 *            entfernt werden soll.
+	 * @return Das entfernte <code>Contact</code> Objekt.
+	 */
+	public Contact removeContactFromList(Contact c, ContactList cl) {
+		System.err.println("Liste ändern: " + cl.getListName());
+
+		// cl.removeContact(c);
+		ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
+		System.err.println("Kollaboratoren finden:");
+		for (JabicsUser u : cMapper.findCollaborators(c)) {
+			try {
+				boolean bol = true;
+				for (ContactList clAll : clMapper.findContactListOfUser(u)) {
+					for (Contact cAll : getContactsOfList(cl, u)) {
+						if (cAll.getId() == c.getId())
+							bol = false;
+					}
+				}
+
+				if (bol) {
+					for (PValue pv : pVals) {
+						deleteCollaboration(pv, u);
+					}
+					deleteCollaboration(c, u);
+				}
+			} catch (Exception e) {
+				System.err.println(e.toString());
+				deleteCollaboration(c, u);
+			}
+		}
+		System.err.println("editorSerivce -> removeContactFromList: Kontakt in Liste löschen: " + c.getName());
+
+		clMapper.deleteContactfromContactList(cl, c);
+		return c;
+	}
+
+	/**
+	 * Diese Methode wird verwendet, wenn der Datentyp des Suchkriteriums nicht
+	 * bekannt ist! Suche nach allen <code>Contacts</code> in einer
+	 * <code>ContactList</code>, die den mitgegebenen String als Property oder
+	 * PropertyValue enthalten.
+	 * 
+	 * Suche nach einem <code>PValue</code> Objekt oder <code>Property</code> Objekt
+	 * eines <code>Contact</code> in einem <code>ContactList</code> Objekt, welche
+	 * einen bestimmten Wert als <code>String</code> besitzen.
+	 * 
+	 * @param s
+	 *            der Wert des gesuchten <code>String</code>
+	 * @param cl
+	 *            die <code>ContactList</code> in der gesucht wird.
+	 * @return Liste aller <code>Contact</code> Objekte, welche <code>PValue</code>
+	 *         oder <code>Property</code> Objekte enthalten, die das Suchkriterium
+	 *         erfüllen.
+	 */
+	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl) {
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		for (Contact c : cl.getContacts()) {
+			if (c.getName().contains(s))
+				result.add(c);
+			for (PValue pv : c.getValues()) {
+				/**
+				 * TODO: add more fields that are searched through
+				 */
+				if (pv.getProperty().toString().contains(s) || pv.getStringValue().contains(s)) {
+					result.add(c);
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Suche nach allen <code>Contact</code> Objekten eines <code>JabicsUser</code>,
+	 * deren <code>Property</code> und <code>PValue</code> einen bestimmten
+	 * <code>String</code> enthalten.
+	 * 
+	 * @param s
+	 *            der Wert des <code>String</code>.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Liste der <code>Contact</code> Objekte, welche den gesuchten
+	 *         <code>String</code> enthalten.
+	 */
+	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u) {
+		ContactList cl = new ContactList(getContactsOf(u));
+		return this.searchExpressionInList(s, cl);
+	}
+
+	/**
+	 * <p>
+	 * Suche nach einem <code>PValue</code> Objekt eines <code>Contact</code> in
+	 * einem <code>ContactList</code> Objekt.
+	 * </p>
+	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder Kriterien
+	 * verwendet. Für eine allgemeine Suche siehe {@link searchExpressionInList}.
+	 * 
+	 * @param cl
+	 *            das zu durchsuchende <code>ContactList</code> Objekt.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, nach welchem gesucht wird.
+	 * @return Liste aller <code>Contact</code> Objekte, welche das
+	 *         <code>PValue</code> Objekt enthalten.
+	 */
+	public ArrayList<Contact> searchInList(ContactList cl, PValue pv) {
+
+		// Wenn die PValue leer ist, wird lediglich nach dem String-Wert in Labels und
+		// Werten der Kontakte gesucht.
+		// if (pv.getStringValue() == null && pv.getProperty() == null) {
+		// ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+		// for (Contact c : contacts) {
+		// c.setValues(pvMapper.findPValueForContact(c));
+		// }
+		// ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
+		// for (Contact c : alc) {
+		// System.out.println(c.getName());
+		// }
+		// return alc;
+		// } else {
+
+		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+		for (Contact c : contacts) {
+			c.setValues(pvMapper.findPValueForContact(c));
+		}
+
+		// Kontakte nach Property filtern, falls gesetzt
+		if (pv.getProperty().getLabel() != null) {
+			System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
+			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+		}
+		System.err.println("Gefundene kontakte: ");
+		for (Contact c : contacts) {
+			System.err.println("Contact : " + c.getName());
+		}
+		// Kontakte nach PropertyValue filtern, falls gesetzt
+		switch (pv.getPointer()) {
+		case 1: {
+			if (pv.getIntValue() != -2147483648) {
+				System.err.println("Nach PVal filtern");
+				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
+			}
+			break;
+
+		}
+		case 2: {
+			if (pv.getStringValue() != null) {
+				System.err.println("Nach PVal filtern");
+				contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+			}
+			break;
+		}
+		case 3: {
+			if (pv.getDateValue() != null) {
+				System.err.println("Nach PVal filtern");
+
+				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+			}
+			break;
+
+		}
+		case 4: {
+			if (pv.getFloatValue() != -99999997952f) {
+				System.err.println("Nach PVal filtern");
+				contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
+			}
+			break;
+
+		}
+		}
+
+		return contacts;
+
+	}
+
+	/**
+	 * Auslesen ob <code>JabicsUser</code>, Besitzer oder Teilhaber einer
+	 * <code>ContactList</code> ist.
+	 * 
+	 * @param u
+	 * 
+	 * @param cl
+	 * @return Liste der <code>Contact</code> Objekte
+	 */
+	public ArrayList<Contact> searchInList(JabicsUser u, ContactList cl) {
+		ArrayList<Contact> result = new ArrayList<Contact>();
+		for (Contact c : cl.getContacts()) {
+			// Wenn der Contact Owner der übergebene Nutzer ist oder ein Collaborator an
+			// einem der Kontakte der übergebene Nutzer ist dann wird der Kontakt
+			// zurückgegeben
+			if (c.getOwner().getId() == u.getId() || cMapper.findCollaborators(c).contains(u)) {
+				result.add(c);
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -920,436 +1349,21 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * <code>ContactList</code> Objekt einem <code>JabicsUser</code> freigeben.
-	 * 
-	 * @param cl
-	 *            die <code>ContactList</code> für welche die Freigabe erfolgen
-	 *            soll.
-	 * @param u
-	 *            der <code>JabicsUser</code> für welchen die Freigabe erfolgen
-	 *            soll.
-	 */
-	public JabicsUser addCollaboration(ContactList cl, JabicsUser u) {
-		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
-		boolean bol = true;
-		// Überprüfen, ob die Liste bereits freigegeben ist
-		for (JabicsUser user : users) {
-			if (user.getId() == u.getId()) {
-				bol = false;
-			}
-		}
-		// Wenn die Liste dem Nutzer noch nicht freigegeben ist
-		if (bol) {
-			cl.setShareStatus(BoStatus.IS_SHARED);
-			clMapper.insertCollaboration(u, cl, false);
-			ArrayList<Contact> contactsInList = cMapper.findContactsOfContactList(cl);
-			for (Contact c : contactsInList) {
-				addCollaboration(c, u);
-			}
-		}
-		return u;
-	}
-
-	/**
-	 * <code>Contact</code> Objekt einem <code>JabicsUser</code> freigeben.
-	 * 
-	 * @param c
-	 *            der <code>Contact</code> für welchen die Freigabe erfolgen soll.
-	 * @param u
-	 *            der <code>JabicsUser</code> für welchen die Freigabe erfolgen
-	 *            soll.
-	 */
-	public void addCollaboration(Contact c, JabicsUser u) {
-		System.err.println("Kollab: " + c.getName() + u.getUsername());
-		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
-		boolean bol = true;
-		// Überprüfen, ob der Kontakt bereits freigegeben ist
-		for (JabicsUser user : users) {
-			if (user.getId() == u.getId()) {
-				bol = false;
-			}
-		}
-		// Wenn der Kontakt dem Nutzer noch nicht freigegeben ist
-		if (bol) {
-			c.setShareStatus(BoStatus.IS_SHARED);
-			System.err.println("Kollab einfügen: " + c.getName() + u.getUsername());
-			cMapper.insertCollaboration(u, c, false);
-		} else
-			return;
-	}
-
-	/**
-	 * <code>PValue</code> Objekt einem <code>JabicsUser</code> freigeben.
+	 * Aktualisieren eines <code>PValue</code>.
 	 * 
 	 * @param pv
-	 *            die <code>PValue</code> für welches die Freigabe erfolgen soll.
-	 * @param u
-	 *            der <code>JabicsUser</code> für welchen die Freigabe erfolgen
-	 *            soll.
+	 *            der <code>PValue</code> die aktualisiert werden soll.
+	 * @return Die aktualisierte <code>PValue</code>.
 	 */
-	public void addCollaboration(PValue pv, JabicsUser u) {
-		ArrayList<JabicsUser> users = pvMapper.findCollaborators(pv);
-		boolean bol = true;
-		// Überprüfen, ob der Kontakt bereits freigegeben ist
-		for (JabicsUser user : users) {
-			if (user.getId() == u.getId()) {
-				bol = false;
-			}
-		}
-		// Wenn das PValue dem Nutzer noch nicht freigegeben ist
-		if (bol) {
-			pv.setShareStatus(BoStatus.IS_SHARED);
-			pvMapper.insertCollaboration(u, pv, false);
+	public PValue updatePValue(PValue pv) {
+		System.out.println(pv.getId());
+		PValue pvtemp = pvMapper.findPValueById(pv.getId());
+		if (pv != pvtemp) {
+			PValue p = pvMapper.updatePValue(pv);
+			System.out.println(p.toString());
+			return p;
 		} else
-			return;
-	}
-
-	/**
-	 * <p>
-	 * Teilhaberschaft eines <code>JabicsUser</code> an einem <code>Contact</code>
-	 * entfernen.
-	 * </p>
-	 * <b>Folge</b> Wenn der <code>Contact</code> in einer dem
-	 * <code>JabicsUser</code> geteilten <code>ContactList</code> liegt, wird die
-	 * Teilhaberschaft an dieser ebenfalls entfernt.
-	 * 
-	 * @param c
-	 *            das <code>Contact</code> Objekt, zu welchem die Teilhaberschaft
-	 *            entzogen werden soll.
-	 * @param u
-	 *            der <code>JabicsUser</code>, welchem die Teilhaberschaft entzogen
-	 *            werden soll.
-	 * @return Der <code>JabicsUser</code> welchem der <code>Contact</code> enzogen
-	 *         wurde.
-	 */
-	public JabicsUser deleteCollaboration(Contact c, JabicsUser u) {
-		System.out.println("Lösche Kollaboration für User " + c.getId());
-		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
-		ArrayList<PValue> pVal = pvMapper.findPValueForContact(c);
-		for (PValue pv : pVal) {
-			for (JabicsUser uu : users) {
-				if (u.getId() == uu.getId()) {
-					pvMapper.deleteCollaboration(pv, u);
-				}
-			}
-		}
-		// if (users.isEmpty() || (users.size() == 1 && (users.get(0).getId() ==
-		// u.getId()))) {
-		// c.setShareStatus(BoStatus.NOT_SHARED);
-		// }
-		cMapper.deleteCollaboration(c, u);
-		return u;
-	}
-
-	/**
-	 * Teilhaberschaft eines <code>JabicsUser</code> an einer
-	 * <code>ContactList</code> entfernen.
-	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, zu welchem die
-	 *            Teilhaberschaft entzogen werden soll.
-	 * @param u
-	 *            der <code>JabicsUser</code>, welchem die Teilhaberschaft entzogen
-	 *            werden soll.
-	 * @return Die <code>ContactList</code>
-	 */
-	public ContactList deleteCollaboration(ContactList cl, JabicsUser u) {
-		clMapper.deleteCollaboration(cl, u);
-		ArrayList<ContactList> cls = new ArrayList<ContactList>();
-		cls.add(cl);
-		ArrayList<BoStatus> status = clMapper.findShareStatus(cls);
-		if (!status.isEmpty()) {
-			cl.setShareStatus(status.get(0));
-		}
-		return cl;
-
-	}
-
-	/**
-	 * Teilhaberschaft eines <code>JabicsUser</code> an einem <code>PValue</code>
-	 * entfernen.
-	 * 
-	 * @param pv
-	 *            das <code>PValue</code> Objekt, zu welchem die Teilhaberschaft
-	 *            entzogen werden soll.
-	 * @param u
-	 *            der <code>JabicsUser</code>, welchem die Teilhaberschaft entzogen
-	 *            werden soll.
-	 */
-	public void deleteCollaboration(PValue pv, JabicsUser u) {
-		pvMapper.deleteCollaboration(pv, u);
-	}
-
-	/**
-	 * Diese Methode wird verwendet, wenn der Datentyp des Suchkriteriums nicht
-	 * bekannt ist! Suche nach allen <code>Contacts</code> in einer
-	 * <code>ContactList</code>, die den mitgegebenen String als Property oder
-	 * PropertyValue enthalten.
-	 * 
-	 * Suche nach einem <code>PValue</code> Objekt oder <code>Property</code> Objekt
-	 * eines <code>Contact</code> in einem <code>ContactList</code> Objekt, welche
-	 * einen bestimmten Wert als <code>String</code> besitzen.
-	 * 
-	 * @param s
-	 *            der Wert des gesuchten <code>String</code>
-	 * @param cl
-	 *            die <code>ContactList</code> in der gesucht wird.
-	 * @return Liste aller <code>Contact</code> Objekte, welche <code>PValue</code>
-	 *         oder <code>Property</code> Objekte enthalten, die das Suchkriterium
-	 *         erfüllen.
-	 */
-	public ArrayList<Contact> searchExpressionInList(String s, ContactList cl) {
-		ArrayList<Contact> result = new ArrayList<Contact>();
-		for (Contact c : cl.getContacts()) {
-			if (c.getName().contains(s))
-				result.add(c);
-			for (PValue pv : c.getValues()) {
-				/**
-				 * TODO: add more fields that are searched through
-				 */
-				if (pv.getProperty().toString().contains(s) || pv.getStringValue().contains(s)) {
-					result.add(c);
-				}
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * <p>
-	 * Suche nach einem <code>PValue</code> Objekt eines <code>Contact</code> in
-	 * einem <code>ContactList</code> Objekt.
-	 * </p>
-	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder Kriterien
-	 * verwendet. Für eine allgemeine Suche siehe
-	 * {@link searchExpressionInList}.
-	 * 
-	 * @param cl das zu durchsuchende <code>ContactList</code> Objekt.
-	 * @param pv das <code>PValue</code> Objekt, nach welchem gesucht wird.
-	 * @return Liste aller <code>Contact</code> Objekte, welche das
-	 *         <code>PValue</code> Objekt enthalten.
-	 */
-	public ArrayList<Contact> searchInList(ContactList cl, PValue pv) {
-
-		// Wenn die PValue leer ist, wird lediglich nach dem String-Wert in Labels und
-		// Werten der Kontakte gesucht.
-		// if (pv.getStringValue() == null && pv.getProperty() == null) {
-		// ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		// for (Contact c : contacts) {
-		// c.setValues(pvMapper.findPValueForContact(c));
-		// }
-		// ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
-		// for (Contact c : alc) {
-		// System.out.println(c.getName());
-		// }
-		// return alc;
-		// } else {
-
-		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
-		}
-
-		// Kontakte nach Property filtern, falls gesetzt
-		if (pv.getProperty().getLabel() != null) {
-			System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
-			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
-		}
-		System.err.println("Gefundene kontakte: ");
-		for (Contact c : contacts) {
-			System.err.println("Contact : " + c.getName());
-		}
-		// Kontakte nach PropertyValue filtern, falls gesetzt
-		switch (pv.getPointer()) {
-		case 1: {
-			if (pv.getIntValue() != -2147483648) {
-				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
-			}
-			break;
-
-		}
-		case 2: {
-			if (pv.getStringValue() != null) {
-				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
-			}
-			break;
-		}
-		case 3: {
-			if (pv.getDateValue() != null) {
-				System.err.println("Nach PVal filtern");
-
-				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
-			}
-			break;
-
-		}
-		case 4: {
-			if (pv.getFloatValue() != -99999997952f) {
-				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
-			}
-			break;
-
-		}
-		}
-
-		return contacts;
-
-	}
-
-	/**
-	 * Auslesen ob <code>JabicsUser</code>, Besitzer oder Teilhaber einer
-	 * <code>ContactList</code> ist.
-	 * 
-	 * @param u
-	 * 
-	 * @param cl
-	 * @return Liste der <code>Contact</code> Objekte
-	 */
-	public ArrayList<Contact> searchInList(JabicsUser u, ContactList cl) {
-		ArrayList<Contact> result = new ArrayList<Contact>();
-		for (Contact c : cl.getContacts()) {
-			// Wenn der Contact Owner der übergebene Nutzer ist oder ein Collaborator an
-			// einem der Kontakte der übergebene Nutzer ist dann wird der Kontakt
-			// zurückgegeben
-			if (c.getOwner().getId() == u.getId() || cMapper.findCollaborators(c).contains(u)) {
-				result.add(c);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Auslesen aller nicht kollaborierenden <code>JabicsUser</code> Objekte an
-	 * einem <code>Contact</code> Objekt
-	 * 
-	 * @param c
-	 *            <code>Contact</code> für welchen die nicht kollaborierenden
-	 *            <code>JabicsUser</code> benötigt werden.
-	 * @return Liste der <code>JabicsUser</code> ohne Collaboration.
-	 */
-	public ArrayList<JabicsUser> getAllNotCollaboratingUser(Contact c) {
-		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
-		ArrayList<JabicsUser> allUser = uMapper.findAllUser();
-		for (JabicsUser u : allUser) {
-			boolean bol = true;
-			for (JabicsUser uu : cMapper.findCollaborators(c)) {
-				if (u.getId() == uu.getId())
-					bol = false;
-			}
-			if (bol)
-				result.add(u);
-		}
-		return result;
-	}
-
-	/**
-	 * Auslesen aller nicht kollaborierenden <code>JabicsUser</code> Objekte an
-	 * einem <code>ContactList</code> Objekt
-	 * 
-	 * @param cl
-	 *            <code>ContactList</code> für welche die nicht kollaborierenden
-	 *            <code>JabicsUser</code> benötigt werden.
-	 * @return Liste der <code>JabicsUser</code> ohne Collaboration.
-	 */
-	public ArrayList<JabicsUser> getAllNotCollaboratingUser(ContactList cl) {
-		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
-		ArrayList<JabicsUser> allUser = uMapper.findAllUser();
-		for (JabicsUser u : allUser) {
-			boolean bol = true;
-			for (JabicsUser uu : clMapper.findCollaborators(cl)) {
-				if (u.getId() == uu.getId())
-					bol = false;
-			}
-			if (bol)
-				result.add(u);
-		}
-		return result;
-	}
-
-	/**
-	 * Auslesen des <code>JabicsUser</code> Objekts, welches der Besitzer eines
-	 * <code>Contact</code> Objekts ist.
-	 * 
-	 * @param c
-	 *            <code>Contact</code> Objekt für welches der Besitzer ermittelt
-	 *            werden soll.
-	 * @return Der besitzende <code>JabicsUser</code>
-	 */
-	public JabicsUser getOwnerOfContact(Contact c) {
-		return uMapper.findUserByContact(c);
-	}
-
-	/**
-	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
-	 * einem <code>Contact</code> Objekt besitzen.
-	 *
-	 * @param c der <code>Contact</code> für welchen die Collaborator gesucht
-	 *          werden.
-	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
-	 */
-	public ArrayList<JabicsUser> getCollaborators(Contact c) {
-		ArrayList<JabicsUser> allCollabs = cMapper.findCollaborators(c);
-		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
-		JabicsUser owner = uMapper.findUserByContact(c);
-		for (JabicsUser u : allCollabs) {
-			if (u.getId() != owner.getId())
-				result.add(u);
-		}
-		return result;
-	}
-
-	/**
-	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
-	 * einem <code>ContactList</code> Objekt besitzen. Der Besitzer wird nicht
-	 * zurückgegeben.
-	 * 
-	 * @param cl die <code>ContactList</code> für welche die Collaborator gesucht
-	 *           werden.
-	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
-	 */
-	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
-		ArrayList<JabicsUser> allCollabs = clMapper.findCollaborators(cl);
-		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
-		JabicsUser owner = uMapper.findUserByContactList(cl);
-		for (JabicsUser u : allCollabs) {
-			if (u.getId() != owner.getId())
-				result.add(u);
-		}
-		return result;
-	}
-
-	/**
-	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
-	 * einem <code>PValue</code> Objekt besitzen.
-	 * 
-	 * @param pv die <code>PValue</code> für welche die Collaborator gesucht werde.
-	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
-	 */
-	public ArrayList<JabicsUser> getCollaborators(PValue pv) {
-		return pvMapper.findCollaborators(pv);
-	}
-
-	/**
-	 * Auslesen aller <code>JabicsUser</code> Objekte.
-	 * 
-	 * @return Liste aller <code>JabicsUser</code>.
-	 */
-	public ArrayList<JabicsUser> getAllUsers() {
-		return uMapper.findAllUser();
-	}
-
-	/**
-	 * Auslesen aller Standard <code>Property</code> Objekte.
-	 * 
-	 * @return Liste von Standard <code>Property</code>.
-	 */
-	public ArrayList<Property> getStandardProperties() {
-		return pMapper.findAllStandardPropertys();
-	}
-
-	public void initialise() {
+			System.out.println("updatePValue unnötig oder fehlgeschlagen");
+		return pvMapper.findPValueById(pv.getId());
 	}
 }
