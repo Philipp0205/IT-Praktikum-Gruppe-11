@@ -45,6 +45,7 @@ public class Editor implements EntryPoint {
 		/*
 		 * Login
 		 */
+
 //		JabicsUser u = new JabicsUser(1);
 //		u.setEmail("test@mail.com");
 //		u.setUsername("ein nutzer");
@@ -56,6 +57,7 @@ public class Editor implements EntryPoint {
 //		editor.setLoginInfo(logon);
 //		editor.setJabicsUser(logon.getCurrentUser());
 //		editor.loadEditor();
+
 
 		// GWT.log("Load");
 		loginService = ClientsideSettings.getLoginService();

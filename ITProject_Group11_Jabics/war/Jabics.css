@@ -193,6 +193,40 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 }
+/*--------------------CListCollabForm--------------------*/
+
+.listpanel{
+	margin-top:20px;
+	margin-bottom:12px;
+	margin-left:11px;
+}
+
+.clcbtn{
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8  !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top:22px;
+	margin-left:13px;
+}
+
+.clcbtn:hover {
+	background: #accbf0 !important;
+	background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -moz-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -ms-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
+	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
+	text-decoration: none;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+}
+
 
 /*--------------------EditContactForm--------------------*/
 .deleteBtn {
@@ -520,10 +554,10 @@ html>body .gwt-DecoratedStackPanel {
 
 .finden:hover {
 	cursor: pointer;
-	background-color: #9FB8E0;
+	background: #9FB8E0 !important;
 }
 
-.back {
+.sfback {
 	margin-left: 10px;
 	color: #ffffff !important;
 	font-size: 16px !important;
@@ -536,9 +570,9 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 10px;
 }
 
-.back:hover {
+.sfback:hover {
 	cursor: pointer;
-	background-color: #9FB8E0;
+	background: #9FB8E0 !important;
 }
 
 .sp {
@@ -830,8 +864,10 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	float: right;
 	background: #9FB8E0;
-	margin-left: 400px;
-	margin-top: -43spx; /* (waren mal -44, fals was falsch wird) */
+
+	margin-left: 500px;
+	margin-top: -44px;
+
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -841,6 +877,7 @@ html>body .gwt-DecoratedStackPanel {
 	border-radius: 0px;
 	cursor: pointer;
 	white-space: nowrap;
+	height:57px;
 }
 .loginbutton {
 	font-family: Arial;
@@ -888,6 +925,7 @@ html>body .gwt-DecoratedStackPanel {
 
 .btn1 {
 	float: right;
+	height:57px;
 	background: #9FB8E0;
 	font-family: Arial;
 	font-weight: 700;
@@ -913,6 +951,7 @@ html>body .gwt-DecoratedStackPanel {
 .btn2 {
 	float: right;
 	font-family: Arial;
+	height:57px;
 	background: #9FB8E0;
 	font-weight: 700;
 	font-size: 18px !important;
