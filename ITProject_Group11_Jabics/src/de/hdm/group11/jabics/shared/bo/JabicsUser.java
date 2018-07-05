@@ -75,12 +75,11 @@ public class JabicsUser implements Serializable {
 	}
 
 	/**
-	 * Textuelle Repräsentation des <code>JabicsUser</code> durch die Mail Adresse.
+	 * Setzen der Mail Adresse.
 	 * 
 	 * @return email
 	 */
-	@Override
-	public String toString() {
+	public String getEmail() {
 		return this.email;
 	}
 
@@ -95,21 +94,30 @@ public class JabicsUser implements Serializable {
 	}
 
 	/**
-	 * Setzen der ID.
-	 * 
-	 * @param id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
 	 * Auslesen des Usernames.
 	 * 
 	 * @return username
 	 */
 	public String getUsername() {
 		return this.username;
+	}
+
+	/**
+	 * Auslesen der Mail Adresse.
+	 * 
+	 * @param email
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * Setzen der ID.
+	 * 
+	 * @param id
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
@@ -122,20 +130,12 @@ public class JabicsUser implements Serializable {
 	}
 
 	/**
-	 * Setzen der Mail Adresse.
+	 * Textuelle Repräsentation des <code>JabicsUser</code> durch die Mail Adresse.
 	 * 
 	 * @return email
 	 */
-	public String getEmail() {
+	@Override
+	public String toString() {
 		return this.email;
-	}
-
-	/**
-	 * Auslesen der Mail Adresse.
-	 * 
-	 * @param email
-	 */
-	public void setEmail(String email) {
-		this.email = email;
 	}
 }

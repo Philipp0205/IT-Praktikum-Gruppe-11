@@ -24,6 +24,15 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Der Key Provider für ein PValue
+	 */
+	public static final ProvidesKey<PValue> KEY_PROVIDER = new ProvidesKey<PValue>() {
+		public Object getKey(PValue pv) {
+			return (Integer) pv.getId();
+		}
+	};
+
+	/**
 	 * Ausprägung der Ganzzahl einer Instanz dieser Klasse.
 	 */
 	private int intValue;
@@ -78,6 +87,51 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, Date-Ausprägung
+	 * und Besitzer zu erzeugen.
+	 * 
+	 * @param p
+	 * @param date
+	 * @param u
+	 */
+	public PValue(Property p, Date dateValue, JabicsUser u) {
+		this(p, u);
+		this.dateValue = dateValue;
+		this.contains = true;
+		this.pointer = 3;
+	}
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, Float-Ausprägung
+	 * und Besitzer zu erzeugen.
+	 * 
+	 * @param p
+	 * @param f
+	 * @param u
+	 */
+	public PValue(Property p, float floatValue, JabicsUser u) {
+		this(p, u);
+		this.floatValue = floatValue;
+		this.contains = true;
+		this.pointer = 4;
+	}
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, ID und Besitzer zu
+	 * erzeugen.
+	 * 
+	 * @param p
+	 * @param i
+	 * @param u
+	 */
+	public PValue(Property p, int i, JabicsUser u) {
+		this(p, u);
+		this.intValue = i;
+		this.contains = true;
+		this.pointer = 1;
+	}
+
+	/**
 	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft und Besitzer zu
 	 * erzeugen. Wenn kein Datentyp angegeben, pointer aufgrund der Property setzen
 	 * 
@@ -112,21 +166,6 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, ID und Besitzer zu
-	 * erzeugen.
-	 * 
-	 * @param p
-	 * @param i
-	 * @param u
-	 */
-	public PValue(Property p, int i, JabicsUser u) {
-		this(p, u);
-		this.intValue = i;
-		this.contains = true;
-		this.pointer = 1;
-	}
-
-	/**
 	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, String-Ausprägung
 	 * und Besitzer zu erzeugen.
 	 * 
@@ -142,59 +181,25 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, Date-Ausprägung
-	 * und Besitzer zu erzeugen.
+	 * <code>PValue</code> Objekt vergleichen.
 	 * 
-	 * @param p
-	 * @param date
-	 * @param u
-	 */
-	public PValue(Property p, Date dateValue, JabicsUser u) {
-		this(p, u);
-		this.dateValue = dateValue;
-		this.contains = true;
-		this.pointer = 3;
-	}
-
-	/**
-	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, Float-Ausprägung
-	 * und Besitzer zu erzeugen.
-	 * 
-	 * @param p
-	 * @param f
-	 * @param u
-	 */
-	public PValue(Property p, float floatValue, JabicsUser u) {
-		this(p, u);
-		this.floatValue = floatValue;
-		this.contains = true;
-		this.pointer = 4;
-	}
-
-	/**
-	 * Textuelle Repräsentation des <code>PValue</code> Obejekts durch den Wert der
-	 * Ausprägung.
-	 * 
-	 * @return intValue, stringValue, dateValue oder floatValue
+	 * @param pv
 	 */
 	@Override
-	public String toString() {
-		try {
-			switch (pointer) {
-			case 1:
-				return Integer.toString(intValue);
-			case 2:
-				return stringValue;
-			case 3:
-				return dateValue.toString();
-			case 4:
-				return Float.toString(floatValue);
-			default:
-				return "Test(wird noch entfernt)";
-			}
-		} catch (Exception e) {
-			return "nicht gesetzt";
-		}
+	public int compareTo(PValue pv) {
+		if (pv.getId() == this.id) {
+			return 0;
+		} else
+			return -1;
+	}
+
+	/**
+	 * Auslesen der Information, ob ein Wert hinterlegt ist.
+	 * 
+	 * @return contatins
+	 */
+	public boolean containsValue() {
+		return this.contains;
 	}
 
 	/**
@@ -224,12 +229,21 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Auslesen der Information, ob ein Wert hinterlegt ist.
+	 * Auslesen der Ausprägung in der Form eines Datums.
 	 * 
-	 * @return contatins
+	 * @return
 	 */
-	public boolean containsValue() {
-		return this.contains;
+	public Date getDateValue() {
+		return dateValue;
+	}
+
+	/**
+	 * Auslesen der Ausprägung in der Form einer Kommazahl.
+	 * 
+	 * @return
+	 */
+	public float getFloatValue() {
+		return floatValue;
 	}
 
 	/**
@@ -242,14 +256,39 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Setzen der Ausprägung in der Form einer Ganzzahl.
+	 * Auslesen des Pointers.
 	 * 
-	 * @param intValue
+	 * @return pointer
 	 */
-	public void setIntValue(int intValue) {
-		this.intValue = intValue;
-		this.contains = true;
-		this.pointer = 1;
+	public int getPointer() {
+		return pointer;
+	}
+
+	/**
+	 * Auslesen des zugehörigen <code>Property</code> Objekts.
+	 * 
+	 * @return
+	 */
+	public Property getProperty() {
+		return this.property;
+	}
+
+	/**
+	 * Auslesen der ID des zugehörigen <code>Property</code> Objekts.
+	 * 
+	 * @return
+	 */
+	public int getPropertyId() {
+		return propertyId;
+	}
+
+	/**
+	 * Auslesen des Share-Status.
+	 * 
+	 * @return shareStatus
+	 */
+	public BoStatus getShareStatus() {
+		return shareStatus;
 	}
 
 	/**
@@ -259,26 +298,6 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 */
 	public String getStringValue() {
 		return stringValue;
-	}
-
-	/**
-	 * Setzen der Ausprägung in der Form einer Zeichenkette.
-	 * 
-	 * @param string
-	 */
-	public void setStringValue(String string) {
-		this.stringValue = string;
-		this.contains = true;
-		this.pointer = 2;
-	}
-
-	/**
-	 * Auslesen der Ausprägung in der Form eines Datums.
-	 * 
-	 * @return
-	 */
-	public Date getDateValue() {
-		return dateValue;
 	}
 
 	/**
@@ -293,15 +312,6 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Auslesen der Ausprägung in der Form einer Kommazahl.
-	 * 
-	 * @return
-	 */
-	public float getFloatValue() {
-		return floatValue;
-	}
-
-	/**
 	 * Setzen der Ausprägung in der Form einer Kommazahl.
 	 * 
 	 * @param floatValue
@@ -313,48 +323,14 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Auslesen des zugehörigen <code>Property</code> Objekts.
+	 * Setzen der Ausprägung in der Form einer Ganzzahl.
 	 * 
-	 * @return
+	 * @param intValue
 	 */
-	public Property getProperty() {
-		return this.property;
-	}
-
-	/**
-	 * Setzen des zugehörigen <code>Property</code> Objekts.
-	 * 
-	 * @param property
-	 */
-	public void setProperty(Property property) {
-		this.property = property;
-	}
-
-	/**
-	 * Auslesen der ID des zugehörigen <code>Property</code> Objekts.
-	 * 
-	 * @return
-	 */
-	public int getPropertyId() {
-		return propertyId;
-	}
-
-	/**
-	 * Setzen der ID des zugehörigen <code>Property</code> Objekts.
-	 * 
-	 * @param propertyId
-	 */
-	public void setPropertyId(int propertyId) {
-		this.propertyId = propertyId;
-	}
-
-	/**
-	 * Auslesen des Pointers.
-	 * 
-	 * @return pointer
-	 */
-	public int getPointer() {
-		return pointer;
+	public void setIntValue(int intValue) {
+		this.intValue = intValue;
+		this.contains = true;
+		this.pointer = 1;
 	}
 
 	/**
@@ -367,12 +343,21 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Auslesen des Share-Status.
+	 * Setzen des zugehörigen <code>Property</code> Objekts.
 	 * 
-	 * @return shareStatus
+	 * @param property
 	 */
-	public BoStatus getShareStatus() {
-		return shareStatus;
+	public void setProperty(Property property) {
+		this.property = property;
+	}
+
+	/**
+	 * Setzen der ID des zugehörigen <code>Property</code> Objekts.
+	 * 
+	 * @param propertyId
+	 */
+	public void setPropertyId(int propertyId) {
+		this.propertyId = propertyId;
 	}
 
 	/**
@@ -385,24 +370,39 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * <code>PValue</code> Objekt vergleichen.
+	 * Setzen der Ausprägung in der Form einer Zeichenkette.
 	 * 
-	 * @param pv
+	 * @param string
 	 */
-	@Override
-	public int compareTo(PValue pv) {
-		if (pv.getId() == this.id) {
-			return 0;
-		} else
-			return -1;
+	public void setStringValue(String string) {
+		this.stringValue = string;
+		this.contains = true;
+		this.pointer = 2;
 	}
 
 	/**
-	 * Der Key Provider für ein PValue
+	 * Textuelle Repräsentation des <code>PValue</code> Obejekts durch den Wert der
+	 * Ausprägung.
+	 * 
+	 * @return intValue, stringValue, dateValue oder floatValue
 	 */
-	public static final ProvidesKey<PValue> KEY_PROVIDER = new ProvidesKey<PValue>() {
-		public Object getKey(PValue pv) {
-			return (Integer) pv.getId();
+	@Override
+	public String toString() {
+		try {
+			switch (pointer) {
+			case 1:
+				return Integer.toString(intValue);
+			case 2:
+				return stringValue;
+			case 3:
+				return dateValue.toString();
+			case 4:
+				return Float.toString(floatValue);
+			default:
+				return "Test(wird noch entfernt)";
+			}
+		} catch (Exception e) {
+			return "nicht gesetzt";
 		}
-	};
+	}
 }
