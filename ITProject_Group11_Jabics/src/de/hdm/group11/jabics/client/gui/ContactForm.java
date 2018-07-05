@@ -31,22 +31,9 @@ import de.hdm.group11.jabics.shared.bo.*;
  * 
  * @author Brase
  * @author Ilg
- *
  */
 public class ContactForm extends VerticalPanel {
 
-	/**
-	 * Struktur von
-	 * 
-	 * @author Christian Rathke
-	 * 
-	 *         Angepasst von
-	 * @author Brase
-	 * @author Ilg
-	 * 
-	 * 
-	 * @see
-	 */
 	EditorAdmin e;
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
