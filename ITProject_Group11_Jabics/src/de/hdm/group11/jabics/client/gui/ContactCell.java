@@ -33,7 +33,7 @@ public class ContactCell extends AbstractCell<Contact> {
 	 */
 	@Override
 	public void render(Context context, Contact c, SafeHtmlBuilder sb) {
-				
+		sb.appendEscaped(c.getName());		
 		if (c != null) {
 			
 			      try {
@@ -52,6 +52,6 @@ public class ContactCell extends AbstractCell<Contact> {
 			        sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
 			      }
 		}
-			sb.appendEscaped(c.getName());
+			
 	}
 }

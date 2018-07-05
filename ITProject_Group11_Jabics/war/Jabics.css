@@ -872,6 +872,11 @@ html>body .gwt-DecoratedStackPanel {
 	color: black;
 }
 /*--------------------- REPORTGENERATOR ----------------------*/
+
+.datepicker{
+	float:left;
+	
+}
 .repl {
 	cursor: pointer;
 	font-family: Arial;
