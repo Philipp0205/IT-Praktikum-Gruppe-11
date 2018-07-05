@@ -48,8 +48,10 @@ public class ContactCellListTab {
 	 *  Der Konstruktor ist mehrfach überladen damit auch ein TreeViewMenu mitgegebn werden kann.
 	 *  
 	 * @param u der Nutzer für den die Anzeige ausgegeben werden soll.
+	 * @param clRes2 
+	 * @param treeViewMenu2 
 	 */
-	public ContactCellListTab(JabicsUser u) {
+	public ContactCellListTab(JabicsUser u, TreeViewMenu treeViewMenu2, de.hdm.group11.jabics.client.gui.TreeViewMenu.CellListResources clRes2) {
 		
 		this.user = u;
 		
