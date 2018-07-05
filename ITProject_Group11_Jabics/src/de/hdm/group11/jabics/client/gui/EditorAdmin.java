@@ -53,7 +53,6 @@ public class EditorAdmin {
 	private SearchForm sForm;
 
 	private TreeViewMenu treeViewMenu;
-	
 
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
@@ -83,7 +82,7 @@ public class EditorAdmin {
 		treeViewMenu.setEditor(this);
 
 		treeViewMenu.setStyleName("treeView");
-		
+
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
 
@@ -140,8 +139,6 @@ public class EditorAdmin {
 	 * Kontakte, Listen und CollabForms anzeigen
 	 */
 	public void showContact(Contact c) {
-
-		GWT.log("showCont");
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
@@ -150,8 +147,8 @@ public class EditorAdmin {
 		formPanel.clear();
 		scForm.setContact(c);
 		GWT.log("form einfügen");
-		formPanel.insert(scForm, 0);
-		// formPanel.add(scForm);
+		//formPanel.insert(scForm, 0);
+		formPanel.add(scForm);
 		GWT.log("ShowCont fertig");
 	}
 
@@ -192,11 +189,11 @@ public class EditorAdmin {
 	}
 
 	public void newContactList(ContactList cl) {
-		// if (this.cForm == null) {
-		clForm = new ContactListForm();
-		clForm.setEditor(this);
-		clForm.setUser(this.currentUser);
-
+		//if (this.clForm == null) {
+			clForm = new ContactListForm();
+			clForm.setEditor(this);
+			clForm.setUser(this.currentUser);
+		
 		formPanel.clear();
 		GWT.log("Editor: isNewList true");
 		clForm.setIsNewList(true);
@@ -295,6 +292,7 @@ public class EditorAdmin {
 			clForm = new ContactListForm();
 		}
 		// addContactListToTree(cl);
+		formPanel.clear();
 		clForm.setCurrentList(cl);
 		widgetPanel.add(clForm);
 	}

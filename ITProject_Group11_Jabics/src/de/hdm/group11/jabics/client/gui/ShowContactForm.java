@@ -8,10 +8,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.resources.client.ImageResource;
+
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -22,8 +21,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
-import de.hdm.group11.jabics.client.gui.TreeViewMenu.CellTreeResources;
 import de.hdm.group11.jabics.resource.JabicsResources;
+
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -57,7 +56,10 @@ public class ShowContactForm extends VerticalPanel {
 	Button deleteButton = new Button("🗑");
 	Label deleteLabel = new Label("Kontakt löschen");
 
+
 	// private CellTableResources ctRes = GWT.create(CellTableResources.class);
+
+
 
 	public ShowContactForm() {
 
@@ -110,17 +112,6 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		};
 
-//		shareStatus = new Column<PValue, String>(new TextCell()) {
-//			public String getValue(PValue object) {
-//				if (object.getShareStatus() == BoStatus.IS_SHARED) {
-//					return "Geteilt";
-//				}
-//				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
-//					return "Nicht Geteilt";
-//				}
-//				return "NoStatus";
-//			}
-//		};
 
 		shareStatus = new Column<PValue, ImageResource>(new ImageResourceCell()) {
 			@Override
@@ -132,18 +123,22 @@ public class ShowContactForm extends VerticalPanel {
 					return JabicsResources.INSTANCE.reddot();
 				}
 				return null; 
-					
-
+				
 			}
 		};
 		shareStatus.setHorizontalAlignment(ALIGN_CENTER);
+
+		shareStatus.setHorizontalAlignment(ALIGN_CENTER);
+
 
 		prop.setCellStyleNames("prop");
 		pval.setCellStyleNames("pval");
 		shareStatus.setCellStyleNames("shareStatus");
 		editButton.addClickHandler(new editClickHandler());
+
 		deleteButton.addClickHandler(new deleteClickHandler());
 		shareContactButton.addClickHandler(new shareClickHandler());
+
 		shareExistingContactButton.addClickHandler(new shareExistingClickHandler());
 
 		values.addColumn(prop, "Eigenschaft");
@@ -168,7 +163,10 @@ public class ShowContactForm extends VerticalPanel {
 	}
 
 	// Ressourcen für die CellTable
+
+
 	public interface CellTableResources extends CellTable.Resources {
+
 
 		@Override
 		@Source("JabicsCellTable.css")
@@ -223,7 +221,9 @@ public class ShowContactForm extends VerticalPanel {
 				boolean cancel = true;
 				for (PValue pVal : result) {
 					if (pVal.getProperty().getId() == i && cancel) {
-						result.add(iterator, pv);
+
+						result.add(iterator + 1, pv);
+
 						cancel = false;
 					}
 					iterator++;
@@ -231,6 +231,8 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		}
 		valueProvider.setList(result);
+		// Den Kontakt mit den sortierten Werten updaten
+		currentContact.setValues(result);
 		GWT.log(result.get(1).getStringValue());
 		valueProvider.flush();
 	}
@@ -238,18 +240,19 @@ public class ShowContactForm extends VerticalPanel {
 	public void userIsOwner() {
 		GWT.log("userIsOwner");
 		try {
-			GWT.log("userIsOwner1");
 			if (currentContact.getOwner() != null) {
-				GWT.log("userIsOwner2");
 				if (currentContact.getOwner().getId() == u.getId()) {
 					userIsOwner = true;
-					GWT.log("userIsOwner3");
-				} else
+					GWT.log("userIsOwner True");
+				} else {
 					userIsOwner = false;
-				GWT.log("userIsOwner4");
-			} else
+					GWT.log("userIsOwner False");
+				}
+			} else {
 				editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
-			GWT.log("userIsOwner fertig");
+				GWT.log("userIsOwner holt den Owner");
+			}
+
 		} catch (Exception e) {
 			GWT.log("Besitzer in Kontakt nicht gesetzt");
 			editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
@@ -278,9 +281,11 @@ public class ShowContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(JabicsUser result) {
-			GWT.log("Besitzer geholt!");
-			currentContact.setOwner(result);
-			userIsOwner();
+			if (result != null) {
+				GWT.log("Besitzer geholt!");
+				currentContact.setOwner(result);
+				userIsOwner();
+			} else Window.alert("Besitzer konnte nicht ermittelt werden");
 		}
 	}
 
@@ -313,7 +318,6 @@ public class ShowContactForm extends VerticalPanel {
 
 	class shareClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
-			GWT.log(currentContact.getName());
 			e.showContactCollab(currentContact);
 		}
 	}

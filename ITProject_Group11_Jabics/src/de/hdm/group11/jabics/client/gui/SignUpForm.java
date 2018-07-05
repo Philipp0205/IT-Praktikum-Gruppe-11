@@ -17,41 +17,60 @@ import de.hdm.group11.jabics.client.Editor;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 
-public class SignUpForm extends VerticalPanel{
+/**
+ * Die Signup Form stellt die Eigabemaske für das Erstellen eines neuen Kontos
+ * bei Jabics bereit, in der der Vor- und Nachname eingegeben werden muss, damit
+ * das Programm verwendet werden kann.
+ * 
+ * @author Anders
+ */
+public class SignUpForm extends VerticalPanel {
 
 	private LoginInfo loginfo;
 	private Editor editor;
-	
+
 	private LoginServiceAsync loginService;
-	
+
 	private TextBox surname;
 	private TextBox lastname;
 	private Label surnameLabel;
 	private Label lastnameLabel;
-	
+
 	private Button loginButton;
 	private Button exitButton;
-	
+
 	private HorizontalPanel buttonPanel = new HorizontalPanel();
 	private HorizontalPanel namePanel = new HorizontalPanel();
-	private VerticalPanel surnamePanel= new VerticalPanel();
+	private VerticalPanel surnamePanel = new VerticalPanel();
 	private VerticalPanel lastnamePanel = new VerticalPanel();
-	
-	public SignUpForm(LoginInfo logon, Editor e){
+
+	/**
+	 * Erstellen einer neuen SignUpForm.
+	 * 
+	 * @param LoginInfo in dem der Nutzer und die Information über den Stand des
+	 *                  Logins liegt
+	 * @param Editor    auf den zurückgegriffen wird, wenn der Login abgeschlossen
+	 *                  ist.
+	 */
+	public SignUpForm(LoginInfo logon, Editor e) {
 		this.loginfo = logon;
-		
+
 		this.editor = e;
-		
+
 		exitButton = new Button("Abbruch");
 		exitButton.addClickHandler(new ExitClickHandler());
+		exitButton.setStyleName("exitButton");
 		loginButton = new Button("Konto erstellen");
 		loginButton.addClickHandler(new LoginClickHandler());
-		
+		exitButton.setStyleName("loginButton");
+
 		surnameLabel = new Label("Vorname eingeben");
 		lastnameLabel = new Label("Nachname eingeben");
 		surname = new TextBox();
+		surname.setStyleName("surnameBox");
 		lastname = new TextBox();
-		
+		lastname.setStyleName("lastnameBox");
+
 		surnamePanel.add(surnameLabel);
 		surnamePanel.add(surname);
 		lastnamePanel.add(lastnameLabel);
@@ -60,54 +79,85 @@ public class SignUpForm extends VerticalPanel{
 		namePanel.add(lastnamePanel);
 		buttonPanel.add(exitButton);
 		buttonPanel.add(loginButton);
-		
+
 		this.add(namePanel);
 		this.add(buttonPanel);
-		
+
 		RootPanel.get("details").add(this);
 	}
-	
+
 	public void onLoad() {
-		if(loginService == null) {
+		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
 		GWT.log("HI");
-		
+
 	}
-	
-	public void setUsername() {
-		String sName = surname.getText();
-		String lName = lastname.getText();
-		
-		String nickname = sName + " " + lName;
-		loginfo.getCurrentUser().setUsername(nickname);
+
+	/**
+	 * Überprüft, ob beide Textfelder gesetzt sind und wenn ja Nutzernamen ermitteln
+	 * und speichern
+	 * 
+	 * @return Boolean (false = kein Nutzername gesetzt, true = Nutzername gesetzt)
+	 */
+	public boolean setUsername() {
+		if ((surname.getText() == "") || (lastname.getText() == "")) {
+			Window.alert("Bitte Vor- und Nachnamen eigeben");
+			return false;
+		} else {
+			String sName = surname.getText();
+			String lName = lastname.getText();
+
+			String nickname = sName + " " + lName;
+			loginfo.getCurrentUser().setUsername(nickname);
+			return true;
+		}
 	}
-	
+
+	/**
+	 * Gibt den <code>Editor</code> zuruück
+	 * 
+	 * @return Editor
+	 */
 	public Editor getEditor() {
 		return this.editor;
 	}
-	
+
+	/**
+	 * Diese Klasse stellt den LoginHandler zur Verfügung, der aufgerufen wird, wenn
+	 * auf "Konto erstellen" geklickt wird.
+	 */
 	private class LoginClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
-			setUsername();
-			String s = GWT.getHostPageBaseURL();
-			loginService.createUser(loginfo, s, new CreateUserCallback());
+			if (setUsername()) {
+				String s = GWT.getHostPageBaseURL();
+				loginService.createUser(loginfo, s, new CreateUserCallback());
+			}
 		}
 	}
-	
+
+	/**
+	 * Diese Klasse stellt den ClickHandler zur Verfügung, der aufgerufen wird, wenn
+	 * auf "Abbruch" geklickt wird.
+	 */
 	private class ExitClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
 			Window.Location.assign(loginfo.getLogoutUrl());
 		}
 	}
-	
-	private class CreateUserCallback implements AsyncCallback<LoginInfo>{
+
+	/**
+	 * Der CreateUserCallback wird bei Rückkehr des RPC zum Erstellen eines neuen
+	 * Nutzers aufgerufen. Er "öffnet" den Editor bei erfolgreichem neuem Nutzer.
+	 *
+	 */
+	private class CreateUserCallback implements AsyncCallback<LoginInfo> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Nutzer erstellen fehlgeschlagen. Bitte probieren Sie es später erneut.");
-			
 		}
+
 		@Override
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
@@ -123,7 +173,6 @@ public class SignUpForm extends VerticalPanel{
 				}
 			}
 		}
-		
 	}
-	
+
 }
