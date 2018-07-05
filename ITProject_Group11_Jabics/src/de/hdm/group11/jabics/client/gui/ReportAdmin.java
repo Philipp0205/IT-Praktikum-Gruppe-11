@@ -12,6 +12,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -33,6 +34,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
@@ -59,6 +61,15 @@ import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
  * @author Kurrle
  */
 public class ReportAdmin {
+	
+	//Celltable Ressourcen für Nutzeranzeige
+	public interface CellTableResources extends CellTable.Resources {
+
+		@Override
+		@Source("JabicsCellTable.css")
+		CellTable.Style cellTableStyle();
+	}
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	private JabicsUser currentUser;
 	private LoginInfo loginfo;
 	private Button logoutButton;
@@ -108,6 +119,8 @@ public class ReportAdmin {
 	private CellTable<JabicsUser> userTable;
 	private JabicsUser suggestedUser;
 	private JabicsUser selectedUser;
+	
+	
 
 	/**
 	 * Die Anzeige ist in zwei große Bereiche aufgeteilt. Zum einen Elemente für die
@@ -125,14 +138,14 @@ public class ReportAdmin {
 	 * 
 	 */
 	public ReportAdmin() {
-
+		
 		// Instantitierung relevanter Variablen für UserSuggestion
 		sharedContactsButton = new Button("gemeinsame Kontakte");
 		finalUser = new ArrayList<JabicsUser>();
 		finalPVal = new PValue();
 		userSelectionModel = new SingleSelectionModel<JabicsUser>();
 		userDataProvider = new ListDataProvider<JabicsUser>();
-		userTable = new CellTable<JabicsUser>();
+		userTable = new CellTable<JabicsUser>(100,ctRes);
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
 		
