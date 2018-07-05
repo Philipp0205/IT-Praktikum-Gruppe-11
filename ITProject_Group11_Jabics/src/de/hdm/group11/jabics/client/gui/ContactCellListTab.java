@@ -85,7 +85,8 @@ public class ContactCellListTab {
 	
 	/**
 	 * Erstellt Eine Suche innerhalbt des ContactTabs.
-	 * @return
+	 * 
+	 * @return die contactCell in der die Sucherebnisse angezeigt werden.
 	 */
 	public CellList<Contact> createContactTabForSearchForm() {
 		keyProvider = new ContactKeyProvider();

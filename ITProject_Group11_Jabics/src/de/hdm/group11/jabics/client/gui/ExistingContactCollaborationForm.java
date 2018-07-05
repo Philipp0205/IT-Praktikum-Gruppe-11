@@ -293,6 +293,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			public void onSuccess(Contact result) {
 				GWT.log("updateShareStatus on SUCCESS" );
 				e.updateContactInTree(result);
+				e.showContact(result);
 			}
 		});
 	}
