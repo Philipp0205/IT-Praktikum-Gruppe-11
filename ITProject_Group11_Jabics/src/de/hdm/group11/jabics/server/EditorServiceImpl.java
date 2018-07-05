@@ -425,13 +425,14 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
 		System.out.println("getpvof" + u.getUsername());
-
+		System.out.println("getpvof" + c.getId());
 		ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
 		ArrayList<PValue> result = new ArrayList<PValue>();
 		ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
 		int i = 0;
 		// PValues filtern, wenn nicht geteilt und den Share Status setzen
 		for (PValue pv : allPV) {
+			System.out.println("gefunden: " + pv.toString());
 			pv.setShareStatus(status.get(i));
 			i++;
 			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {

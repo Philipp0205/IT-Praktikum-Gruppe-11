@@ -16,7 +16,7 @@ public abstract class Report implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	Date creationDate;
-	JabicsUser creator;
+	Paragraph creator;
 	
 	
 //	public Report() {
@@ -37,10 +37,10 @@ public abstract class Report implements Serializable {
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	public JabicsUser getCreator() {
+	public Paragraph getCreator() {
 		return creator;
 	}
-	public void setCreator(JabicsUser creator) {
+	public void setCreator(Paragraph creator) {
 		this.creator = creator;
 	}
 	public static long getSerialversionuid() {

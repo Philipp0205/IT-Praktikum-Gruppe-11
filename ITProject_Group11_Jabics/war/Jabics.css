@@ -830,8 +830,8 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	float: right;
 	background: #9FB8E0;
-	margin-left: 600px;
-	margin-top: 0px; /* (waren mal -44, fals was falsch wird) */
+	margin-left: 400px;
+	margin-top: -43spx; /* (waren mal -44, fals was falsch wird) */
 	color: #000;
 	display: block;
 	visibility: visible;

@@ -182,11 +182,12 @@ public class EditorAdmin {
 	 *            Kontakt, der angezeigt werden soll
 	 */
 	public void showContact(Contact c) {
-		if (this.scForm == null) {
+		GWT.log("showCOnt");
+		//if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
 			scForm.setUser(this.currentUser);
-		}
+		//}
 		formPanel.clear();
 		scForm.setContact(c);
 		GWT.log("form einfügen");
