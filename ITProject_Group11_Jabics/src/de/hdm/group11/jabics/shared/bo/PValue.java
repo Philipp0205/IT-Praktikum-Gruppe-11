@@ -79,7 +79,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 
 	/**
 	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft und Besitzer zu
-	 * erzeugen. Wenn kein Datentyp angegeben, pointer aufgrund der PRoperty setzen
+	 * erzeugen. Wenn kein Datentyp angegeben, pointer aufgrund der Property setzen
 	 * 
 	 * @param p
 	 * @param u
@@ -127,8 +127,8 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * Konstruktor um eine Instanz dieser Klasse mit Bezeichner und Type zu
-	 * erzeugen.
+	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, String-Ausprägung
+	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
 	 * @param s
@@ -142,6 +142,8 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, Date-Ausprägung
+	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
 	 * @param date
@@ -155,6 +157,8 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Eigenschaft, Float-Ausprägung
+	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
 	 * @param f
@@ -381,7 +385,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	}
 
 	/**
-	 * 
+	 * <code>PValue</code> Objekt vergleichen.
 	 * 
 	 * @param pv
 	 */
