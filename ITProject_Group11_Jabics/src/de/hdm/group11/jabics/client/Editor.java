@@ -60,6 +60,7 @@ public class Editor implements EntryPoint {
 		// GWT.log(GWT.getHostPageBaseURL());
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 
+
 	}
 
 	/**

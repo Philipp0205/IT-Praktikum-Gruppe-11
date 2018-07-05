@@ -456,7 +456,7 @@ public class EditorAdmin {
 	 *            Kontaktliste, die aktualisiert werden soll
 	 */
 	public void updateContactListInTree(ContactList cl) {
-		treeViewMenu.addContactList(cl);
+		treeViewMenu.updateContactListInTree(cl);
 	}
 
 	/**
