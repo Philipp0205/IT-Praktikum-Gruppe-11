@@ -76,31 +76,12 @@ public class ContactList extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name und
-	 * wenn dieser nicht gesetzt ist durch die ID.
-	 */
-	@Override
-	public String toString() {
-		if (listName != null) {
-			return listName;
-		} else
-			return Integer.toString(this.id);
-	}
-
-	/**
 	 * Ein <code>Contact</code> Objekt einer Instanz dieser Klasse
 	 * 
 	 * @param <code>Contact</code>
 	 */
 	public void addContact(Contact c) {
 		contacts.add(c);
-	}
-
-	/**
-	 * Entfernen eines Kontakts aus der Liste
-	 */
-	public void removeContact(Contact c) {
-		contacts.remove(c);
 	}
 
 	/**
@@ -121,6 +102,31 @@ public class ContactList extends BusinessObject implements Serializable {
 	}
 
 	/**
+	 * Auslesen des Listennamens.
+	 * 
+	 * @return
+	 */
+	public String getListName() {
+		return listName;
+	}
+
+	/**
+	 * Auslesen des Share-Status.
+	 * 
+	 * @return
+	 */
+	public BoStatus getShareStatus() {
+		return shareStatus;
+	}
+
+	/**
+	 * Entfernen eines Kontakts aus der Liste
+	 */
+	public void removeContact(Contact c) {
+		contacts.remove(c);
+	}
+
+	/**
 	 * Setzen aller <code>Contact</code> Objekte, die einer <code>ContactList</code>
 	 * angehören.
 	 * 
@@ -128,15 +134,6 @@ public class ContactList extends BusinessObject implements Serializable {
 	 */
 	public void setContacts(ArrayList<Contact> contacts) {
 		this.contacts = contacts;
-	}
-
-	/**
-	 * Auslesen des Listennamens.
-	 * 
-	 * @return
-	 */
-	public String getListName() {
-		return listName;
 	}
 
 	/**
@@ -153,21 +150,24 @@ public class ContactList extends BusinessObject implements Serializable {
 	// }
 
 	/**
-	 * Auslesen des Share-Status.
-	 * 
-	 * @return
-	 */
-	public BoStatus getShareStatus() {
-		return shareStatus;
-	}
-
-	/**
 	 * Setzen des Share-Status
 	 * 
 	 * @param shareStatus
 	 */
 	public void setShareStatus(BoStatus shareStatus) {
 		this.shareStatus = shareStatus;
+	}
+
+	/**
+	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name und
+	 * wenn dieser nicht gesetzt ist durch die ID.
+	 */
+	@Override
+	public String toString() {
+		if (listName != null) {
+			return listName;
+		} else
+			return Integer.toString(this.id);
 	}
 
 }

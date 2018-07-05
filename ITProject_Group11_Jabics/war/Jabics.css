@@ -9,6 +9,28 @@
 	color: black;
 }
 
+.deleteAccount {
+	font-family: Arial;
+	font-weight: 700;
+	font-size: 12px !important;
+	background: #6D8EC2;
+	color: #000;
+	display: block;
+	visibility: visible;
+	padding: 3px 3px 3px 3px;
+	color: white;
+	border: solid #6D8EC2 4px !important;
+	border-radius: 13px;
+	cursor: pointer;
+	white-space: nowrap;
+	margin-left: 720px;
+}
+
+.deleteAccount:hover {
+	background: #B01D24;
+	border: solid #B01D24 4px !important;
+}
+
 #OuterTabel, #Tabellenstruktur {
 	width: 100%;
 }
@@ -383,7 +405,7 @@ html>body .gwt-DecoratedStackPanel {
 	color: white;
 	padding: 7px 17px 17px 7px !important;
 	font-weight: bold;
-	background-color: #9FB8E0;
+	background-color: #6D8EC2;
 	font-size: 20px !important;
 	margin-left: 20px;
 	margin-top: 20px;
@@ -612,7 +634,7 @@ html>body .gwt-DecoratedStackPanel {
 .gwt-cellTableFirstColumn {
 }*/
 .prop {
-	background: #9FB8E0;
+	background: #6D8EC2;
 	color: white;
 	font-family: Arial;
 	font-size: 20px !important;
@@ -620,7 +642,7 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .pval {
-	background: #9FB8E0;
+	background: #6D8EC2;
 	color: white;
 	font-family: Arial;
 	font-size: 20px !important;
@@ -628,7 +650,7 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .shareStatus {
-	background: #9FB8E0;
+	background: #6D8EC2;
 	color: white;
 	font-family: Arial;
 	font-size: 20px !important;
@@ -749,7 +771,15 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	font-weight: bold;
 	font-size: 18px !important;
-	background: #9FB8E0 !important;
+	background: #7491BE !important;
+	color: white !important;;
+	padding: 6px 14px 6px 14px !important;
+}
+.cellListSelectedItem{
+		font-family: Arial;
+	font-weight: bold;
+	font-size: 18px !important;
+	background: #061B42 !important;
 	color: white !important;;
 	padding: 6px 14px 6px 14px !important;
 }
@@ -895,22 +925,21 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .repnav {
-	
-	padding-bottom:30px;
+	padding-bottom: 30px;
 	border: 1px solid #cdcdcd;
 	border-color: #9FB8E0;
 	padding-bottom: 20px;
 	margin-top: 10px;
-	padding-right:20px;
+	padding-right: 20px;
 }
 
 .repusernav {
-	padding:10px;
-	padding-bottom:15px;
+	padding: 10px;
+	padding-bottom: 15px;
 	border: 1px solid #cdcdcd;
 	border-color: #9FB8E0;
-	margin-left:20px;
-	margin-top:10px;
+	margin-left: 20px;
+	margin-top: 10px;
 }
 
 /*--------------------- NAVBAR ----------------------*/
@@ -921,7 +950,7 @@ html>body .gwt-DecoratedStackPanel {
 	height: 58px;
 	margin-top: 20px;
 	color: #000;
-	background-color: #9FB8E0;
+	background-color: #6D8EC2;
 	display: block;
 	visibility: visible;
 }
@@ -931,7 +960,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: 700;
 	font-size: 18px !important;
 	float: right;
-	background: #9FB8E0;
+	background: #6D8EC2;
 	margin-left: 500px;
 	margin-top: -44px;
 	color: #000;
@@ -951,7 +980,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: 700;
 	font-size: 18px !important;
 	float: right;
-	background: #9FB8E0;
+	background: #6D8EC2;
 	margin-left: 600px;
 	margin-top: -43px;
 	color: #000;
@@ -993,7 +1022,7 @@ html>body .gwt-DecoratedStackPanel {
 .btn1 {
 	float: right;
 	height: 57px;
-	background: #9FB8E0;
+	background: #6D8EC2;
 	font-family: Arial;
 	font-weight: 700;
 	font-size: 18px !important;
@@ -1019,7 +1048,7 @@ html>body .gwt-DecoratedStackPanel {
 	float: right;
 	font-family: Arial;
 	height: 57px;
-	background: #9FB8E0;
+	background: #6D8EC2;
 	font-weight: 700;
 	font-size: 18px !important;
 	color: #fff;

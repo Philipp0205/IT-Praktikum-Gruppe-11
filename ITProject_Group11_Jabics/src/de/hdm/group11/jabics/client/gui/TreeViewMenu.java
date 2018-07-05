@@ -2,9 +2,12 @@ package de.hdm.group11.jabics.client.gui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
@@ -12,6 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 
+import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
@@ -136,9 +140,17 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public Widget createContactCellListTab(JabicsUser u) {
-		this.contactTab = new ContactCellListTab(u, this);
+		this.contactTab = new ContactCellListTab(u, this, clRes);
 		contactTab.onLoad();
 		return contactTab.getCellList();
+	}
+	
+	//cellList Ressourcen
+	private CellListResources clRes = GWT.create(CellListResources.class);
+	public interface CellListResources extends CellList.Resources {
+
+		@Source("JabicsCellList.css")
+		CellList.Style cellListStyle();
 	}
 
 	public Widget createContactListTreeTab(JabicsUser u) {
@@ -153,7 +165,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public Widget createSharedContactListTreeTab(JabicsUser u) {
-		this.sharedContactListTab = new SharedContactCellListTab(u, this);
+		this.sharedContactListTab = new SharedContactCellListTab(u, this, clRes);
 		sharedContactListTab.onLoad();
 		return sharedContactListTab.getCellList();
 	}
