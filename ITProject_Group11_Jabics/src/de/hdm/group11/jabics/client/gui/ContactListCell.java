@@ -22,9 +22,12 @@ public class ContactListCell extends AbstractCell<ContactList> {
 	 *  Es wernden der Name des <code>Contacts</code> als auch der <code>BoStatus</code>
 	 *  angezeigt.
 	 *  
-	 *  @param context, wird nicht benutzt.
-	 *  @param cl, Kontaktliste, die angezeigt werden soll
-	 *  @param sb, HtmlBuilder, welcher die Html-Repäsenation des Kontakt erstellt
+	 *  @param context
+	 *  		 	wird nicht benutzt.
+	 *  @param cl 
+	 *  			Kontaktliste, die angezeigt werden soll
+	 *  @param sb 
+	 *  			 HtmlBuilder, welcher die Html-Repäsenation des Kontakt erstellt
 	 */
 	@Override
 	public void render(Context context, ContactList cl, SafeHtmlBuilder sb) {

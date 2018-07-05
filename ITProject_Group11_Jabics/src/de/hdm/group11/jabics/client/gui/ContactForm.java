@@ -20,6 +20,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactForm.GetPValuesCallback.DeleteClickHandler;
+import de.hdm.group11.jabics.client.gui.ContactForm.GetPValuesCallback.SaveClickHandler;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.*;
 
@@ -58,28 +60,32 @@ public class ContactForm extends VerticalPanel {
 	DatePicker datePicker = new DatePicker();
 	Date selectedDate = new Date();
 
+  /**
+	 *  Wird aufgerufen, wenn das die <code>ContactForm</code> inistalisiert wird.
+	 *  Deklariert alle nötigen Objekte, welche später gebraucht werden.
+	 */
 	public void onLoad() {
-
+	
 		super.onLoad();
 		// Erstellen des Haupt-Grids
 		Grid userInformationGrid = new Grid(6, 3);
 		this.add(userInformationGrid);
-
+	
 		// GRID-ZEILE 1: Vergabe des Fensternamens
 		Label formName = new Label("Kontakt-Bearbeiten");
-
+	
 		userInformationGrid.setWidget(0, 0, formName);
-
+	
 		// GRID-ZEILE 2: Holen des Kontakt-Namens
 		userInformationGrid.setWidget(1, 0, contactName);
-
+	
 		// GRID-ZEILE 3: Einfügen des 'Kontakt-Grids'
 		userInformationGrid.setWidget(2, 0, contactGrid);
-
+	
 		// GRID-ZEILE 4: Optionen zum hinzufügen einer Eigenschaft
 		// Die gesamte Zeile (4) wird ein HorizontalPanel
 		Grid propertyAddBox = new Grid(2, 5);
-
+	
 		// in diesem Horizontal Panel gibt es 4 Felder
 		// 1. eine Textbox zum Benennen des Eigenschafts-Typs (z.B. "Haarfarbe")
 		Label z1l = new Label("Eigenschaftsname:");
@@ -87,7 +93,7 @@ public class ContactForm extends VerticalPanel {
 		propertyAddBox.setWidget(1, 0, propertyName);
 		// (Die TextBox muss für die Clickhandler verfügbar sein und wurde als Attribut
 		// deklariert.)
-
+	
 		// 1.1 eine Listbox zum Setzen des Formats
 		formattype.addItem("Text");
 		formattype.addItem("Datum");
@@ -96,7 +102,7 @@ public class ContactForm extends VerticalPanel {
 		Label z2l = new Label("Art:");
 		propertyAddBox.setWidget(0, 1, z2l);
 		propertyAddBox.setWidget(1, 1, formattype);
-
+	
 		// 2. ein Eingabefeld, um die konkrete Eigenschaftsausprägung anzugeben (z.B.
 		// "blond")
 		Label z3l = new Label("Wert:");
@@ -106,7 +112,7 @@ public class ContactForm extends VerticalPanel {
 		Button addPropertyButton = new Button("Eigenschaft hinzufügen");
 		addPropertyButton.addClickHandler(new AddPropertyClickHandler());
 		propertyAddBox.setWidget(1, 3, addPropertyButton);
-
+	
 		// 4 einen Datepicker
 		// Set the value in the text box when the user selects a date
 		propertyAddBox.setWidget(1, 4, datePicker);
@@ -122,22 +128,22 @@ public class ContactForm extends VerticalPanel {
 		});
 		// Set the default value
 		datePicker.setValue(new Date(), true);
-
+	
 		// hinzufügen von Zeile 4 zum Hauptgrid
 		userInformationGrid.setWidget(3, 0, propertyAddBox);
-
+	
 		// GRID-ZEILE 5.1:
 		deleteContactButton.addClickHandler(new DeleteContactClickHandler());
-
+	
 		userInformationGrid.setWidget(4, 1, deleteContactButton);
-
+	
 		userInformationGrid.setStyleName("userInformationGrid");
-
+	
 		// GRID-Zeile 5.2
 		existingSharedContactButton = new Button("Freigegeben an");
 		userInformationGrid.setWidget(5, 0, existingSharedContactButton);
 		existingSharedContactButton.addClickHandler(new ClickHandler() {
-
+	
 			public void onClick(ClickEvent event) {
 				GWT.log(contactToDisplay.getName());
 				e.showExistingContactCollab(contactToDisplay);
@@ -145,23 +151,30 @@ public class ContactForm extends VerticalPanel {
 		});
 	}
 
-	public void setEditor(EditorAdmin e) {
-		this.e = e;
 
+	// Widgets deren Inhalte variabel sind werden als Attribute angelegt.
+	
+	/**
+	 * Diese Klasse realisiert einen Clickhandler für den DeleteContactButton. Beim
+	 * aktivieren des Buttons <code>deleteContactButton</code> wird auf dem Server
+	 * die Methode <code>deleteContact</code> aufgerufen.
+	 */
+	private class DeleteContactClickHandler implements ClickHandler {
+		@Override
+	
+		public void onClick(ClickEvent event) {
+			if (contactToDisplay == null) {
+				Window.alert("Kein Kontakt ausgewählt");
+			} else {
+	
+				editorService.deleteContact(contactToDisplay, u, new deleteContactCallback(contactToDisplay));
+			}
+		}
 	}
 
-	public void setUser(JabicsUser user) {
-		GWT.log("usersetz");
-		// GWT.log("usergesetzt: " + user.getEmail());
-		JabicsUser currentUser = new JabicsUser();
-		currentUser.setEmail("stahl.alexander@live.de");
-		currentUser.setId(1);
-		currentUser.setUsername("AlexanderStahl");
-		this.u = currentUser;
-		GWT.log("usergesetzt:");
-		GWT.log("usergesetzt2: " + u.getEmail());
-	}
 
+	// Widgets deren Inhalte variabel sind werden als Attribute angelegt.
+	
 	/**
 	 * Im Folgenden Code werden Clickhandler und Asynchrone Methodenaufrufe für die
 	 * Operationen Editieren, Löschen oder Teilen eines <code>Contact</code> Objekts
@@ -170,12 +183,11 @@ public class ContactForm extends VerticalPanel {
 	 * @author Brase
 	 * @author Ilg
 	 */
-
 	private class FormatClickHandler implements ClickHandler {
 		@Override
-
+	
 		public void onClick(ClickEvent event) {
-
+	
 			if (formattype.getSelectedItemText() == "Datum") {
 				datePicker.setVisible(true);
 			} else {
@@ -184,47 +196,6 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 
-	/**
-	 * Diese Klasse realisiert einen Clickhandler für den DeleteContactButton. Beim
-	 * aktivieren des Buttons <code>deleteContactButton</code> wird auf dem Server
-	 * die Methode <code>deleteContact</code> aufgerufen.
-	 */
-	private class DeleteContactClickHandler implements ClickHandler {
-		@Override
-
-		public void onClick(ClickEvent event) {
-			if (contactToDisplay == null) {
-				Window.alert("Kein Kontakt ausgewählt");
-			} else {
-
-				editorService.deleteContact(contactToDisplay, u, new deleteContactCallback(contactToDisplay));
-			}
-		}
-	}
-
-	/**
-	 * Diese Callback-Klasse speichert den übergebenen Kontakt mit einem
-	 * Konstruktor. Nach erfolgreichem Methodenablauf aktualisiert sich die Ansicht.
-	 */
-	class deleteContactCallback implements AsyncCallback<Void> {
-
-		private Contact contact = null;
-
-		deleteContactCallback(Contact c) {
-			contact = c;
-
-		}
-
-		public void onFailure(Throwable caugth) {
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-			if (contact != null) {
-				// Contacttree.removeContact(contact);
-			}
-		}
-	}
 
 	/**
 	 * Diese Klasse realisiert einen Clickhandler für den addPropertyButton. Beim
@@ -252,10 +223,59 @@ public class ContactForm extends VerticalPanel {
 			}
 		}
 	}
+
+	/**
+	 * Struktur von
+	 * 
+	 * @author Christian Rathke
+	 * 
+	 *         Angepasst von
+	 * @author Brase
+	 * @author Ilg
+	 * 
+	 * 
+	 * @see
+	 */
+	EditorAdmin e;
+	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	// TODO USER richtig setzen (wird hier nur instanziiert, dass er nicht
+	// undefinded ist)
+	JabicsUser u = new JabicsUser();
+	Contact contactToDisplay = null;
+	PValue selectedPValue = null;
+	TreeViewMenu contacttree = null;
+	Button deleteContactButton = new Button("Kontakt löschen");
+	Button shareContactButton;
+	
+	Button existingSharedContactButton;
+	
+	Grid contactGrid = new Grid();
+
+	ArrayList<PValue> checkedPV = new ArrayList<PValue>();
+
+	ListBox formattype = new ListBox();
+
+	TextBox propertyName = new TextBox();
+
+	TextBox pValueName = new TextBox();
+
+	Label contactName = new Label();
+
+	DatePicker datePicker = new DatePicker();
+
+	Date selectedDate = new Date();
+
+
+	TextBox[] pValueTextBox;
+
+	
+
+
+	// Widgets deren Inhalte variabel sind werden als Attribute angelegt.
+	
 	// TODO Erst Property erstellen dann PValue: Überlegen ob erstellend er PValue
 	// in der
 	// OnSuccess der Property sinnvoll ist.
-
 	/**
 	 * Diese Callback-Klasse veranlasst die Erstellung eines neuen
 	 * <code>Property</code> Objekts auf dem Server.
@@ -265,7 +285,7 @@ public class ContactForm extends VerticalPanel {
 		public void onFailure(Throwable caught) {
 			Window.alert("Das Anlegen der neuen Eigenschaft ist leider fehlgeschlagen.");
 		}
-
+	
 		@Override
 		public void onSuccess(Property result) {
 			if (result != null) {
@@ -290,23 +310,24 @@ public class ContactForm extends VerticalPanel {
 							new CreatePValueCallback());
 					break;
 				}
-
+	
 			}
-
+	
 		}
 	}
+
 
 	/**
 	 * Diese Callback-Klasse aktualisiert die Ansicht nach erfolgreichem Erstellen
 	 * einer Eigenschaftsausprägung..
 	 */
 	public class CreatePValueCallback implements AsyncCallback<PValue> {
-
+	
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Das Anlegen der neuen Eigenschaftsausprägung ist leider fehlgeschlagen.");
 		}
-
+	
 		@Override
 		public void onSuccess(PValue result) {
 			if (result != null) {
@@ -315,20 +336,52 @@ public class ContactForm extends VerticalPanel {
 		}
 	}
 
-	public void setCurrentContact(Contact c) { // JabicsUser u) {
-		if (c != null) {
-			this.contactToDisplay = c;
-			// this.u = u;
-			deleteContactButton.setEnabled(true);
-			contactName.setText(contactToDisplay.getName());
-			GWT.log("currentUser: " + u.getEmail() + u.getId());
-			editorService.getPValueOf(c, u, new GetPValuesCallback());
 
-		} else {
-			contactToDisplay = null;
-			deleteContactButton.setEnabled(false);
-			shareContactButton.setEnabled(false);
-			existingSharedContactButton.setEnabled(false);
+	/**
+	 * Diese Callback-Klasse speichert den übergebenen Kontakt mit einem
+	 * Konstruktor. Nach erfolgreichem Methodenablauf aktualisiert sich die Ansicht.
+	 */
+	class deleteContactCallback implements AsyncCallback<Void> {
+	
+		private Contact contact = null;
+	
+		deleteContactCallback(Contact c) {
+			contact = c;
+	
+		}
+	
+		public void onFailure(Throwable caugth) {
+		}
+	
+		@Override
+		public void onSuccess(Void result) {
+			if (contact != null) {
+				// Contacttree.removeContact(contact);
+			}
+		}
+	}
+
+
+	/**
+	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer
+	 * Eigenschafts- ausprägung.
+	 */
+	class deletePValueCallback implements AsyncCallback<Void> {
+	
+		private PValue pvalue = null;
+	
+		deletePValueCallback(PValue pv) {
+			pvalue = pv;
+		}
+	
+		public void onFailure(Throwable caugth) {
+		}
+	
+		@Override
+		public void onSuccess(Void result) {
+			if (pvalue != null) {
+				// update Contact bzw. Contacttree
+			}
 		}
 	}
 
@@ -337,96 +390,34 @@ public class ContactForm extends VerticalPanel {
 	 * Textboxen, Buttons und Checkboxen, sowie deren Clickhandler werden dynamisch
 	 * für jede Eigenschaftsausprägung eines <code>Contact</code> Objekts erstellt.
 	 */
-
-	TextBox[] pValueTextBox;
-
 	public class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
-		public void onFailure(Throwable caught) {
-			Window.alert(caught.toString());
-		}
-
-		public void onSuccess(ArrayList<PValue> result) {
-
-			if (result != null) {
-
-				GWT.log("huhu1");
-				// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
-				checkedPV.clear();
-
-				Label[] propertyLabels = new Label[result.size()];
-				pValueTextBox = new TextBox[result.size()];
-				Button[] saveButton = new Button[result.size()];
-				Button[] deleteButton = new Button[result.size()];
-				DeleteClickHandler[] cl = new DeleteClickHandler[result.size()];
-				SaveClickHandler[] scl = new SaveClickHandler[result.size()];
-
-				for (int i = 0; i < result.size(); i++) {
-					propertyLabels[i] = new Label(result.get(i).getProperty().getLabel() + ":");
-					pValueTextBox[i] = new TextBox();
-					pValueTextBox[i].setText(result.get(i).getStringValue());
-					saveButton[i] = new Button("Save");
-					deleteButton[i] = new Button("Delete");
-					contactGrid.resize(result.size() + 1, 5);
-					cl[i] = new DeleteClickHandler();
-					cl[i].seti(i);
-					deleteButton[i].addClickHandler(cl[i]);
-					scl[i] = new SaveClickHandler();
-					scl[i].seti(i);
-					scl[i].settb(pValueTextBox);
-					saveButton[i].addClickHandler(scl[i]);
-
-					for (int j = 0; j < propertyLabels.length; j++) {
-
-						contactGrid.setWidget(j, 0, propertyLabels[j]);
-						contactGrid.setWidget(j, 1, pValueTextBox[j]);
-						contactGrid.setWidget(j, 2, saveButton[j]);
-						contactGrid.setWidget(j, 3, deleteButton[j]);
-					}
-				}
-
-			}
-
-		}
-
 		class DeleteClickHandler implements ClickHandler {
 			int i;
 			ArrayList<PValue> result;
-
-			void seti(int i) {
-				this.i = i;
-			}
-
-			void setal(ArrayList<PValue> result) {
-				this.result = result;
-			}
-
+	
 			@Override
 			public void onClick(ClickEvent event) {
 				editorService.deletePValue(result.get(i), contactToDisplay, new deletePValueCallback(result.get(i)));
 			}
+	
+			void setal(ArrayList<PValue> result) {
+				this.result = result;
+			}
+	
+			void seti(int i) {
+				this.i = i;
+			}
 		}
-
+	
 		class SaveClickHandler implements ClickHandler {
 			int i;
 			ArrayList<PValue> result;
 			TextBox[] tb;
-
-			void seti(int i) {
-				this.i = i;
-			}
-
-			void setal(ArrayList<PValue> result) {
-				this.result = result;
-			}
-
-			void settb(TextBox[] tb) {
-				this.tb = tb;
-			}
-
+	
 			@Override
 			public void onClick(ClickEvent event) {
 				PValue newPV = result.get(i);
-
+	
 				switch (result.get(i).getPointer()) {
 				case 1:
 					newPV.setIntValue(Integer.valueOf(tb[i].getText()));
@@ -448,42 +439,79 @@ public class ContactForm extends VerticalPanel {
 				}
 				editorService.updatePValue(newPV, new UpdatePValueCallback());
 			}
-		}
-	}
-
-	/**
-	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Löschung einer
-	 * Eigenschafts- ausprägung.
-	 */
-	class deletePValueCallback implements AsyncCallback<Void> {
-
-		private PValue pvalue = null;
-
-		deletePValueCallback(PValue pv) {
-			pvalue = pv;
-		}
-
-		public void onFailure(Throwable caugth) {
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-			if (pvalue != null) {
-				// update Contact bzw. Contacttree
+	
+			void setal(ArrayList<PValue> result) {
+				this.result = result;
+			}
+	
+			void seti(int i) {
+				this.i = i;
+			}
+	
+			void settb(TextBox[] tb) {
+				this.tb = tb;
 			}
 		}
+	
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.toString());
+		}
+	
+		public void onSuccess(ArrayList<PValue> result) {
+	
+			if (result != null) {
+	
+				GWT.log("huhu1");
+				// Die ArrayList mit ausgewählten PValues wird zurückgesetzt
+				checkedPV.clear();
+	
+				Label[] propertyLabels = new Label[result.size()];
+				pValueTextBox = new TextBox[result.size()];
+				Button[] saveButton = new Button[result.size()];
+				Button[] deleteButton = new Button[result.size()];
+				DeleteClickHandler[] cl = new DeleteClickHandler[result.size()];
+				SaveClickHandler[] scl = new SaveClickHandler[result.size()];
+	
+				for (int i = 0; i < result.size(); i++) {
+					propertyLabels[i] = new Label(result.get(i).getProperty().getLabel() + ":");
+					pValueTextBox[i] = new TextBox();
+					pValueTextBox[i].setText(result.get(i).getStringValue());
+					saveButton[i] = new Button("Save");
+					deleteButton[i] = new Button("Delete");
+					contactGrid.resize(result.size() + 1, 5);
+					cl[i] = new DeleteClickHandler();
+					cl[i].seti(i);
+					deleteButton[i].addClickHandler(cl[i]);
+					scl[i] = new SaveClickHandler();
+					scl[i].seti(i);
+					scl[i].settb(pValueTextBox);
+					saveButton[i].addClickHandler(scl[i]);
+	
+					for (int j = 0; j < propertyLabels.length; j++) {
+	
+						contactGrid.setWidget(j, 0, propertyLabels[j]);
+						contactGrid.setWidget(j, 1, pValueTextBox[j]);
+						contactGrid.setWidget(j, 2, saveButton[j]);
+						contactGrid.setWidget(j, 3, deleteButton[j]);
+					}
+				}
+	
+			}
+	
+		}
 	}
+
 
 	/**
 	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer
 	 * Eigenschafts- ausprägung.
 	 */
 	private class UpdatePValueCallback implements AsyncCallback<PValue> {
-
+	
 		public void onFailure(Throwable caugth) {
 			Window.alert("Die Änderung ist fehlgeschlagen.");
 		}
-
+	
 		@Override
 		public void onSuccess(PValue result) {
 			
@@ -494,7 +522,53 @@ public class ContactForm extends VerticalPanel {
 				Window.alert("Wert geändert");
 				
 			}
-
+	
 		}
+	}
+
+	public void setCurrentContact(Contact c) { // JabicsUser u) {
+		if (c != null) {
+			this.contactToDisplay = c;
+			// this.u = u;
+			deleteContactButton.setEnabled(true);
+			contactName.setText(contactToDisplay.getName());
+			GWT.log("currentUser: " + u.getEmail() + u.getId());
+			editorService.getPValueOf(c, u, new GetPValuesCallback());
+
+		} else {
+			contactToDisplay = null;
+			deleteContactButton.setEnabled(false);
+			shareContactButton.setEnabled(false);
+			existingSharedContactButton.setEnabled(false);
+		}
+	}
+
+	/**
+	 * Setzt den Editor.
+	 * 
+	 * @param e
+	 * 			Editor, welcher gesetzt werden soll.
+	 */
+	public void setEditor(EditorAdmin e) {
+		this.e = e;
+
+	}
+
+	/**
+	 * Setzt den aktuellen Nutzer.
+	 * 
+	 * @param user
+	 * 				<code>JabicsUser</code>, der gesetzt werden soll
+	 */
+	public void setUser(JabicsUser user) {
+		GWT.log("usersetz");
+		// GWT.log("usergesetzt: " + user.getEmail());
+		JabicsUser currentUser = new JabicsUser();
+		currentUser.setEmail("stahl.alexander@live.de");
+		currentUser.setId(1);
+		currentUser.setUsername("AlexanderStahl");
+		this.u = currentUser;
+		GWT.log("usergesetzt:");
+		GWT.log("usergesetzt2: " + u.getEmail());
 	}
 }
