@@ -59,7 +59,11 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	Boolean otherCallbackArrived = false;
 	
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
-
+	
+	/**
+	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen für die
+	 * Funktionalität der Klasse gebraucht werden.
+	 */
 	public void onLoad() {
 		listPanel.setStyleName("listpanel");
 		GWT.log("#####################ContactListCollab onLoad");
@@ -99,7 +103,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	}
 
 	/**
-	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren 
+	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren aufgerufen wurde.
 	 */
 	public void continueOnLoad() {
 
@@ -126,7 +130,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		this.add(buttonPanel);
 		this.add(exit);
 	}
-
+	
+	/**
+	 * Setzt einen neuen ausgewählten Nutzer
+	 * 
+	 * @param c
+	 * 			User der ausgewählt werden soll.
+	 */
 	public void addSelectedUser(JabicsUser c) {
 		this.existingCollaborators.add(c);
 	}
@@ -145,7 +155,11 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			Window.alert("Keine Nutzer ausgewählt");
 		}
 	}
-
+	
+	/**
+	 * Ennteilt einen Kontakt. Dies bedeuetet, dass die Kollaboration des Kontakts gelöscht wird und
+	 * somit andere Nutzer keinen Zugriff mehr auf den Kontakt haben.
+	 */
 	public void deshareContact() {
 		if (!finalCollaborators.isEmpty()) {
 
@@ -159,7 +173,14 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			Window.alert("Keine Nutzer ausgewählt");
 		}
 	}
-
+	
+	/**
+	 * Setzt die Kontaktliste, mit der dann später weitere Aktionen durchgeführt werden können 
+	 * wie z.B. teilen.
+	 * 
+	 * @param cl
+	 * 			Kontaktliste, die ausgewählt werden soll.
+	 */
 	public void setContactList(ContactList cl) {
 		if (cl != null) {
 			this.sharedContactList = cl;
@@ -167,7 +188,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			Window.alert("Freigabe nicht möglich, da keine Kontaktliste ausgewählt.");
 		}
 	}
-
+	
+	/**
+	 * Setzt den Editor der ContactListCollaborationForm
+	 * 
+	 * @param e
+	 * 			Editor, der gesetzt werden soll.
+	 */
 	public void setEditor(EditorAdmin e) {
 		GWT.log("EditorAdmin in ContactlistCollab setzen");
 		this.e = e;
@@ -184,7 +211,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		editorService.getCollaborators(sharedContactList, new GetAllCollaboratorsCallback());
 		GWT.log("allUserfetisch");
 	}
-
+	
+	/**
+	 * Setzt eine Variable, welche alle Nutzer enthält.
+	 * 
+	 * @param user
+	 * 				User, die übergeben werde sollen. In diesem Fall sind das alle User.
+	 */
 	private void setAllUser(ArrayList<JabicsUser> user) {
 		GWT.log("alleNutzersetzen");
 		this.allUser = user;
@@ -192,12 +225,23 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			GWT.log(u.getEmail());
 		}
 	}
-
+	
+	/**
+	 * Sezt die alle Kollaboratoren.
+	 * 
+	 * @param user
+	 * 				User, die gesetzt werden sollen.
+	 */
 	public void setAllCollaborators(ArrayList<JabicsUser> user) {
 		GWT.log("setAllCollaborators");
 		this.existingCollaborators = user;
 	}
-
+	
+	/**
+	 *  Erstellt die tabellenfämige Ansicht, welche anzeigt mit welchen Usern die Kontaktliste
+	 *  bereits geteilt wurde und die neu hinzugeüfgten Usern mit denen der Teilvorgang gerade
+	 *  stattfindet. 
+	 */
 	public void createTables() {
 
 		/**
@@ -254,7 +298,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	}
 
 	/**
-	 * SuggestBox für Nutzer hinzufügen und mit Optionen befüllen
+	 * SuggestBox um Nutzer hinzufügen.
 	 */
 	public void createSuggestBox() {
 
@@ -320,7 +364,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		});
 
 	}
-
+	
+	/**
+	 * Callback welches bei dem Erstellen einer neuenen Kollarboration einer Kontaktliste ausgeführt wird.
+	 * Bei einem erfolgreichem Callback wird der ShareStatus aktuallsiert und die Kontaktliste wird im Menü
+	 * aktuallisiert.
+	 *
+	 */
 	private class AddContactListCollaborationCallback implements AsyncCallback<JabicsUser> {
 
 		@Override
@@ -346,7 +396,12 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			}
 		}
 	}
-
+	
+	/**
+	 * Callback welcher bei Löschen einer Kollaboration einer Kontaktliste ausgeführt wird.
+	 * Bein einem erfolgreichen Callback wird die Kontaktliste aus den Menüs entfernt.
+	 *
+	 */
 	private class DeleteContactListCollaborationCallback implements AsyncCallback<ContactList> {
 		@Override
 		public void onFailure(Throwable caught) {
@@ -361,7 +416,12 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			}
 		}
 	}
-
+	
+	/**
+	 * Ein Callbacker wecher beim Beziehen aller Kontakte die nicht Kollaborieren ausgeführt wird.
+	 * 
+	 *
+	 */
 	private class GetAllNotCollaboratingUserCallback implements AsyncCallback<ArrayList<JabicsUser>> {
 
 		public void onFailure(Throwable arg0) {
@@ -380,7 +440,11 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			}
 		}
 	}
-
+	
+	/**
+	 * Callback, welcher beim Beziehen aller Kollaboratoren einer Kontaktliste ausgeführt wird.
+	 *
+	 */
 	private class GetAllCollaboratorsCallback implements AsyncCallback<ArrayList<JabicsUser>> {
 
 		public void onFailure(Throwable arg0) {

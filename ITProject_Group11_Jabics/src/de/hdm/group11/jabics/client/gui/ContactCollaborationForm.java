@@ -15,7 +15,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -62,13 +61,10 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	/**
-	 * Die Contact Form das erste Mal erstellen, Tabellen hinzufügen und alles
-	 * verknüpfen,
-	 */
-	/**
-	 * Eine <code>ContactCollaborationForm</code> Instantz wird erstellt. Es werden Provider Ceckboxen ein CellTable
-	 * initalisiert, welche später gebraucht werden.
-	 * Des weiteren werden enthält der Konstrukro alle benötigten Buttons der <code>ContactCollaborationForm</code> 
+	 * Eine <code>ContactCollaborationForm</code> Instantz wird erstellt. Es werden
+	 * Provider Ceckboxen ein CellTable initalisiert, welche später gebraucht
+	 * werden. Des weiteren werden enthält der Konstrukro alle benötigten Buttons
+	 * der <code>ContactCollaborationForm</code>
 	 */
 	public ContactCollaborationForm() {
 
@@ -215,11 +211,12 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 	}
-	
+
 	/**
-	 *  Nach die <code>GetAllNotCollaboratingUserCallback</code> und dem <code>GetAllUsersCallback</code> abgeschlossen werden
-	 *  hier weitere Elemtente der ContactCollaborationForm geladen. Dem GWT <code>Grid</code> werden oben initalisierte Objekte
-	 *  hinzugefügt.
+	 * Nachde, die <code>GetAllNotCollaboratingUserCallback</code> und dem
+	 * <code>GetAllUsersCallback</code> abgeschlossen werden hier weitere Elemtente
+	 * der ContactCollaborationForm geladen. Dem GWT <code>Grid</code> werden oben
+	 * initalisierte Objekte hinzugefügt.
 	 */
 	public void continueOnLoad() {
 
@@ -241,20 +238,23 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		this.add(grid);
 	}
-	
+
 	/**
-	 * Befüllt die PValueBox, welche alle Eigenschaftsausprägungen eines Kontakes anzeigt. 
+	 * Befüllt die PValueBox, welche alle Eigenschaftsausprägungen eines Kontakes
+	 * anzeigt.
 	 * 
-	 * @param pv, eine ArrayList von PValues welche angezeigt werden soll.
+	 * @param pv 
+	 * 			eine ArrayList von PValues welche angezeigt werden soll.
 	 */
 	public void fillPValueBox(ArrayList<PValue> pv) {
 		valueProvider.setList(pv);
 		valueProvider.flush();
 	}
-	
+
 	/**
-	 *  Befüllt die GWT <code>SuggestBox</code> mit <code>JabicsUser</code> Objekten. Anschließend werden beim Eingeben von Buchstaben die
-	 *  passenden <code>JabicsUser</code> vorgeschlagen
+	 * Befüllt die GWT <code>SuggestBox</code> mit <code>JabicsUser</code> Objekten.
+	 * Anschließend werden beim Eingeben von Buchstaben die passenden
+	 * <code>JabicsUser</code> vorgeschlagen
 	 */
 	public void fillSuggestBox() {
 		GWT.log("SuggestBox");
@@ -285,9 +285,10 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		retrieveUser();
 
 	}
-	
+
 	/**
-	 *  
+	 * Bezieht alle User, die keine Kollaboration mit dem aktuellen Kontakt haben.
+	 * Dabei wird ein <code>GetAllNotCollaboratingUserCallback</code> ausgefühtr.
 	 */
 	private void retrieveUser() {
 		GWT.log("allUser");
@@ -295,6 +296,12 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		GWT.log("allUserfetisch");
 	}
 
+	/**
+	 * Setzt die Variable allUser, die alle User enhält.
+	 * 
+	 * @param user
+	 * 				eine ArrayList, in der alle <code>JabicsUser</code> enthalten sind.
+	 */
 	private void setAllUser(ArrayList<JabicsUser> user) {
 		GWT.log("alleNutzersetzen");
 		this.allUser = user;
@@ -303,6 +310,12 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 
+	/**
+	 * Setzt den aktuellen Kontakt, der geteilt werden soll.
+	 * 
+	 * @param c
+	 * 			Kontakt der gesetzt werden soll.
+	 */
 	public void setContact(Contact c) {
 		if (c != null) {
 			this.sharedContact = c;
@@ -341,6 +354,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	/**
 	 * Führt den RPC zur Freigabe eines Kontakts mit den ausgewählten Parametern
 	 * durch.
+	 * 
+	 * @param u
+	 * 			 der freizugebende User
 	 */
 	public void shareContactWithUser(JabicsUser u) {
 		GWT.log(selectedUser.getEmail());
@@ -357,6 +373,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 
+	/**
+	 * Der Callback welcher beim neuen Teilen eines Kontaktes ausgelöst wird. Bei
+	 * einerm eroflreichen Callback wird der ShareStats des Kontaktes aktuallisiert.
+	 *
+	 */
 	private class AddContactCollaborationCallback implements AsyncCallback<Void> {
 		public void onFailure(Throwable arg0) {
 			Window.alert("Kontakt konnte nicht geteilt werden");
@@ -369,6 +390,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 
+	/**
+	 * Der Callback welcher beim hinzufügen einer neuen Kollaboration hinzugefügt
+	 * wird.
+	 *
+	 */
 	private class AddPVCollaborationCallback implements AsyncCallback<Void> {
 		public void onFailure(Throwable arg0) {
 			GWT.log("PV konnte nicht geteilt werden");
@@ -394,7 +420,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("alleNutzergesetzt   ");
+				GWT.log("alleNutzergesetzt ");
 				setAllUser(user);
 				continueOnLoad();
 			} else {
@@ -404,6 +430,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 
+	/**
+	 * Callback welcher beim beziehen aller User ausgeführt wird.
+	 */
 	public class GetAllUsersCallback implements AsyncCallback<ArrayList<JabicsUser>> {
 
 		public void onFailure(Throwable arg0) {
@@ -419,6 +448,10 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 	}
 
+	/**
+	 * Der ShareStatus des des Kontaktes wir aktuallisiert. Anschließend wird
+	 * ebenfalls die Anzeige im Menü aktuallisiert.
+	 */
 	public void updateShareStatus() {
 		editorService.getUpdatedContact(sharedContact, new AsyncCallback<Contact>() {
 			public void onFailure(Throwable caught) {
