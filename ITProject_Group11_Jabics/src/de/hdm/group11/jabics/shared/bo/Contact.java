@@ -19,6 +19,15 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Der Key Provider für einen Contact
+	 */
+	public static final ProvidesKey<Contact> KEY_PROVIDER = new ProvidesKey<Contact>() {
+		public Object getKey(Contact c) {
+			return (Integer) c.getId();
+		}
+	};
+
+	/**
 	 * ArrayList aus Eigenschaftsauspräfungen, welcher einer Instanz dieser Klasse
 	 * zugeordnet werden.
 	 */
@@ -54,16 +63,6 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 
 	/**
 	 * 
-	 * @param values
-	 * @param name
-	 */
-	public Contact(ArrayList<PValue> values, String name) {
-		this(values);
-		this.name = name;
-	}
-
-	/**
-	 * 
 	 * @param a
 	 * @param u
 	 */
@@ -74,13 +73,13 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name
 	 * 
-	 * @return name
+	 * @param values
+	 * @param name
 	 */
-	@Override
-	public String toString() {
-		return this.name;
+	public Contact(ArrayList<PValue> values, String name) {
+		this(values);
+		this.name = name;
 	}
 
 	/**
@@ -89,91 +88,6 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	 */
 	public void addPValue(PValue pValue) {
 		this.values.add(pValue);
-	}
-
-	/**
-	 * Entfernt eine Ausprägung aus der Liste von Ausprägungen
-	 */
-	public void removePValue(PValue pValue) {
-		this.values.remove(pValue);
-	}
-
-	/**
-	 * Auslesen der Eigenschaftsausprägungen
-	 * 
-	 * @return values
-	 */
-	public ArrayList<PValue> getValues() {
-		return this.values;
-	}
-
-	/**
-	 * 
-	 * @param values
-	 */
-	public void setValues(ArrayList<PValue> values) {
-		this.values = values;
-	}
-
-	/**
-	 * Auslesen des Namens
-	 * 
-	 * @return name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Setzen des Namens.
-	 * 
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-		// this.dateUpdated = LocalDateTime.now();
-	}
-
-	/**
-	 * Auslesen des Share-Status.
-	 * 
-	 * @return shareStatus
-	 */
-	public BoStatus getShareStatus() {
-		return shareStatus;
-	}
-
-	/**
-	 * Setzen des Share-Status.
-	 * 
-	 * @param shareStatus
-	 */
-	public void setShareStatus(BoStatus shareStatus) {
-		this.shareStatus = shareStatus;
-	}
-
-	/**
-	 * Überprüfen, ob der Name dieses <code>Contact</code> Objekts noch aktuell ist,
-	 * wenn nicht wird der Name neu gesetzt.
-	 */
-	public void updateNickname() {
-		StringBuffer sBuffer = new StringBuffer("VornameNachname");
-		for (PValue p : values) {
-			if (p.getProperty().getId() == 1) {
-				sBuffer.replace(0, sBuffer.length(), p.getStringValue());
-			} else {
-				System.out.println("Constructor in Contact: No name in Array.");
-			}
-		}
-		for (PValue p2 : values) {
-			if (p2.getProperty().getId() == 2) {
-				sBuffer.append(" " + p2.getStringValue());
-			} else {
-				System.out.println("No lastname in Array");
-			}
-		}
-		System.out.println("Neuer Nickname: " + sBuffer.toString());
-		this.name = sBuffer.toString();
 	}
 
 	/**
@@ -220,11 +134,97 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Der Key Provider für einen Contact
+	 * Auslesen des Namens
+	 * 
+	 * @return name
 	 */
-	public static final ProvidesKey<Contact> KEY_PROVIDER = new ProvidesKey<Contact>() {
-		public Object getKey(Contact c) {
-			return (Integer) c.getId();
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Auslesen des Share-Status.
+	 * 
+	 * @return shareStatus
+	 */
+	public BoStatus getShareStatus() {
+		return shareStatus;
+	}
+
+	/**
+	 * Auslesen der Eigenschaftsausprägungen
+	 * 
+	 * @return values
+	 */
+	public ArrayList<PValue> getValues() {
+		return this.values;
+	}
+
+	/**
+	 * Entfernt eine Ausprägung aus der Liste von Ausprägungen
+	 */
+	public void removePValue(PValue pValue) {
+		this.values.remove(pValue);
+	}
+
+	/**
+	 * Setzen des Namens.
+	 * 
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+		// this.dateUpdated = LocalDateTime.now();
+	}
+
+	/**
+	 * Setzen des Share-Status.
+	 * 
+	 * @param shareStatus
+	 */
+	public void setShareStatus(BoStatus shareStatus) {
+		this.shareStatus = shareStatus;
+	}
+
+	/**
+	 * 
+	 * @param values
+	 */
+	public void setValues(ArrayList<PValue> values) {
+		this.values = values;
+	}
+
+	/**
+	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name
+	 * 
+	 * @return name
+	 */
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
+	/**
+	 * Überprüfen, ob der Name dieses <code>Contact</code> Objekts noch aktuell ist,
+	 * wenn nicht wird der Name neu gesetzt.
+	 */
+	public void updateNickname() {
+		StringBuffer sBuffer = new StringBuffer("VornameNachname");
+		for (PValue p : values) {
+			if (p.getProperty().getId() == 1) {
+				sBuffer.replace(0, sBuffer.length(), p.getStringValue());
+			} else {
+				System.out.println("Constructor in Contact: No name in Array.");
+			}
 		}
-	};
+		for (PValue p2 : values) {
+			if (p2.getProperty().getId() == 2) {
+				sBuffer.append(" " + p2.getStringValue());
+			} else {
+				System.out.println("No lastname in Array");
+			}
+		}
+		System.out.println("Neuer Nickname: " + sBuffer.toString());
+		this.name = sBuffer.toString();
+	}
 }
