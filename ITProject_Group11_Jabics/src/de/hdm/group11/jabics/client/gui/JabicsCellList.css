@@ -30,7 +30,7 @@
 }
 
 .cellListKeyboardSelectedItem {
-	background: #6D8EC2;
+	background: #0F336C !important;
 }
 
 .cellListOddItem {
@@ -46,5 +46,5 @@
 }
 
 .cellListSelectedItem {
-		background-color: #6D8EC2;
+	background: #0F336C !important;
 }

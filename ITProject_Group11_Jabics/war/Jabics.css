@@ -775,6 +775,14 @@ html>body .gwt-DecoratedStackPanel {
 	color: white !important;;
 	padding: 6px 14px 6px 14px !important;
 }
+.cellListSelectedItem{
+		font-family: Arial;
+	font-weight: bold;
+	font-size: 18px !important;
+	background: #061B42 !important;
+	color: white !important;;
+	padding: 6px 14px 6px 14px !important;
+}
 
 .tree {
 	background-color: #19376E;
