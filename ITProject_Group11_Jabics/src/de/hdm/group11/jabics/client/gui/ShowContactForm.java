@@ -51,7 +51,7 @@ public class ShowContactForm extends VerticalPanel {
 	Button deleteButton = new Button("🗑");
 	Label deleteLabel = new Label("Kontakt löschen");
 
-	private CellTableResources ctRes = GWT.create(CellTableResources.class);
+	//private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	public ShowContactForm() {
 
