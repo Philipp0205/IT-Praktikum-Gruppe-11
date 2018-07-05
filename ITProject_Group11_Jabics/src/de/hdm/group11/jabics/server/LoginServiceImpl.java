@@ -127,7 +127,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 
 			return newLogon;
 		} catch (Exception e) {
-			System.out.println("Beim Erstellen des neuen Nutzers ist etwas schief gelaufen");
+			System.out.println("Beim Erstellen des neuen Nutzers ist ein Fehler aufgetreten");
 			System.err.println(e.toString());
 			LoginInfo loginInfo = new LoginInfo();
 			loginInfo.setLoggedIn(false);

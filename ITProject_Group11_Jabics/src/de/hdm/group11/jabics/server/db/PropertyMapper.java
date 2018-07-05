@@ -33,13 +33,6 @@ public class PropertyMapper {
 	private static PropertyMapper propertyMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
-	 * neue Instanzen dieser Klasse zu erzeugen.
-	 */
-	protected PropertyMapper() {
-	}
-
-	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>PropertyMapper.propertyMapper()</code>. Sie stellt die
 	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
@@ -60,55 +53,10 @@ public class PropertyMapper {
 	}
 
 	/**
-	 * Diese Methode trägt ein <code>Property</code> Obejekt in die Datenbank ein.
-	 * 
-	 * @param p
-	 *            das <code>Property</code> Objekt, dass in die Datenbank
-	 *            eingetragen werden soll.
-	 * @return Das als Parameter übergebene- <code>Property</code> Objekt.
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	public Property insertProperty(Property p) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Zwei ungefüllte SQL-Statements erzeugen
-			Statement stmt = con.createStatement();
-			Statement stmt2 = con.createStatement();
-
-			// String mit SQL-Statement erzeugen
-			String query = ("INSERT INTO property (isStandard, type, name) VALUES " + "(" + p.isStandard() + ", '"
-					+ p.getTypeInString() + "' , '" + p.getLabel() + "' ) ");
-
-			// Ausführen des SQL-Statements und ID verfügbar machen
-			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-			// Resultsets erzeugen
-			ResultSet rs = stmt.getGeneratedKeys();
-
-			// Property Objekt mit ID befüllen
-			if (rs.next()) {
-				p.setId(rs.getInt(1));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe des Property Objekts
-			return p;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
-		}
+	protected PropertyMapper() {
 	}
 
 	/**
@@ -138,6 +86,54 @@ public class PropertyMapper {
 			}
 		} catch (SQLException e) {
 			System.err.print(e);
+		}
+	}
+
+	/**
+	 * Auslesen aller <code>Property</code> Objekte, welche zu den Standard
+	 * Eigenschaften gehören.
+	 * 
+	 * @return Liste der <code>Property</code> Objekte, welche Standard sind.
+	 */
+	public ArrayList<Property> findAllStandardPropertys() {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Erzeugen einer ArrayList
+			ArrayList<Property> al = new ArrayList<Property>();
+
+			// SQL-Statement ausführen
+			ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE isStandard = 1 ");
+
+			// Für jedes Tupel in der Datenbank wird ein Property Objekt erstellt und
+			// befüllt.
+			while (rs.next()) {
+				Property p = new Property();
+				p.setId(rs.getInt("propertyID"));
+				p.setStandard(rs.getBoolean("isStandard"));
+				p.setLabel(rs.getString("name"));
+				p.setType(rs.getString("type"));
+				al.add(p);
+			}
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe der ArrayList
+			return al;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
 		}
 	}
 
@@ -188,34 +184,35 @@ public class PropertyMapper {
 	}
 
 	/**
-	 * Auslesen aller <code>Property</code> Objekte, welche zu den Standard
-	 * Eigenschaften gehören.
+	 * Diese Methode trägt ein <code>Property</code> Obejekt in die Datenbank ein.
 	 * 
-	 * @return Liste der <code>Property</code> Objekte, welche Standard sind.
+	 * @param p
+	 *            das <code>Property</code> Objekt, dass in die Datenbank
+	 *            eingetragen werden soll.
+	 * @return Das als Parameter übergebene- <code>Property</code> Objekt.
 	 */
-	public ArrayList<Property> findAllStandardPropertys() {
+	public Property insertProperty(Property p) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
 		try {
-			// Erzeugen eines ungefüllten SQL-Statements
+			// Zwei ungefüllte SQL-Statements erzeugen
 			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
 
-			// Erzeugen einer ArrayList
-			ArrayList<Property> al = new ArrayList<Property>();
+			// String mit SQL-Statement erzeugen
+			String query = ("INSERT INTO property (isStandard, type, name) VALUES " + "(" + p.isStandard() + ", '"
+					+ p.getTypeInString() + "' , '" + p.getLabel() + "' ) ");
 
-			// SQL-Statement ausführen
-			ResultSet rs = stmt.executeQuery("SELECT * FROM property " + "WHERE isStandard = 1 ");
+			// Ausführen des SQL-Statements und ID verfügbar machen
+			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
-			// Für jedes Tupel in der Datenbank wird ein Property Objekt erstellt und
-			// befüllt.
-			while (rs.next()) {
-				Property p = new Property();
-				p.setId(rs.getInt("propertyID"));
-				p.setStandard(rs.getBoolean("isStandard"));
-				p.setLabel(rs.getString("name"));
-				p.setType(rs.getString("type"));
-				al.add(p);
+			// Resultsets erzeugen
+			ResultSet rs = stmt.getGeneratedKeys();
+
+			// Property Objekt mit ID befüllen
+			if (rs.next()) {
+				p.setId(rs.getInt(1));
 			}
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
@@ -223,12 +220,15 @@ public class PropertyMapper {
 			if (!stmt.isClosed()) {
 				stmt.close();
 			}
+			if (!stmt2.isClosed()) {
+				stmt2.close();
+			}
 			if (!con.isClosed()) {
 				con.close();
 			}
 
-			// Rückgabe der ArrayList
-			return al;
+			// Rückgabe des Property Objekts
+			return p;
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;

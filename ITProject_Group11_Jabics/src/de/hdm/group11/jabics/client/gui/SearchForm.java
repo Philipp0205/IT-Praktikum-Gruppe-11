@@ -12,6 +12,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -81,6 +82,9 @@ public class SearchForm extends VerticalPanel {
 	ArrayList<Property> PropertyArrayList;
 	Date tempDate;
 	HorizontalPanel mainpanel = new HorizontalPanel();
+
+	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
+			 
 	
 	/**
 	 * Diese Methode bringt die GWT-Widgets der SearchForm Klasse zur
@@ -313,7 +317,7 @@ public class SearchForm extends VerticalPanel {
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				if (datepicker != null) {
 					// pval.setDateValue(event.getValue());
-					valueBox.setText(event.getValue().toString());
+					valueBox.setText(dateTimeFormat.format(event.getValue()));
 					tempDate = event.getValue();
 					GWT.log(tempDate.toString());
 					finalPVal.setDateValue(tempDate);

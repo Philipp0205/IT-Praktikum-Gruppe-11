@@ -36,13 +36,6 @@ public class ContactListMapper {
 	private static ContactListMapper contactListMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
-	 * neue Instanzen dieser Klasse zu erzeugen.
-	 */
-	protected ContactListMapper() {
-	}
-
-	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>ContactListMapper.contactListMapper()</code>. Sie stellt die
 	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine einzige
@@ -62,222 +55,23 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode trägt ein <code>ContactList</code> Objekt in die Datenbank ein.
-	 *
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dass in die Datenbank
-	 *            eingetragen werden soll.
-	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	public ContactList insertContactList(ContactList cl) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Strings mit einem SQL-Statement befüllen
-			String query = ("INSERT INTO contactList (listname) VALUES ('" + cl.getListName() + "')");
-
-			// Zwei ungefüllt SQL-Statements erstellen
-			Statement stmt = con.createStatement();
-			Statement stmt2 = con.createStatement();
-
-			// Befüllen, ausführen des SQL-Statements und gesetzte ID verfügbar machen
-			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-			// Erzeugen von zwei ResultSets
-			ResultSet rs = stmt.getGeneratedKeys();
-			ResultSet rs2;
-
-			// Wenn ein Tupel existiert wird die ID gesetzt
-			if (rs.next()) {
-				rs2 = stmt2.executeQuery(
-						"SELECT dateCreated, dateUpdated FROM contactList WHERE contactListID = " + rs.getInt(1));
-				cl.setId(rs.getInt(1));
-				// Wenn ein Tupel existiert wird das Erstellungdatum und letzte Update gesetzt
-				if (rs2.next()) {
-					cl.setDateCreated(rs2.getTimestamp("dateCreated"));
-					cl.setDateUpdated(rs2.getTimestamp("dateUpdated"));
-				}
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe des ContactList Objekts
-			return cl;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
-		}
+	protected ContactListMapper() {
 	}
 
 	/**
-	 * Diese Methode fügt einem <code>ContactList</code> Objekt ein
-	 * <code>Contact</code> Objekt in der Datenbank hinzu. Dazu mussen in der
-	 * Datenbank ein neues Tupel in der Kontakt-Kontaktliste-Tabelle angelegt
-	 * werden.
+	 * Diese Methode löscht eine Teilhaberschaft zwischen einem
+	 * <code>JabicsUser</code> Objekt und einem <code>ContactList</code> Objekt.
 	 * 
 	 * @param cl
-	 *            das <code>ContactList</code> Objekt, welchem das
-	 *            <code>Contact</code> Objekt zugeordnet wird.
-	 * @param c
-	 *            das <code>ContactList</code> Objekt, welches einer
-	 *            <code>ContactList</code> hinzugefügt werden soll.
-	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
-	 */
-	public ContactList insertContactIntoContactList(ContactList cl, Contact c) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-
-			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
-			// Befüllen und ausführen des SQL-Statements
-			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
-					+ ", " + cl.getId() + ")");
-
-			// Erzeugen eines zweiten ungefüllten SQL-Statements
-			Statement stmt2 = con.createStatement();
-
-			// Update des letzten Updates der Kontaktliste.
-			// Befüllen und ausführen des SQL-Statements
-			stmt2.executeUpdate(
-					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe des ContactList Objekts
-			return cl;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
-		}
-	}
-
-	/**
-	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code>
-	 * Objekts zu einem <code>ContactList</code> Objekt in die Datenbank ein.
-	 * 
+	 *            die ausgewählte Kontaktliste.
 	 * @param u
-	 *            der <code>JabicsUser</code> der an der <code>ContactList</code>
-	 *            Teilhaberschaftsrechte erlangen soll.
-	 * @param cl
-	 *            die <code>ContactList</code> an welcher ein der
-	 *            <code>JabicsUser</code> eine Teilhaberschaft bekommen soll.
-	 * @param IsOwner
-	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
-	 *            zuzuweisende Teilhaber auch der Besitzer ist.
-	 * @return Das übergebene <code>ContactList</code> Objekt
-	 */
-	public ContactList insertCollaboration(JabicsUser u, ContactList cl, boolean IsOwner) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-
-			// Einfügen einer neuen Teilhaberschaft mit Eigentümerschaft in die
-			// ContactlistCollaboration Tabelle.
-			// Befüllen und ausführen des SQL-Statements
-			stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES "
-					+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")");
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe des ContactList Objekts
-			return cl;
-		} catch (SQLException e) {
-			System.err.print(e);
-		}
-		return null;
-	}
-
-	/**
-	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in
-	 * der Datenbank.
-	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dass aktualisiert werden
+	 *            der Nutzer der die Teilhaberschaft zu der Kontaktliste verlieren
 	 *            soll.
-	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
-	public ContactList updateContactList(ContactList cl) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Zwei ungefüllte SQL-Statements erzeugen
-			Statement stmt = con.createStatement();
-			Statement stmt2 = con.createStatement();
-
-			// Update des Namens der Kontaktliste
-			// Befüllen und ausführen des ersten SQL-Statements
-			stmt.executeUpdate(
-					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
-
-			// Auslesen des letzten Updates
-			// Befüllen und ausführen des zweiten SQL-Statements
-			ResultSet rs = stmt2
-					.executeQuery("SELECT dateUpdated FROM contactList WHERE contactListID = " + cl.getId());
-
-			// Wenn ein Tupel in der Datenbank existiert wird das letzte Update ausgelesen
-			if (rs.next()) {
-				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe des ContactList Objekts
-			return cl;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
-		}
-	}
-
-	/**
-	 * Diese Methode löscht ein <code>ContactList</code> Objekt aus der Datenbank.
-	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dass gelöscht werden soll.
-	 */
-	public void deleteContactList(ContactList cl) {
+	public void deleteCollaboration(ContactList cl, JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
@@ -285,9 +79,10 @@ public class ContactListMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
+			// Löschen einer Teilhaberschaft aus der ContactlistCollaboration Tabelle.
 			// Befüllen und ausführen des SQL-Statements
-			stmt.executeUpdate("DELETE FROM contactList WHERE contactListID = " + cl.getId());
+			stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId()
+					+ " AND systemUserID = " + u.getId());
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
 			// werden diese geschlossen.
@@ -349,16 +144,12 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Diese Methode löscht eine Teilhaberschaft zwischen einem
-	 * <code>JabicsUser</code> Objekt und einem <code>ContactList</code> Objekt.
+	 * Diese Methode löscht ein <code>ContactList</code> Objekt aus der Datenbank.
 	 * 
 	 * @param cl
-	 *            die ausgewählte Kontaktliste.
-	 * @param u
-	 *            der Nutzer der die Teilhaberschaft zu der Kontaktliste verlieren
-	 *            soll.
+	 *            das <code>ContactList</code> Objekt, dass gelöscht werden soll.
 	 */
-	public void deleteCollaboration(ContactList cl, JabicsUser u) {
+	public void deleteContactList(ContactList cl) {
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
@@ -366,10 +157,9 @@ public class ContactListMapper {
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Löschen einer Teilhaberschaft aus der ContactlistCollaboration Tabelle.
+			// Löschen des <code>ContactList</code> Objekts aus der Datenbank.
 			// Befüllen und ausführen des SQL-Statements
-			stmt.executeUpdate("DELETE FROM contactlistCollaboration WHERE contactListID =" + cl.getId()
-					+ " AND systemUserID = " + u.getId());
+			stmt.executeUpdate("DELETE FROM contactList WHERE contactListID = " + cl.getId());
 
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
 			// werden diese geschlossen.
@@ -381,6 +171,58 @@ public class ContactListMapper {
 			}
 		} catch (SQLException e) {
 			System.err.print(e);
+		}
+	}
+
+	/**
+	 * Auslesen einer Liste von <code>JabicsUser</code> Objekten, welche eine
+	 * Teilhaberschaft an einem <code>ContactList</code> Objekt besitzen.
+	 * 
+	 * @param cl
+	 *            Das <code>ContactList</code> Objekt, dessen Teilhaber gesucht
+	 *            werden.
+	 * @return Die <code>ArrayList</code> mit den Teilhabern.
+	 */
+	public ArrayList<JabicsUser> findCollaborators(ContactList cl) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Erzeugen einer ArrayList
+			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
+
+			// Befüllen und ausführen des SQL-Statements
+			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email, systemUser.name "
+					+ " FROM systemUser "
+					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
+					+ " WHERE contactListID = " + cl.getId());
+
+			// Für jedes Tupel in der Datenbank wird ein Nutzer Objekt erstellt, mit Werten
+			// befüllt und an die Liste angehängt
+			while (rs.next()) {
+				JabicsUser u = new JabicsUser(rs.getString("email"));
+				u.setId(rs.getInt("systemUserID"));
+				u.setUsername(rs.getString("name"));
+				al.add(u);
+			}
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe der Liste
+			return al;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
 		}
 	}
 
@@ -492,58 +334,6 @@ public class ContactListMapper {
 	}
 
 	/**
-	 * Auslesen einer Liste von <code>JabicsUser</code> Objekten, welche eine
-	 * Teilhaberschaft an einem <code>ContactList</code> Objekt besitzen.
-	 * 
-	 * @param cl
-	 *            Das <code>ContactList</code> Objekt, dessen Teilhaber gesucht
-	 *            werden.
-	 * @return Die <code>ArrayList</code> mit den Teilhabern.
-	 */
-	public ArrayList<JabicsUser> findCollaborators(ContactList cl) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-
-			// Erzeugen einer ArrayList
-			ArrayList<JabicsUser> al = new ArrayList<JabicsUser>();
-
-			// Befüllen und ausführen des SQL-Statements
-			ResultSet rs = stmt.executeQuery("SELECT systemUser.systemUserID , systemUser.email, systemUser.name "
-					+ " FROM systemUser "
-					+ " LEFT JOIN contactlistCollaboration ON systemUser.systemUserID = contactlistCollaboration.systemUserID "
-					+ " WHERE contactListID = " + cl.getId());
-
-			// Für jedes Tupel in der Datenbank wird ein Nutzer Objekt erstellt, mit Werten
-			// befüllt und an die Liste angehängt
-			while (rs.next()) {
-				JabicsUser u = new JabicsUser(rs.getString("email"));
-				u.setId(rs.getInt("systemUserID"));
-				u.setUsername(rs.getString("name"));
-				al.add(u);
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe der Liste
-			return al;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
-		}
-	}
-
-	/**
 	 * Auslesen aller <code>BoStatus</code> aus einer Liste von
 	 * <code>ContactList</code> Objekten.
 	 * 
@@ -618,6 +408,216 @@ public class ContactListMapper {
 
 			// Rückgabe der ArrayList<BoStatus>
 			return al;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+	}
+
+	/**
+	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code>
+	 * Objekts zu einem <code>ContactList</code> Objekt in die Datenbank ein.
+	 * 
+	 * @param u
+	 *            der <code>JabicsUser</code> der an der <code>ContactList</code>
+	 *            Teilhaberschaftsrechte erlangen soll.
+	 * @param cl
+	 *            die <code>ContactList</code> an welcher ein der
+	 *            <code>JabicsUser</code> eine Teilhaberschaft bekommen soll.
+	 * @param IsOwner
+	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
+	 *            zuzuweisende Teilhaber auch der Besitzer ist.
+	 * @return Das übergebene <code>ContactList</code> Objekt
+	 */
+	public ContactList insertCollaboration(JabicsUser u, ContactList cl, boolean IsOwner) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Einfügen einer neuen Teilhaberschaft mit Eigentümerschaft in die
+			// ContactlistCollaboration Tabelle.
+			// Befüllen und ausführen des SQL-Statements
+			stmt.executeUpdate("INSERT INTO contactlistCollaboration (isOwner, contactListID, systemUserID) VALUES "
+					+ "(" + IsOwner + ", " + cl.getId() + ", " + u.getId() + ")");
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe des ContactList Objekts
+			return cl;
+		} catch (SQLException e) {
+			System.err.print(e);
+		}
+		return null;
+	}
+
+	/**
+	 * Diese Methode fügt einem <code>ContactList</code> Objekt ein
+	 * <code>Contact</code> Objekt in der Datenbank hinzu. Dazu mussen in der
+	 * Datenbank ein neues Tupel in der Kontakt-Kontaktliste-Tabelle angelegt
+	 * werden.
+	 * 
+	 * @param cl
+	 *            das <code>ContactList</code> Objekt, welchem das
+	 *            <code>Contact</code> Objekt zugeordnet wird.
+	 * @param c
+	 *            das <code>ContactList</code> Objekt, welches einer
+	 *            <code>ContactList</code> hinzugefügt werden soll.
+	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
+	 */
+	public ContactList insertContactIntoContactList(ContactList cl, Contact c) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Verknüpfungen zwischen Kontaktliste und Kontakten erzeugen.
+			// Befüllen und ausführen des SQL-Statements
+			stmt.executeUpdate("INSERT INTO contactContactLists (contactID, contactListID) VALUES " + "(" + c.getId()
+					+ ", " + cl.getId() + ")");
+
+			// Erzeugen eines zweiten ungefüllten SQL-Statements
+			Statement stmt2 = con.createStatement();
+
+			// Update des letzten Updates der Kontaktliste.
+			// Befüllen und ausführen des SQL-Statements
+			stmt2.executeUpdate(
+					"UPDATE contactList SET dateUpdated = CURRENT_TIMESTAMP WHERE contactListID = " + cl.getId());
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!stmt2.isClosed()) {
+				stmt2.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe des ContactList Objekts
+			return cl;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+	}
+
+	/**
+	 * Diese Methode trägt ein <code>ContactList</code> Objekt in die Datenbank ein.
+	 *
+	 * @param cl
+	 *            das <code>ContactList</code> Objekt, dass in die Datenbank
+	 *            eingetragen werden soll.
+	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
+	 */
+	public ContactList insertContactList(ContactList cl) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Strings mit einem SQL-Statement befüllen
+			String query = ("INSERT INTO contactList (listname) VALUES ('" + cl.getListName() + "')");
+
+			// Zwei ungefüllt SQL-Statements erstellen
+			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
+
+			// Befüllen, ausführen des SQL-Statements und gesetzte ID verfügbar machen
+			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+			// Erzeugen von zwei ResultSets
+			ResultSet rs = stmt.getGeneratedKeys();
+			ResultSet rs2;
+
+			// Wenn ein Tupel existiert wird die ID gesetzt
+			if (rs.next()) {
+				rs2 = stmt2.executeQuery(
+						"SELECT dateCreated, dateUpdated FROM contactList WHERE contactListID = " + rs.getInt(1));
+				cl.setId(rs.getInt(1));
+				// Wenn ein Tupel existiert wird das Erstellungdatum und letzte Update gesetzt
+				if (rs2.next()) {
+					cl.setDateCreated(rs2.getTimestamp("dateCreated"));
+					cl.setDateUpdated(rs2.getTimestamp("dateUpdated"));
+				}
+			}
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!stmt2.isClosed()) {
+				stmt2.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe des ContactList Objekts
+			return cl;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+	}
+
+	/**
+	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in
+	 * der Datenbank.
+	 * 
+	 * @param cl
+	 *            das <code>ContactList</code> Objekt, dass aktualisiert werden
+	 *            soll.
+	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
+	 */
+	public ContactList updateContactList(ContactList cl) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Zwei ungefüllte SQL-Statements erzeugen
+			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
+
+			// Update des Namens der Kontaktliste
+			// Befüllen und ausführen des ersten SQL-Statements
+			stmt.executeUpdate(
+					"UPDATE contactList SET listname = '" + cl.getListName() + "' WHERE contactListID = " + cl.getId());
+
+			// Auslesen des letzten Updates
+			// Befüllen und ausführen des zweiten SQL-Statements
+			ResultSet rs = stmt2
+					.executeQuery("SELECT dateUpdated FROM contactList WHERE contactListID = " + cl.getId());
+
+			// Wenn ein Tupel in der Datenbank existiert wird das letzte Update ausgelesen
+			if (rs.next()) {
+				cl.setDateUpdated(rs.getTimestamp("dateUpdated"));
+			}
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe des ContactList Objekts
+			return cl;
 		} catch (SQLException e) {
 			System.err.print(e);
 			return null;

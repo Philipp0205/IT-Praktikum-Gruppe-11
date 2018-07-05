@@ -40,6 +40,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	EditorAdmin editor;
 
 	TreeViewMenu treeViewMenu;
+	
+	
+	ArrayList<ContactList> editedLists;
 
 	/**
 	 * Der DataProvider ist dafür zuständig, die Anzeige zu aktualisieren, immer
@@ -354,12 +357,18 @@ public class ContactListTreeTab implements TreeViewModel {
 	public void updateContact(Contact c) {
 		// eService.getContactListById(c.getOwner().getId(), new
 		// UpdateContactCallback(c));
+		
+
+
 
 		ListDataProvider<Contact> cProvider;
 
 		// Kontaktlisten werden durchsucht
 		for (ContactList cl : contactListDataProviders.getList()) {
 			cProvider = contactDataProviders.get(cl);
+			
+			GWT.log("6.1 CL:" + cl.getListName());
+
 
 			int i = 0;
 			for (Contact c2 : cProvider.getList()) {
@@ -368,22 +377,21 @@ public class ContactListTreeTab implements TreeViewModel {
 				if (c2.getId() == c.getId()) {
 
 					cProvider.getList().set(i, c);
+					
+
+					contactDataProviders.get(cl).flush();
+
 					contactDataProviders.get(cl).refresh();
-					return;
 
 				} else
 					i++;
 
 			}
-
-			// for (Contact c2 : cl.getContacts()) {
-			// if (c2.getId() == c.getId()) {
-			// contactDataProviders.replace(c, c2);
-			// }
-			//
-			//
-			// }
 		}
+		
+		contactListDataProviders.flush();
+
+		
 	}
 
 	/**
@@ -444,14 +452,13 @@ public class ContactListTreeTab implements TreeViewModel {
 			return;
 
 	}
+	
+
 
 	public SingleSelectionModel<BusinessObject> getSelectionModel() {
 		return this.selectionModel;
 	}
 
-	public void flusContactList() {
-		this.contactListDataProviders.flush();
-	}
 
 	/*
 	 * Funktioniert so noch nicht.
