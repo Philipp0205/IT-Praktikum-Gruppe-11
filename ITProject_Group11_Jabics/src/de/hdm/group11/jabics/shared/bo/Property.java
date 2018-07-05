@@ -93,15 +93,6 @@ public class Property extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Setzen des Bezeichners.
-	 * 
-	 * @param label
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
 	 * Auslesen des Types.
 	 * 
 	 * @return type
@@ -111,21 +102,39 @@ public class Property extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Setzen des Types.
-	 * 
-	 * @param type
-	 */
-	public void setType(Type type) {
-		this.type = type;
-	}
-
-	/**
 	 * Auslesen des Types als String und in Kleinbuchstaben.
 	 * 
 	 * @return type
 	 */
 	public String getTypeInString() {
 		return type.toString().toLowerCase();
+	}
+
+	/**
+	 * Auslesen des booleschen Wertes, ob eine Eigenschaft Standard ist.
+	 * 
+	 * @return isStandard
+	 */
+	public boolean isStandard() {
+		return this.isStandard;
+	}
+
+	/**
+	 * Setzen des Bezeichners.
+	 * 
+	 * @param label
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * Setzen des booleschen Wertes, ob eine Eigenschaft Standard ist.
+	 * 
+	 * @param isStandard
+	 */
+	public void setStandard(boolean isStandard) {
+		this.isStandard = isStandard;
 	}
 
 	/**
@@ -139,20 +148,11 @@ public class Property extends BusinessObject implements Serializable {
 	}
 
 	/**
-	 * Auslesen des booleschen Wertes, ob eine Eigenschaft Standard ist.
+	 * Setzen des Types.
 	 * 
-	 * @return isStandard
+	 * @param type
 	 */
-	public boolean isStandard() {
-		return this.isStandard;
-	}
-
-	/**
-	 * Setzen des booleschen Wertes, ob eine Eigenschaft Standard ist.
-	 * 
-	 * @param isStandard
-	 */
-	public void setStandard(boolean isStandard) {
-		this.isStandard = isStandard;
+	public void setType(Type type) {
+		this.type = type;
 	}
 }

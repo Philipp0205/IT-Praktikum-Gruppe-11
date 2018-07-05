@@ -5,9 +5,8 @@ import java.io.Serializable;
 /**
  * <p>
  * Die Klasse <code>JabicsUser</code> implementiert Nutzer im System Jabics, ein
- * Nutzer ist ein Bediener des Systems, der sich über Google
- * eingeloggt hat. Viele Attribute werden direkt aus der Google Accounts API
- * übernommen.
+ * Nutzer ist ein Bediener des Systems, der sich über Google eingeloggt hat.
+ * Viele Attribute werden direkt aus der Google Accounts API übernommen.
  * </p>
  * 
  * @author Kurrle
@@ -33,8 +32,6 @@ public class JabicsUser implements Serializable {
 	 * Benutzername einer Instanz dieser Klasse.
 	 */
 	private String username;
-
-	
 
 	/**
 	 * Leerer Konstruktor
@@ -75,16 +72,14 @@ public class JabicsUser implements Serializable {
 	}
 
 	/**
-	 * Textuelle Repräsentation des <code>JabicsUser</code> durch die Mail Adresse.
+	 * Setzen der Mail Adresse.
 	 * 
 	 * @return email
 	 */
-	@Override
-	public String toString() {
+	public String getEmail() {
 		return this.email;
 	}
 
-	
 	/**
 	 * Auslesen der ID.
 	 * 
@@ -92,15 +87,6 @@ public class JabicsUser implements Serializable {
 	 */
 	public int getId() {
 		return this.id;
-	}
-
-	/**
-	 * Setzen der ID.
-	 * 
-	 * @param id
-	 */
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	/**
@@ -113,6 +99,24 @@ public class JabicsUser implements Serializable {
 	}
 
 	/**
+	 * Auslesen der Mail Adresse.
+	 * 
+	 * @param email
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * Setzen der ID.
+	 * 
+	 * @param id
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
 	 * Setzen des Usernames.
 	 * 
 	 * @param user
@@ -122,20 +126,12 @@ public class JabicsUser implements Serializable {
 	}
 
 	/**
-	 * Setzen der Mail Adresse.
+	 * Textuelle Repräsentation des <code>JabicsUser</code> durch die Mail Adresse.
 	 * 
 	 * @return email
 	 */
-	public String getEmail() {
+	@Override
+	public String toString() {
 		return this.email;
-	}
-
-	/**
-	 * Auslesen der Mail Adresse.
-	 * 
-	 * @param email
-	 */
-	public void setEmail(String email) {
-		this.email = email;
 	}
 }

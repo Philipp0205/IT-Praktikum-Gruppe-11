@@ -33,14 +33,6 @@ public class UserMapper {
 
 	/**
 	 * 
-	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
-	 * neue Instanzen dieser Klasse zu erzeugen.
-	 */
-	protected UserMapper() {
-	}
-
-	/**
-	 * 
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>UserMapper.userMapper()</code>. Sie stellt die Singleton-Eigenschaft
 	 * sicher, indem Sie dafür sorgt, dass nur eine einzige Instanz von
@@ -61,50 +53,11 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode trägt ein <code>JabicsUser</code> Objekt in die Datenbank ein.
 	 * 
-	 * @param u
-	 *            das <code>JabicsUser</code> Objekt, dass in die Datenbank
-	 *            eingetragen werden soll.
-	 * @return Das als Parameter übergebene <code>JabicsUser</code> Objekt.
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	 * neue Instanzen dieser Klasse zu erzeugen.
 	 */
-	public JabicsUser insertUser(JabicsUser u) {
-
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Strings mit einem SQL-Statement befüllen
-			String query = ("INSERT INTO systemUser (email, name) VALUES " + "('" + u.getEmail() + "','"
-					+ u.getUsername() + "')");
-
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-
-			// Ausführen des SQL-Statements und gesetzte ID verfügbar machen
-			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-			// Auslesen der gesetzten ID
-			ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next()) {
-				u.setId(rs.getInt(1));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe des JabicsUsers mit ID
-			return u;
-		} catch (SQLException e) {
-			System.err.print(e);
-		}
-		return null;
+	protected UserMapper() {
 	}
 
 	/**
@@ -135,53 +88,6 @@ public class UserMapper {
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
-	}
-
-	/**
-	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts mit der
-	 * ID
-	 * 
-	 * @param id
-	 *            Die id nach der gesucht werden soll.
-	 * @return Das gesuchte <code>JabicsUser</code> Objekt.
-	 */
-	public JabicsUser findUserById(int id) {
-		// Erzeugen der Datenbankverbindung
-		Connection con = DBConnection.connection();
-
-		try {
-			// Erzeugen eines ungefüllten SQL-Statements
-			Statement stmt = con.createStatement();
-
-			// Befüllen und ausführen des SQL-Statements
-			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE systemUserID = " + id);
-
-			// Erzeugen eines Nutzer Objekts
-			JabicsUser u = new JabicsUser();
-
-			// Wenn ein Tupel existiert wird das Nutzer Objekt mit Werten befüllt
-			if (rs.next()) {
-				u.setId(rs.getInt("systemUserID"));
-				u.setEmail(rs.getString("email"));
-				u.setUsername(rs.getString("name"));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
-			// Rückgabe des Nutzer Objekts
-			return u;
-		} catch (SQLException e) {
-			System.err.print(e);
-			return null;
-		}
-
 	}
 
 	/**
@@ -335,6 +241,101 @@ public class UserMapper {
 	}
 
 	/**
+	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts in der
+	 * Datenbank nach seiner E-Mail-Adresse.
+	 * 
+	 * @param email
+	 *            die E-Mail-Adresse, für welche das <code>JabicsUser</code> Objekt
+	 *            gesucht wird.
+	 * @return das gesuchte <code>JabicsUser</code> Objekt.
+	 */
+	public JabicsUser findUserByEmail(String email) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
+			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE email = '" + email + "'");
+
+			// Erzeugen eines Nutzer Objekts
+			JabicsUser u = new JabicsUser();
+
+			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
+			if (rs.next()) {
+				u.setId(rs.getInt("systemUserID"));
+				u.setEmail(rs.getString("email"));
+				u.setUsername(rs.getString("name"));
+			}else {
+				return null;
+			}
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe des Nutzer Objekts
+			return u;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+	}
+
+	/**
+	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts mit der
+	 * ID
+	 * 
+	 * @param id
+	 *            Die id nach der gesucht werden soll.
+	 * @return Das gesuchte <code>JabicsUser</code> Objekt.
+	 */
+	public JabicsUser findUserById(int id) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			// Befüllen und ausführen des SQL-Statements
+			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE systemUserID = " + id);
+
+			// Erzeugen eines Nutzer Objekts
+			JabicsUser u = new JabicsUser();
+
+			// Wenn ein Tupel existiert wird das Nutzer Objekt mit Werten befüllt
+			if (rs.next()) {
+				u.setId(rs.getInt("systemUserID"));
+				u.setEmail(rs.getString("email"));
+				u.setUsername(rs.getString("name"));
+			}
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe des Nutzer Objekts
+			return u;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+
+	}
+
+	/**
 	 * Auslesen eines <code>JabicsUser</code> Objektes, welches der Besitzer eines
 	 * <code>PValue</code> Objektes ist.
 	 * 
@@ -385,36 +386,35 @@ public class UserMapper {
 	}
 
 	/**
-	 * Diese Methode erlaubt die Suche eines <code>JabicsUser</code> Objekts in der
-	 * Datenbank nach seiner E-Mail-Adresse.
+	 * Diese Methode trägt ein <code>JabicsUser</code> Objekt in die Datenbank ein.
 	 * 
-	 * @param email
-	 *            die E-Mail-Adresse, für welche das <code>JabicsUser</code> Objekt
-	 *            gesucht wird.
-	 * @return das gesuchte <code>JabicsUser</code> Objekt.
+	 * @param u
+	 *            das <code>JabicsUser</code> Objekt, dass in die Datenbank
+	 *            eingetragen werden soll.
+	 * @return Das als Parameter übergebene <code>JabicsUser</code> Objekt.
 	 */
-	public JabicsUser findUserByEmail(String email) {
+	public JabicsUser insertUser(JabicsUser u) {
+
 		// Erzeugen der Datenbankverbindung
 		Connection con = DBConnection.connection();
 
 		try {
+			// Strings mit einem SQL-Statement befüllen
+			String query = ("INSERT INTO systemUser (email, name) VALUES " + "('" + u.getEmail() + "','"
+					+ u.getUsername() + "')");
+
 			// Erzeugen eines ungefüllten SQL-Statements
 			Statement stmt = con.createStatement();
 
-			// Auswählen aller User aus der Datenbank, die eine bestimmte ID haben.
-			ResultSet rs = stmt.executeQuery("SELECT * FROM systemUser " + " WHERE email = '" + email + "'");
+			// Ausführen des SQL-Statements und gesetzte ID verfügbar machen
+			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
-			// Erzeugen eines Nutzer Objekts
-			JabicsUser u = new JabicsUser();
-
-			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
+			// Auslesen der gesetzten ID
+			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				u.setId(rs.getInt("systemUserID"));
-				u.setEmail(rs.getString("email"));
-				u.setUsername(rs.getString("name"));
-			}else {
-				return null;
+				u.setId(rs.getInt(1));
 			}
+
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
 			// werden diese geschlossen.
 			if (!stmt.isClosed()) {
@@ -424,11 +424,11 @@ public class UserMapper {
 				con.close();
 			}
 
-			// Rückgabe des Nutzer Objekts
+			// Rückgabe des JabicsUsers mit ID
 			return u;
 		} catch (SQLException e) {
 			System.err.print(e);
-			return null;
 		}
+		return null;
 	}
 }
