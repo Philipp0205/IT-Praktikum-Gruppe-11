@@ -7,6 +7,7 @@ import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -144,9 +145,8 @@ public class SharedContactCellListTab extends Widget {
 
 		private void setSelectedContact(Contact c) {
 			GWT.log("4.1 Kontakt anzeigen" + c.getName());
+			Window.alert("Kontakt anzeigen" + c.getName());
 			editor.showContact(c);
-			
-
 		}
 		
 
