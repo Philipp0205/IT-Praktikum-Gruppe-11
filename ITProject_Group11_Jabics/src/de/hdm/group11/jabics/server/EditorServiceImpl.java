@@ -1123,13 +1123,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * </p>
 	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder Kriterien
 	 * verwendet. Für eine allgemeine Suche siehe
-	 * <code>searchExpressionInList</code>.
+	 * {@link searchExpressionInList}.
 	 * 
 	 * @param cl das zu durchsuchende <code>ContactList</code> Objekt.
 	 * @param pv das <code>PValue</code> Objekt, nach welchem gesucht wird.
 	 * @return Liste aller <code>Contact</code> Objekte, welche das
 	 *         <code>PValue</code> Objekt enthalten.
-	 * @see searchExpressionInList
 	 */
 	public ArrayList<Contact> searchInList(ContactList cl, PValue pv) {
 

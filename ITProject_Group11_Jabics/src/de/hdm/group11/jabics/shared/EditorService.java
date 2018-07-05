@@ -12,6 +12,9 @@ import de.hdm.group11.jabics.shared.bo.*;
 
 /**
  * Interface der Klasse <code>EditorServiceImpl</code>.
+ * 
+ * @author Kurrle
+ * @author Anders
  */
 @RemoteServiceRelativePath("editor")
 public interface EditorService extends RemoteService {
