@@ -54,8 +54,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 	Column<PValue, String> propertyvalue;
 
-	ContactForm cf;
-
 	Grid grid;
 
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
