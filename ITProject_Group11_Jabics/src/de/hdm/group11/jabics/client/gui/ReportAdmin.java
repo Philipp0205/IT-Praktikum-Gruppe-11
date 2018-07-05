@@ -201,7 +201,7 @@ public class ReportAdmin {
 				Window.Location.assign(loginfo.getLogoutUrl());
 			}
 		});
-		logoutButton.setStyleName("logbutton");
+		logoutButton.setStyleName("logoutbutton");
 		logoutPanel.add(logoutButton);
 	}
 

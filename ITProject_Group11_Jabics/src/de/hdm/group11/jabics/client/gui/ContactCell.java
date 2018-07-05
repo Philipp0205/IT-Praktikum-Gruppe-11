@@ -11,21 +11,26 @@ import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
 
 /**
- * Analog zu ContactListCell.
+ * Repäsentation einer Zeile in der ein Kintakt angezeigt wird. Zeigt den Namen des
+ * Kontaktes an. Neben der Namen ist eine Anzeige für <code>BoStatus</code>
+ * plaziert, welche anzeigt ob der Kontakt geteilt wurde.
  * 
  * @author Kurrle
  */
 public class ContactCell extends AbstractCell<Contact> {
 	
-	//rivate final String imageHtml;
-	
-	//final JabicsResources INSTANCE = GWT.create(JabicsResources.class);
-	
-	public ContactCell() {
-		//this.imageHtml = AbstractImagePrototype.create(image).getHTML();
-		
+	public ContactCell() {		
 	}
-
+	
+	/**
+	 *  Rendert eine Zeile als HTML-Element, welches anschließend als solches angezeigt werden kann.
+	 *  Es wernden der Name des <code>Contacts</code> als auch der <code>BoStatus</code>
+	 *  angezeigt.
+	 *  
+	 *  @param context, wird nicht benutzt.
+	 *  @param c, Kontakt der angezeigt werden soll
+	 *  @param sb, HtmlBuilder, welcher die Html-Repäsenation des Kontakt erstellt
+	 */
 	@Override
 	public void render(Context context, Contact c, SafeHtmlBuilder sb) {
 				
@@ -40,19 +45,13 @@ public class ContactCell extends AbstractCell<Contact> {
 			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
 			          break;
 			        default:
-			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
 			        }
 			      } catch (Exception e) {
 			        GWT.log("ShareStatus undefined for Contact" + c.getName());
 			        sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
 			      }
 		}
-		
-			
-			//sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
-			// sb.appendHtmlConstant("<div>");
-			//sb.appendHtmlConstant()
 			sb.appendEscaped(c.getName());
-			// sb.appendHtmlConstant("</div>");
 	}
 }

@@ -107,7 +107,7 @@ public class SearchForm extends VerticalPanel {
 		datepicker = new DatePicker();
 		finalPVal = new PValue();
 		back = new Button("↩");
-		back.setStyleName("back");
+		back.setStyleName("sfback");
 		ct = new ContactCellListTab(currentUser, null);
 		list = ct.createContactTabForSearchForm();
 

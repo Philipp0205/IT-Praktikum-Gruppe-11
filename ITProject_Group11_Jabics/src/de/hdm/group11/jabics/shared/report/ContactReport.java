@@ -3,15 +3,12 @@ package de.hdm.group11.jabics.shared.report;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import de.hdm.group11.jabics.shared.bo.JabicsUser;
-
 /**
- * Ein simpler Report, welcher die Superklasse Report erweitert.
+ * Ein simpler Report, welcher die Superklasse Report erweitert und einen
+ * einzelnen Kontakt mit dessen Eigenschaften repräsentiert.
  * 
  * @author Anders and Kurrle
- *
  */
-
 public class ContactReport extends Report implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,6 +23,22 @@ public class ContactReport extends Report implements Serializable {
 	public ContactReport() {
 	}
 
+	/**
+	 * Einen neuen ContactReport erstellen.
+	 * 
+	 * @param pv,
+	 *            ArrayList<PropertyView> mit allen anzuzeigenden Eigenschaften
+	 * @param contactInfo,
+	 *            Ein Paragraph mit dem Kontaktnamen
+	 * @param userInfo,
+	 *            ein Paragraph mit dem Nutzernamen
+	 * @param creationInfo,
+	 *            ein Paragraph mit dem Erstelldatum
+	 * @param updateInfo,
+	 *            ein Paragraph mit dem Updatedatum
+	 * @param collaborationInfo,
+	 *            ein Paragraph mit allen geteilten Nutzern
+	 */
 	public ContactReport(ArrayList<PropertyView> pv, Paragraph contactInfo, Paragraph userInfo, Paragraph creationInfo,
 			Paragraph updateInfo, Paragraph collaborationInfo) {
 		this(pv);
@@ -37,7 +50,7 @@ public class ContactReport extends Report implements Serializable {
 	}
 
 	/**
-	 * constructor
+	 * Diesen Konstruktor nur in Ausnahmefällen verwenden
 	 */
 	public ContactReport(ArrayList<PropertyView> pv, Paragraph contactInfo, Paragraph userInfo) {
 		this(pv);
@@ -75,18 +88,25 @@ public class ContactReport extends Report implements Serializable {
 		 */
 	}
 
-	public void addLine(PropertyView pv) {
+	/**
+	 * Eine PropertsView dem Report hinzufügen
+	 * 
+	 * @param pv,
+	 *            PropertyView, die hinzugefügt werden soll
+	 */
+	public void addProperty(PropertyView pv) {
 		this.content.add(pv);
 	}
 
-	@Override
+	/**
+	 * Den Namen des ContactReports erhalten
+	 * 
+	 * @return String im Format: "Report for Contact: " + Anzeigename des Kontakts
+	 */
 	public String toString() {
 		return "Report for Contact: " + this.contactInfo;
 	}
 
-	/**
-	 * Getters and setters
-	 */
 	public ArrayList<PropertyView> getContent() {
 		return this.content;
 	}
