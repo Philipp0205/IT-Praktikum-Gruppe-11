@@ -15,6 +15,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -57,7 +58,17 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	ContactForm cf;
 
 	Grid grid;
+	
+	// Ressourcen für die CellTable
 
+		public interface CellTableResources extends CellTable.Resources {
+
+			@Override
+			@Source("JabicsCellTable.css")
+			CellTable.Style cellTableStyle();
+		}
+	//cellTable Ressourcen
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	/**
 	 * Die Contact Form das erste Mal erstellen, Tabellen hinzufügen und alles
 	 * verknüpfen
@@ -65,7 +76,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	public ContactCollaborationForm() {
 
 		// Alles, was mit der PVal Tabelle zu tun hat
-		valueTable = new CellTable<PValue>();
+		valueTable = new CellTable<PValue>(100,ctRes);
+		
+		
 
 		valueProvider = new ListDataProvider<PValue>();
 		valueProvider.addDataDisplay(valueTable);
@@ -110,13 +123,14 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		// ####################### Alles, was mit der Auwahl der Nutzer zu tun hat
 
-		userTable = new CellTable<JabicsUser>();
+		userTable = new CellTable<JabicsUser>(100, ctRes);
 
 		userDataProvider = new ListDataProvider<JabicsUser>();
 		userDataProvider.addDataDisplay(userTable);
 
 		oracle = new MultiWordSuggestOracle();
 		suggestBox = new SuggestBox(oracle);
+		suggestBox.setStyleName("pvBox");
 
 		/**
 		 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
@@ -149,6 +163,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 		userTable.setSelectionModel(userSelectionModel);
+		
 
 		// +++++++++++++Alle Buttons
 
@@ -236,6 +251,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		this.add(grid);
 	}
+	
+
+	
 	// selUser.getResources und getRowElement
 
 	public void fillSuggestBox() {
@@ -397,4 +415,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		}
 	}
+	
+	
 }

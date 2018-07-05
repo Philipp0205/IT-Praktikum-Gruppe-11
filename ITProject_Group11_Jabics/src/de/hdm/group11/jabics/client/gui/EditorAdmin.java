@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -21,6 +20,15 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
+/**
+ * In der Klasse <code>EditorAdmin</code> werden die einzelnen Teile der Gui
+ * zusammengeführt und die Darstellung der einzelnen Klassen initiiert.
+ * EditorAdmin kann wie eine Verwalterklasse gesehen werden, die zu jedem
+ * Zeitpunkt über das Geschehen im Editor Bescheid weiß. Folgende Klassen werden
+ * verwaltet: ShowContactForm, EditContactForm, ContactCollaborationForm,
+ * ExisitingContactColaborationForm, ContactListForm,
+ * ContactListCollaborationForm, SearchForm, TreeViewMenu mit seinen "Subtabs".
+ */
 public class EditorAdmin {
 
 	private EditorServiceAsync editorService;
@@ -28,11 +36,17 @@ public class EditorAdmin {
 	private LoginInfo loginfo;
 	private JabicsUser currentUser;
 
+	/*
+	 * Buttons
+	 */
 	private Button logoutButton;
 	private Button deleteUserButton;
 	private Button createC;
 	private Button createCL;
 
+	/*
+	 * Panelstrutur
+	 */
 	private HorizontalPanel topPanel = new HorizontalPanel();
 	private VerticalPanel menuPanel = new VerticalPanel();
 	private VerticalPanel mainPanel = new VerticalPanel();
@@ -41,7 +55,7 @@ public class EditorAdmin {
 	private HorizontalPanel widgetPanel = new HorizontalPanel();
 	private HorizontalPanel formPanel = new HorizontalPanel();
 
-	/**
+	/*
 	 * Instanzenvariablen, die Kontakte oder Kontaktlisten zu Anzeige bringen
 	 */
 	private EditContactForm ecForm;
@@ -54,6 +68,13 @@ public class EditorAdmin {
 
 	private TreeViewMenu treeViewMenu;
 
+	/**
+	 * Eine neue Instanz des EditorAdmins erstellen. In einem eingeloggten Zustand
+	 * existiert immer nur eine einzige Instanz dieser Klasse, die über alle anderen
+	 * Klassen "Bescheid" weiß. Diesen Konstruktor darf also nur Editor aufrufen!
+	 * 
+	 * @param u, der eingeloggte <code>JabicsUser</code>
+	 */
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
 		editorService = ClientsideSettings.getEditorService();
@@ -89,6 +110,9 @@ public class EditorAdmin {
 		menuPanel.setStyleName("menuPanel");
 	}
 
+	/**
+	 * Den Editor anzeigen, dem Rootpanel hinzufügen.
+	 */
 	public void loadEditor() {
 		GWT.log("hallo gwt");
 		if (editorService == null) {
@@ -105,17 +129,27 @@ public class EditorAdmin {
 	}
 
 	/**
-	 * Getter und Setter
+	 * Die aktuelle LoginInfo setzen
+	 * 
+	 * @param logon LoginInfo mit aktuellem Nutzer
 	 */
 	public void setLoginInfo(LoginInfo logon) {
 		this.loginfo = logon;
 	}
 
+	/**
+	 * Den aktuellen Nutzer setzen
+	 * 
+	 * @param u, Aktueller Nutzer
+	 */
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
 		// treeViewMenu.setUser(u);
 	}
 
+	/**
+	 * Den LogoutButton anzeigen
+	 */
 	public void loadLogout() {
 		logoutButton = new Button("Abmelden");
 		logoutButton.addClickHandler(new ClickHandler() {
@@ -123,10 +157,13 @@ public class EditorAdmin {
 				Window.Location.assign(loginfo.getLogoutUrl());
 			}
 		});
-		logoutButton.setStyleName("logbutton");
+		logoutButton.setStyleName("logoutbutton");
 		logoutPanel.add(logoutButton);
 	}
 
+	/**
+	 * Ausschließlich das linke Auswahlmenu anzeigen
+	 */
 	public void showMenuOnly() {
 		if (treeViewMenu != null) {
 			formPanel.clear();
@@ -136,9 +173,12 @@ public class EditorAdmin {
 	}
 
 	/**
-	 * Kontakte, Listen und CollabForms anzeigen
+	 * EInen Kontakt anzeigen
+	 * 
+	 * @param c, Kontakt, der angezeigt werden soll
 	 */
 	public void showContact(Contact c) {
+		GWT.log("showCOnt");
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
@@ -147,11 +187,16 @@ public class EditorAdmin {
 		formPanel.clear();
 		scForm.setContact(c);
 		GWT.log("form einfügen");
-		//formPanel.insert(scForm, 0);
+		// formPanel.insert(scForm, 0);
 		formPanel.add(scForm);
 		GWT.log("ShowCont fertig");
 	}
 
+	/**
+	 * Einen Kontakt editieren.
+	 * 
+	 * @param c, Kontakt, der editiert werden soll
+	 */
 	public void editContact(Contact c) {
 		GWT.log("editcont");
 		// if (this.cForm == null) {
@@ -170,6 +215,11 @@ public class EditorAdmin {
 		formPanel.setStyleName("formPanel");
 	}
 
+	/**
+	 * Eine EditContactForm für einen neuen Kontakt anzeigen
+	 * 
+	 * @param c, neuer Kontakt, der angelegt werden soll
+	 */
 	public void newContact(Contact c) {
 		GWT.log("editcont");
 		// if (this.cForm == null) {
@@ -188,12 +238,17 @@ public class EditorAdmin {
 		formPanel.setStyleName("formPanel");
 	}
 
+	/**
+	 * Eine ContactListForm für eine neue Kontaktliste anzeigen.
+	 * 
+	 * @param cl, neue Kontaktliste, die angelegt werden soll
+	 */
 	public void newContactList(ContactList cl) {
-		//if (this.clForm == null) {
-			clForm = new ContactListForm();
-			clForm.setEditor(this);
-			clForm.setUser(this.currentUser);
-		
+		// if (this.clForm == null) {
+		clForm = new ContactListForm();
+		clForm.setEditor(this);
+		clForm.setUser(this.currentUser);
+
 		formPanel.clear();
 		GWT.log("Editor: isNewList true");
 		clForm.setIsNewList(true);
@@ -204,6 +259,11 @@ public class EditorAdmin {
 		formPanel.setStyleName("formPanel");
 	}
 
+	/**
+	 * Eine Kontaktliste in einer ContactListForm anzeigen
+	 * 
+	 * @param cl, Kontaktliste, die angezeigt werden soll
+	 */
 	public void showContactList(ContactList cl) {
 		GWT.log("7.x showContactList");
 
@@ -221,6 +281,11 @@ public class EditorAdmin {
 		formPanel.add(clForm);
 	}
 
+	/**
+	 * ContactCollaborationFOrm anzeigen, um einen Kontakt neu zu teilen.
+	 * 
+	 * @param c, Kontakt, der geteilt werden soll
+	 */
 	public void showContactCollab(Contact c) {
 		GWT.log("contactCollab");
 		if (this.ccForm == null) {
@@ -235,6 +300,11 @@ public class EditorAdmin {
 		formPanel.add(ccForm);
 	}
 
+	/**
+	 * Die Kollaborationen zwischen Nutzern und einem Kontakt bearbeiten
+	 * 
+	 * @param c, Kontakt, dessen Kollaborationen bearbeitet werden sollen.
+	 */
 	public void showExistingContactCollab(Contact c) {
 		GWT.log("existingContactCollab");
 		if (this.eccForm == null) {
@@ -247,6 +317,12 @@ public class EditorAdmin {
 		formPanel.insert(eccForm, 0);
 	}
 
+	/**
+	 * Die ContactListCollaborationForm anzeigen, um Teilhaberschaften einer
+	 * Kontaktliste zu bearbeiten
+	 * 
+	 * @param cl, Kontaktliste, für die Teilhaberschaften bearbeitet werden sollen
+	 */
 	public void showContactListCollab(ContactList cl) {
 
 		GWT.log("contactListCollab");
@@ -262,6 +338,11 @@ public class EditorAdmin {
 		// formPanel.insert(clcForm, 0);
 	}
 
+	/**
+	 * Die Searchform anzeigen, die das Durchsuchen einer Kotnaktliste ermöglicht.
+	 * 
+	 * @param cl, Kontaktliste, die durchsucht werden soll
+	 */
 	public void showSearchForm(ContactList cl) {
 		// if (this.sForm == null) {
 
@@ -274,6 +355,11 @@ public class EditorAdmin {
 		GWT.log("#######SearchForm");
 	}
 
+	/**
+	 * Zuruück zur Anzeige eines Kontakts
+	 * 
+	 * @param c, Kontakt, der angeziegt werden soll
+	 */
 	public void returnToContactForm(Contact c) {
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
@@ -287,6 +373,11 @@ public class EditorAdmin {
 		scForm.setStyleName("scForm");
 	}
 
+	/**
+	 * Zuruück zur Anzeige einer Kontaktliste
+	 * 
+	 * @param cl, Kontaktliste, die angezeigt werden soll
+	 */
 	public void returnToContactListForm(ContactList cl) {
 		if (this.clForm == null) {
 			clForm = new ContactListForm();
@@ -297,46 +388,94 @@ public class EditorAdmin {
 		widgetPanel.add(clForm);
 	}
 
+	/**
+	 * Einen Nutzer löschen. Löscht den Nutzer permanent aus dem System, Vorsicht
+	 * beim Aufruf diser Methode!
+	 */
 	public void deleteUser() {
 		Window.alert("Achtung nicht auf ok drücken");
 		editorService.deleteUser(currentUser, new DeleteUserCallback());
 	}
 
 	/**
-	 * TreeView manipulieren
+	 * Contact zum Menü hinzufügen
+	 * 
+	 * @param
 	 */
 	public void addContactToTree(Contact c) {
 		treeViewMenu.addContact(c);
 	}
 
+	/**
+	 * Kontaktliste zum TreeMenu hinzufügen
+	 * 
+	 * @param cl, Kontaktliste, die hinzugefügt werden soll
+	 */
 	public void addContactListToTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
 	}
 
+	/**
+	 * Einen Kontakt einer Liste im Tree hinzufügen
+	 * 
+	 * @param cl Kontaktliste, der der Kontakt hinzugefügt werden soll
+	 * @param c  Kontakt, der der Liste hinzugefügt werden soll
+	 */
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
 	}
 
+	/**
+	 * Einen Kontakt in allen Tabs und im Tree aktualisieren * @param c Kontakt, der
+	 * aktualisiert werden soll
+	 */
 	public void updateContactInTree(Contact c) {
 		treeViewMenu.updateContact(c);
 	}
 
+	/**
+	 * Kontaktliste im Tree aktualisieren
+	 * 
+	 * @param cl Kontaktliste, die aktualisiert werden soll
+	 */
 	public void updateContactListInTree(ContactList cl) {
 		treeViewMenu.updateContactListInTree(cl);
 	}
 
+	/**
+	 * Einen Kontakt aus einer Liste im Tree entfernen
+	 * 
+	 * @param cl, Kontaktliste, aus der der Kontakt entfernt werden soll
+	 * @param c, Kontakt, der aus der Liste entfernt werden soll
+	 */
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
 		treeViewMenu.removeContactOfContactList(cl, c);
 	}
 
+	/**
+	 * Kontakt aus dem Menu vollständig entfernen.
+	 * 
+	 * @param c Kontakt, der entfernt werden soll
+	 */
 	public void removeContact(Contact c) {
 		treeViewMenu.removeContact(c);
 	}
 
+	/**
+	 * Kontaktliste aus dem TreeMenu entfernen
+	 * 
+	 * @param cl, Kontaktliste, die entfernt werden soll
+	 */
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
 	}
 
+	/**
+	 * ClickHandler, der die DeleteUserDialogBox zur Anzeige bringe
+	 * 
+	 * @author Anders
+	 *
+	 */
 	private class DeleteUserClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
 			DeleteUserDialogBox deleteBox = new DeleteUserDialogBox();
@@ -344,6 +483,11 @@ public class EditorAdmin {
 		}
 	}
 
+	/**
+	 * DialogBox, die den Nutzer fragt, ob er sein Konto wirklich löschen möchte
+	 * 
+	 * @author Anders
+	 */
 	private class DeleteUserDialogBox extends DialogBox {
 		private Label confirmation = new Label("Damit löschen Sie Ihr Konto bei Jabics, alle zugehörigen Kontakte, "
 				+ "Listen und Freigaben. Sind Sie sicher?");

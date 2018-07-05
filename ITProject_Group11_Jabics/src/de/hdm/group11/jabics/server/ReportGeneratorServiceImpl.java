@@ -95,7 +95,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		result.setHeadline(new Paragraph("Report aller Kontakte für " + u.getUsername()));
 		result.setFootline(new Paragraph("Ende des Reports"));
 		result.setCreationDate(new Date());
-		result.setCreator(u);
+		result.setCreator(new Paragraph(u.getUsername()));
 
 		/**
 		 * Einen neuen ContactReport für jeden Kontakt eines Nutzers und jedes PValue
@@ -131,6 +131,17 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		return result;
 	}
 
+	/**
+	 * Einen Contact Report für einen einzelnen Kontakt erstellen.
+	 * 
+	 * @param pv,
+	 *            ArrayList<PropertyView> aller PValues des zu erstelleden Reports
+	 * @param contact,
+	 *            Der Kontakt, für den der ContactReport erstellt werden soll
+	 * @param collaborators,
+	 *            Paragraph aller Teilhaber an diesem Kontakt
+	 * @return ContactReport, das erstellte ContactReport Objekt
+	 */
 	public ContactReport createContactReport(ArrayList<PropertyView> pv, Contact contact,
 			ArrayList<JabicsUser> collaborators) {
 		Paragraph contactInfo = new Paragraph("Kein Kontaktname");
@@ -168,6 +179,17 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		return newRP;
 	}
 
+	/**
+	 * Einen Report für einen Nutzer erstellen, der nach Kollaborationen an
+	 * Kontakten gefiltert ist.
+	 * 
+	 * @param u,
+	 *            JabicsUser, für den der Report erstellt werden soll
+	 * @param finalUser,
+	 *            ArrayList<JabicsUser> aller Nutzer, nach denen gefiltert werden
+	 *            soll
+	 * @return FilteredContactsOfUserReport, das erstellte Report Objekt
+	 */
 	public FilteredContactsOfUserReport createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser) {
 
 		FilteredContactsOfUserReport report = new FilteredContactsOfUserReport();
@@ -225,8 +247,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		 */
 		switch (pv.getProperty().getType()) {
 		case STRING:
-				result.setSubReports(this.filterContactsByString(contacts, pv));
-				if (pv.getStringValue() != null) {
+			result.setSubReports(this.filterContactsByString(contacts, pv));
+			if (pv.getStringValue() != null) {
 				filtercriteria[0] = pv.getStringValue();
 			} else {
 				filtercriteria[0] = pv.getProperty().getLabel();
@@ -310,7 +332,6 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			for (PValue p : c.getValues()) {
 				pviews.add(new PropertyView(p));
 			}
-			// JabicsUser u = uMapper.findUserByContact(c);
 			results.add(createContactReport(pviews, c, cMapper.findCollaborators(c)));
 		}
 		return results;

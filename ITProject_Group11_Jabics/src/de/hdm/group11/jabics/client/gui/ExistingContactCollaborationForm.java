@@ -22,6 +22,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
@@ -64,6 +65,9 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	ContactForm cf;
 
 	Grid grid;
+	
+	//Ressourcen für CellTables
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	public void onLoad() {
 		retrieveSharedUser();
@@ -78,7 +82,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 		valueLabel = new Label("Eigenschaften, die der ausgewählte Nutzer sehen darf");
 
-		selValues = new CellTable<PValue>();
+		selValues = new CellTable<PValue>(100,ctRes);
 		valueProvider = new ListDataProvider<PValue>();
 
 		userProvider = new ListDataProvider<JabicsUser>();

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.*;
 import de.hdm.group11.jabics.shared.bo.*;
 import com.google.gwt.event.dom.client.*;
@@ -56,11 +57,15 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	private TextColumn<JabicsUser> newCollabName;
 
 	Boolean otherCallbackArrived = false;
+	
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	public void onLoad() {
+		listPanel.setStyleName("listpanel");
 		GWT.log("#####################ContactListCollab onLoad");
 
 		shareList = new Button("Ausgewählten Nutzern freigeben");
+		shareList.setStyleName("clcbtn");
 		shareList.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen"
@@ -69,6 +74,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			}
 		});
 		deShareList = new Button("Ausgewählten Nutzern entteilen");
+		deShareList.setStyleName("clcbtn");
 		deShareList.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen "
@@ -76,7 +82,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 				deshareContact();
 			}
 		});
-		exit = new Button("Abbrechen/Zurück");
+		exit = new Button("Abbrechen");
+		exit.setStyleName("clcbtn");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				e.returnToContactListForm(sharedContactList);
@@ -102,9 +109,14 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		suggestionPanel.add(suggestBox);
 		suggestionPanel.add(addButton);
 		suggestionPanel.add(removeButton);
+		suggestBox.setStyleName("TextBox");
+		addButton.setStyleName("clcbtn");
+		removeButton.setStyleName("clcbtn");
+		
 
 		listPanel.add(newCollabTable);
 		listPanel.add(existingCollabTable);
+		
 
 		buttonPanel.add(shareList);
 		buttonPanel.add(deShareList);
@@ -192,7 +204,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		 * Provider erstellen, der ausgewählte Nutzer einer Tabelle zur Verfügung stellt
 		 */
 		newCollabDataProvider = new ListDataProvider<JabicsUser>();
-		newCollabTable = new CellTable<JabicsUser>();
+		newCollabTable = new CellTable<JabicsUser>(100,ctRes);
 
 		newCollabDataProvider.setList(newCollaborators);
 		newCollabDataProvider.addDataDisplay(newCollabTable);
@@ -207,7 +219,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		});
 
 		existingUserDataProvider = new ListDataProvider<JabicsUser>();
-		existingCollabTable = new CellTable<JabicsUser>();
+		existingCollabTable = new CellTable<JabicsUser>(100,ctRes);
 
 		existingUserSelectionModel = new MultiSelectionModel<JabicsUser>();
 		existingCollabTable.setSelectionModel(existingUserSelectionModel);
@@ -239,14 +251,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		};
 		existingCollabTable.addColumn(existingCollabName, "Bereits geteilt mit");
 		newCollabTable.addColumn(newCollabName, "Neu teilen mit");
-
 	}
 
+	/**
+	 * SuggestBox für Nutzer hinzufügen und mit Optionen befüllen
+	 */
 	public void createSuggestBox() {
 
-		/**
-		 * SuggestBox hinzufügen und mit Optionen befüllen
-		 */
 		oracle = new MultiWordSuggestOracle();
 		suggestBox = new SuggestBox(oracle);
 
@@ -379,7 +390,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
 				GWT.log("GetAllCollaboratingUserCallback onSuccess");
-				// GWT.log("alleNutzergesetzt " + user.get(1).getEmail());
 				setAllCollaborators(user);
 			}
 			if (!otherCallbackArrived) {
