@@ -376,7 +376,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public PValue createPValue(Property p, int i, Contact c, JabicsUser u) {
 		PValue newPValue = new PValue(p, i, u);
-		/* erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
+		/*
+		 * erst Erstellen des PValue Objektes in der db, dann die Collaboration mit
 		 * isOwner = true, dann dem Besitzer das PValue freigeben, wenn dieser es noch
 		 * nicht hat und zuletzt den Contact updaten, damit dieser einen neuen
 		 * Zeitstempel bekommt.
@@ -753,8 +754,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
 	 * einem <code>Contact</code> Objekt besitzen.
 	 *
-	 * @param c der <code>Contact</code> für welchen die Collaborator gesucht
-	 *          werden.
+	 * @param c
+	 *            der <code>Contact</code> für welchen die Collaborator gesucht
+	 *            werden.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(Contact c) {
@@ -773,8 +775,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * einem <code>ContactList</code> Objekt besitzen. Der Besitzer wird nicht
 	 * zurückgegeben.
 	 * 
-	 * @param cl die <code>ContactList</code> für welche die Collaborator gesucht
-	 *           werden.
+	 * @param cl
+	 *            die <code>ContactList</code> für welche die Collaborator gesucht
+	 *            werden.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
@@ -792,7 +795,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
 	 * einem <code>PValue</code> Objekt besitzen.
 	 * 
-	 * @param pv die <code>PValue</code> für welche die Collaborator gesucht werde.
+	 * @param pv
+	 *            die <code>PValue</code> für welche die Collaborator gesucht werde.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(PValue pv) {
@@ -803,7 +807,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>Contact</code> Objekte, welche einem
 	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
 	 * 
-	 * @param u der aktuelle <code>JabicsUser</code>.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
 	 * @return Die Liste der <code>Contact</code> Objekte.
 	 */
 	public ArrayList<Contact> getContactsOf(JabicsUser u) {
@@ -838,9 +843,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>Contact</code> Objekte eines <code>ContactList</code>
 	 * Objekts.
 	 * 
-	 * @param cl das <code>ContactList</code> Objekt, für welche die
-	 *           <code>Contact</code> Objekte gesucht werden.
-	 * @param u  der aktuelle <code>JabicsUser</code>.
+	 * @param cl
+	 *            das <code>ContactList</code> Objekt, für welche die
+	 *            <code>Contact</code> Objekte gesucht werden.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
 	 * @return Die Liste der <code>Contact</code> Objekte, welche in einer
 	 *         <code>ContactList</code> liegen.
 	 */
@@ -956,11 +963,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
 			ArrayList<PValue> result = new ArrayList<PValue>();
 			int i = 0;
-			
+
 			// Im Fall, dass der Owner des Kontakt vorliegt, schnellere Abfertigung
 			JabicsUser owner = uMapper.findUserByContact(c);
-			if(u.getId() == owner.getId()) {
-				
+			if (u.getId() == owner.getId()) {
+
 				for (PValue pv : allPV) {
 					System.out.println("gefunden: " + pv.toString());
 					pv.setShareStatus(status.get(i));
@@ -969,8 +976,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				}
 				return result;
 			}
-			
-			
+
 			// PValues filtern, wenn nicht geteilt und den Share Status setzen
 			for (PValue pv : allPV) {
 				System.out.println("gefunden: " + pv.toString());
@@ -1000,16 +1006,23 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen des aktualisierten <code>Contact</code> Objektes.
 	 * 
 	 * @param c
-	 *            der <code>Contact</code>, der aktualisiert wurde.
-	 * @return Den aktuellen <code>Contact</code>.
+	 *            der <code>Contact</code>, der aktualisiert wurde. * @return Den
+	 *            aktuellen <code>Contact</code>.
 	 */
 	public Contact getUpdatedContact(Contact c) {
 		Contact updated = cMapper.findContactById(c.getId());
+		JabicsUser owner = uMapper.findUserByContact(c);
+		ArrayList<PValue> pvalues = getPValueOf(c, owner);
 		ArrayList<Contact> con = new ArrayList<Contact>();
 		con.add(updated);
 		ArrayList<BoStatus> status = cMapper.findShareStatus(con);
-		if (status.isEmpty()) {
-			updated.setShareStatus(status.get(1));
+		updated.setValues(pvalues);
+		try {
+			if (!status.isEmpty()) {
+				updated.setShareStatus(status.get(0));
+			}
+		} catch (Exception e) {
+			System.err.println(e);
 		}
 		return updated;
 	}
@@ -1118,11 +1131,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * einem <code>ContactList</code> Objekt.
 	 * </p>
 	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder Kriterien
-	 * verwendet. Für eine allgemeine Suche siehe
-	 * {@link searchExpressionInList}.
+	 * verwendet. Für eine allgemeine Suche siehe {@link searchExpressionInList}.
 	 * 
-	 * @param cl das zu durchsuchende <code>ContactList</code> Objekt.
-	 * @param pv das <code>PValue</code> Objekt, nach welchem gesucht wird.
+	 * @param cl
+	 *            das zu durchsuchende <code>ContactList</code> Objekt.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, nach welchem gesucht wird.
 	 * @return Liste aller <code>Contact</code> Objekte, welche das
 	 *         <code>PValue</code> Objekt enthalten.
 	 */
