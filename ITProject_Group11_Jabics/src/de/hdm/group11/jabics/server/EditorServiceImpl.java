@@ -7,7 +7,6 @@ import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -194,8 +193,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Erzeugen eines <code>Contact</code> Objekts.
 	 * 
-	 * @param pArray Die Liste aus <code>PValue</code> Objekten.
-	 * @param u      der aktuelle <code>JabicsUser</code>.
+	 * @param pArray
+	 *            Die Liste aus <code>PValue</code> Objekten.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
 	 * @return Der erzeugte <code>Contact</code>.
 	 */
 	public Contact createContact(ArrayList<PValue> pArray, JabicsUser u) {
@@ -267,9 +268,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Erzeugen eines <code>ContactList</code> Objekts.
 	 * 
-	 * @param name   der <code>String</code>, welcher den name definiert.
-	 * @param cArray die Liste von <code>Contact</code> Objekten.
-	 * @param u      der aktuelle <code>JabicsUser</code>.
+	 * @param name
+	 *            der <code>String</code>, welcher den name definiert.
+	 * @param cArray
+	 *            die Liste von <code>Contact</code> Objekten.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
 	 * @return Die erstellte <code>ContactList</code>.
 	 */
 	public ContactList createContactList(String name, ArrayList<Contact> cArray, JabicsUser u) {
@@ -617,7 +621,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		for (JabicsUser u : cols) {
 			pvMapper.deleteCollaboration(pv, u);
 			pvMapper.deletePValue(pv);
-
 		}
 		System.err.println("PValue löschen3" + pv.toString());
 		// überprüfen, ob dieses PV das letzte seiner Art ist und wenn ja die zugehörige
@@ -715,7 +718,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>Contact</code> Objekte, welche einem
 	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
 	 * 
-	 * @param u der aktuelle <code>JabicsUser</code>.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
 	 * @return Die Liste der sichtbaren <code>Contact</code> Objekte.
 	 */
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
@@ -740,10 +744,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Auslesen aller <code>JabicsUser</code> Objekte.
 	 * 
-	 * @param c  das <code>Contact</code> Objekt welches einer
-	 *           <code>ContactList</code> hinzugefügt werden soll.
-	 * @param cl die <code>ContactList</code> zu welcher der <code>Contact</code>
-	 *           hinzugefügt werden soll.
 	 * @return Liste aller <code>JabicsUser</code>.
 	 */
 	public ArrayList<JabicsUser> getAllUsers() {
@@ -840,146 +840,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Ein <code>ContactList</code> Objekt löschen.
-	 * 
-	 * @param cl das zu löschende <code>ContactList</code> Objekt.
-	 * @param u  der aktuelle <code>JabicsUser</code>.
-	 * @return das gelöschte <code>ContactList</code> Objekt.
-	 */
-	public ContactList deleteContactList(ContactList cl, JabicsUser ju) {
-
-		System.out.println("START deleting List");
-
-		if (uMapper.findUserByContactList(cl).getId() == ju.getId()) {
-
-			ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
-			System.out.println(users.toString());
-
-			ArrayList<Contact> contacts = cl.getContacts();
-
-			System.out.println("EditorService -> deleteContactList(): Contacts " + contacts.toString());
-
-			for (JabicsUser u : users) {
-				System.out.println("delete Collaboration from user " + u.getId() + " and ContactList " + cl.getId());
-
-				deleteCollaboration(cl, u);
-
-				System.out.println("delete Collaboration from user" + u.getId());
-
-			}
-
-			for (Contact c : contacts) {
-
-				System.out.println("Delete Contact " + c.getId() + " from List " + cl.getId());
-				removeContactFromList(c, cl);
-
-				System.out.println("Schleife fertig");
-
-			}
-
-			clMapper.deleteContactList(cl);
-			System.out.println("Delete ContactList " + cl.getListName());
-
-		} else {
-			System.out.println("Löschversuch Liste ohne Besitz");
-			clMapper.deleteCollaboration(cl, ju);
-		}
-		return cl;
-
-	}
-
-	/**
-	 * <p>
-	 * Ein <code>JabicsUser</code> Objekt löschen.
-	 * </p>
-	 * Alle <code>PValue</code>, <code>Contact</code> und <code>ContactList</code>
-	 * Objekte des <code>JabicsUser</code> werden dabei gelöscht.
-	 * 
-	 * @param u das zu löschende <code>JabicsUser</code> Objekt.
-	 */
-	public void deleteUser(JabicsUser u) {
-		ArrayList<ContactList> allListsOfUser = getListsOf(u);
-		ArrayList<Contact> allContactsOfUser = getContactsOf(u);
-
-		// Die Kontrolle, ob übergebener Nutzer der Eigentümer ist, regeln die
-		// jeweiligen Methoden
-		for (ContactList cl : allListsOfUser) {
-			deleteContactList(cl, u);
-		}
-		for (Contact c : allContactsOfUser) {
-			deleteContact(c, u);
-		}
-
-		uMapper.deleteUser(u);
-
-		return;
-	}
-
-	/**
-	 * Ein <code>Property</code> Objekt löschen.
-	 * 
-	 * @param p das zu löschende <code>Property</code> Objekt.
-	 */
-	public void deleteProperty(Property p) {
-		if (!p.isStandard()) {
-			pMapper.deleteProperty(p);
-		} else
-			System.out.println("Tried to delete standard property. This should not have been possible");
-	}
-
-	/**
-	 * Ein <code>PValue</code> Objekt löschen.
-	 * 
-	 * @param pv das zu löschende <code>Property</code> Objekt.
-	 * @param c  das <code>Contact</code> Objekt zu welchem das <code>PValue</code>
-	 *           Objekt gehört.
-	 */
-	public void deletePValue(PValue pv, Contact c) {
-		System.err.println("PValue löschen" + pv.toString());
-		ArrayList<JabicsUser> cols = pvMapper.findCollaborators(pv);
-
-		System.err.println("PValue löschen2" + pv.toString());
-		/**
-		 * glöckchen (bzw. überhaupt sinnvoll): if(pv.getOwner().getId() == u.getId()) {
-		 */
-		for (JabicsUser u : cols) {
-			pvMapper.deleteCollaboration(pv, u);
-			pvMapper.deletePValue(pv);
-		}
-		System.err.println("PValue löschen3" + pv.toString());
-		// überprüfen, ob dieses PV das letzte seiner Art ist und wenn ja die zugehörige
-		// Property löschen
-		if (!pv.getProperty().isStandard()) {
-			ArrayList<PValue> otherPVal = pvMapper.findPValueForContact(c);
-			boolean bol = true;
-			for (PValue o : otherPVal) {
-				if (o.getProperty().getId() == pv.getProperty().getId())
-					bol = false;
-			}
-			if (bol)
-				pMapper.deleteProperty(pv.getProperty());
-		}
-		return;
-	}
-
-	/**
-	 * Aktualisieren eines <code>PValue</code>.
-	 * 
-	 * @param pv der <code>PValue</code> die aktualisiert werden soll.
-	 * @return Die aktualisierte <code>PValue</code>.
-	 */
-	public PValue updatePValue(PValue pv) {
-		System.out.println(pv.getId());
-		PValue pvtemp = pvMapper.findPValueById(pv.getId());
-		if (pv != pvtemp) {
-			PValue p = pvMapper.updatePValue(pv);
-			System.out.println(p.toString());
-			return p;
-		} else
-			System.out.println("updatePValue unnötig oder fehlgeschlagen");
-		return pvMapper.findPValueById(pv.getId());
-	}
-
 	 * Auslesen aller <code>Contact</code> Objekte eines <code>ContactList</code>
 	 * Objekts.
 	 * 
@@ -1005,20 +865,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			// Eine Liste ist immer komplett geteilt oder nicht geteilt
 			// ArrayList<JabicsUser> collaborators = cMapper.findCollaborators(c);
 
-
-	/**
-	 * Aktualisieren einer <code>ContactList</code>.
-	 * 
-	 * @param cl die <code>ContactList</code> die aktualisiert werden soll.
-	 * @return Die aktualisierte <code>ContactList</code>.
-	 */
-	public ContactList updateContactList(ContactList cl) {
-		ContactList cltemp = clMapper.findContactListById(cl.getId());
-		if (cl != cltemp) {
-
 			if (status.size() == allC.size()) {
 				System.out.println("BOStatus für Kontakt: " + c.getId() + status.get(i).toString());
-
 
 				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
 				c.setShareStatus(status.get(i));
@@ -1235,8 +1083,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * eines <code>Contact</code> in einem <code>ContactList</code> Objekt, welche
 	 * einen bestimmten Wert als <code>String</code> besitzen.
 	 * 
-	 * @param s  der Wert des gesuchten <code>String</code>
-	 * @param cl die <code>ContactList</code> in der gesucht wird.
+	 * @param s
+	 *            der Wert des gesuchten <code>String</code>
+	 * @param cl
+	 *            die <code>ContactList</code> in der gesucht wird.
 	 * @return Liste aller <code>Contact</code> Objekte, welche <code>PValue</code>
 	 *         oder <code>Property</code> Objekte enthalten, die das Suchkriterium
 	 *         erfüllen.
@@ -1385,25 +1235,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Aktualisieren eines <code>Contact</code>.
 	 * 
-	 * @param c <code>Contact</code> für welchen die nicht kollaborierenden
-	 *          <code>JabicsUser</code> benötigt werden.
-	 * @return Liste der <code>JabicsUser</code> ohne Collaboration.
-	 */
-	public ArrayList<JabicsUser> getAllNotCollaboratingUser(Contact c) {
-		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
-		ArrayList<JabicsUser> allUser = uMapper.findAllUser();
-		for (JabicsUser u : allUser) {
-			boolean bol = true;
-			for (JabicsUser uu : cMapper.findCollaborators(c)) {
-				if (u.getId() == uu.getId())
-					bol = false;
-			}
-			if (bol)
-				result.add(u);
-		}
-		return result;
-	}
-
 	 * @param c
 	 *            der <code>Contact</code> der aktualisiert werden soll.
 	 * @param u
@@ -1412,24 +1243,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public Contact updateContact(Contact c, JabicsUser u) {
 
-	/**
-	 * Auslesen des <code>JabicsUser</code> Objekts, welches der Besitzer eines
-	 * <code>Contact</code> Objekts ist.
-	 * 
-	 * @param c <code>Contact</code> Objekt für welches der Besitzer ermittelt
-	 *          werden soll.
-	 * @return Der besitzende <code>JabicsUser</code>
-	 */
-	public JabicsUser getOwnerOfContact(Contact c) {
-		return uMapper.findUserByContact(c);
-	}
-
 		// Nickname neu setzen
 		c.updateNickname();
 		System.out.println("5.1 updateContact");
 		// GWT.log("5.1 Contact:" + c.getName());
 		System.out.println("5.1 Contact:" + c.getName());
-
 
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
