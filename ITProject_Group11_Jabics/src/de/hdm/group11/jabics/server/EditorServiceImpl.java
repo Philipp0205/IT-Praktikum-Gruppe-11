@@ -351,7 +351,16 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
+	 * Auslesen aller <code>Contact</code> Objekte eines <code>ContactList</code>
+	 * Objekts.
 	 * 
+	 * @param cl
+	 *            das <code>ContactList</code> Objekt, für welche die
+	 *            <code>Contact</code> Objekte gesucht werden.
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Die Liste der <code>Contact</code> Objekte, welche in einer
+	 *         <code>ContactList</code> liegen.
 	 */
 	public ArrayList<Contact> getContactsOfList(ContactList cl, JabicsUser u) {
 
@@ -381,8 +390,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Gibt alle Contact - Objekte, die ein Nutzer sehen darf, zurück.
+	 * Auslesen aller <code>Contact</code> Objekte, welche einem
+	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
 	 * 
+	 * @param u
+	 *            der aktuelle <code>JabicsUser</code>.
+	 * @return Die Liste der <code>Contact</code> Objekte.
 	 */
 	public ArrayList<Contact> getContactsOf(JabicsUser u) {
 		ArrayList<Contact> cons = cMapper.findAllContacts(u);
@@ -410,9 +423,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Eine geupdatete Version des Kontakts frisch aus der Datenbank lesen. Der
-	 * Kontakt bekommt seinen share Status gesetzt
+	 * Auslesen des aktualisierten <code>Contact</code> Objektes.
 	 * 
+	 * @param c
+	 * der 
 	 * @return Contact c, einen aktuellen Kontakt
 	 */
 	public Contact getUpdatedContact(Contact c) {
@@ -1022,9 +1036,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Eine Kontaktliste nach String-Values durchsuchen. Diese Methode wird bei
-	 * deutlich konkreteren Suchvorhaben oder Kriterien verwendet. Für eine
-	 * allgemeine Suche siehe searchExpressionInList
+	 * <p>
+	 * Suche nach einem <code>PValue</code> Objekt in einem <code>ContactList</code>
+	 * Objekt.
+	 * </p>
+	 * Diese Methode wird bei deutlich konkreteren Suchvorhaben oder Kriterien
+	 * verwendet. Für eine allgemeine Suche siehe
+	 * <code>searchExpressionInList</code>.
+	 * 
+	 * @param cl
+	 *            das zu durchsuchende <code>ContactList</code> Objekt.
+	 * @param pv
+	 *            das <code>PValue</code> Objekt, nach welchem gesucht wird.
+	 * @return Liste aller <code>Contact</code> Objekte, welche das
+	 *         <code>PValue</code> Objekt enthalten.
 	 */
 	public ArrayList<Contact> searchInList(ContactList cl, PValue pv) {
 
@@ -1131,7 +1156,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Erhalten aller noch nicht kollaborierenden Nutzer für eine Kontaktliste
+	 * Auslesen aller nicht kollaborierenden <code>JabicsUser</code> Objekte an
+	 * einem <code>ContactList</code> Objekt
+	 * 
+	 * @param cl
+	 * 
+	 * @return Liste der <code>JabicsUser</code> ohne Collaboration.
 	 */
 	public ArrayList<JabicsUser> getAllNotCollaboratingUser(ContactList cl) {
 		ArrayList<JabicsUser> res = uMapper.findAllUser();
@@ -1142,10 +1172,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	}
 
 	/**
-	 * Auslesen des <code>JabicsUser</code> Objekte, welche eine Collaboration zu
-	 * einem <code>PValue</code> Objekt besitzen.
+	 * Auslesen des <code>JabicsUser</code> Objekts, welches der Besitzer eines
+	 * <code>Contact</code> Objekts ist.
 	 * 
-	 * @return der
+	 * @param c
+	 * 
+	 * @return Der besitzende <code>JabicsUser</code>
 	 */
 	public JabicsUser getOwnerOfContact(Contact c) {
 		return uMapper.findUserByContact(c);
@@ -1154,7 +1186,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
 	 * einem <code>Contact</code> Objekt besitzen.
-	 * 
+	 *
+	 * @param c
+	 *            der <code>Contact</code> für welchen die Collaborator gesucht
+	 *            werden.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(Contact c) {
@@ -1166,6 +1201,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
 	 * einem <code>ContactList</code> Objekt besitzen.
 	 * 
+	 * @param cl
+	 *            die <code>ContactList</code> für welche die Collaborator gesucht
+	 *            werden.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
@@ -1182,6 +1220,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
 	 * einem <code>PValue</code> Objekt besitzen.
 	 * 
+	 * @param pv
+	 *            die <code>PValue</code> für welche die Collaborator gesucht werde.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(PValue pv) {
