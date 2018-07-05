@@ -472,21 +472,21 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					i++;
 				}
 				return result;
-			}
+			} else {
 			
-			
-			// PValues filtern, wenn nicht geteilt und den Share Status setzen
-			for (PValue pv : allPV) {
-				System.out.println("gefunden: " + pv.toString());
-				pv.setShareStatus(status.get(i));
-				i++;
-				for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
-					if (u.getId() == uu.getId()) {
-						result.add(pv);
+				// PValues filtern, wenn nicht geteilt und den Share Status setzen
+				for (PValue pv : allPV) {
+					System.out.println("gefunden: " + pv.toString());
+					pv.setShareStatus(status.get(i));
+					i++;
+					for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
+						if (u.getId() == uu.getId()) {
+							result.add(pv);
+						}
 					}
 				}
+				return result;
 			}
-			return result;
 		} else
 			return null;
 	}
