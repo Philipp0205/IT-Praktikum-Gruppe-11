@@ -180,6 +180,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				if (selectedUser != null) {
 					if (!selectedPV.isEmpty()) {
 						shareContactWithUser(selectedUser);
+						e.returnToContactForm(sharedContact);
+						
 					} else
 						Window.alert(
 								"Keine Ausprägungen ausgewählt. Bitte wählen Sie mindestens eine Eigeschaftsausprägung aus");
@@ -360,7 +362,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("Kontakt erolgreich geteilt!");
+			Window.alert("Kontakt erfolgreich geteilt!");
 			updateShareStatus();
 		}
 	}

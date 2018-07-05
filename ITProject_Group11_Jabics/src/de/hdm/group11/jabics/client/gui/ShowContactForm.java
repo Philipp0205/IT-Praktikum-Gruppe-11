@@ -175,11 +175,9 @@ public class ShowContactForm extends VerticalPanel {
 			sharePanel.setVisible(false);
 		}
 
-		Window.alert("Kontakte holen");
 		if (valueProvider.getList().isEmpty()) {
 			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
 		} else {
-			Window.alert("Kontakte holen iwi in die else geganen");
 			renderTable(currentContact.getValues());
 		}
 	}
@@ -305,7 +303,6 @@ public class ShowContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			Window.alert("values sind da");
 			if (result != null) {
 				currentContact.setValues(result);
 				renderTable(result);
