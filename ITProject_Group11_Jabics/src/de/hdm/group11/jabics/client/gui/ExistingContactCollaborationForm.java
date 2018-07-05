@@ -62,8 +62,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	Column<PValue, String> property;
 	Column<PValue, String> propertyvalue;
 
-	ContactForm cf;
-
 	Grid grid;
 	
 	//Ressourcen für CellTables
