@@ -63,10 +63,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Erzeugen eines <code>Contact</code> Objekts.
 	 * 
-	 * @param pArray
-	 *            Die Liste aus <code>PValue</code> Objekten.
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
+	 * @param pArray Die Liste aus <code>PValue</code> Objekten.
+	 * @param u      der aktuelle <code>JabicsUser</code>.
 	 * @return Der erzeugte <code>Contact</code>.
 	 */
 	public Contact createContact(ArrayList<PValue> pArray, JabicsUser u) {
@@ -138,12 +136,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Erzeugen eines <code>ContactList</code> Objekts.
 	 * 
-	 * @param name
-	 *            der <code>String</code>, welcher den name definiert.
-	 * @param cArray
-	 *            die Liste von <code>Contact</code> Objekten.
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
+	 * @param name   der <code>String</code>, welcher den name definiert.
+	 * @param cArray die Liste von <code>Contact</code> Objekten.
+	 * @param u      der aktuelle <code>JabicsUser</code>.
 	 * @return Die erstellte <code>ContactList</code>.
 	 */
 	public ContactList createContactList(String name, ArrayList<Contact> cArray, JabicsUser u) {
@@ -156,14 +151,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
 	 * <code>String</code>
 	 * 
-	 * @param p
-	 *            die zugeordnete <code>Property</code>.
-	 * @param s
-	 *            die Ausprägung des <code>String</code>.
-	 * @param c
-	 *            das zugeordnete <code>Contact</code> Objekt.
-	 * @param u
-	 *            der aktueller <code>JabicsUser</code>.
+	 * @param p die zugeordnete <code>Property</code>.
+	 * @param s die Ausprägung des <code>String</code>.
+	 * @param c das zugeordnete <code>Contact</code> Objekt.
+	 * @param u der aktueller <code>JabicsUser</code>.
 	 * @return Das erzeugte <code>PValue</code> Objekt.
 	 */
 	public PValue createPValue(Property p, String s, Contact c, JabicsUser u) {
@@ -192,14 +183,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
 	 * <code>int</code>.
 	 * 
-	 * @param p
-	 *            die zugeordnete <code>Property</code>.
-	 * @param i
-	 *            die Ausprägung des <code>int</code>.
-	 * @param c
-	 *            das zugeordnete <code>Contact</code> Objekt.
-	 * @param u
-	 *            der aktueller <code>JabicsUser</code>.
+	 * @param p die zugeordnete <code>Property</code>.
+	 * @param i die Ausprägung des <code>int</code>.
+	 * @param c das zugeordnete <code>Contact</code> Objekt.
+	 * @param u der aktueller <code>JabicsUser</code>.
 	 * @return Das erzeugte <code>PValue</code> Objekt.
 	 */
 	public PValue createPValue(Property p, int i, Contact c, JabicsUser u) {
@@ -225,14 +212,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
 	 * <code>Date</code>.
 	 * 
-	 * @param p
-	 *            die zugeordnete <code>Property</code>.
-	 * @param dt
-	 *            die Ausprägung des <code>Date</code>.
-	 * @param c
-	 *            das zugeordnete <code>Contact</code> Objekt.
-	 * @param u
-	 *            der aktueller <code>JabicsUser</code>.
+	 * @param p  die zugeordnete <code>Property</code>.
+	 * @param dt die Ausprägung des <code>Date</code>.
+	 * @param c  das zugeordnete <code>Contact</code> Objekt.
+	 * @param u  der aktueller <code>JabicsUser</code>.
 	 * @return Das erzeugte <code>PValue</code> Objekt.
 	 */
 	public PValue createPValue(Property p, Date dt, Contact c, JabicsUser u) {
@@ -257,14 +240,10 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erzeugen eines neuen <code>PValue</code> Objekt vom <code>Type</code>
 	 * <code>float</code>.
 	 * 
-	 * @param p
-	 *            die zugeordnete <code>Property</code>.
-	 * @param f
-	 *            die Ausprägung des <code>float</code>.
-	 * @param c
-	 *            das zugeordnete <code>Contact</code> Objekt.
-	 * @param u
-	 *            der aktueller <code>JabicsUser</code>.
+	 * @param p die zugeordnete <code>Property</code>.
+	 * @param f die Ausprägung des <code>float</code>.
+	 * @param c das zugeordnete <code>Contact</code> Objekt.
+	 * @param u der aktueller <code>JabicsUser</code>.
 	 * @return Das erzeugte <code>PValue</code> Objekt.
 	 */
 	public PValue createPValue(Property p, float f, Contact c, JabicsUser u) {
@@ -288,11 +267,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Erzeugen eines <code>Property</code> Objekts.
 	 * 
-	 * @param label
-	 *            der Bezeichner in Form eines <code>String</code>.
-	 * @param type
-	 *            der <code>Type</code> <code>STRING</code>, <code>INT</code>,
-	 *            <code>DATE</code> oder <code>FLOAT</code>.
+	 * @param label der Bezeichner in Form eines <code>String</code>.
+	 * @param type  der <code>Type</code> <code>STRING</code>, <code>INT</code>,
+	 *              <code>DATE</code> oder <code>FLOAT</code>.
 	 * @return Das erzeugte <code>Property</code> Objekt.
 	 */
 	public Property createProperty(String label, Type type) {
@@ -302,8 +279,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Liste aller <code>ContactList</code> Objekte eines <code>JabicsUser</code>.
 	 * 
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
+	 * @param u der aktuelle <code>JabicsUser</code>.
 	 * @return die Liste von <code>ContactList</code> Objekten.
 	 */
 	public ArrayList<ContactList> getListsOf(JabicsUser u) {
@@ -312,29 +288,30 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<ContactList> result = new ArrayList<ContactList>();
 		ArrayList<BoStatus> status = clMapper.findShareStatus(result);
 
-		for (ContactList cl : allLists) {
+		if (allLists != null) {
+			int i = 0;
+			for (ContactList cl : allLists) {
 
-			cl.setOwner(uMapper.findUserByContactList(cl));
-			System.out.println("2.2 getListsOf " + cl.getListName());
-			result.add(cl);
-
-			// int i = 0;
-			// if (status.size() == allLists.size()) {
-			// System.out.println("BOStatus für Kontaktliste: " + cl.getId() +
-			// status.get(i).toString());
-			// cl.setShareStatus(status.get(i));
-			// i++;
-			// }
-
-		}
-		return result;
+				cl.setOwner(uMapper.findUserByContactList(cl));
+				System.out.println("2.2 getListsOf " + cl.getListName());
+				result.add(cl);
+				if (status != null) {
+					if (status.size() == allLists.size()) {
+						System.out.println("BOStatus für Kontaktliste: " + cl.getId() + status.get(i).toString());
+						cl.setShareStatus(status.get(i));
+					}
+				}
+				i++;
+			}
+			return result;
+		} else
+			return null;
 	}
 
 	/**
 	 * Auslesen aller <code>Property</code> Objekte eines <code>JabicsUser</code>.
 	 * 
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
+	 * @param u der aktuelle <code>JabicsUser</code>.
 	 * @return Liste aus <code>Property</code> Objekten.
 	 */
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {
@@ -405,21 +382,24 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		System.out.println("Got all Contacts of User " + u.getId());
 		// Besitzer und ShareStatus setzen
 		ArrayList<BoStatus> status = cMapper.findShareStatus(cons);
-		if (status.size() == cons.size()) {
-			int i = 0;
-			for (Contact c : cons) {
-				// System.out.println("BOStatus für Kontakt: " + c.getId() +
-				// status.get(i).toString());
-				c.setOwner(uMapper.findUserByContact(c));
-				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+		if (status != null && cons != null) {
+			if (status.size() == cons.size()) {
+				int i = 0;
+				for (Contact c : cons) {
+					// System.out.println("BOStatus für Kontakt: " + c.getId() +
+					// status.get(i).toString());
+					c.setOwner(uMapper.findUserByContact(c));
+					// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
 
-				c.setShareStatus(status.get(i));
+					c.setShareStatus(status.get(i));
 
-				i++;
+					i++;
+				}
+				// result.add(c);
 			}
-			// result.add(c);
-		}
-		return cons;
+			return cons;
+		} else
+			return null;
 	}
 
 	/**
@@ -444,6 +424,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
+		System.out.println("getpvof" + u.getUsername());
 
 		ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
 		ArrayList<PValue> result = new ArrayList<PValue>();
@@ -465,16 +446,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
 		System.err.println("Alle Geteilten Kontakte");
 		ArrayList<Contact> result = new ArrayList<Contact>();
-		for (Contact c : getContactsOf(u)) {
+		ArrayList<Contact> allC = getContactsOf(u);
+		if (allC != null) {
+			for (Contact c : getContactsOf(u)) {
 
-			// nicht notwendig, da in getContacsOf() schon gesetzt:
-			// c.setOwner(uMapper.findUserByContact(c));
-			if (c.getOwner().getId() != u.getId()) {
-				result.add(c);
-				System.err.println("Geteilter Kontakt 1:" + c.getId());
+				// nicht notwendig, da in getContacsOf() schon gesetzt:
+				// c.setOwner(uMapper.findUserByContact(c));
+				if (c.getOwner().getId() != u.getId()) {
+					result.add(c);
+					System.err.println("Geteilter Kontakt 1:" + c.getId());
+				}
 			}
-		}
-		return result;
+			return result;
+		} else
+			return null;
 	}
 
 	// is this method really needed?
@@ -486,10 +471,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Einen <code>Contact</code> in eine Liste einfügen. Es wird überprüft, ob der
 	 * Kontakt bereits ind er Liste liegt.
 	 * 
-	 * @param Contact
-	 *            c
-	 * @param ContactList
-	 *            cl
+	 * @param Contact     c
+	 * @param ContactList cl
 	 * @return updated ContactList
 	 */
 
@@ -600,8 +583,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * die Löschanfrage nicht vom Besitzer des Kontakts kommt. Löscht den Contact
 	 * für alle Nutzer permanent. Kann nicht rückgängig gemacht werden.
 	 * 
-	 * @param Contact,
-	 *            der gelöscht werden soll
+	 * @param Contact, der gelöscht werden soll
 	 */
 	public void deleteContact(Contact c, JabicsUser ju) {
 		if (uMapper.findUserByContact(c).getId() == ju.getId()) {
@@ -632,8 +614,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Collaborations der Liste gelöscht, dann die Kontakte aus der Kontaktliste,
 	 * zuletzt wird die Liste an sich gelöscht.
 	 * 
-	 * @param cl
-	 *            ContactList, die gelöscht werden soll
+	 * @param cl ContactList, die gelöscht werden soll
 	 * @return
 	 */
 	public ContactList deleteContactList(ContactList cl, JabicsUser ju) {
@@ -683,8 +664,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * dieser Nutzer hat. PValue-Objekte werden bei Kontakten, die dem Nutzer
 	 * geteilt waren, nicht gelöscht.
 	 * 
-	 * @param JabicsUser
-	 *            u
+	 * @param JabicsUser u
 	 */
 	public void deleteUser(JabicsUser u) {
 		ArrayList<ContactList> allListsOfUser = getListsOf(u);
@@ -708,8 +688,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Eine Property aus der Datenbank löschen. Es wird überprüft, ob die
 	 * Eigenschaft gelöscht werden darf.
 	 * 
-	 * @param Property,
-	 *            die gelöscht werden soll
+	 * @param Property, die gelöscht werden soll
 	 */
 	public void deleteProperty(Property p) {
 		if (!p.isStandard()) {
@@ -750,8 +729,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Ein <code>PValue</code> aktualisieren, sodass es in der Datenbank konsitent
 	 * gespeichert wird.
 	 * 
-	 * @param Ein
-	 *            PropertyValue, das aktualisiert werden soll
+	 * @param Ein PropertyValue, das aktualisiert werden soll
 	 */
 	public PValue updatePValue(PValue pv) {
 		System.out.println(pv.getId());
@@ -766,59 +744,19 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return pvMapper.findPValueById(pv.getId());
 	}
 
-	public ContactList updateContactList(ContactList cl) {
-		ContactList cltemp = clMapper.findContactListById(cl.getId());
-		// TODO: gescheite .equals für Kontaktlisten
-		if (cl != cltemp) {
-
-			// Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist,
-			// wenn ja, einfügen. Allen freigegebenen Nutzern den Kontakt freigeben
-			for (Contact c : cl.getContacts()) {
-				boolean bol = false;
-				for (Contact ctemp : cltemp.getContacts()) {
-					if (c.getId() == ctemp.getId())
-						bol = true;
-				}
-				if (bol == false) {
-					clMapper.insertContactIntoContactList(cl, c);
-					for (JabicsUser u : clMapper.findCollaborators(cl)) {
-						addCollaboration(c, u);
-					}
-				}
-			}
-			// Alle Kontakte in der neuen Liste durchlaufen, ob einer weggefallen ist, wenn
-			// ja, löschen, Allen freigegebenen Nutzern den Kontakt entziehen
-			for (Contact ctemp : cltemp.getContacts()) {
-				boolean bol = false;
-				for (Contact c : cl.getContacts()) {
-					if (c.getId() == ctemp.getId())
-						bol = true;
-				}
-				if (bol == false) {
-					clMapper.deleteContactfromContactList(cl, ctemp);
-					for (JabicsUser u : clMapper.findCollaborators(cl)) {
-						deleteCollaboration(ctemp, u);
-					}
-				}
-			}
-			return clMapper.updateContactList(cl);
-		} else
-			return clMapper.findContactListById(cl.getId());
-	}
-
 	/**
 	 * Diese Methode überprüft, ob der Contact in dieser Form in der DB vorhanden
 	 * ist, wenn nicht wird alles auf Konsitenz geprüft und fehlende Inhalte werden
 	 * upgedated
 	 */
 	public Contact updateContact(Contact c, JabicsUser u) {
-
+	
 		// Nickname neu setzen
 		c.updateNickname();
 		System.out.println("5.1 updateContact");
 		// GWT.log("5.1 Contact:" + c.getName());
 		System.out.println("5.1 Contact:" + c.getName());
-
+	
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
@@ -830,7 +768,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		}
 		System.out.println("5.1 ctemp" + "ist kontakt gleich?" + c.equals(ctemp) + " kontaktename: " + ctemp.getName());
 		if (c.equals(ctemp) == false) {
-
+	
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				boolean bol = false;
@@ -876,15 +814,54 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		return c;
 	}
 
+	public ContactList updateContactList(ContactList cl) {
+		ContactList cltemp = clMapper.findContactListById(cl.getId());
+		// TODO: gescheite .equals für Kontaktlisten
+		if (cl != cltemp) {
+
+			// Alle Kontakte in der neuen Liste durchlaufen, ob einer hinzugekommen ist,
+			// wenn ja, einfügen. Allen freigegebenen Nutzern den Kontakt freigeben
+			for (Contact c : cl.getContacts()) {
+				boolean bol = false;
+				for (Contact ctemp : cltemp.getContacts()) {
+					if (c.getId() == ctemp.getId())
+						bol = true;
+				}
+				if (bol == false) {
+					clMapper.insertContactIntoContactList(cl, c);
+					for (JabicsUser u : clMapper.findCollaborators(cl)) {
+						addCollaboration(c, u);
+					}
+				}
+			}
+			// Alle Kontakte in der neuen Liste durchlaufen, ob einer weggefallen ist, wenn
+			// ja, löschen, Allen freigegebenen Nutzern den Kontakt entziehen
+			for (Contact ctemp : cltemp.getContacts()) {
+				boolean bol = false;
+				for (Contact c : cl.getContacts()) {
+					if (c.getId() == ctemp.getId())
+						bol = true;
+				}
+				if (bol == false) {
+					clMapper.deleteContactfromContactList(cl, ctemp);
+					for (JabicsUser u : clMapper.findCollaborators(cl)) {
+						deleteCollaboration(ctemp, u);
+					}
+				}
+			}
+			return clMapper.updateContactList(cl);
+		} else
+			return clMapper.findContactListById(cl.getId());
+	}
+	
+
 	/**
 	 * Eine Freigabe zwischen einem Nutzer und einer Kontaktliste einfügen. Diese
 	 * Methode nicht! beim Erstellen eines Objekts aufrufen, da isOwner false
 	 * gesetzt wird.
 	 * 
-	 * @param ContactList,
-	 *            um die es sich handelt
-	 * @param Nutzer,
-	 *            dem die Liste freigegeben werden soll
+	 * @param ContactList, um die es sich handelt
+	 * @param Nutzer, dem die Liste freigegeben werden soll
 	 */
 	public JabicsUser addCollaboration(ContactList cl, JabicsUser u) {
 		ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
@@ -912,10 +889,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Methode nicht! beim Erstellen eines Objekts aufrufen, da isOwner false
 	 * gesetzt wird.
 	 * 
-	 * @param ContactList,
-	 *            für den eine Collaboration hinzugefügt werden soll
-	 * @param Nutzer,
-	 *            dem der Contact freigegeben werden soll
+	 * @param ContactList, für den eine Collaboration hinzugefügt werden soll
+	 * @param Nutzer, dem der Contact freigegeben werden soll
 	 */
 	public void addCollaboration(Contact c, JabicsUser u) {
 		System.err.println("Kollab: " + c.getName() + u.getUsername());
@@ -940,10 +915,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Eine Freigabe zwischen einem Nutzer und einem PValue einfügen. Diese Methode
 	 * nicht! beim Erstellen eines Objekts aufrufen, da isOwner false gesetzt wird.
 	 * 
-	 * @param PValue,
-	 *            für den eine Collaboration hinzugefügt werden soll
-	 * @param Nutzer,
-	 *            dem das PValue freigegeben werden soll
+	 * @param PValue, für den eine Collaboration hinzugefügt werden soll
+	 * @param Nutzer, dem das PValue freigegeben werden soll
 	 */
 	public void addCollaboration(PValue pv, JabicsUser u) {
 		ArrayList<JabicsUser> users = pvMapper.findCollaborators(pv);
@@ -1145,14 +1118,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Erhalten aller noch nicht kollaborierenden Nutzer für einen Kontakt
 	 */
 	public ArrayList<JabicsUser> getAllNotCollaboratingUser(Contact c) {
-		ArrayList<JabicsUser> res = uMapper.findAllUser();
-		for (JabicsUser u : cMapper.findCollaborators(c)) {
-			// for (JabicsUser uu : res) {
-			// if (uu.getId() == u.getId())
-			res.remove(u);
-			// }
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
+		ArrayList<JabicsUser> allUser = uMapper.findAllUser();
+		for (JabicsUser u : allUser) {
+			boolean bol = true;
+			for (JabicsUser uu : cMapper.findCollaborators(c)) {
+				if (u.getId() == uu.getId())
+					bol = false;
+			}
+			if (bol)
+				result.add(u);
 		}
-		return res;
+		return result;
 	}
 
 	/**
@@ -1164,11 +1141,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Liste der <code>JabicsUser</code> ohne Collaboration.
 	 */
 	public ArrayList<JabicsUser> getAllNotCollaboratingUser(ContactList cl) {
-		ArrayList<JabicsUser> res = uMapper.findAllUser();
-		for (JabicsUser u : clMapper.findCollaborators(cl)) {
-			res.remove(u);
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
+		ArrayList<JabicsUser> allUser = uMapper.findAllUser();
+		for (JabicsUser u : allUser) {
+			boolean bol = true;
+			for (JabicsUser uu : clMapper.findCollaborators(cl)) {
+				if (u.getId() == uu.getId())
+					bol = false;
+			}
+			if (bol)
+				result.add(u);
 		}
-		return res;
+		return result;
 	}
 
 	/**
@@ -1193,13 +1177,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(Contact c) {
-		System.out.println("Kollaboratoren holen");
-		return cMapper.findCollaborators(c);
+		ArrayList<JabicsUser> allCollabs = cMapper.findCollaborators(c);
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
+		JabicsUser owner = uMapper.findUserByContact(c);
+		for (JabicsUser u : allCollabs) {
+			if (u.getId() != owner.getId())
+				result.add(u);
+		}
+		return result;
 	}
 
 	/**
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
-	 * einem <code>ContactList</code> Objekt besitzen.
+	 * einem <code>ContactList</code> Objekt besitzen. Der Besitzer wird nicht
+	 * zurückgegeben.
 	 * 
 	 * @param cl
 	 *            die <code>ContactList</code> für welche die Collaborator gesucht
@@ -1207,11 +1198,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
-		ArrayList<JabicsUser> result = clMapper.findCollaborators(cl);
+		ArrayList<JabicsUser> allCollabs = clMapper.findCollaborators(cl);
+		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
 		JabicsUser owner = uMapper.findUserByContactList(cl);
-		for (JabicsUser u : result) {
-			System.out.println(u.getId() + u.getEmail());
-			// if(u.getId() == owner.getId()) result.remove(u);
+		for (JabicsUser u : allCollabs) {
+			if (u.getId() != owner.getId())
+				result.add(u);
 		}
 		return result;
 	}

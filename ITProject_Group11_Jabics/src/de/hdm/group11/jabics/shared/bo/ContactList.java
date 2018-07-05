@@ -143,6 +143,10 @@ public class ContactList extends BusinessObject implements Serializable {
 	public void setListName(String listName) {
 		this.listName = listName;
 	}
+	
+//	public void updateListName(String listName) {
+//		
+//	}
 
 	/**
 	 * Auslesen des Share-Status.
@@ -161,4 +165,6 @@ public class ContactList extends BusinessObject implements Serializable {
 	public void setShareStatus(BoStatus shareStatus) {
 		this.shareStatus = shareStatus;
 	}
+	
+
 }

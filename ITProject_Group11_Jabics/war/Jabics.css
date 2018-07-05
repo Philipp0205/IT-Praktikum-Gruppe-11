@@ -1,6 +1,6 @@
 /** Add css rules here for your application. */
 #content {
-	width: 2000px;
+	width: 100%;
 	margin-left: 50px;
 }
 
@@ -804,6 +804,7 @@ html>body .gwt-DecoratedStackPanel {
 }
 .logout {
 	float: right;
+	
 }
 
 .topPanel {
@@ -829,9 +830,8 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	float: right;
 	background: #9FB8E0;
-	margin-left: 800px;
-	margin-right: 100px;
-	margin-top: -44px;
+	margin-left: 600px;
+	margin-top: -43px; /* (waren mal -44, fals was falsch wird) */
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -854,6 +854,7 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .navbarlogo {
+	width: 10px;
 	margin-left: 70px;
 	align-content: center;
 	margin-top: 1000px;
@@ -872,7 +873,7 @@ html>body .gwt-DecoratedStackPanel {
 	color: #fff;
 	font-size: 14px;
 	padding: 18px 20px 18px 20px;
-	margin-top: -44px;
+	margin-top: -43px;
 	margin-left: 360px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
@@ -893,7 +894,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: 700;
 	font-size: 18px !important;
 	color: #fff;
-	margin-top: -44px;
+	margin-top: -43px;
 	margin-left: -15px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;

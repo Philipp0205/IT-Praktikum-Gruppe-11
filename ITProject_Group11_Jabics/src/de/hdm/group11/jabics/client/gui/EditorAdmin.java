@@ -53,9 +53,6 @@ public class EditorAdmin {
 	private SearchForm sForm;
 
 	private TreeViewMenu treeViewMenu;
-	
-	
-	RootLayoutPanel rp;
 
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
@@ -85,7 +82,7 @@ public class EditorAdmin {
 		treeViewMenu.setEditor(this);
 
 		treeViewMenu.setStyleName("treeView");
-		
+
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
 
@@ -100,7 +97,7 @@ public class EditorAdmin {
 
 		// Menu hinzufügen
 		loadLogout();
-
+		RootPanel.get("details").clear();
 		RootPanel.get("nav").add(topPanel);
 		RootPanel.get("menu").add(menuPanel);
 		RootPanel.get("details").add(mainPanel);
@@ -142,8 +139,6 @@ public class EditorAdmin {
 	 * Kontakte, Listen und CollabForms anzeigen
 	 */
 	public void showContact(Contact c) {
-
-		GWT.log("showCont");
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
@@ -152,8 +147,8 @@ public class EditorAdmin {
 		formPanel.clear();
 		scForm.setContact(c);
 		GWT.log("form einfügen");
-		formPanel.insert(scForm, 0);
-		// formPanel.add(scForm);
+		//formPanel.insert(scForm, 0);
+		formPanel.add(scForm);
 		GWT.log("ShowCont fertig");
 	}
 
@@ -194,11 +189,11 @@ public class EditorAdmin {
 	}
 
 	public void newContactList(ContactList cl) {
-		// if (this.cForm == null) {
-		clForm = new ContactListForm();
-		clForm.setEditor(this);
-		clForm.setUser(this.currentUser);
-
+		//if (this.clForm == null) {
+			clForm = new ContactListForm();
+			clForm.setEditor(this);
+			clForm.setUser(this.currentUser);
+		
 		formPanel.clear();
 		GWT.log("Editor: isNewList true");
 		clForm.setIsNewList(true);
@@ -297,6 +292,7 @@ public class EditorAdmin {
 			clForm = new ContactListForm();
 		}
 		// addContactListToTree(cl);
+		formPanel.clear();
 		clForm.setCurrentList(cl);
 		widgetPanel.add(clForm);
 	}
@@ -326,7 +322,7 @@ public class EditorAdmin {
 	}
 
 	public void updateContactListInTree(ContactList cl) {
-		treeViewMenu.addContactList(cl);
+		treeViewMenu.updateContactListInTree(cl);
 	}
 
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
@@ -340,10 +336,6 @@ public class EditorAdmin {
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
 	}
-/*TODO: wird das benötigt
-	public void flushContactLists() {
-		treeViewMenu.flushContactListsProvider();
-	}*/
 
 	private class DeleteUserClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
@@ -363,6 +355,7 @@ public class EditorAdmin {
 		public DeleteUserDialogBox() {
 			this.setSize("300px", "150px");
 			exitButton.addClickHandler(new ExitDialogBoxClickHandler());
+			confirmButton.addClickHandler(new DeleteClickHandler());
 			buttons.add(exitButton);
 			buttons.add(confirmButton);
 			mainPanel.add(confirmation);
@@ -400,9 +393,6 @@ public class EditorAdmin {
 	private class CreateCClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
-			Window.alert(
-					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
-
 			Contact newContact = new Contact();
 			newContact(newContact);
 		}
@@ -414,12 +404,9 @@ public class EditorAdmin {
 	private class CreateCLClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
-//			Window.alert(
-//					"Wenn du fortfährst, gehen alle nicht gespeicherten Daten verloren. Diese Auswahl bitte noch einfügen! (Editor, klasse CreateClickHandler)");
 
 			ContactList newContactList = new ContactList();
 			newContactList(newContactList);
-			// showContactList(newContactList);
 		}
 	}
 

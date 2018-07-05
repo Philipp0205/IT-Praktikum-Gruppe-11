@@ -412,6 +412,8 @@ public class UserMapper {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
+			}else {
+				return null;
 			}
 			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
 			// werden diese geschlossen.
