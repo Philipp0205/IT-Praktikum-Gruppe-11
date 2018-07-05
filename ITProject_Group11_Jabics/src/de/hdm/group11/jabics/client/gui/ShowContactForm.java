@@ -69,7 +69,6 @@ public class ShowContactForm extends VerticalPanel {
 
 private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
-
 	public ShowContactForm() {
 
 		HorizontalPanel horp1 = new HorizontalPanel();
