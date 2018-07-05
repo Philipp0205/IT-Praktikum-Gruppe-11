@@ -38,11 +38,7 @@ public interface EditorService extends RemoteService {
 	
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u);
 
-	public JabicsUser getUserById(int id);
-
 	public Contact addContactToList(Contact c, ContactList cl);
-
-	public Contact addValueToContact(PValue pv, Contact c, JabicsUser u);
 
 	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u);
 

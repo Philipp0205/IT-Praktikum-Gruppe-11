@@ -34,11 +34,7 @@ public interface EditorServiceAsync {
 
 	void getAllSharedContactsOf(JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 
-	void getUserById(int id, AsyncCallback<JabicsUser> callback);
-
 	void addContactToList(Contact c, ContactList cl, AsyncCallback<Contact> callback);
-
-	void addValueToContact(PValue pv, Contact c, JabicsUser u, AsyncCallback<Contact> callback);
 
 	void searchForContactByExpression(String s, JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 
