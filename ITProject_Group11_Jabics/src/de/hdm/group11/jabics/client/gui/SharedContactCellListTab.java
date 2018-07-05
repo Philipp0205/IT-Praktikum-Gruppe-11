@@ -145,7 +145,6 @@ public class SharedContactCellListTab extends Widget {
 
 		private void setSelectedContact(Contact c) {
 			GWT.log("4.1 Kontakt anzeigen" + c.getName());
-			Window.alert("Kontakt anzeigen" + c.getName());
 			editor.showContact(c);
 		}
 		

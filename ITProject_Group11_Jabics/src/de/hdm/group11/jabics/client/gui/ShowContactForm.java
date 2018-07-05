@@ -182,11 +182,9 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 			sharePanel.setVisible(false);
 		}
 
-		Window.alert("Kontakte holen");
 		if (valueProvider.getList().isEmpty()) {
 			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
 		} else {
-			Window.alert("Kontakte holen iwi in die else geganen");
 			renderTable(currentContact.getValues());
 		}
 	}
@@ -312,7 +310,6 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			Window.alert("values sind da");
 			if (result != null) {
 				currentContact.setValues(result);
 				renderTable(result);

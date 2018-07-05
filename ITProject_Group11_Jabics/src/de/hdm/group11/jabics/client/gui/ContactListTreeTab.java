@@ -237,7 +237,6 @@ public class ContactListTreeTab implements TreeViewModel {
 	 */
 	public void setSelectedContact(Contact c) {
 		GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
-		Window.alert("Kontakt anzeigen" + c.getName());
 		editor.showContact(c);
 	}
 

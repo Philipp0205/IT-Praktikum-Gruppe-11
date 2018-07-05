@@ -53,7 +53,7 @@ public class EditContactForm extends VerticalPanel {
 	ArrayList<PValue> allPV;
 
 	ArrayList<PropForm> val;
-	
+
 	ArrayList<Property> standardProperties;
 
 	ListBox formattype = new ListBox();
@@ -169,7 +169,7 @@ public class EditContactForm extends VerticalPanel {
 			propertyAddBox.setWidget(2, 4, dp2);
 			propertyAddBox.setWidget(1, 4, done2);
 			addPPanel.add(propertyAddBox);
-			
+
 			prop.setStyleName("editclabel");
 			type.setStyleName("editclabel");
 			pvaluelabel.setStyleName("editclabel");
@@ -312,12 +312,12 @@ public class EditContactForm extends VerticalPanel {
 					public void onSuccess(Contact result) {
 
 						if (result != null) {
-							
+
 							GWT.log("Kontakt " + result.getName() + " erfolgreich gespeichert mit diesen PV:");
 							for (PValue pv : result.getValues()) {
 								GWT.log(pv.toString());
 							}
-							
+
 							setContact(result);
 							e.addContactToTree(result);
 							addPPanel.setVisible(true);
@@ -618,7 +618,7 @@ public class EditContactForm extends VerticalPanel {
 
 		PropForm(Property pp) {
 			this.p = pp;
-			property = new Label(p.getLabel()+":");
+			property = new Label(p.getLabel() + ":");
 			property.setStyleName("propertylabel");
 			addButton.addClickHandler(new ClickHandler() {
 				@Override
@@ -681,7 +681,6 @@ public class EditContactForm extends VerticalPanel {
 		Button delete = new Button("x");
 		Button done = new Button("Fertig");
 		TextBox val = new TextBox();
-		
 
 		public void show() {
 			val.setStyleName("pvBox");
