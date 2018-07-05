@@ -4,6 +4,10 @@
 	margin-left: 50px;
 }
 
+#body {
+	background-color: #ECF2FF;
+}
+
 #menuButton {
 	text-decoration: none;
 	color: black;
@@ -252,7 +256,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #ff5e5e !important;
 	font-size: 14px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-left: 15px;
 	margin-top: 4px;
@@ -267,7 +271,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #53f4af !important;
 	font-size: 16px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	margin-left: 7px;
 	margin-top: 7px;
 	border: solid #000000 0px !important;
@@ -339,7 +343,7 @@ html>body .gwt-DecoratedStackPanel {
 	/*color: #ff5e5e !important;*/
 	color: #19376E;
 	font-size: 39px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-top: 7px;
 	margin-left: 10px;
@@ -366,7 +370,7 @@ html>body .gwt-DecoratedStackPanel {
 	/*color: #53f4af !important;*/
 	color: #19376E;
 	font-size: 29px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	margin-top: 19px;
 	margin-left: 10px;
 	border: solid #000000 0px !important;
@@ -391,7 +395,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #53f4af !important;
 	font-size: 18px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	margin-top: 22px;
 	margin-left: 6px;
 	border: solid #000000 0px !important;
@@ -448,7 +452,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #19376E;
 	font-size: 33px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-top: 7px;
 	margin-left: 10px;
@@ -474,7 +478,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #19376E;
 	font-size: 33px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-top: 7px;
 	margin-left: 10px;
@@ -500,7 +504,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #19376E;
 	font-size: 39px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-top: 4px;
 	margin-left: 10px;
@@ -509,6 +513,97 @@ html>body .gwt-DecoratedStackPanel {
 	cursor: pointer;
 	font-weight: bold;
 }
+
+/*-------------------SignUpForm-------------------*/
+.loginButton {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+}
+
+.loginButton {
+	text-decoration: none;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+}
+.createUButton2 {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 16px !important;
+	background: #ECF2FF !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 12px !important;
+	margin-left: 10px !important;
+	border: solid #19376E 1px !important;
+	border-padding: 4px;
+	border-radius:0px;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+	margin-left:38px;
+}
+
+.createUButton1 {
+	font-family: Arial;
+	color: #19376E;
+	font-size: 16px !important;
+	background: #ECF2FF !important;
+	padding: 5px 2px 2px 2px !important;
+	margin-top: 12px !important;
+	margin-left: 116px !important;
+	border: solid #19376E 1px !important;
+	border-padding: 4px;
+	border-radius:0px;
+	text-decoration: none;
+	cursor: pointer;
+	font-weight: bold;
+	margin-left:38px;
+}
+
+
+
+.createUButton:hover {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.loginflabel {
+	font-family: Arial;
+	font-size: 18px !important;
+	test-align: center;
+	margin-top: 10px !important;
+	margin-left: 0px !important;
+	color: #19376E !important;
+	margin-left: 40px;
+	white-space: nowrap !important;
+}
+
+.surnameBox {
+	padding: 3px;
+	height: 30px;
+	position: relative;
+	left: 0;
+	margin-left: 10px;
+	margin-top: 12px;
+	margin-bottom: 8px;
+	outline: none;
+	width: 120px;
+	border: 1px solid #cdcdcd;
+	border-color: #9FB8E0;
+	background-color: white;
+	font-size: 16px;
+}
+
+.lnPanel{
+	margin-left:30px !important;
+}
+
 
 /*-------------------SearchForm-------------------*/
 .eigenschaftlabel {
@@ -669,7 +764,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #19376E;
 	font-size: 20px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	margin-top: 7px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
@@ -692,7 +787,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #19376E;
 	font-size: 30px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -715,7 +810,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #19376E;
 	font-size: 20px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	margin-top: 7px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
@@ -739,7 +834,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	color: #19376E;
 	font-size: 20px !important;
-	background: #ffffff !important;
+	background: #ECF2FF !important;
 	margin-top: 8px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
@@ -775,8 +870,9 @@ html>body .gwt-DecoratedStackPanel {
 	color: white !important;;
 	padding: 6px 14px 6px 14px !important;
 }
-.cellListSelectedItem{
-		font-family: Arial;
+
+.cellListSelectedItem {
+	font-family: Arial;
 	font-weight: bold;
 	font-size: 18px !important;
 	background: #061B42 !important;
@@ -872,6 +968,10 @@ html>body .gwt-DecoratedStackPanel {
 	color: black;
 }
 /*--------------------- REPORTGENERATOR ----------------------*/
+.datepicker {
+	float: left;
+}
+
 .repl {
 	cursor: pointer;
 	font-family: Arial;
@@ -950,7 +1050,7 @@ html>body .gwt-DecoratedStackPanel {
 	height: 58px;
 	margin-top: 20px;
 	color: #000;
-	background-color: #6D8EC2;
+	background-color: #B6C9E7;
 	display: block;
 	visibility: visible;
 }

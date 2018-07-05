@@ -613,7 +613,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void deletePValue(PValue pv, Contact c) {
 		System.err.println("PValue löschen" + pv.toString());
 		ArrayList<JabicsUser> cols = pvMapper.findCollaborators(pv);
-
 		System.err.println("PValue löschen2" + pv.toString());
 		/**
 		 * glöckchen (bzw. überhaupt sinnvoll): if(pv.getOwner().getId() == u.getId()) {

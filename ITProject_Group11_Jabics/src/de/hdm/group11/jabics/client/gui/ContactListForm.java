@@ -3,15 +3,12 @@ package de.hdm.group11.jabics.client.gui;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.ClientBundle.Source;
-import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -33,65 +30,83 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
+/**
+ * Eine ContactListForm zeigt Optionen für eine Kontaktliste an, um Kontakte zu
+ * dieser hinzuzufügen oder welche aus dieser zu entfernen.
+ * 
+ * @author Anders, Kurrle, Brase
+ */
 public class ContactListForm extends VerticalPanel {
-	/**
-	 * Struktur von
-	 * 
-	 * @author Christian Rathke
-	 * 
-	 *         Angepasst von
-	 * @author Anders
-	 */
+
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
 	EditorAdmin e;
-	JabicsUser u = null;
+	JabicsUser u;
 	ContactList currentList;
-	ContactList currentList2;
 	Boolean isNewList;
 
-	MultiSelectionModel<Contact> selectionModel;
+	MultiSelectionModel<Contact> selectionModelAdd;
+	MultiSelectionModel<Contact> selectionModelRemove;
 
-	CellTable<Contact> selValues;
-	ListDataProvider<Contact> valueProvider;
+	CellTable<Contact> selValuesAdd;
+	CellTable<Contact> selValuesRemove;
+	ListDataProvider<Contact> valueProviderAdd;
+	ListDataProvider<Contact> valueProviderRemove;
+	
+	HashSet<Contact> finalContactAdd;
+	HashSet<Contact> finalContactRemove;
 
-	HorizontalPanel sharePanel = new HorizontalPanel();
-	HorizontalPanel editPanel = new HorizontalPanel();
-	HorizontalPanel changePanel = new HorizontalPanel();
-	HorizontalPanel searchPanel = new HorizontalPanel();
-	HorizontalPanel horp1 = new HorizontalPanel();
-	HorizontalPanel horp2 = new HorizontalPanel();
-	HorizontalPanel confirmPanel;
+	ArrayList<Contact> cArray;
 
-	VerticalPanel addPanel = new VerticalPanel();
-	VerticalPanel removePanel = new VerticalPanel();
+	// Die zwei übergreifenden Panels:
+
+	// hinzufügen entfernen suche
+	HorizontalPanel mainPanel1 = new HorizontalPanel();
 
 	TextBox listBox;
 	Label headline;
 
+	HorizontalPanel addButtonPanel = new HorizontalPanel();
+	HorizontalPanel removeButtonPanel = new HorizontalPanel();
+	HorizontalPanel searchButtonPanel = new HorizontalPanel();
+
+	// teilen, löschen, speichern
+	HorizontalPanel mainPanel2 = new HorizontalPanel();
+
+	HorizontalPanel deletePanel = new HorizontalPanel();
+	HorizontalPanel savePanel = new HorizontalPanel();
+	HorizontalPanel sharePanel = new HorizontalPanel();
+
+	// Panels, die erscheinen, wenn kontakte hinzugefügt/entfernt werden
+	VerticalPanel addContactsPanel = new VerticalPanel();
+	VerticalPanel removeContactsPanel = new VerticalPanel();
+
+	Button searchInListButton = new Button("🔍");
 	Button deleteButton = new Button("🗑");
 	Button saveButton = new Button("✔");
 	Button shareButton = new Button("⋲");
 	Button removeButton = new Button("-");
 	Button addButton = new Button("+");
 
+	Label saveLabel = new Label("Änderungen speichern");
+	Label shareLabel = new Label("Liste teilen");
+	Label deleteLabel = new Label("Liste löschen");
+	Label addLabel = new Label("Kontakt");
+	Label remLabel = new Label("Kontakt");
+	Label searchLabel = new Label("Suche");
+
 	Button doneRemove = new Button("Fertig");
 	Button doneAdd = new Button("Fertig");
 	Button remove = new Button("Ausgewählte Kontakte aus Liste entfernen");
 	Button add = new Button("Ausgewählte Kontakte hinzufügen");
 
-	Button searchInListButton = new Button("🔍");
-
-	ArrayList<Contact> cArray;
-
-	ListDataProvider<Contact> contactDataProvider;
-	
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
-
 	/**
-	 * Eine neuere ContactListForm wird erstellt. Dabei werden alle Objekte die für dafür nötig sind deklariert. 
-	 * 
+	 * Eine neue ContactListForm erstellen 2 Reihen: Die erste bietet die Optionen
+	 * innerhalb der Liste an (Kontakt hinzufügen, Kontakt entfernen, suchen). Die
+	 * zweite Reihe bietet Funktionen wie Liste teilen, löschen und abbrechen (Dies
+	 * ist der vermutlich längste Konstruktor der Welt)
 	 */
 	public ContactListForm() {
 
@@ -99,74 +114,29 @@ public class ContactListForm extends VerticalPanel {
 		Label listname = new Label("Name:");
 		listname.setStyleName("Listenname");
 		listBox = new TextBox();
+		headline = new Label("Liste: ");
 
-		Label addlabel = new Label("Kontakt");
-		addlabel.addClickHandler(new AddClickHandler());
-		Label remlabel = new Label("Kontakt");
-		remlabel.addClickHandler(new RemoveClickHandler());
-		Label searchlabel = new Label("Suche");
-		searchlabel.addClickHandler(new SearchClickHandler());
-		HorizontalPanel hinzufügen = new HorizontalPanel();
-		HorizontalPanel entfernen = new HorizontalPanel();
-		HorizontalPanel suche = new HorizontalPanel();
+		addButtonPanel.add(addLabel);
+		addButtonPanel.add(addButton);
+		removeButtonPanel.add(remLabel);
+		removeButtonPanel.add(removeButton);
+		searchButtonPanel.add(searchLabel);
+		searchButtonPanel.add(searchInListButton);
 
-		horp1.add(listname);
-		horp1.add(listBox);
-		hinzufügen.add(addlabel);
-		hinzufügen.add(addButton);
-		entfernen.add(remlabel);
-		entfernen.add(removeButton);
-		suche.add(searchlabel);
-		suche.add(searchInListButton);
-		horp1.add(hinzufügen);
-		horp1.add(entfernen);
-		horp1.add(suche);
+		mainPanel1.add(listname);
+		mainPanel1.add(listBox);
+		mainPanel1.add(addButtonPanel);
+		mainPanel1.add(removeButtonPanel);
+		mainPanel1.add(searchButtonPanel);
 
-		addlabel.setStyleName("claddlabel");
-		remlabel.setStyleName("clremlabel");
-		searchlabel.setStyleName("clsearchlabel");
 		removeButton.setStyleName("cdeleteBtn");
 		addButton.setStyleName("caddButton");
 		listBox.setStyleName("TextBox");
 		searchInListButton.setStyleName("searchButton");
 
-		Label deleteLabel = new Label("Liste löschen");
-		deleteLabel.addClickHandler(new DeleteClickHandler());
-		Label shareLabel = new Label("Liste teilen");
-		shareLabel.addClickHandler(new ShareClickHandler());
-		Label saveLabel = new Label("Änderungen speichern");
-		saveLabel.addClickHandler(new SaveClickHandler());
-		HorizontalPanel deletePanel = new HorizontalPanel();
-		HorizontalPanel savePanel = new HorizontalPanel();
-		HorizontalPanel sharePanel = new HorizontalPanel();
-
-		/*
-		 * ---------- Clickhandler für alle Buttons -----------------
-		 */
-
-		remove.addClickHandler(new DeleteContactsFromListClickHandler());
-		doneRemove.addClickHandler(new DoneRemovingClickHandler());
-		add.addClickHandler(new AddContactsToContactListClickHandler());
-		doneAdd.addClickHandler(new DoneAddingClickHandler());
-
-		saveButton.addClickHandler(new SaveClickHandler());
-		deleteButton.addClickHandler(new DeleteClickHandler());
-
-		addButton.addClickHandler(new AddClickHandler());
-		removeButton.addClickHandler(new RemoveClickHandler());
-
-		shareButton.addClickHandler(new ShareClickHandler());
-
-		deletePanel.add(deleteLabel);
-		deletePanel.add(deleteButton);
-		savePanel.add(saveLabel);
-		savePanel.add(saveButton);
-		sharePanel.add(shareLabel);
-		sharePanel.add(shareButton);
-		horp2.add(deletePanel);
-		horp2.add(savePanel);
-		horp2.add(sharePanel);
-		changePanel.add(horp2);
+		addLabel.setStyleName("claddlabel");
+		remLabel.setStyleName("clremlabel");
+		searchLabel.setStyleName("clsearchlabel");
 
 		deleteLabel.setStyleName("cldeleteLabel");
 		deleteButton.setStyleName("cldeleteButton");
@@ -175,65 +145,111 @@ public class ContactListForm extends VerticalPanel {
 		shareLabel.setStyleName("clshareLabel");
 		shareButton.setStyleName("clshareButton");
 
-		headline = new Label("Liste: ");
+		/*
+		 * ---------- Clickhandler für alle Buttons und Labels -----------------
+		 */
+
+		remove.addClickHandler(new DeleteContactsFromListClickHandler());
+		doneRemove.addClickHandler(new DoneRemovingClickHandler());
+		add.addClickHandler(new AddContactsToContactListClickHandler());
+		doneAdd.addClickHandler(new DoneAddingClickHandler());
+
+		saveButton.addClickHandler(new SaveClickHandler());
+		saveLabel.addClickHandler(new SaveClickHandler());
+
+		deleteButton.addClickHandler(new DeleteClickHandler());
+		deleteLabel.addClickHandler(new DeleteClickHandler());
+
+		addButton.addClickHandler(new AddClickHandler());
+		addLabel.addClickHandler(new AddClickHandler());
+
+		remLabel.addClickHandler(new RemoveClickHandler());
+		removeButton.addClickHandler(new RemoveClickHandler());
+
+		shareButton.addClickHandler(new ShareClickHandler());
+		shareLabel.addClickHandler(new ShareClickHandler());
+
+		searchLabel.addClickHandler(new SearchClickHandler());
+
+		deletePanel.add(deleteLabel);
+		deletePanel.add(deleteButton);
+		savePanel.add(saveLabel);
+		savePanel.add(saveButton);
+		sharePanel.add(shareLabel);
+		sharePanel.add(shareButton);
+		mainPanel2.add(deletePanel);
+		mainPanel2.add(savePanel);
+		mainPanel2.add(sharePanel);
 
 		// Komplexere Datenstrukturen und Objekte
 
 		cArray = new ArrayList<Contact>();
 
-		selValues = new CellTable<Contact>(100,ctRes);
-		valueProvider = new ListDataProvider<Contact>();
-		valueProvider.addDataDisplay(selValues);
-		selectionModel = new MultiSelectionModel<Contact>();
-		selValues.setSelectionModel(selectionModel);
+		selValuesAdd = new CellTable<Contact>(100, ctRes);
+		selValuesRemove = new CellTable<Contact>(100, ctRes);
 
-		/*
-		 * RemovePanel
-		 */
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		valueProviderAdd = new ListDataProvider<Contact>();
+		valueProviderAdd.addDataDisplay(selValuesAdd);
+		valueProviderRemove = new ListDataProvider<Contact>();
+		valueProviderRemove.addDataDisplay(selValuesRemove);
+
+		selectionModelAdd = new MultiSelectionModel<Contact>();
+		selectionModelRemove = new MultiSelectionModel<Contact>();
+		selValuesAdd.setSelectionModel(selectionModelAdd);
+		selValuesRemove.setSelectionModel(selectionModelRemove);
+
+		selectionModelAdd.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-				/**
-				 * TODO: überlegen ob nächste Zeile benötigt oder durch clickhandler in button
-				 * add abgedeckt!
-				 */
-				HashSet<Contact> finalC = (HashSet<Contact>) selectionModel.getSelectedSet();
+				finalContactAdd = (HashSet<Contact>) selectionModelAdd.getSelectedSet();
+				Window.alert("Auswahl geändert");
+			}
+		});
+		
+		selectionModelRemove.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				finalContactRemove = (HashSet<Contact>) selectionModelRemove.getSelectedSet();
 				Window.alert("Auswahl geändert");
 			}
 		});
 
-		Column<Contact, Boolean> checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)) {
+		Column<Contact, Boolean> checkboxAdd = new Column<Contact, Boolean>(new CheckboxCell(true, false)) {
 			public Boolean getValue(Contact object) {
-				GWT.log("7.3 selected getPValue");
-				return selectionModel.isSelected(object);
+				return selectionModelAdd.isSelected(object);
 			}
 		};
-		Column<Contact, String> contact = new Column<Contact, String>(new TextCell()) {
+		Column<Contact, Boolean> checkboxRemove = new Column<Contact, Boolean>(new CheckboxCell(true, false)) {
+			public Boolean getValue(Contact object) {
+				return selectionModelRemove.isSelected(object);
+			}
+		};
+		Column<Contact, String> contactAdd = new Column<Contact, String>(new TextCell()) {
 			public String getValue(Contact object) {
-				GWT.log("7.3 selected getPValue");
-
+				return object.toString();
+			}
+		};
+		Column<Contact, String> contactRemove = new Column<Contact, String>(new TextCell()) {
+			public String getValue(Contact object) {
 				return object.toString();
 			}
 		};
 
-		selValues.addColumn(checkbox, "Auswahl");
-		selValues.setColumnWidth(checkbox, 50, Unit.PX);
-		selValues.addColumn(contact, "Kontakt");
-		selValues.setColumnWidth(contact, 50, Unit.EM);
+		selValuesAdd.addColumn(checkboxAdd, "Auswahl");
+		selValuesAdd.setColumnWidth(checkboxAdd, 30, Unit.PX);
+		selValuesAdd.addColumn(contactAdd, "Kontakt");
+		selValuesAdd.setColumnWidth(contactAdd, 300, Unit.PX);
 
-		/**
-		 * 3 Reihen Die erste bietet die Optionen auf Listenebene an (Liste teilen1,
-		 * Liste teilen 2). Die zweite bietet die Option an, die Liste zu löschen. Die
-		 * dritte bietet die Optionen innerhalb der Liste an (Kontakt hinzufügen,
-		 * Kontakt entfernen)
-		 */
+		selValuesRemove.addColumn(checkboxRemove, "Auswahl");
+		selValuesRemove.setColumnWidth(checkboxRemove, 30, Unit.PX);
+		selValuesRemove.addColumn(contactRemove, "Kontakt");
+		selValuesRemove.setColumnWidth(contactRemove, 300, Unit.PX);
 
-		removePanel.add(selValues);
-		removePanel.add(remove);
-		removePanel.add(doneRemove);
+		removeContactsPanel.add(selValuesRemove);
+		removeContactsPanel.add(remove);
+		removeContactsPanel.add(doneRemove);
 
-		addPanel.add(selValues);
-		addPanel.add(add);
-		addPanel.add(doneAdd);
+		addContactsPanel.add(selValuesAdd);
+		addContactsPanel.add(add);
+		addContactsPanel.add(doneAdd);
 
 	}
 	
@@ -255,25 +271,24 @@ public class ContactListForm extends VerticalPanel {
 
 		if (isNewList == true) {
 			GWT.log("7.1 isNewList true");
-			deleteButton.setVisible(false);
-			removeButton.setVisible(false);
+			deletePanel.setVisible(false);
+			removeButtonPanel.setVisible(false);
 
 		} else {
-			deleteButton.setVisible(true);
-			removeButton.setVisible(true);
+			deletePanel.setVisible(true);
+			removeButtonPanel.setVisible(true);
 		}
 
 		searchInListButton.addClickHandler(new SearchClickHandler());
 
 		sharePanel.setStyleName("sharePanel");
 
-		this.add(horp1);
-		this.add(sharePanel);
-		this.add(editPanel);
-		this.add(changePanel);
-		this.add(addPanel);
-		this.add(removePanel);
-		this.add(searchPanel);
+		this.add(mainPanel1);
+		this.add(mainPanel2);
+		this.add(addContactsPanel);
+		this.add(removeContactsPanel);
+		addContactsPanel.setVisible(false);
+		removeContactsPanel.setVisible(false);
 	}
 	
 	/**
@@ -283,24 +298,25 @@ public class ContactListForm extends VerticalPanel {
 	 * 			Liste, die gesetzt werden soll.
 	 */
 	public void setCurrentList(ContactList cl) {
-		this.currentList = cl;
-
 		if (cl != null) {
-			GWT.log("7.3.1 CurrentList: " + cl.getListName());
 			this.currentList = cl;
-			GWT.log(currentList.getContacts().toString());
+			if (cl.getId() != 0) {
+				GWT.log("7.3.1 CurrentList: " + cl.getListName());
+				this.currentList = cl;
+				GWT.log(currentList.getContacts().toString());
 
-			if (cl.getListName() != null) {
-				listBox.setText(cl.getListName());
+				if (cl.getListName() != null) {
+					listBox.setText(cl.getListName());
+				}
+
+				deletePanel.setVisible(true);
+				sharePanel.setVisible(true);
+			} else {
+				this.currentList = null;
+				GWT.log("7.3.2 CurrentList: " + currentList.getListName() + " " + currentList.getClass().toString());
+				deletePanel.setVisible(false);
+				sharePanel.setVisible(false);
 			}
-
-			deleteButton.setEnabled(true);
-			shareButton.setEnabled(true);
-		} else {
-			this.currentList = null;
-			GWT.log("7.3.2 CurrentList: " + currentList.getListName() + " " + currentList.getClass().toString());
-			deleteButton.setEnabled(false);
-			shareButton.setEnabled(false);
 		}
 	}
 
@@ -309,10 +325,9 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	void removeAddPanel() {
 		GWT.log("7.4 removeAddPanel");
-		addButton.setEnabled(true);
-		removeButton.setEnabled(true);
-		addPanel.clear();
-		this.remove(addPanel);
+		addButtonPanel.setVisible(true);
+		removeButtonPanel.setVisible(true);
+		addContactsPanel.setVisible(false);
 	}
 
 	/**
@@ -320,18 +335,15 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	void removeRemovePanel() {
 		GWT.log("7.4 removeRemovePanel");
-		addButton.setEnabled(true);
-		removeButton.setEnabled(true);
-		removePanel.clear();
-		this.remove(removePanel);
+		addButtonPanel.setVisible(true);
+		removeButtonPanel.setVisible(true);
+		removeContactsPanel.setVisible(false);
 	}
 
 	void save() {
 		currentList.setListName(listBox.getValue());
 		editorService.updateContactList(currentList, new UpdateContactListCallback());
-
-		valueProvider.flush();
-
+		valueProviderAdd.flush();
 	}
 
 	/**
@@ -342,10 +354,13 @@ public class ContactListForm extends VerticalPanel {
 	 * 
 	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
-	public void addContactPanel(ArrayList<Contact> allC) {
-
-		valueProvider.setList(allC);
-		valueProvider.flush();
+	public void showAddContactPanel(ArrayList<Contact> allC) {
+		GWT.log("setvisible true addpanel");
+		addContactsPanel.setVisible(true);
+		removeButtonPanel.setVisible(false);
+		addButtonPanel.setVisible(false);
+		valueProviderAdd.setList(allC);
+		valueProviderAdd.flush();
 
 	}
 
@@ -358,10 +373,13 @@ public class ContactListForm extends VerticalPanel {
 	 * 
 	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
 	 */
-	public void removeContactPanel(ArrayList<Contact> allC) {
+	public void showRemoveContactPanel(ArrayList<Contact> allC) {
 		GWT.log("7.7 removeContactPanel");
-		valueProvider.setList(allC);
-		valueProvider.flush();
+		removeButtonPanel.setVisible(false);
+		addButtonPanel.setVisible(false);
+		valueProviderRemove.setList(allC);
+		valueProviderAdd.flush();
+		removeContactsPanel.setVisible(true);
 
 	}
 	
@@ -411,9 +429,7 @@ public class ContactListForm extends VerticalPanel {
 	private class DeleteContactsFromListClickHandler implements ClickHandler {
 		public void onClick(ClickEvent e) {
 			removeRemovePanel();
-			GWT.log("7.4 currentList: " + currentList.getListName());
-
-			for (Contact c : selectionModel.getSelectedSet()) {
+			for (Contact c : finalContactRemove) {
 				GWT.log("7.4 Remove Contact " + c.getName() + " from List " + currentList.getId() + " "
 						+ currentList.getListName());
 				editorService.removeContactFromList(c, currentList, new RemoveContactFromListCallback());
@@ -428,12 +444,10 @@ public class ContactListForm extends VerticalPanel {
 	private class AddContactsToContactListClickHandler implements ClickHandler {
 		public void onClick(ClickEvent e) {
 			removeAddPanel();
-
-			for (Contact c : selectionModel.getSelectedSet()) {
+			for (Contact c : finalContactAdd) {
 				GWT.log("7.4 Add Contact " + c.getName() + "to List " + currentList.getId() + " "
 						+ currentList.getListName() + " " + currentList.getContacts().toString());
 				editorService.addContactToList(c, currentList, new AddContactToListCallback());
-				editPanel.setVisible(false);
 			}
 		}
 	}
@@ -445,12 +459,11 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	private class DoneAddingClickHandler implements ClickHandler {
 		public void onClick(ClickEvent e) {
-			// addPanel.clear();
-			// removePanel.clear();
-			// addPanel.remove(0);
 			removeAddPanel();
-			valueProvider.setList(null);
-			valueProvider.flush();
+			addButtonPanel.setVisible(true);
+			removeButtonPanel.setVisible(true);
+			valueProviderAdd.setList(null);
+			valueProviderAdd.flush();
 		}
 	}
 	
@@ -461,12 +474,11 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	private class DoneRemovingClickHandler implements ClickHandler {
 		public void onClick(ClickEvent e) {
-			// addPanel.clear();
-			// removePanel.clear();
-			// addPanel.remove(0);
 			removeRemovePanel();
-			valueProvider.setList(null);
-			valueProvider.flush();
+			addButtonPanel.setVisible(true);
+			removeButtonPanel.setVisible(true);
+			valueProviderAdd.setList(null);
+			valueProviderAdd.flush();
 		}
 	}
 	
@@ -539,8 +551,8 @@ public class ContactListForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			editorService.getContactsOfList(currentList, u, new GetContactsOfListCallback());
-			addButton.setEnabled(false);
-			removeButton.setEnabled(false);
+			addButtonPanel.setVisible(false);
+			removeButtonPanel.setVisible(false);
 		}
 	}
 
@@ -555,7 +567,7 @@ public class ContactListForm extends VerticalPanel {
 	}
 
 	/**
-	 * Clickhandler und Asynchrone Methodenaufrufe für das Löschen eines
+	 * Clickhandler und asynchrone Methodenaufrufe für das Löschen eines
 	 * <code>ContactList</code> Objekts.
 	 * 
 	 * @author Brase
@@ -570,10 +582,11 @@ public class ContactListForm extends VerticalPanel {
 			}
 		}
 	}
-	
+
 	/**
-	 * Callback, welcher bei Aktuallisieren einer Kontaktliste ausgelöst wird.
-	 *
+	 * Eine upgedatete Kontaktliste um Tree anzeigen und auch die ContctList form
+	 * damit aktualisieren
+	 * 
 	 */
 	private class UpdateContactListCallback implements AsyncCallback<ContactList> {
 
@@ -590,9 +603,10 @@ public class ContactListForm extends VerticalPanel {
 			}
 		}
 	}
-	
+
 	/**
-	 * Callback, welcher beim Beziehen aller Contakte einer Liste ausgelöst wird.
+	 * Alle Kontakte einer Liste zurückerhalten und in den valueProvider einspeisen,
+	 * damit Kontakte entfernt werden können.
 	 *
 	 */
 	private class GetContactsOfListCallback implements AsyncCallback<ArrayList<Contact>> {
@@ -606,13 +620,15 @@ public class ContactListForm extends VerticalPanel {
 			if (al != null) {
 				// Die Liste updaten (ist immer gut)
 				currentList.setContacts(al);
-				removeContactPanel(al);
+				showRemoveContactPanel(al);
 			}
 		}
 	}
-	
+
+
 	/**
-	 * Ein Callback, welcher beim Beziehen aller Kontakte eines Users ausgelöst wird.
+	 * Alle Kontakte eines Nutzers erhalten, damit Kontakte zu einer Liste
+	 * hinzugefügt werden können.
 	 *
 	 */
 	private class GetAllContactsOfUserCallback implements AsyncCallback<ArrayList<Contact>> {
@@ -623,13 +639,15 @@ public class ContactListForm extends VerticalPanel {
 
 		public void onSuccess(ArrayList<Contact> al) {
 			if (al != null) {
-				addContactPanel(al);
+				showAddContactPanel(al);
 			}
 		}
 	}
-	
+
+
 	/**
-	 * Callback welcher beim hinzufügen eines Kontaktes zur Kontaktliste ausgelöst wird.
+	 * Einen Kontakt im Tree hinzufügen, wenn er erfolgreich zur Liste hinzugefügt
+	 * wurde.
 	 *
 	 */
 	private class AddContactToListCallback implements AsyncCallback<Contact> {
@@ -639,19 +657,19 @@ public class ContactListForm extends VerticalPanel {
 		}
 
 		public void onSuccess(Contact contact) {
-
 			if (contact != null) {
-
 				GWT.log("7.5  " + "add " + contact.getName() + " to " + currentList.getListName() + " to Tree"
 						+ currentList.getContacts().toString());
+				removeAddPanel();
 				currentList.addContact(contact);
 				e.addContactToListInTree(currentList, contact);
 			}
 		}
 	}
-	
+
 	/**
-	 * Callback, welcher beim Entfernen eines Kontaktes einer Liste ausgelöst wird.
+	 * Einen Kontakt aus einer Liste im Tree entfernen, wenn er erfolgreich aus der
+	 * Liste entfernt wurde
 	 *
 	 */
 	private class RemoveContactFromListCallback implements AsyncCallback<Contact> {
@@ -666,14 +684,17 @@ public class ContactListForm extends VerticalPanel {
 
 				GWT.log("7.5  " + "remove " + contact.getName() + " from " + currentList.getListName() + "in Tree"
 						+ currentList.getContacts().toString());
+				removeRemovePanel();
 				currentList.removeContact(contact);
 				e.removeContactFromContactListInTree(currentList, contact);
 			}
 		}
 	}
-	
+
+
 	/**
-	 * Callback welcher beim Erstellen einer Kontaktliste ausgelöst wird.
+	 * Eine neu erstellte Liste zurodnen und im Tree anzeigen, wenn Sie erstellt
+	 * wurde.
 	 *
 	 */
 	private class CreateContactListCallback implements AsyncCallback<ContactList> {
@@ -694,9 +715,10 @@ public class ContactListForm extends VerticalPanel {
 			}
 		}
 	}
-	
+
+
 	/**
-	 * Callback welcher beim Entfernen einer Kontaktliste ausgelöst wird.
+	 * Eine Liste löschen, wenn erfolgreich nichts anzeigen.
 	 *
 	 */
 	private class DeleteContactListCallback implements AsyncCallback<ContactList> {
@@ -710,6 +732,7 @@ public class ContactListForm extends VerticalPanel {
 		public void onSuccess(ContactList cl) {
 			GWT.log("7.3 DeleteContactListCallback Success");
 			e.removeContactListFromTree(cl);
+			e.showMenuOnly();
 		}
 	}
 

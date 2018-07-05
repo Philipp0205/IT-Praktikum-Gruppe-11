@@ -33,9 +33,9 @@ public class ContactCell extends AbstractCell<Contact> {
 	 */
 	@Override
 	public void render(Context context, Contact c, SafeHtmlBuilder sb) {
-		
-		sb.appendEscaped(c.getName());
-				
+
+		sb.appendEscaped(c.getName());		
+
 		if (c != null) {
 			GWT.log("ContactCell: ShareStatus: " + c.getShareStatus());
 			

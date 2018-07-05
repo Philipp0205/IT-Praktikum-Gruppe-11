@@ -33,11 +33,34 @@ import de.hdm.group11.jabics.shared.bo.*;
  * 
  * @author Brase
  * @author Ilg
- *
  */
 public class ContactForm extends VerticalPanel {
-	
-	/**
+
+	EditorAdmin e;
+	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+
+	// TODO USER richtig setzen (wird hier nur instanziiert, dass er nicht
+	// undefinded ist)
+	JabicsUser u = new JabicsUser();
+	Contact contactToDisplay = null;
+	PValue selectedPValue = null;
+	TreeViewMenu contacttree = null;
+
+	// Widgets deren Inhalte variabel sind werden als Attribute angelegt.
+
+	Button deleteContactButton = new Button("Kontakt löschen");
+	Button shareContactButton;
+	Button existingSharedContactButton;
+	Grid contactGrid = new Grid();
+	ArrayList<PValue> checkedPV = new ArrayList<PValue>();
+	ListBox formattype = new ListBox();
+	TextBox propertyName = new TextBox();
+	TextBox pValueName = new TextBox();
+	Label contactName = new Label();
+	DatePicker datePicker = new DatePicker();
+	Date selectedDate = new Date();
+
+  /**
 	 *  Wird aufgerufen, wenn das die <code>ContactForm</code> inistalisiert wird.
 	 *  Deklariert alle nötigen Objekte, welche später gebraucht werden.
 	 */
