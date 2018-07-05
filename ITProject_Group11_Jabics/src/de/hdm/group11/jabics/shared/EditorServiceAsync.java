@@ -8,6 +8,16 @@ import com.google.gwt.user.client.rpc.RemoteService;
 
 import de.hdm.group11.jabics.shared.bo.*;
 
+/**
+ * Das asynchrone Gegenstück des Interface {@link EditorService}. Es wird
+ * semiautomatisch durch das Google Plugin erstellt und gepflegt. Daher erfolgt
+ * hier keine weitere Dokumentation. Für weitere Informationen siehe das
+ * synchrone Interface {@link EditorService}.
+ * 
+ * @author Thies
+ * @author Anders
+ * @author Kurrle
+ */
 public interface EditorServiceAsync {
 
 	void createContact(ArrayList<PValue> cArray, JabicsUser u, AsyncCallback<Contact> callback);
