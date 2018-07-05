@@ -1,0 +1,2 @@
+serviceClass: de.hdm.group11.jabics.shared.ReportGeneratorService
+path: 60FE4E2A1CB349A6D7C17AB67D15E17B.gwt.rpc
