@@ -19,7 +19,6 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.dom.client.Style.Unit;
 
 public class ContactCollaborationForm extends HorizontalPanel {
 
@@ -59,13 +58,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 	Grid grid;
 
-	public void onLoad() {
-
-		allUser = new ArrayList<JabicsUser>();
-		retrieveUser();
-
-	}
-
 	/**
 	 * Die Contact Form das erste Mal erstellen, Tabellen hinzufügen und alles
 	 * verknüpfen
@@ -93,7 +85,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				return object.toString();
 			}
 		};
-		
+
 		property.setCellStyleNames("prop");
 		propertyvalue.setCellStyleNames("pval");
 
@@ -137,8 +129,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 					GWT.log(suggestBox.getValue());
 					if (suggestBox.getValue().contains(u.getUsername())
 							&& suggestBox.getValue().contains(u.getEmail())) {
-						GWT.log("Nutzer erkant");
-
 						suggestedUser = u;
 					}
 				}
@@ -215,6 +205,17 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		});
 	}
 
+	/**
+	 * Die onLoafd Methode, die alle Nutzer für die SuggestBox lädt und erst im
+	 * Callback dieses RPC weiterläuft
+	 */
+	public void onLoad() {
+		GWT.log("ONLOAD");
+		allUser = new ArrayList<JabicsUser>();
+		retrieveUser();
+
+	}
+
 	public void continueOnLoad() {
 
 		fillSuggestBox();
@@ -239,20 +240,17 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 	public void fillSuggestBox() {
 		GWT.log("SuggestBox");
-
 		// SuggestBox mit Optionen befüllen
 		for (JabicsUser u : allUser) {
-			GWT.log("SuggestBoxalluser");
 			try {
 				oracle.add(u.getUsername() + " " + u.getEmail());
 				GWT.log("Nutzer zu Sug hinzugefügt");
 			} catch (NullPointerException e) {
-				Window.alert(
-						"setzen des nutzernamens oder mailadresse in sugstbox failed, Nutzer mit Id: " + u.getId());
+				GWT.log("Setzen des nutzernamens oder mailadresse in sugstbox failed, Nutzer mit Id: " + u.getId());
 				try {
 					oracle.add(u.getUsername());
 				} catch (NullPointerException ex) {
-					Window.alert("setzen des nutzernamens auch fehlgeschlagen, Nutzer mit Id: " + u.getId());
+					GWT.log("Setzen des nutzernamens auch fehlgeschlagen, Nutzer mit Id: " + u.getId());
 				}
 			}
 		}
@@ -272,20 +270,22 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	}
 
 	/**
-	 * Führt den RPC zur Freigabe einens Kontakts mit den ausgewählten Parametern
+	 * Führt den RPC zur Freigabe eines Kontakts mit den ausgewählten Parametern
 	 * durch.
 	 */
 	public void shareContactWithUser(JabicsUser u) {
 		GWT.log(selectedUser.getEmail());
 
-		for (PValue pv : selectedPV) {
-			editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
+		if (!selectedPV.isEmpty()) {
+			for (PValue pv : selectedPV) {
+				editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
+			}
+
+			editorService.addCollaboration(sharedContact, u, new AddContactCollaborationCallback());
+
+		} else {
+			Window.alert("Bitte mindestens eine Eigenschaft auswählen");
 		}
-
-		editorService.addCollaboration(sharedContact, u, new AddContactCollaborationCallback());
-
-		e.returnToContactForm(sharedContact);
-
 	}
 
 	/**
@@ -294,14 +294,15 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 */
 	public void shareContactWithAll() {
 		if (!finalUser.isEmpty()) {
-			/*
-			 * oder aber: for (User u: ldp.getList()) {
-			 */
-			for (JabicsUser u : finalUser) {
-				for (PValue pv : selectedPV) {
-					editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
+			if (!selectedPV.isEmpty()) {
+				for (JabicsUser u : finalUser) {
+					for (PValue pv : selectedPV) {
+						editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
+					}
+					editorService.addCollaboration(sharedContact, u, new AddContactCollaborationCallback());
 				}
-				editorService.addCollaboration(sharedContact, u, new AddContactCollaborationCallback());
+			} else {
+				Window.alert("Bitte mindestens eine Eigenschaft auswählen");
 			}
 		} else {
 			Window.alert("Keine Nutzer ausgewählt");
@@ -345,11 +346,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 	private class AddPVCollaborationCallback implements AsyncCallback<Void> {
 		public void onFailure(Throwable arg0) {
-			Window.alert("PV konnte nicht geteilt werden");
+			GWT.log("PV konnte nicht geteilt werden");
 		}
 
 		public void onSuccess(Void v) {
-			Window.alert("PV erfolgreich geteilt!");
+			GWT.log("PV erfolgreich geteilt!");
 		}
 	}
 
@@ -361,7 +362,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erolgreich geteilt!");
 			updateShareStatus();
-			//e.updateContactInTree(sharedContact);
 		}
 	}
 
@@ -373,7 +373,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("alleNutzergesetzt   " + user.get(1).getEmail());
+				GWT.log("alleNutzergesetzt   ");
 				setAllUser(user);
 				continueOnLoad();
 			}
@@ -388,9 +388,11 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("alleNutzergesetzt   " + user.get(1).getEmail());
+				GWT.log("alleNutzergesetzt   ");
 				setAllUser(user);
 				continueOnLoad();
+			} else {
+				GWT.log("Keine anderen Nutzer gefunden");
 			}
 
 		}
