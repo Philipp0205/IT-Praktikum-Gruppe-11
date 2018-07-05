@@ -199,6 +199,10 @@ public class TreeViewMenu extends VerticalPanel {
 	public void showEmptyTab() {
 		stackPanel2.showStack(0);
 	}
+	
+	public void flusContactsProvider(Contact c) {
+
+	}
 
 	public interface CellTreeResources extends CellTree.Resources {
 		@Override

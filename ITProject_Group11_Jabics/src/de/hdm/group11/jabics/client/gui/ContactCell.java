@@ -35,6 +35,7 @@ public class ContactCell extends AbstractCell<Contact> {
 	public void render(Context context, Contact c, SafeHtmlBuilder sb) {
 				
 		if (c != null) {
+			GWT.log("ContactCell: ShareStatus: " + c.getShareStatus());
 			
 			      try {
 			        switch (c.getShareStatus()) {

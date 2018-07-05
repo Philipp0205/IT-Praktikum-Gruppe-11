@@ -30,7 +30,7 @@ public class ContactListCell extends AbstractCell<ContactList> {
 	public void render(Context context, ContactList cl, SafeHtmlBuilder sb) {
 
 		if (cl != null) {
-			GWT.log("ShareStatus: " + cl.getShareStatus());
+			GWT.log("ContactListCell: ShareStatus: " + cl.getShareStatus());
 
 			try {
 				switch (cl.getShareStatus()) {

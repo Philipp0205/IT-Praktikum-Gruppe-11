@@ -337,6 +337,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 
 			public void onSuccess(Contact result) {
+				GWT.log("Update ShareStatus: On Sucess");
 				e.updateContactInTree(result);
 			}
 		});
@@ -381,6 +382,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erfolgreich geteilt!");
+			
 			updateShareStatus();
 		}
 	}
