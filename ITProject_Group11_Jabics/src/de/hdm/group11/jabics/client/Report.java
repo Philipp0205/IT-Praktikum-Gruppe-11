@@ -36,9 +36,9 @@ public class Report implements EntryPoint {
 		/**
 		 * Login
 		 */
-		//login();
+		login();
 
-		useStaticUser();
+		//useStaticUser();
 	}
 
 	public void login() {
@@ -101,7 +101,7 @@ public class Report implements EntryPoint {
 		@Override
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
-				if (logon.getIsLoggedIn()) {
+				if (logon.getIsLoggedIn() && !logon.isNewUser()) {
 					currentUser = logon.getCurrentUser();
 					report = new ReportAdmin();
 					report.setLoginInfo(logon);
@@ -109,7 +109,7 @@ public class Report implements EntryPoint {
 					// Den Editor laden
 					report.loadReport();
 				} else {
-					Window.alert("User not logged in");
+					Window.alert("Sie sind nicht angemeldet oder haben noch kein Konto bei Jabics");
 					loadLogin(logon);
 				}
 			}
