@@ -51,7 +51,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Konstruktor um eine Instanz dieser Klasse mit Bezeichner und Type zu
+	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten zu
 	 * erzeugen.
 	 * 
 	 * @param values
@@ -62,6 +62,8 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten
+	 * und <code>JabicsUser</code> zu erzeugen.
 	 * 
 	 * @param a
 	 * @param u
@@ -73,6 +75,8 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten
+	 * und einem Name zu erzeugen.
 	 * 
 	 * @param values
 	 * @param name
@@ -187,6 +191,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
+	 * Setzen der zugehörigen <code>PValue</code>.
 	 * 
 	 * @param values
 	 */

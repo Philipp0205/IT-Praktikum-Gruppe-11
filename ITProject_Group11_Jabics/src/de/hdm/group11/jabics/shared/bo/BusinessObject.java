@@ -142,5 +142,4 @@ public abstract class BusinessObject implements Serializable {
 	public void setOwner(JabicsUser owner) {
 		this.owner = owner;
 	}
-
 }

@@ -5,9 +5,8 @@ import java.io.Serializable;
 /**
  * <p>
  * Die Klasse <code>JabicsUser</code> implementiert Nutzer im System Jabics, ein
- * Nutzer ist ein Bediener des Systems, der sich über Google
- * eingeloggt hat. Viele Attribute werden direkt aus der Google Accounts API
- * übernommen.
+ * Nutzer ist ein Bediener des Systems, der sich über Google eingeloggt hat.
+ * Viele Attribute werden direkt aus der Google Accounts API übernommen.
  * </p>
  * 
  * @author Kurrle
@@ -33,8 +32,6 @@ public class JabicsUser implements Serializable {
 	 * Benutzername einer Instanz dieser Klasse.
 	 */
 	private String username;
-
-	
 
 	/**
 	 * Leerer Konstruktor
@@ -83,7 +80,6 @@ public class JabicsUser implements Serializable {
 		return this.email;
 	}
 
-	
 	/**
 	 * Auslesen der ID.
 	 * 
