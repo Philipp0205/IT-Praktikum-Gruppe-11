@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -236,6 +237,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 */
 	public void setSelectedContact(Contact c) {
 		GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
+		Window.alert("Kontakt anzeigen" + c.getName());
 		editor.showContact(c);
 	}
 

@@ -445,9 +445,6 @@ public class ContactListForm extends VerticalPanel {
 	 * Entfernt das Panel, das die Möglichkeit gibt, Kontakte hizuzufügen
 	 */
 	void removeAddPanel() {
-		
-
-		
 		GWT.log("7.4 removeAddPanel");
 		addPanel.clear();
 		this.remove(addPanel);
@@ -480,8 +477,6 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	public void addContactPanel(ArrayList<Contact> allC) {
 		
-
-
 		valueProvider.setList(allC);
 		valueProvider.flush();
 
@@ -498,17 +493,9 @@ public class ContactListForm extends VerticalPanel {
 	 */
 	public void removeContactPanel(ArrayList<Contact> allC) {
 		
-
-
-		
 		GWT.log("7.7 removeContactPanel");
-		// PValue selectedPV;
-		// selValues = new CellTable<Contact>();
 		valueProvider.setList(allC);
 		valueProvider.flush();
-		// valueProvider.addDataDisplay(selValues);
-		// finalC;
-		// Es kann sein, dass hier noch kexprovider benötigt werden
 
 	}
 
@@ -598,29 +585,19 @@ public class ContactListForm extends VerticalPanel {
 	private class AddContactToListCallback implements AsyncCallback<Contact> {
 
 		public void onFailure(Throwable arg0) {
-			Window.alert("Fehler 3! Kontakt konnte nicht hinzugefügt werden");
+			Window.alert("Kontakt konnte nicht hinzugefügt werden");
 		}
 
 		public void onSuccess(Contact contact) {
 
 			if (contact != null) {
-
-				// GWT.log(list.getContacts().toString());
 				// setCurrentList(list);
 
-				// Window.alert("Kontakt" + contact.getName() + " hinzugefügt");
-				/**
-				 * TODO: diese liste auch in dem TreeViewModel updaten!
-				 */
 				GWT.log("7.5  " + "add " + contact.getName() + " to " + currentList.getListName() + " to Tree"
 						+ currentList.getContacts().toString());
 
 				currentList.addContact(contact);
 				e.addContactToListInTree(currentList, contact);
-
-				// e.updateContactListInTree(list);
-
-				// onLoad();
 
 			}
 
@@ -689,11 +666,19 @@ public class ContactListForm extends VerticalPanel {
 		}
 	}
 
+	/**
+	 * Setzten, ob die aktuelle Liste eine neue Liste ist
+	 * @param b, boolean: True: neue Liste
+	 */
 	public void setIsNewList(boolean b) {
 		this.isNewList = b;
 
 	}
 
+	/**
+	 * Aktuelle Kontaktliste setzen
+	 * @param cl, aktuelle Kontaktliste
+	 */
 	public void setContactList(ContactList cl) {
 		this.currentList = cl;
 

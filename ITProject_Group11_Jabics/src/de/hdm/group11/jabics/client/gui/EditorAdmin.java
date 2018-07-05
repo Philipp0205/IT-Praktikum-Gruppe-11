@@ -73,8 +73,7 @@ public class EditorAdmin {
 	 * existiert immer nur eine einzige Instanz dieser Klasse, die über alle anderen
 	 * Klassen "Bescheid" weiß. Diesen Konstruktor darf also nur Editor aufrufen!
 	 * 
-	 * @param u,
-	 *            der eingeloggte <code>JabicsUser</code>
+	 * @param u, der eingeloggte <code>JabicsUser</code>
 	 */
 	public EditorAdmin(JabicsUser u) {
 		this.currentUser = u;
@@ -132,8 +131,7 @@ public class EditorAdmin {
 	/**
 	 * Die aktuelle LoginInfo setzen
 	 * 
-	 * @param logon
-	 *            LoginInfo mit aktuellem Nutzer
+	 * @param logon LoginInfo mit aktuellem Nutzer
 	 */
 	public void setLoginInfo(LoginInfo logon) {
 		this.loginfo = logon;
@@ -142,8 +140,7 @@ public class EditorAdmin {
 	/**
 	 * Den aktuellen Nutzer setzen
 	 * 
-	 * @param u,
-	 *            Aktueller Nutzer
+	 * @param u, Aktueller Nutzer
 	 */
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
@@ -178,10 +175,10 @@ public class EditorAdmin {
 	/**
 	 * EInen Kontakt anzeigen
 	 * 
-	 * @param c,
-	 *            Kontakt, der angezeigt werden soll
+	 * @param c, Kontakt, der angezeigt werden soll
 	 */
 	public void showContact(Contact c) {
+		GWT.log("showCOnt");
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
@@ -198,8 +195,7 @@ public class EditorAdmin {
 	/**
 	 * Einen Kontakt editieren.
 	 * 
-	 * @param c,
-	 *            Kontakt, der editiert werden soll
+	 * @param c, Kontakt, der editiert werden soll
 	 */
 	public void editContact(Contact c) {
 		GWT.log("editcont");
@@ -222,8 +218,7 @@ public class EditorAdmin {
 	/**
 	 * Eine EditContactForm für einen neuen Kontakt anzeigen
 	 * 
-	 * @param c,
-	 *            neuer Kontakt, der angelegt werden soll
+	 * @param c, neuer Kontakt, der angelegt werden soll
 	 */
 	public void newContact(Contact c) {
 		GWT.log("editcont");
@@ -246,8 +241,7 @@ public class EditorAdmin {
 	/**
 	 * Eine ContactListForm für eine neue Kontaktliste anzeigen.
 	 * 
-	 * @param cl,
-	 *            neue Kontaktliste, die angelegt werden soll
+	 * @param cl, neue Kontaktliste, die angelegt werden soll
 	 */
 	public void newContactList(ContactList cl) {
 		// if (this.clForm == null) {
@@ -268,8 +262,7 @@ public class EditorAdmin {
 	/**
 	 * Eine Kontaktliste in einer ContactListForm anzeigen
 	 * 
-	 * @param cl,
-	 *            Kontaktliste, die angezeigt werden soll
+	 * @param cl, Kontaktliste, die angezeigt werden soll
 	 */
 	public void showContactList(ContactList cl) {
 		GWT.log("7.x showContactList");
@@ -291,8 +284,7 @@ public class EditorAdmin {
 	/**
 	 * ContactCollaborationFOrm anzeigen, um einen Kontakt neu zu teilen.
 	 * 
-	 * @param c,
-	 *            Kontakt, der geteilt werden soll
+	 * @param c, Kontakt, der geteilt werden soll
 	 */
 	public void showContactCollab(Contact c) {
 		GWT.log("contactCollab");
@@ -311,8 +303,7 @@ public class EditorAdmin {
 	/**
 	 * Die Kollaborationen zwischen Nutzern und einem Kontakt bearbeiten
 	 * 
-	 * @param c,
-	 *            Kontakt, dessen Kollaborationen bearbeitet werden sollen.
+	 * @param c, Kontakt, dessen Kollaborationen bearbeitet werden sollen.
 	 */
 	public void showExistingContactCollab(Contact c) {
 		GWT.log("existingContactCollab");
@@ -330,8 +321,7 @@ public class EditorAdmin {
 	 * Die ContactListCollaborationForm anzeigen, um Teilhaberschaften einer
 	 * Kontaktliste zu bearbeiten
 	 * 
-	 * @param cl,
-	 *            Kontaktliste, für die Teilhaberschaften bearbeitet werden sollen
+	 * @param cl, Kontaktliste, für die Teilhaberschaften bearbeitet werden sollen
 	 */
 	public void showContactListCollab(ContactList cl) {
 
@@ -351,8 +341,7 @@ public class EditorAdmin {
 	/**
 	 * Die Searchform anzeigen, die das Durchsuchen einer Kotnaktliste ermöglicht.
 	 * 
-	 * @param cl,
-	 *            Kontaktliste, die durchsucht werden soll
+	 * @param cl, Kontaktliste, die durchsucht werden soll
 	 */
 	public void showSearchForm(ContactList cl) {
 		// if (this.sForm == null) {
@@ -369,8 +358,7 @@ public class EditorAdmin {
 	/**
 	 * Zuruück zur Anzeige eines Kontakts
 	 * 
-	 * @param c,
-	 *            Kontakt, der angeziegt werden soll
+	 * @param c, Kontakt, der angeziegt werden soll
 	 */
 	public void returnToContactForm(Contact c) {
 		if (this.scForm == null) {
@@ -388,8 +376,7 @@ public class EditorAdmin {
 	/**
 	 * Zuruück zur Anzeige einer Kontaktliste
 	 * 
-	 * @param cl,
-	 *            Kontaktliste, die angezeigt werden soll
+	 * @param cl, Kontaktliste, die angezeigt werden soll
 	 */
 	public void returnToContactListForm(ContactList cl) {
 		if (this.clForm == null) {
@@ -422,8 +409,7 @@ public class EditorAdmin {
 	/**
 	 * Kontaktliste zum TreeMenu hinzufügen
 	 * 
-	 * @param cl,
-	 *            Kontaktliste, die hinzugefügt werden soll
+	 * @param cl, Kontaktliste, die hinzugefügt werden soll
 	 */
 	public void addContactListToTree(ContactList cl) {
 		treeViewMenu.addContactList(cl);
@@ -432,10 +418,8 @@ public class EditorAdmin {
 	/**
 	 * Einen Kontakt einer Liste im Tree hinzufügen
 	 * 
-	 * @param cl
-	 *            Kontaktliste, der der Kontakt hinzugefügt werden soll
-	 * @param c
-	 *            Kontakt, der der Liste hinzugefügt werden soll
+	 * @param cl Kontaktliste, der der Kontakt hinzugefügt werden soll
+	 * @param c  Kontakt, der der Liste hinzugefügt werden soll
 	 */
 	public void addContactToListInTree(ContactList cl, Contact c) {
 		treeViewMenu.addContactToList(cl, c);
@@ -452,8 +436,7 @@ public class EditorAdmin {
 	/**
 	 * Kontaktliste im Tree aktualisieren
 	 * 
-	 * @param cl
-	 *            Kontaktliste, die aktualisiert werden soll
+	 * @param cl Kontaktliste, die aktualisiert werden soll
 	 */
 	public void updateContactListInTree(ContactList cl) {
 		treeViewMenu.updateContactListInTree(cl);
@@ -462,10 +445,8 @@ public class EditorAdmin {
 	/**
 	 * Einen Kontakt aus einer Liste im Tree entfernen
 	 * 
-	 * @param cl,
-	 *            Kontaktliste, aus der der Kontakt entfernt werden soll
-	 * @param c,
-	 *            Kontakt, der aus der Liste entfernt werden soll
+	 * @param cl, Kontaktliste, aus der der Kontakt entfernt werden soll
+	 * @param c, Kontakt, der aus der Liste entfernt werden soll
 	 */
 	public void removeContactFromContactListInTree(ContactList cl, Contact c) {
 		treeViewMenu.removeContactOfContactList(cl, c);
@@ -474,8 +455,7 @@ public class EditorAdmin {
 	/**
 	 * Kontakt aus dem Menu vollständig entfernen.
 	 * 
-	 * @param c
-	 *            Kontakt, der entfernt werden soll
+	 * @param c Kontakt, der entfernt werden soll
 	 */
 	public void removeContact(Contact c) {
 		treeViewMenu.removeContact(c);
@@ -484,8 +464,7 @@ public class EditorAdmin {
 	/**
 	 * Kontaktliste aus dem TreeMenu entfernen
 	 * 
-	 * @param cl,
-	 *            Kontaktliste, die entfernt werden soll
+	 * @param cl, Kontaktliste, die entfernt werden soll
 	 */
 	public void removeContactListFromTree(ContactList cl) {
 		treeViewMenu.removeContactListFromTree(cl);
@@ -493,6 +472,7 @@ public class EditorAdmin {
 
 	/**
 	 * ClickHandler, der die DeleteUserDialogBox zur Anzeige bringe
+	 * 
 	 * @author Anders
 	 *
 	 */
@@ -505,6 +485,7 @@ public class EditorAdmin {
 
 	/**
 	 * DialogBox, die den Nutzer fragt, ob er sein Konto wirklich löschen möchte
+	 * 
 	 * @author Anders
 	 */
 	private class DeleteUserDialogBox extends DialogBox {

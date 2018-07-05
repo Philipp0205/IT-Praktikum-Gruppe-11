@@ -2,13 +2,18 @@ package de.hdm.group11.jabics.client.gui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.cell.client.ImageResourceCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+
 import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellList;
+
+import com.google.gwt.resources.client.ImageResource;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -20,6 +25,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.resource.JabicsResources;
+
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -32,7 +39,7 @@ public class ShowContactForm extends VerticalPanel {
 
 	EditorAdmin e;
 	JabicsUser u;
-	Contact currentContact;
+	Contact currentContact = new Contact();
 	Boolean userIsOwner = false;
 
 	CellTable<PValue> values;
@@ -40,7 +47,7 @@ public class ShowContactForm extends VerticalPanel {
 
 	Column<PValue, String> prop;
 	Column<PValue, String> pval;
-	Column<PValue, String> shareStatus;
+	Column<PValue, ImageResource> shareStatus;
 
 	HorizontalPanel sharePanel = new HorizontalPanel();
 
@@ -62,7 +69,6 @@ public class ShowContactForm extends VerticalPanel {
 
 private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
-	
 
 	public ShowContactForm() {
 
@@ -79,7 +85,6 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 		horp3.add(shareExistingContactButton);
 		horp4.add(deleteLabel);
 		horp4.add(deleteButton);
-
 		haupthorp.add(horp3);
 		haupthorp.add(horp2);
 		haupthorp.add(horp4);
@@ -98,7 +103,6 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 		deleteButton.setStyleName("deleteButton");
 		deleteLabel.setStyleName("deleteLabel");
 
-		GWT.log("SHOWContact Construct");
 		values = new CellTable<PValue>();
 		valueProvider = new ListDataProvider<PValue>();
 		valueProvider.addDataDisplay(values);
@@ -108,33 +112,38 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 				return object.getProperty().getLabel();
 			}
 		};
-
+		
 		pval = new Column<PValue, String>(new TextCell()) {
 			public String getValue(PValue object) {
 				return object.toString();
 			}
 		};
 
-		shareStatus = new Column<PValue, String>(new TextCell()) {
-			public String getValue(PValue object) {
+
+		shareStatus = new Column<PValue, ImageResource>(new ImageResourceCell()) {
+			@Override
+			public ImageResource getValue(PValue object) {
 				if (object.getShareStatus() == BoStatus.IS_SHARED) {
-					return "Geteilt";
+					return JabicsResources.INSTANCE.greendot();
 				}
 				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
-					return "Nicht Geteilt";
+					return JabicsResources.INSTANCE.reddot();
 				}
-				return "NoStatus";
+				return null; 
+				
 			}
 		};
+		shareStatus.setHorizontalAlignment(ALIGN_CENTER);
+
+		shareStatus.setHorizontalAlignment(ALIGN_CENTER);
+
 
 		prop.setCellStyleNames("prop");
 		pval.setCellStyleNames("pval");
 		shareStatus.setCellStyleNames("shareStatus");
-
 		editButton.addClickHandler(new editClickHandler());
 
 		deleteButton.addClickHandler(new deleteClickHandler());
-
 		shareContactButton.addClickHandler(new shareClickHandler());
 
 		shareExistingContactButton.addClickHandler(new shareExistingClickHandler());
@@ -162,8 +171,17 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 
 
-	public void onLoad() {
 
+	public interface CellTableResources extends CellTable.Resources {
+
+
+		@Override
+		@Source("JabicsCellTable.css")
+		CellTable.Style cellTableStyle();
+	}
+
+
+	public void onLoad() {
 		userIsOwner();
 		// den Status des Boolschen Werts userIsOwner ermitteln
 		if (userIsOwner) {
@@ -172,11 +190,11 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 			sharePanel.setVisible(false);
 		}
 
-		GWT.log("Kontakte holen");
+		Window.alert("Kontakte holen");
 		if (valueProvider.getList().isEmpty()) {
 			editorService.getPValueOf(currentContact, u, new GetPValuesCallback());
-			GWT.log("4OnLoad SHOWContact");
 		} else {
+			Window.alert("Kontakte holen iwi in die else geganen");
 			renderTable(currentContact.getValues());
 		}
 	}
@@ -191,36 +209,41 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		// (Dieser Algorithmus lässt sich wahrscheinlich deutlich effizienter
 		// implementieren)
-		for (PValue pv : values) {
-			Integer i = new Integer(pv.getProperty().getId());
-			boolean bol = true;
-			// Alle bekannten P-Ids durchlaufen und schauen ob bereits vorhanden
-			for (Integer ii : ids) {
-				if (ii.equals(i))
-					bol = false;
-			}
-			// Wenn Id noch nicht gefunden, einfach hinzufügen
-			if (bol) {
-				ids.add(i);
-				result.add(pv);
-			} else { // Wenn id schonmal gefunden, an der stelle des PValue mit der gleichen ID im
-				// result array einfügen
-				pv.getProperty().setLabel("");
-				int iterator = 0;
-				boolean cancel = true;
-				for (PValue pVal : result) {
-					if (pVal.getProperty().getId() == i && cancel) {
-						result.add(iterator + 1, pv);
-						cancel = false;
+
+		if (values != null) {
+			for (PValue pv : values) {
+				Integer i = new Integer(pv.getProperty().getId());
+				boolean bol = true;
+				// Alle bekannten P-Ids durchlaufen und schauen ob bereits vorhanden
+				for (Integer ii : ids) {
+					if (ii.equals(i))
+						bol = false;
+				}
+				// Wenn Id noch nicht gefunden, einfach hinzufügen
+				if (bol) {
+					ids.add(i);
+					result.add(pv);
+				} else { // Wenn id schonmal gefunden, an der stelle des PValue mit der gleichen ID im
+					// result array einfügen
+					pv.getProperty().setLabel("");
+					int iterator = 0;
+					boolean cancel = true;
+					for (PValue pVal : result) {
+						if (pVal.getProperty().getId() == i && cancel) {
+							result.add(iterator + 1, pv);
+							cancel = false;
+						}
+						iterator++;
+
 					}
-					iterator++;
 				}
 			}
+			// Den Kontakt mit den sortierten Werten updaten
+			currentContact.setValues(result);
+		} else {
+			Window.alert("values sind null");
 		}
 		valueProvider.setList(result);
-		// Den Kontakt mit den sortierten Werten updaten
-		currentContact.setValues(result);
-		GWT.log(result.get(1).getStringValue());
 		valueProvider.flush();
 	}
 
@@ -247,19 +270,32 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	}
 
 	public void setContact(Contact c) {
-		this.currentContact = c;
-		if (valueProvider != null) {
-			valueProvider.setList(c.getValues());
-			valueProvider.flush();
+		if (c != null) {
+			this.currentContact = c;
+			if (valueProvider != null) {
+				if (c.getValues() != null) {
+					valueProvider.setList(c.getValues());
+				}
+				valueProvider.flush();
+			}
+		} else {
+			Window.alert("kontakt nicht bekannt");
 		}
 	}
 
 	public void setUser(JabicsUser u) {
-		this.u = u;
+		if (u != null) {
+			this.u = u;
+		} else
+			Window.alert("user is null");
+
 	}
 
 	public void setEditor(EditorAdmin e) {
-		this.e = e;
+		if (e != null) {
+			this.e = e;
+		} else
+			Window.alert("editor null");
 	}
 
 	class GetOwnerOfContactCallback implements AsyncCallback<JabicsUser> {
@@ -272,17 +308,19 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 				GWT.log("Besitzer geholt!");
 				currentContact.setOwner(result);
 				userIsOwner();
-			} else Window.alert("Besitzer konnte nicht ermittelt werden");
+			} else
+				Window.alert("Besitzer konnte nicht ermittelt werden");
 		}
 	}
 
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
+			Window.alert("Kontakte holen fail");
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-
+			Window.alert("values sind da");
 			if (result != null) {
 				currentContact.setValues(result);
 				renderTable(result);
@@ -317,9 +355,6 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 				}
 
 				public void onSuccess(Void v) {
-					if (v != null) {
-						GWT.log("Löschen fehlgeschlagen");
-					}
 				}
 			});
 		}

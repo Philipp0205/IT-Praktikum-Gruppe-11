@@ -286,7 +286,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		ArrayList<ContactList> allLists = clMapper.findContactListOfUser(u);
 		ArrayList<ContactList> result = new ArrayList<ContactList>();
-		ArrayList<BoStatus> status = clMapper.findShareStatus(result);
+		ArrayList<BoStatus> status = clMapper.findShareStatus(allLists);
 
 		if (allLists != null) {
 			int i = 0;
@@ -331,11 +331,9 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>Contact</code> Objekte eines <code>ContactList</code>
 	 * Objekts.
 	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, für welche die
-	 *            <code>Contact</code> Objekte gesucht werden.
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
+	 * @param cl das <code>ContactList</code> Objekt, für welche die
+	 *           <code>Contact</code> Objekte gesucht werden.
+	 * @param u  der aktuelle <code>JabicsUser</code>.
 	 * @return Die Liste der <code>Contact</code> Objekte, welche in einer
 	 *         <code>ContactList</code> liegen.
 	 */
@@ -370,8 +368,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>Contact</code> Objekte, welche einem
 	 * <code>JabicsUser</code> geteilt sind oder die ihm gehören.
 	 * 
-	 * @param u
-	 *            der aktuelle <code>JabicsUser</code>.
+	 * @param u der aktuelle <code>JabicsUser</code>.
 	 * @return Die Liste der <code>Contact</code> Objekte.
 	 */
 	public ArrayList<Contact> getContactsOf(JabicsUser u) {
@@ -405,8 +402,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	/**
 	 * Auslesen des aktualisierten <code>Contact</code> Objektes.
 	 * 
-	 * @param c
-	 * der 
+	 * @param c der
 	 * @return Contact c, einen aktuellen Kontakt
 	 */
 	public Contact getUpdatedContact(Contact c) {
@@ -424,23 +420,42 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die PValues eines Kontakts, die ein Nutzer sehen darf
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
-		System.out.println("getpvof" + u.getUsername());
+		if (c != null && u != null) {
+			System.out.println("getpvof" + u.getUsername() + c.getId());
 
-		ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
-		ArrayList<PValue> result = new ArrayList<PValue>();
-		ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
-		int i = 0;
-		// PValues filtern, wenn nicht geteilt und den Share Status setzen
-		for (PValue pv : allPV) {
-			pv.setShareStatus(status.get(i));
-			i++;
-			for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
-				if (u.getId() == uu.getId()) {
+			ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
+			ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
+			ArrayList<PValue> result = new ArrayList<PValue>();
+			int i = 0;
+			
+			// Im Fall, dass der Owner des Kontakt vorliegt, schnellere Abfertigung
+			JabicsUser owner = uMapper.findUserByContact(c);
+			if(u.getId() == owner.getId()) {
+				
+				for (PValue pv : allPV) {
+					System.out.println("gefunden: " + pv.toString());
+					pv.setShareStatus(status.get(i));
 					result.add(pv);
+					i++;
+				}
+				return result;
+			}
+			
+			
+			// PValues filtern, wenn nicht geteilt und den Share Status setzen
+			for (PValue pv : allPV) {
+				System.out.println("gefunden: " + pv.toString());
+				pv.setShareStatus(status.get(i));
+				i++;
+				for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
+					if (u.getId() == uu.getId()) {
+						result.add(pv);
+					}
 				}
 			}
-		}
-		return result;
+			return result;
+		} else
+			return null;
 	}
 
 	public ArrayList<Contact> getAllSharedContactsOf(JabicsUser u) {
@@ -750,13 +765,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * upgedated
 	 */
 	public Contact updateContact(Contact c, JabicsUser u) {
-	
+
 		// Nickname neu setzen
 		c.updateNickname();
 		System.out.println("5.1 updateContact");
 		// GWT.log("5.1 Contact:" + c.getName());
 		System.out.println("5.1 Contact:" + c.getName());
-	
+
 		Contact ctemp = cMapper.findContactById(c.getId());
 		ctemp.setValues(pvMapper.findPValueForContact(ctemp));
 		/*
@@ -768,7 +783,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		}
 		System.out.println("5.1 ctemp" + "ist kontakt gleich?" + c.equals(ctemp) + " kontaktename: " + ctemp.getName());
 		if (c.equals(ctemp) == false) {
-	
+
 			// überprüfen, ob pvalue übereinstimmt, wenn nicht update in db
 			for (PValue pv : c.getValues()) {
 				boolean bol = false;
@@ -853,7 +868,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		} else
 			return clMapper.findContactListById(cl.getId());
 	}
-	
 
 	/**
 	 * Eine Freigabe zwischen einem Nutzer und einer Kontaktliste einfügen. Diese
@@ -1017,10 +1031,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * verwendet. Für eine allgemeine Suche siehe
 	 * <code>searchExpressionInList</code>.
 	 * 
-	 * @param cl
-	 *            das zu durchsuchende <code>ContactList</code> Objekt.
-	 * @param pv
-	 *            das <code>PValue</code> Objekt, nach welchem gesucht wird.
+	 * @param cl das zu durchsuchende <code>ContactList</code> Objekt.
+	 * @param pv das <code>PValue</code> Objekt, nach welchem gesucht wird.
 	 * @return Liste aller <code>Contact</code> Objekte, welche das
 	 *         <code>PValue</code> Objekt enthalten.
 	 */
@@ -1171,9 +1183,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
 	 * einem <code>Contact</code> Objekt besitzen.
 	 *
-	 * @param c
-	 *            der <code>Contact</code> für welchen die Collaborator gesucht
-	 *            werden.
+	 * @param c der <code>Contact</code> für welchen die Collaborator gesucht
+	 *          werden.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(Contact c) {
@@ -1192,9 +1203,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * einem <code>ContactList</code> Objekt besitzen. Der Besitzer wird nicht
 	 * zurückgegeben.
 	 * 
-	 * @param cl
-	 *            die <code>ContactList</code> für welche die Collaborator gesucht
-	 *            werden.
+	 * @param cl die <code>ContactList</code> für welche die Collaborator gesucht
+	 *           werden.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
@@ -1212,8 +1222,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * Auslesen aller <code>JabicsUser</code> Objekte, welche eine Collaboration zu
 	 * einem <code>PValue</code> Objekt besitzen.
 	 * 
-	 * @param pv
-	 *            die <code>PValue</code> für welche die Collaborator gesucht werde.
+	 * @param pv die <code>PValue</code> für welche die Collaborator gesucht werde.
 	 * @return Liste aller <code>JabicsUser</code>, mit Collaboration.
 	 */
 	public ArrayList<JabicsUser> getCollaborators(PValue pv) {

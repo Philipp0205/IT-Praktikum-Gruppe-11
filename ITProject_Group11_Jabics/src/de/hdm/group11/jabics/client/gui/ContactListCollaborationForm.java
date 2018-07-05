@@ -251,14 +251,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		};
 		existingCollabTable.addColumn(existingCollabName, "Bereits geteilt mit");
 		newCollabTable.addColumn(newCollabName, "Neu teilen mit");
-
 	}
 
+	/**
+	 * SuggestBox für Nutzer hinzufügen und mit Optionen befüllen
+	 */
 	public void createSuggestBox() {
 
-		/**
-		 * SuggestBox hinzufügen und mit Optionen befüllen
-		 */
 		oracle = new MultiWordSuggestOracle();
 		suggestBox = new SuggestBox(oracle);
 
@@ -391,7 +390,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
 				GWT.log("GetAllCollaboratingUserCallback onSuccess");
-				// GWT.log("alleNutzergesetzt " + user.get(1).getEmail());
 				setAllCollaborators(user);
 			}
 			if (!otherCallbackArrived) {
