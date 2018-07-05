@@ -172,13 +172,6 @@ private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 
 
-	public interface CellTableResources extends CellTable.Resources {
-
-
-		@Override
-		@Source("JabicsCellTable.css")
-		CellTable.Style cellTableStyle();
-	}
 
 
 	public void onLoad() {

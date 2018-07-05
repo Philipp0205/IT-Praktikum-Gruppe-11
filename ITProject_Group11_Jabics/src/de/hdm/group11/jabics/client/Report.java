@@ -33,12 +33,14 @@ public class Report implements EntryPoint {
 			loginService = ClientsideSettings.getLoginService();
 		}
 
+		
+		
 		/**
 		 * Login
 		 */
-		login();
+		//login();
 
-		//useStaticUser();
+		useStaticUser();
 	}
 
 	public void login() {
