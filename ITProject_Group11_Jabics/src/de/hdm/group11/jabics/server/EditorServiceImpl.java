@@ -613,7 +613,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void deletePValue(PValue pv, Contact c) {
 		System.err.println("PValue löschen" + pv.toString());
 		ArrayList<JabicsUser> cols = pvMapper.findCollaborators(pv);
-
 		System.err.println("PValue löschen2" + pv.toString());
 		/**
 		 * glöckchen (bzw. überhaupt sinnvoll): if(pv.getOwner().getId() == u.getId()) {
@@ -817,8 +816,12 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// für jedes Kontaktobjekt werden die PValues in einer temporären ArrayList
 		// gespeichert.
 		System.out.println("Got all Contacts of User " + u.getId());
-		// Besitzer und ShareStatus setzen
-		ArrayList<BoStatus> status = cMapper.findShareStatus(cons);
+		// Besitzer und Share
+    
+    
+    
+    
+		ArrayList<BoStatus> status = cMapper.find(cons);
 		if (status != null && cons != null) {
 			if (status.size() == cons.size()) {
 				int i = 0;
