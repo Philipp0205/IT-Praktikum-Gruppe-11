@@ -1,0 +1,2 @@
+serviceClass: de.hdm.group11.jabics.shared.EditorService
+path: 7BB15105063C7240E27B7433D661205A.gwt.rpc

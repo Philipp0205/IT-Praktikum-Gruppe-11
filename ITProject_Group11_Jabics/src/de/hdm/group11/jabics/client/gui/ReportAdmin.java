@@ -1,5 +1,6 @@
 package de.hdm.group11.jabics.client.gui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,6 +13,8 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -33,6 +36,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
@@ -59,6 +63,15 @@ import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
  * @author Kurrle
  */
 public class ReportAdmin {
+	
+	//Celltable Ressourcen für Nutzeranzeige
+	public interface CellTableResources extends CellTable.Resources {
+
+		@Override
+		@Source("JabicsCellTable.css")
+		CellTable.Style cellTableStyle();
+	}
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	private JabicsUser currentUser;
 	private LoginInfo loginfo;
 	private Button logoutButton;
@@ -108,6 +121,8 @@ public class ReportAdmin {
 	private CellTable<JabicsUser> userTable;
 	private JabicsUser suggestedUser;
 	private JabicsUser selectedUser;
+	
+	
 
 	/**
 	 * Die Anzeige ist in zwei große Bereiche aufgeteilt. Zum einen Elemente für die
@@ -125,14 +140,14 @@ public class ReportAdmin {
 	 * 
 	 */
 	public ReportAdmin() {
-
+		
 		// Instantitierung relevanter Variablen für UserSuggestion
 		sharedContactsButton = new Button("gemeinsame Kontakte");
 		finalUser = new ArrayList<JabicsUser>();
 		finalPVal = new PValue();
 		userSelectionModel = new SingleSelectionModel<JabicsUser>();
 		userDataProvider = new ListDataProvider<JabicsUser>();
-		userTable = new CellTable<JabicsUser>();
+		userTable = new CellTable<JabicsUser>(100,ctRes);
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
 		
@@ -153,6 +168,7 @@ public class ReportAdmin {
 		// verPanel4.add(db);
 		datepicker.setValue(null);
 		verPanel4.add(datepicker);
+		datepicker.setStyleName("datepicker");
 		datepicker.setVisible(false);
 		navPanel.add(verPanel1);
 		navPanel.add(verPanel2);
@@ -187,12 +203,17 @@ public class ReportAdmin {
 		navPanel.setStyleName("repnav");
 		userPanel.setStyleName("repusernav");
 		
-
+		loadReport();
+		createSelectionMenu();
+		loadLogout();
+		createUserSuggestMenu();
 	}
 
 	public void loadReport() {
 
 		if (reportGenerator == null || editorService == null) {
+
+			
 			reportGenerator = ClientsideSettings.getReportGeneratorService();
 			// TODO: Diese Zeile könnte kritisch werden, da zwei Module in einem Klasse
 			editorService = ClientsideSettings.getEditorService();
@@ -290,6 +311,7 @@ public class ReportAdmin {
 					finalPVal.getProperty().setType(Type.INT);
 					break;
 				case "Datum":
+					GWT.log("true!");
 					datepicker.setVisible(true);
 					finish.setVisible(true);
 					verPanel4.add(finish);
@@ -321,6 +343,7 @@ public class ReportAdmin {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				GWT.log("log!");
 
 				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
 
@@ -342,7 +365,9 @@ public class ReportAdmin {
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				if (datepicker != null) {
 					// pval.setDateValue(event.getValue());
-					valueBox.setText(event.getValue().toString());
+					DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
+					
+					valueBox.setText(dateTimeFormat.format(event.getValue()));
 				}
 			}
 		});

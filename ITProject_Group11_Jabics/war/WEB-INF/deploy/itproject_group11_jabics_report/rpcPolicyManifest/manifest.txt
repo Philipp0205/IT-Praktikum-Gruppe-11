@@ -1,0 +1,5 @@
+# Module itproject_group11_jabics_report
+# RPC service class, partial path of RPC policy file
+de.hdm.group11.jabics.shared.ReportGeneratorService, 60FE4E2A1CB349A6D7C17AB67D15E17B.gwt.rpc
+de.hdm.group11.jabics.shared.LoginService, 72E9889B0513698F09BC2654AE94D76D.gwt.rpc
+de.hdm.group11.jabics.shared.EditorService, 7BB15105063C7240E27B7433D661205A.gwt.rpc

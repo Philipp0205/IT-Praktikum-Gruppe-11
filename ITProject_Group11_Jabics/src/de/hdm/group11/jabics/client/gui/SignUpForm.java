@@ -47,10 +47,11 @@ public class SignUpForm extends VerticalPanel {
 	/**
 	 * Erstellen einer neuen SignUpForm.
 	 * 
-	 * @param LoginInfo in dem der Nutzer und die Information über den Stand des
-	 *                  Logins liegt
-	 * @param Editor    auf den zurückgegriffen wird, wenn der Login abgeschlossen
-	 *                  ist.
+	 * @param LoginInfo
+	 *            in dem der Nutzer und die Information über den Stand des Logins
+	 *            liegt
+	 * @param Editor
+	 *            auf den zurückgegriffen wird, wenn der Login abgeschlossen ist.
 	 */
 	public SignUpForm(LoginInfo logon, Editor e) {
 		this.loginfo = logon;
@@ -58,23 +59,27 @@ public class SignUpForm extends VerticalPanel {
 		this.editor = e;
 
 		exitButton = new Button("Abbruch");
-		exitButton.addClickHandler(new ExitClickHandler());
-		exitButton.setStyleName("exitButton");
 		loginButton = new Button("Konto erstellen");
-		loginButton.addClickHandler(new LoginClickHandler());
-		exitButton.setStyleName("loginButton");
-
-		surnameLabel = new Label("Vorname eingeben");
-		lastnameLabel = new Label("Nachname eingeben");
+		surnameLabel = new Label("Vorname eingeben:");
+		lastnameLabel = new Label("Nachname eingeben:");
 		surname = new TextBox();
-		surname.setStyleName("surnameBox");
 		lastname = new TextBox();
-		lastname.setStyleName("lastnameBox");
+		loginButton.setStyleName("createUButton1");
+		exitButton.setStyleName("createUButton2");
+		
+		surnameLabel.setStyleName("loginflabel");
+		lastnameLabel.setStyleName("loginflabel");
+		surname.setStyleName("surnameBox");
+		lastname.setStyleName("surnameBox");
+		
+		exitButton.addClickHandler(new ExitClickHandler());
+		loginButton.addClickHandler(new LoginClickHandler());
 
 		surnamePanel.add(surnameLabel);
 		surnamePanel.add(surname);
 		lastnamePanel.add(lastnameLabel);
 		lastnamePanel.add(lastname);
+		lastnamePanel.setStyleName("lnPanel");
 		namePanel.add(surnamePanel);
 		namePanel.add(lastnamePanel);
 		buttonPanel.add(exitButton);
@@ -87,6 +92,7 @@ public class SignUpForm extends VerticalPanel {
 	}
 
 	public void onLoad() {
+	
 		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}

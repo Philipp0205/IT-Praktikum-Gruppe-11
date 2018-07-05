@@ -20,6 +20,7 @@
 .cellTreeEmptyMessage {
 	padding-left: 16px;
 	font-style: Arial;
+	font-size:0px;
 }
 
 .cellTreeItem {
@@ -56,7 +57,7 @@
 
 .cellTreeTopItem {
 	color: white;
-	background: #9FB8E0;
+	background: #6D8EC2;
 }
 
 .cellTreeTopItemImage {
@@ -69,16 +70,16 @@
 }
 
 .cellTreeKeyboardSelectedItem {
-	background-color: #ffc;
 	outline: none;
 }
 
 @sprite .cellTreeSelectedItem {
 	gwt-image: 'cellTreeSelectedBackground';
-	background: #9FB8E0;
+	background: #0F336C;
 	color: white;
 	height: auto;
 	overflow: visible;
+	
 }
 
 .cellTreeShowMoreButton {

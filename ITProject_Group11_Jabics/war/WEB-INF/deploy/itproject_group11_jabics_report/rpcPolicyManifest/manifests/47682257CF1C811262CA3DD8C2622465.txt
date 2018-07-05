@@ -1,0 +1,2 @@
+serviceClass: de.hdm.group11.jabics.shared.LoginService
+path: 72E9889B0513698F09BC2654AE94D76D.gwt.rpc

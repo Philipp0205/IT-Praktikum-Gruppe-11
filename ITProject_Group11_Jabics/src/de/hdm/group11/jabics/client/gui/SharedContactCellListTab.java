@@ -16,6 +16,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.TreeViewMenu.CellListResources;
 import de.hdm.group11.jabics.resource.JabicsResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.BusinessObject;
@@ -39,7 +40,7 @@ public class SharedContactCellListTab extends Widget {
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
 	ListDataProvider<Contact> contactsProvider;
 	
-	public SharedContactCellListTab(JabicsUser u) {
+	public SharedContactCellListTab(JabicsUser u, TreeViewMenu treeViewMenu2, CellListResources clRes) {
 		this.user = u;
 		
 		keyProvider = new ContactKeyProvider();

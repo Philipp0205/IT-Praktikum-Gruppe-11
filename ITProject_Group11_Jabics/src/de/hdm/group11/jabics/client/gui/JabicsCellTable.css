@@ -14,7 +14,7 @@
 	font-family: Arial;
 	font-size: 18px !important;
 	color: white;
-	background: #9FB8E0;
+	background: #6D8EC2;
 	border: solid white 1px !important;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .cellTableSelectedRowCell {
-	
+	background-color:#061B42;
 }
 
 .cellTableLastColumnHeader {
