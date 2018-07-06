@@ -44,8 +44,9 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	private CellTable<JabicsUser> newCollabTable;
 	private ListDataProvider<JabicsUser> existingUserDataProvider;
 	private ListDataProvider<JabicsUser> newCollabDataProvider;
+	
 	private MultiSelectionModel<JabicsUser> existingUserSelectionModel;
-	SingleSelectionModel<JabicsUser> newUserSelectionModel;
+	private SingleSelectionModel<JabicsUser> newUserSelectionModel;
 	private ArrayList<JabicsUser> existingCollaborators;
 	private ArrayList<JabicsUser> newCollaborators;
 
@@ -60,7 +61,15 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	
+	
 	public ContactListCollaborationForm() {
+		
+		allUser = new ArrayList<JabicsUser>();
+		newCollaborators = new ArrayList<JabicsUser>();
+		existingCollaborators = new ArrayList<JabicsUser>();
+		finalCollaborators = new ArrayList<JabicsUser>();
+		
+		
 		listPanel.setStyleName("listpanel");
 		GWT.log("#####################ContactListCollab onLoad");
 
@@ -90,26 +99,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			}
 		});
 
-		allUser = new ArrayList<JabicsUser>();
-		newCollaborators = new ArrayList<JabicsUser>();
-		existingCollaborators = new ArrayList<JabicsUser>();
-		finalCollaborators = new ArrayList<JabicsUser>();
-		
-		
-		suggestionPanel.add(suggestBox);
-		suggestionPanel.add(addButton);
-		suggestionPanel.add(removeButton);
-		suggestBox.setStyleName("TextBox");
-		addButton.setStyleName("clcbtn");
-		removeButton.setStyleName("clcbtn");
-
 		buttonPanel.add(shareList);
 		buttonPanel.add(deShareList);
-
-		this.add(suggestionPanel);
-		this.add(listPanel);
-		this.add(buttonPanel);
-		this.add(exit);
 		
 	}
 	
@@ -120,6 +111,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	public void onLoad() {
 		retrieveUser();
 		createTables();
+		
 		listPanel.add(newCollabTable);
 		listPanel.add(existingCollabTable);
 	}
@@ -128,13 +120,23 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren aufgerufen wurde.
 	 */
 	public void continueOnLoad() {
-
+		
 		createSuggestBox();
 		
+		suggestionPanel.add(suggestBox);
+		suggestionPanel.add(addButton);
+		suggestionPanel.add(removeButton);
+		
+		suggestBox.setStyleName("TextBox");
+		addButton.setStyleName("clcbtn");
+		removeButton.setStyleName("clcbtn");
+		
+		this.add(suggestionPanel);
+		this.add(listPanel);
+		this.add(buttonPanel);
+		this.add(exit);
 		
 	}
-	
-	
 	
 	/**
 	 * Setzt einen neuen ausgewählten Nutzer
