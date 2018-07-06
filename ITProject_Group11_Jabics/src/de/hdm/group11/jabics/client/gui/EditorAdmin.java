@@ -116,8 +116,8 @@ public class EditorAdmin {
 		imageShared = new Image(JabicsResources.INSTANCE.greendot());
 		imageNotShared = new Image(JabicsResources.INSTANCE.reddot());
 
-		labelShared = new Label("  Kontakt geteilt  ");
-		labelNotShared = new Label("  Kontakt nicht geteilt ");
+		labelShared = new Label("geteilt");
+		labelNotShared = new Label("nicht geteilt");
 		
 		legendPanel.add(imageShared);
 		legendPanel.add(labelShared);
