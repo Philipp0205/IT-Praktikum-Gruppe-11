@@ -172,6 +172,7 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public void clearSelectionModelContactListTab() {
 		contactListTab.clearSelectionModel();
+
 	}
 
 	public void clearSelectionModelContactTab() {

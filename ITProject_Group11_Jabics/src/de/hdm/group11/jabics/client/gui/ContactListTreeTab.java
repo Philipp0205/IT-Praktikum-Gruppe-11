@@ -40,7 +40,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	EditorAdmin editor;
 
 	TreeViewMenu treeViewMenu;
-
+	
+	
 	ArrayList<ContactList> editedLists;
 
 	/**
@@ -72,8 +73,9 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Erzeugt Instanzen des KeyProvider und des selectonModel.
 	 * 
-	 * @param u, der User für den die Kontaktlisten und Kontakte angezeigt werden
-	 *        sollen.
+	 * @param u,
+	 *            der User für den die Kontaktlisten und Kontakte angezeigt werden
+	 *            sollen.
 	 */
 	public ContactListTreeTab(JabicsUser u) {
 		GWT.log("2: Konstruktor ContactListTreeTab");
@@ -97,10 +99,12 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Erzeugt Instanzen des KeyProvider und des selectonModel.
 	 * 
-	 * @param u, der User für den die Kontaktlisten und Kontakte angezeigt werden
-	 *        sollen.
-	 * @param tvm, das TreeViewModel welches später für das Selection-Handling
-	 *        gebraucht wird.
+	 * @param u,
+	 *            der User für den die Kontaktlisten und Kontakte angezeigt werden
+	 *            sollen.
+	 * @param tvm,
+	 *            das TreeViewModel welches später für das Selection-Handling
+	 *            gebraucht wird.
 	 */
 	public ContactListTreeTab(JabicsUser u, TreeViewMenu tvm) {
 		this.jabicsUser = u;
@@ -136,19 +140,22 @@ public class ContactListTreeTab implements TreeViewModel {
 
 			BusinessObject selection = selectionModel.getSelectedObject();
 			GWT.log("selectionchange");
+			if (selection instanceof Contact) {
 
-			if (selection != null) {
-				if (selection instanceof Contact) {
-					Window.alert("selection ist Contact");
-					setSelectedContact((Contact) selection);
-				} else if (selection instanceof ContactList) {
-					setSelectedContactList((ContactList) selection);
-					treeViewMenu.showEmptyTab();
-				}
-				treeViewMenu.clearSelectionModelContactTab();
-				treeViewMenu.clearSelectionModelSharedContactTab();
+				setSelectedContact((Contact) selection);
+			} else if (selection instanceof ContactList) {
+
+				setSelectedContactList((ContactList) selection);
+
+				treeViewMenu.showEmptyTab();
+
 			}
+
+			treeViewMenu.clearSelectionModelContactTab();
+			treeViewMenu.clearSelectionModelSharedContactTab();
+
 		}
+
 	}
 
 	/**
@@ -177,7 +184,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setztn den Editor der Instant.
 	 * 
-	 * @param editor, der gesetzt werden soll.
+	 * @param editor,
+	 *            der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in contactlisttree");
@@ -188,7 +196,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setzt den User.
 	 * 
-	 * @param user, der gesetzt werden soll.
+	 * @param user,
+	 *            der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser user) {
 		this.jabicsUser = user;
@@ -205,13 +214,13 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setzt die momentan selktierte Kontaktliste.
 	 * 
-	 * @param cl, Kontaktliste die gesetzt werden soll.
+	 * @param cl,
+	 *            Kontaktliste die gesetzt werden soll.
 	 */
 	public void setSelectedContactList(ContactList cl) {
-		if (cl != null) {
-			GWT.log("2.2 ausgewählt " + cl.getListName());
-			editor.showContactList(cl);
-		}
+		// selectedContactList = cl;
+		GWT.log("2.2 ausgewählt " + cl.getListName());
+		editor.showContactList(cl);
 	}
 
 	/**
@@ -226,14 +235,12 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setzt einen neuen Selelktieren Kontakt.
 	 * 
-	 * @param c, Kontakt der selektiert werden soll.
+	 * @param c,
+	 *            Kontakt der selektiert werden soll.
 	 */
 	public void setSelectedContact(Contact c) {
-		if (c != null) {
-			Window.alert("Kontakt in Tree ausgewählt");
-			GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
-			editor.showContact(c);
-		}
+		GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
+		editor.showContact(c);
 	}
 
 	/**
@@ -249,7 +256,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Erstellen einer neuen Kontaktliste. Fügt eine neue Kotantkliste dem CellTree
 	 * hinzu. Die Selektion und die Anzeige werden entsprechend aktuallisiert.
 	 * 
-	 * @param cl, Kontaktliste die dem CellTree hinzugefügt werden soll.
+	 * @param cl,
+	 *            Kontaktliste die dem CellTree hinzugefügt werden soll.
 	 */
 	public void addContactList(ContactList cl) {
 		// Neue Kontaktliste wird dem DataProvider hinzugefügt.
@@ -269,7 +277,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Kontakteliste wird aus dem CellTree Widget entfernt. Die Selektion und die
 	 * Dataprovider werden ebenfalls entsprechend angepasst.
 	 * 
-	 * @param cl, Kontakteliste die entfernt werden soll.
+	 * @param cl,
+	 *            Kontakteliste die entfernt werden soll.
 	 */
 	public void removeContactList(ContactList cl) {
 
@@ -287,7 +296,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Aktualisiert eine Kontaktliste im CellTree-Widget.
 	 * 
-	 * @param cl, Kontaktliste die aktuallisiert werden soll.
+	 * @param cl,
+	 *            Kontaktliste die aktuallisiert werden soll.
 	 */
 	public void updateContactList(ContactList cl) {
 		List<ContactList> contactlists = contactListDataProviders.getList();
@@ -307,7 +317,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Entfernt einen Kontakt aus dem CellTree Widget.
 	 * 
-	 * @param c, Kontakt der entfernt werden soll.
+	 * @param c,
+	 *            Kontakt der entfernt werden soll.
 	 */
 	public void removeContact(Contact c) {
 
@@ -346,14 +357,18 @@ public class ContactListTreeTab implements TreeViewModel {
 	public void updateContact(Contact c) {
 		// eService.getContactListById(c.getOwner().getId(), new
 		// UpdateContactCallback(c));
+		
+
+
 
 		ListDataProvider<Contact> cProvider;
 
 		// Kontaktlisten werden durchsucht
 		for (ContactList cl : contactListDataProviders.getList()) {
 			cProvider = contactDataProviders.get(cl);
-
+			
 			GWT.log("6.1 CL:" + cl.getListName());
+
 
 			int i = 0;
 			for (Contact c2 : cProvider.getList()) {
@@ -362,6 +377,7 @@ public class ContactListTreeTab implements TreeViewModel {
 				if (c2.getId() == c.getId()) {
 
 					cProvider.getList().set(i, c);
+					
 
 					contactDataProviders.get(cl).flush();
 
@@ -372,17 +388,20 @@ public class ContactListTreeTab implements TreeViewModel {
 
 			}
 		}
-
+		
 		contactListDataProviders.flush();
 
+		
 	}
 
 	/**
 	 * Ein <code>Conact</code> wird einer bestimmen <code>ContactList</code>
 	 * hinzugefügt.
 	 * 
-	 * @param cl, Konaktliste dem der Kontakt hinzugefügt werden soll.
-	 * @param c, Kontakt der Liste der hinzugeügt werden soll.
+	 * @param cl,
+	 *            Konaktliste dem der Kontakt hinzugefügt werden soll.
+	 * @param c,
+	 *            Kontakt der Liste der hinzugeügt werden soll.
 	 */
 	public void addContactOfList(ContactList cl, Contact c) {
 
@@ -397,14 +416,16 @@ public class ContactListTreeTab implements TreeViewModel {
 
 		// contactsProvider.flush();
 
-		// selectionModel.setSelected(c, true);
+		//selectionModel.setSelected(c, true);
 	}
 
 	/**
 	 * Ein <code>Conact</code> wird einer <code>ContactList</code> hinzugefügt.
 	 * 
-	 * @param cl, dem der Kontakt angehört.
-	 * @param c, Kontakt der hinzugefügt werden soll.
+	 * @param cl,
+	 *            dem der Kontakt angehört.
+	 * @param c,
+	 *            Kontakt der hinzugefügt werden soll.
 	 */
 	public void removeContactOfContactList(ContactList cl, Contact c) {
 		GWT.log("Kontakt aus Liste entfernen " + c.getName());
@@ -431,10 +452,13 @@ public class ContactListTreeTab implements TreeViewModel {
 			return;
 
 	}
+	
+
 
 	public SingleSelectionModel<BusinessObject> getSelectionModel() {
 		return this.selectionModel;
 	}
+
 
 	/*
 	 * Funktioniert so noch nicht.
@@ -471,8 +495,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	// }
 
 	/**
-	 * Der Inhalt des CellTrees wird hier befüllgt. Dabei dienen Kontaktlisten als
-	 * obere Knoten und Kontakte als untergeordnete Knoten.
+	 * Der Inhalt des CellTrees wird hier befüllgt. Dabei dienen Kontaktlisten als obere Knoten
+	 * und Kontakte als untergeordnete Knoten.
 	 * 
 	 * @param value, der Root werd des CellTrees
 	 */

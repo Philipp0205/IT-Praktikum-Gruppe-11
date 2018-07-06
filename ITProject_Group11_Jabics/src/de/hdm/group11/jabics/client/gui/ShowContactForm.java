@@ -49,21 +49,16 @@ public class ShowContactForm extends VerticalPanel {
 	Column<PValue, String> pval;
 	Column<PValue, ImageResource> shareStatus;
 
-	HorizontalPanel editPanel = new HorizontalPanel();
 	HorizontalPanel sharePanel = new HorizontalPanel();
-	HorizontalPanel shareSubPanel1 = new HorizontalPanel();
-	HorizontalPanel shareSubPanel2 = new HorizontalPanel();
-	HorizontalPanel deletePanel = new HorizontalPanel();
-	HorizontalPanel mainPanel = new HorizontalPanel();
 
 	Button editButton = new Button("✎");
-	Button editLabel = new Button("Kontakt bearbeiten");
+	Label editLabel = new Label("Kontakt bearbeiten");
 	Button shareContactButton = new Button("⋲");
-	Button shareLabel = new Button("Kontakt teilen");
+	Label shareLabel = new Label("Kontakt teilen");
 	Button shareExistingContactButton = new Button("✎");
-	Button shareEditLabel = new Button("Teilen bearbeiten");
+	Label shareEditLabel = new Label("Teilen bearbeiten");
 	Button deleteButton = new Button("🗑");
-	Button deleteLabel = new Button("Kontakt löschen");
+	Label deleteLabel = new Label("Kontakt löschen");
 	
 	//cellTable Ressourcen	
 	public interface CellTableResources extends CellTable.Resources {
@@ -72,24 +67,26 @@ public class ShowContactForm extends VerticalPanel {
 		CellTable.Style cellTableStyle();
 	}
 
+private CellTableResources ctRes = GWT.create(CellTableResources.class);
+
 	public ShowContactForm() {
 
-		editPanel.add(editLabel);
-		editPanel.add(editButton);
-		
-		shareSubPanel1.add(shareLabel);
-		shareSubPanel1.add(shareContactButton);
-		shareSubPanel2.add(shareEditLabel);
-		shareSubPanel2.add(shareExistingContactButton);
-		
-		sharePanel.add(shareSubPanel1);
-		sharePanel.add(shareSubPanel2);
-		
-		deletePanel.add(deleteLabel);
-		deletePanel.add(deleteButton);
-		
-		mainPanel.add(sharePanel);
-		mainPanel.add(deletePanel);
+		HorizontalPanel horp1 = new HorizontalPanel();
+		HorizontalPanel horp2 = new HorizontalPanel();
+		HorizontalPanel horp3 = new HorizontalPanel();
+		HorizontalPanel horp4 = new HorizontalPanel();
+		HorizontalPanel haupthorp = new HorizontalPanel();
+		horp1.add(editLabel);
+		horp1.add(editButton);
+		horp2.add(shareLabel);
+		horp2.add(shareContactButton);
+		horp3.add(shareEditLabel);
+		horp3.add(shareExistingContactButton);
+		horp4.add(deleteLabel);
+		horp4.add(deleteButton);
+		haupthorp.add(horp3);
+		haupthorp.add(horp2);
+		haupthorp.add(horp4);
 
 		editLabel.addClickHandler(new editClickHandler());
 		shareLabel.addClickHandler(new shareClickHandler());
@@ -162,14 +159,19 @@ public class ShowContactForm extends VerticalPanel {
 			GWT.log("ShowCont panels hinzufügen");
 
 			this.add(values);
-			this.add(mainPanel);
-			this.add(editPanel);
+			this.add(haupthorp);
+			this.add(horp1);
 
 		} catch (Exception caught) {
 			Window.alert(caught.toString());
 		}
 
 	}
+
+
+
+
+
 
 	public void onLoad() {
 		userIsOwner();
@@ -185,7 +187,6 @@ public class ShowContactForm extends VerticalPanel {
 		} else {
 			renderTable(currentContact.getValues());
 		}
-		Window.alert("ShowContact onload ende");
 	}
 
 	/**
@@ -242,8 +243,10 @@ public class ShowContactForm extends VerticalPanel {
 			if (currentContact.getOwner() != null) {
 				if (currentContact.getOwner().getId() == u.getId()) {
 					userIsOwner = true;
+					GWT.log("userIsOwner True");
 				} else {
 					userIsOwner = false;
+					GWT.log("userIsOwner False");
 				}
 			} else {
 				editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
@@ -303,11 +306,10 @@ public class ShowContactForm extends VerticalPanel {
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
-			Window.alert("Values holen fail");
+			Window.alert("Kontakte holen fail");
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			Window.alert("ShowContact PValues geholt");
 			if (result != null) {
 				currentContact.setValues(result);
 				renderTable(result);

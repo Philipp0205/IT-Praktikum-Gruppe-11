@@ -144,6 +144,7 @@ public class Editor implements EntryPoint {
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
 				if (logon.getIsLoggedIn() && !logon.isNewUser()) {
+					GWT.log("HI");
 					currentUser = logon.getCurrentUser();
 					editor = new EditorAdmin(currentUser);
 					setLoginInfo(logon);
@@ -152,7 +153,10 @@ public class Editor implements EntryPoint {
 					// Den Editor laden
 					editor.loadEditor();
 				} else if (logon.getIsLoggedIn() && logon.isNewUser()) {
+					Window.alert("Neuer Nutzer");
+					GWT.log("!!" + logon.getCurrentUser().getEmail());
 					signUp = new SignUpForm(logon, getEditor());
+
 				} else {
 					Window.alert("User not logged in");
 					setLoginInfo(logon);

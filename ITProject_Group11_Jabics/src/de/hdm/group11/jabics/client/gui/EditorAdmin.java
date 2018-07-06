@@ -8,14 +8,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.client.Editor;
-import de.hdm.group11.jabics.resource.JabicsResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -52,8 +50,6 @@ public class EditorAdmin {
 	private HorizontalPanel topPanel = new HorizontalPanel();
 	private VerticalPanel menuPanel = new VerticalPanel();
 	private VerticalPanel mainPanel = new VerticalPanel();
-	
-	private HorizontalPanel legendPanel = new HorizontalPanel();
 
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
 	private HorizontalPanel widgetPanel = new HorizontalPanel();
@@ -69,11 +65,6 @@ public class EditorAdmin {
 	private ExistingContactCollaborationForm eccForm;
 	private ContactListCollaborationForm clcForm;
 	private SearchForm sForm;
-	
-	private Label labelShared;
-	private Label labelNotShared;
-	private Image imageShared;
-	private Image imageNotShared;
 
 	private TreeViewMenu treeViewMenu;
 
@@ -112,25 +103,11 @@ public class EditorAdmin {
 		treeViewMenu.setEditor(this);
 
 		treeViewMenu.setStyleName("treeView");
-		
-		imageShared = new Image(JabicsResources.INSTANCE.greendot());
-		imageNotShared = new Image(JabicsResources.INSTANCE.reddot());
-
-		labelShared = new Label("geteilt");
-		labelNotShared = new Label("nicht geteilt");
-		
-		legendPanel.add(imageShared);
-		legendPanel.add(labelShared);
-		legendPanel.add(imageNotShared);
-		legendPanel.add(labelNotShared);
-
 
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
-		menuPanel.add(legendPanel);
 
 		menuPanel.setStyleName("menuPanel");
-		legendPanel.addStyleName("legendPanel");
 	}
 
 	/**
@@ -221,27 +198,21 @@ public class EditorAdmin {
 	 * @param c, Kontakt, der editiert werden soll
 	 */
 	public void editContact(Contact c) {
-		Window.alert("Kontakt anzeigen");
-		if (c != null) {
-			GWT.log("editcont");
-			// if (this.cForm == null) {
-			ecForm = new EditContactForm();
-			ecForm.setEditor(this);
-			ecForm.setUser(this.currentUser);
+		GWT.log("editcont");
+		// if (this.cForm == null) {
+		ecForm = new EditContactForm();
+		ecForm.setEditor(this);
+		ecForm.setUser(this.currentUser);
 
-			formPanel.clear();
-			GWT.log("AltesWidgetEntfernt");
-			ecForm.setNewContact(false);
-			Window.alert("Kontakt wird jetzt gleich in ShowContact gesetzt");
-			ecForm.setContact(c);
+		formPanel.clear();
+		GWT.log("AltesWidgetEntfernt");
+		ecForm.setNewContact(false);
+		ecForm.setContact(c);
 
-			formPanel.insert(ecForm, 0);
-			GWT.log("editcontFertig");
+		formPanel.insert(ecForm, 0);
+		GWT.log("editcontFertig");
 
-			formPanel.setStyleName("formPanel");
-		} else {
-			Window.alert("Kontakt anzeigen ist null");
-		}
+		formPanel.setStyleName("formPanel");
 	}
 
 	/**
@@ -294,24 +265,20 @@ public class EditorAdmin {
 	 * @param cl, Kontaktliste, die angezeigt werden soll
 	 */
 	public void showContactList(ContactList cl) {
-		if (cl != null) {
-			GWT.log("7.x showContactList");
-			Window.alert("Kontaktliste anzeigen");
-			if (this.clForm == null) {
-				clForm = new ContactListForm();
-				clForm.setUser(this.currentUser);
-				clForm.setEditor(this);
-			}
-			formPanel.clear();
+		GWT.log("7.x showContactList");
 
-			// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
-			// clForm.clear();
-			clForm.setIsNewList(false);
-			clForm.setCurrentList(cl);
-			formPanel.add(clForm);
-		} else {
-			Window.alert("Kontaktliste anzeigen ist null");
+		if (this.clForm == null) {
+			clForm = new ContactListForm();
+			clForm.setUser(this.currentUser);
+			clForm.setEditor(this);
 		}
+		formPanel.clear();
+
+		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+		// clForm.clear();
+		clForm.setIsNewList(false);
+		clForm.setCurrentList(cl);
+		formPanel.add(clForm);
 	}
 
 	/**
@@ -327,6 +294,7 @@ public class EditorAdmin {
 		}
 
 		formPanel.clear();
+		// ccForm.clear();
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());
 		formPanel.add(ccForm);
@@ -356,16 +324,18 @@ public class EditorAdmin {
 	 * @param cl, Kontaktliste, für die Teilhaberschaften bearbeitet werden sollen
 	 */
 	public void showContactListCollab(ContactList cl) {
+
 		GWT.log("contactListCollab");
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
 		}
+
 		formPanel.clear();
 		clcForm.clear();
 		clcForm.setContactList(cl);
 		formPanel.add(clcForm);
-		//formPanel.insert(clcForm, 0);
+		// formPanel.insert(clcForm, 0);
 	}
 
 	/**
@@ -411,13 +381,11 @@ public class EditorAdmin {
 	public void returnToContactListForm(ContactList cl) {
 		if (this.clForm == null) {
 			clForm = new ContactListForm();
-			scForm.setEditor(this);
-			scForm.setUser(this.currentUser);
 		}
 		// addContactListToTree(cl);
 		formPanel.clear();
 		clForm.setCurrentList(cl);
-		formPanel.add(clForm);
+		widgetPanel.add(clForm);
 	}
 
 	/**
@@ -593,18 +561,18 @@ public class EditorAdmin {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Da ist etwas schiefgegangen, bitte versuchen Sie es erneut");
+			// TODO Auto-generated method stub
 		}
+
 		@Override
 		public void onSuccess(Void v) {
 			try {
 				Window.alert("Account erfolgreich gelöscht");
-				Window.Location.assign(loginfo.getLogoutUrl());
+				Editor e = new Editor();
+				e.onModuleLoad();
 
 			} catch (Exception e) {
 				Window.alert("Account erfolgreich gelöscht");
-				Editor ed = new Editor();
-				ed.onModuleLoad();
 			}
 		}
 	}

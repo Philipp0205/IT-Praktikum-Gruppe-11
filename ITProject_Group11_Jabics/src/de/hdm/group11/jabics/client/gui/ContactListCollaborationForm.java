@@ -60,7 +60,11 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	
-	public ContactListCollaborationForm() {
+	/**
+	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen für die
+	 * Funktionalität der Klasse gebraucht werden.
+	 */
+	public void onLoad() {
 		listPanel.setStyleName("listpanel");
 		GWT.log("#####################ContactListCollab onLoad");
 
@@ -70,7 +74,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			public void onClick(ClickEvent ev) {
 				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen"
 						+ " ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
-				shareContactList();
+				shareContact();
 			}
 		});
 		deShareList = new Button("Ausgewählten Nutzern entteilen");
@@ -79,10 +83,10 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			public void onClick(ClickEvent ev) {
 				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen "
 						+ "ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
-				deshareContactList();
+				deshareContact();
 			}
 		});
-		exit = new Button("Fertig");
+		exit = new Button("Abbrechen");
 		exit.setStyleName("clcbtn");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
@@ -94,34 +98,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		newCollaborators = new ArrayList<JabicsUser>();
 		existingCollaborators = new ArrayList<JabicsUser>();
 		finalCollaborators = new ArrayList<JabicsUser>();
-		
-		
-		suggestionPanel.add(suggestBox);
-		suggestionPanel.add(addButton);
-		suggestionPanel.add(removeButton);
-		suggestBox.setStyleName("TextBox");
-		addButton.setStyleName("clcbtn");
-		removeButton.setStyleName("clcbtn");
 
-		buttonPanel.add(shareList);
-		buttonPanel.add(deShareList);
-
-		this.add(suggestionPanel);
-		this.add(listPanel);
-		this.add(buttonPanel);
-		this.add(exit);
-		
-	}
-	
-	/**
-	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen für die
-	 * Funktionalität der Klasse gebraucht werden.
-	 */
-	public void onLoad() {
 		retrieveUser();
-		createTables();
-		listPanel.add(newCollabTable);
-		listPanel.add(existingCollabTable);
 	}
 
 	/**
@@ -130,11 +108,28 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	public void continueOnLoad() {
 
 		createSuggestBox();
+		createTables();
+
+		suggestionPanel.add(suggestBox);
+		suggestionPanel.add(addButton);
+		suggestionPanel.add(removeButton);
+		suggestBox.setStyleName("TextBox");
+		addButton.setStyleName("clcbtn");
+		removeButton.setStyleName("clcbtn");
 		
+
+		listPanel.add(newCollabTable);
+		listPanel.add(existingCollabTable);
 		
+
+		buttonPanel.add(shareList);
+		buttonPanel.add(deShareList);
+
+		this.add(suggestionPanel);
+		this.add(listPanel);
+		this.add(buttonPanel);
+		this.add(exit);
 	}
-	
-	
 	
 	/**
 	 * Setzt einen neuen ausgewählten Nutzer
@@ -150,7 +145,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * Führt den RPC zur freigabe einens Kontakts mit allen ausgewählten Nutzern mit
 	 * den ausgewählten Parametern durch.
 	 */
-	public void shareContactList() {
+	public void shareContact() {
 		if (!newCollaborators.isEmpty()) {
 
 			for (JabicsUser u : newCollaborators) {
@@ -165,11 +160,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * Ennteilt einen Kontakt. Dies bedeuetet, dass die Kollaboration des Kontakts gelöscht wird und
 	 * somit andere Nutzer keinen Zugriff mehr auf den Kontakt haben.
 	 */
-	public void deshareContactList() {
+	public void deshareContact() {
 		if (!finalCollaborators.isEmpty()) {
 
 			for (JabicsUser u : finalCollaborators) {
 				GWT.log("deshareContactWithAll" + u.getUsername());
+				// editorService.addCollaboration(sharedContactList, u, new
+				// AddContactListCollaborationCallback());
 				editorService.deleteCollaboration(sharedContactList, u, new DeleteContactListCollaborationCallback());
 			}
 		} else {
@@ -251,7 +248,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		 * Provider erstellen, der ausgewählte Nutzer einer Tabelle zur Verfügung stellt
 		 */
 		newCollabDataProvider = new ListDataProvider<JabicsUser>();
-		newCollabTable = new CellTable<JabicsUser>(200,ctRes);
+		newCollabTable = new CellTable<JabicsUser>(100,ctRes);
 
 		newCollabDataProvider.setList(newCollaborators);
 		newCollabDataProvider.addDataDisplay(newCollabTable);
@@ -266,7 +263,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		});
 
 		existingUserDataProvider = new ListDataProvider<JabicsUser>();
-		existingCollabTable = new CellTable<JabicsUser>(200,ctRes);
+		existingCollabTable = new CellTable<JabicsUser>(100,ctRes);
 
 		existingUserSelectionModel = new MultiSelectionModel<JabicsUser>();
 		existingCollabTable.setSelectionModel(existingUserSelectionModel);
@@ -414,10 +411,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		@Override
 		public void onSuccess(ContactList result) {
 			if (result != null) {
-				for(JabicsUser u : finalCollaborators) {
-					existingCollaborators.remove(u);
-				}
-				existingUserDataProvider.flush();
+				Window.alert("Kontakt erfolgreich entteilt!");
 				e.updateContactListInTree(result);
 			}
 		}
