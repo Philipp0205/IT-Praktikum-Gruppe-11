@@ -88,12 +88,12 @@ public class ContactListForm extends VerticalPanel {
 	Button removeButton = new Button("-");
 	Button addButton = new Button("+");
 
-	Label saveLabel = new Label("Änderungen speichern");
-	Label shareLabel = new Label("Liste teilen");
-	Label deleteLabel = new Label("Liste löschen");
-	Label addLabel = new Label("Kontakt");
-	Label remLabel = new Label("Kontakt");
-	Label searchLabel = new Label("Suche");
+	Button saveLabel = new Button("Änderungen speichern");
+	Button shareLabel = new Button("Liste teilen");
+	Button deleteLabel = new Button("Liste löschen");
+	Button addLabel = new Button("Kontakt");
+	Button remLabel = new Button("Kontakt");
+	Button searchLabel = new Button("Suche");
 
 	Button doneRemove = new Button("Fertig");
 	Button doneAdd = new Button("Fertig");
