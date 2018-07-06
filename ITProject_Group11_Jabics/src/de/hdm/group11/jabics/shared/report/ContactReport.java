@@ -141,7 +141,8 @@ public class ContactReport extends Report implements Serializable {
 	 * <code>contactInfo</code>.
 	 * 
 	 * @return String im Format: "Report for Contact: " + Anzeigename des Kontakts.
-	 */
+	 */ 
+	@Override 
 	public String toString() {
 		return "Report for Contact: " + this.contactInfo;
 	}
