@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -63,6 +64,8 @@ public class EditContactForm extends VerticalPanel {
 	DatePicker dp2;
 	Button done2;
 	Date tempDate;
+	
+	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
 
 	public void onLoad() {
 		if (contact != null) {
@@ -140,7 +143,7 @@ public class EditContactForm extends VerticalPanel {
 			dp2.addValueChangeHandler(new ValueChangeHandler<Date>() {
 				public void onValueChange(ValueChangeEvent<Date> event) {
 					tempDate = event.getValue();
-					pValueTextBox.setText(event.getValue().toString());
+					pValueTextBox.setText(dateTimeFormat.format(event.getValue()).toString());
 				}
 			});
 			pValueTextBox.addClickHandler(new ClickHandler() {
@@ -312,8 +315,6 @@ public class EditContactForm extends VerticalPanel {
 					public void onSuccess(Contact result) {
 
 						if (result != null) {
-
-							GWT.log("Kontakt " + result.getName() + " erfolgreich gespeichert mit diesen PV:");
 							for (PValue pv : result.getValues()) {
 								GWT.log(pv.toString());
 							}
@@ -485,27 +486,6 @@ public class EditContactForm extends VerticalPanel {
 	}
 
 	/**
-	 * Diese Callback-Klasse aktualisiert die Ansicht nach der Änderung einer
-	 * Eigenschafts- ausprägung.
-	 */
-	private class UpdatePValueCallback implements AsyncCallback<PValue> {
-
-		public void onFailure(Throwable caugth) {
-			Window.alert("Die Änderung ist fehlgeschlagen.");
-		}
-
-		@Override
-		public void onSuccess(PValue result) {
-			if (result != null) {
-				// Contacttree muss aktualisiert werden .
-				// Conacttree.refresh();
-				Window.alert("Wert geändert");
-			}
-
-		}
-	}
-
-	/**
 	 * Diese Callback-Klasse aktualisiert die Ansicht nach erfolgreichem Erstellen
 	 * einer Eigenschaftsausprägung..
 	 */
@@ -519,7 +499,6 @@ public class EditContactForm extends VerticalPanel {
 		@Override
 		public void onSuccess(PValue result) {
 			if (result != null) {
-				GWT.log("PValue erstellt ");
 				PropForm pform = new PropForm(result);
 				pform.show();
 				val.add(pform);
@@ -727,7 +706,7 @@ public class EditContactForm extends VerticalPanel {
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				if (pval != null) {
 					pval.setDateValue(event.getValue());
-					val.setText(pval.toString());
+					val.setText(dateTimeFormat.format(event.getValue()).toString());
 				}
 			}
 		}

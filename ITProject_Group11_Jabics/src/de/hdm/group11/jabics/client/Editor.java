@@ -71,7 +71,7 @@ public class Editor implements EntryPoint {
 //		JabicsUser u = new JabicsUser(1);
 //		u.setEmail("test@mail.com");
 //		u.setUsername("ein nutzer");
-//		u.setId(1);
+//		u.setId(28);
 //
 //		editor = new EditorAdmin(u);
 //		logon = new LoginInfo();
@@ -169,7 +169,6 @@ public class Editor implements EntryPoint {
 				} else if (logon.getIsLoggedIn() && logon.isNewUser()) {
 					signUp = new SignUpForm(logon, getEditor());
 				} else {
-					Window.alert("User not logged in");
 					setLoginInfo(logon);
 					loadLogin(logon);
 				}

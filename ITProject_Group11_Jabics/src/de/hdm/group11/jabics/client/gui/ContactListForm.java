@@ -201,14 +201,12 @@ public class ContactListForm extends VerticalPanel {
 		selectionModelAdd.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				finalContactAdd = (HashSet<Contact>) selectionModelAdd.getSelectedSet();
-				Window.alert("Auswahl geändert");
 			}
 		});
 
 		selectionModelRemove.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				finalContactRemove = (HashSet<Contact>) selectionModelRemove.getSelectedSet();
-				Window.alert("Auswahl geändert");
 			}
 		});
 
@@ -712,7 +710,7 @@ public class ContactListForm extends VerticalPanel {
 				isNewList = false;
 				GWT.log("7.3 createContactListCallback onSuccess ContactListID " + cl.getId());
 				setCurrentList(cl);
-				saveButton.setText("Änderungen speichern");
+				saveLabel.setText("Änderungen speichern");
 				deletePanel.setVisible(true);
 				e.addContactListToTree(cl);
 			}

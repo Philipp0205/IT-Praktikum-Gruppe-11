@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.gui.EditorAdmin;
 import de.hdm.group11.jabics.client.gui.ReportAdmin;
+import de.hdm.group11.jabics.client.gui.SignUpForm;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
@@ -108,6 +109,8 @@ public class Report implements EntryPoint {
 				Window.Location.assign(logon.getLoginUrl());
 			}
 		});
+		b.setStyleName("loginbutton");
+		
 		loginPanel = new VerticalPanel();
 		loginPanel.add(l1);
 		loginPanel.add(l2);
@@ -135,15 +138,12 @@ public class Report implements EntryPoint {
 					report = new ReportAdmin();
 					report.setLoginInfo(logon);
 					report.setJabicsUser(logon.getCurrentUser());
-					// Den Editor laden
 					report.loadReport();
 				} else {
 					Window.alert("Sie sind nicht angemeldet oder haben noch kein Konto bei Jabics");
 					loadLogin(logon);
 				}
 			}
-
 		}
 	}
-
 }

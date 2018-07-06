@@ -409,7 +409,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(JabicsUser u) {
-			Window.alert("Kontakt erfolgreich entteilt!");
 			removeUserFromTable(u);
 			updateShareStatus();
 			exit.setVisible(true);
