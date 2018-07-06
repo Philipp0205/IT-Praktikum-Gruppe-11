@@ -231,7 +231,6 @@ public class EditorAdmin {
 			formPanel.clear();
 			GWT.log("AltesWidgetEntfernt");
 			ecForm.setNewContact(false);
-			Window.alert("Kontakt wird jetzt gleich in ShowContact gesetzt");
 			ecForm.setContact(c);
 
 			formPanel.insert(ecForm, 0);
@@ -356,6 +355,7 @@ public class EditorAdmin {
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
+			clcForm.setUser(this.currentUser);
 		}
 		formPanel.clear();
 		clcForm.clear();
@@ -403,7 +403,6 @@ public class EditorAdmin {
 	 * beim Aufruf diser Methode!
 	 */
 	public void deleteUser() {
-		Window.alert("Achtung nicht auf ok drücken");
 		editorService.deleteUser(currentUser, new DeleteUserCallback());
 	}
 

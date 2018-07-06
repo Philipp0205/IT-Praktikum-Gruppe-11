@@ -139,7 +139,6 @@ public class ContactListTreeTab implements TreeViewModel {
 
 			if (selection != null) {
 				if (selection instanceof Contact) {
-					Window.alert("selection ist Contact");
 					setSelectedContact((Contact) selection);
 				} else if (selection instanceof ContactList) {
 					setSelectedContactList((ContactList) selection);
@@ -230,7 +229,6 @@ public class ContactListTreeTab implements TreeViewModel {
 	 */
 	public void setSelectedContact(Contact c) {
 		if (c != null) {
-			Window.alert("Kontakt in Tree ausgewählt");
 			GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
 			editor.showContact(c);
 		}
@@ -343,8 +341,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Diese Methode funktioniert nocht nicht
 	 */
 	public void updateContact(Contact c) {
-		// eService.getContactListById(c.getOwner().getId(), new
-		// UpdateContactCallback(c));
+
 		if (c != null) {
 			ListDataProvider<Contact> cProvider = new ListDataProvider<Contact>();
 
@@ -363,10 +360,10 @@ public class ContactListTreeTab implements TreeViewModel {
 						cProvider.getList().set(i, c);
 					}
 				}
-				contactDataProviders.get(cl).refresh();
+//				contactDataProviders.get(cl).refresh();
 				contactDataProviders.get(cl).flush();
 			}
-			contactListDataProviders.flush();
+//			contactListDataProviders.flush();
 		}
 	}
 

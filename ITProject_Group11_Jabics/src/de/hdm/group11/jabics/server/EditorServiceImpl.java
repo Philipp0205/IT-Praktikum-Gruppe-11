@@ -738,12 +738,15 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<JabicsUser> getCollaborators(ContactList cl) {
 		ArrayList<JabicsUser> allCollabs = clMapper.findCollaborators(cl);
+		System.out.println("kollaboratoren fpr Liste geholt: " + cl.getId());
 		ArrayList<JabicsUser> result = new ArrayList<JabicsUser>();
 		JabicsUser owner = uMapper.findUserByContactList(cl);
 		for (JabicsUser u : allCollabs) {
 			if (u.getId() != owner.getId())
 				result.add(u);
+			System.out.println("kollaborator hinzugfügen: " + u.getId());
 		}
+		System.out.println("Kollaboratoren zurückgeben, hier müpssten nutzer davor stehen");
 		return result;
 	}
 
@@ -1149,10 +1152,20 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			}
 			}
 
+			ArrayList<BoStatus> status = cMapper.findShareStatus(contacts);
+			if (status != null && contacts != null) {
+				if (status.size() == contacts.size()) {
+					int i = 0;
+					for (Contact c : contacts) {
+						c.setOwner(uMapper.findUserByContact(c));
+						c.setShareStatus(status.get(i));
+						i++;
+					}
+				}
+			}
 			return contacts;
 		} else
 			return null;
-
 	}
 
 	/**

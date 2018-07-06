@@ -82,6 +82,7 @@ public class ReportAdmin {
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
 	private HorizontalPanel navPanel = new HorizontalPanel();
 	private VerticalPanel userPanel = new VerticalPanel();
+	private VerticalPanel addRemovePanel = new VerticalPanel();
 	private VerticalPanel verPanel1 = new VerticalPanel();
 	private VerticalPanel verPanel2 = new VerticalPanel();
 	private VerticalPanel verPanel3 = new VerticalPanel();
@@ -143,11 +144,11 @@ public class ReportAdmin {
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
 		
-//		VerticalPanel addremovepanel = new VerticalPanel();
-//		removeUserButton = new Button("entfernen");
-//		addUserButton = new Button("hinzufügen");
-//		addremovepanel.add(removeUserButton);
-//		addremovepanel.add(addUserButton);
+		removeUserButton = new Button("entfernen");
+		addUserButton = new Button("hinzufügen");
+	
+		addRemovePanel.add(removeUserButton);
+		addRemovePanel.add(addUserButton);
 		
 //		otherReportsPanel.add(allReportsInSystemButton);
 		datatypemenu.addItem("Text");
@@ -172,6 +173,7 @@ public class ReportAdmin {
 		navPanel.add(filteredReportButton);
 		userPanel.add(userSuggest);
 		userPanel.add(userTable);
+		navPanel.add(addRemovePanel);
 		GWT.log("Report6");
 		navPanel.add(userPanel);
 //		navPanel.add(addremovepanel);

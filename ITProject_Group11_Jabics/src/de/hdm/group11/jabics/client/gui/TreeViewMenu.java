@@ -115,8 +115,8 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public void updateContact(Contact c) {
-		contactTab.updateContact(c);
 		contactListTab.updateContact(c);
+		contactTab.updateContact(c);
 		sharedContactListTab.updateContact(c);
 	}
 

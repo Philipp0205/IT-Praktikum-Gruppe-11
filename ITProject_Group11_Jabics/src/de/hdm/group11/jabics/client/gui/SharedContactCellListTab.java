@@ -192,7 +192,6 @@ public class SharedContactCellListTab extends Widget {
 
 	public void clearSelectionModel() {
 		if (selectionModel != null) {
-			Window.alert("clearing selection model");
 			this.selectionModel.clear();
 		} else
 			return;
