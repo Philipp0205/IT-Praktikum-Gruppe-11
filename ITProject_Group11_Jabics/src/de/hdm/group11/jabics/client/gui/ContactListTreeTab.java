@@ -346,27 +346,29 @@ public class ContactListTreeTab implements TreeViewModel {
 	public void updateContact(Contact c) {
 		// eService.getContactListById(c.getOwner().getId(), new
 		// UpdateContactCallback(c));
+		if (c != null) {
+			ListDataProvider<Contact> cProvider = new ListDataProvider<Contact>();;
 
-		ListDataProvider<Contact> cProvider;
+			// Kontaktlisten werden durchsucht
+			for (ContactList cl : contactListDataProviders.getList()) {
 
-		// Kontaktlisten werden durchsucht
-		for (ContactList cl : contactListDataProviders.getList()) {
+				GWT.log("6.1 CL:" + cl.getListName());
 
-			GWT.log("6.1 CL:" + cl.getListName());
-
-			cProvider = contactDataProviders.get(cl);
-			for (Contact c2 : cProvider.getList()) {
-				GWT.log("6.1 contactDataProviders " + c2.toString());
-				// Wenn in allen Kontakten der Liste Kontakt c ist...
-				if (c2.getId() == c.getId()) {
-					int i = cProvider.getList().indexOf(c2);
-					cProvider.getList().set(i, c);
+				cProvider = contactDataProviders.get(cl);
+				
+				for (Contact c2 : cProvider.getList()) {
+					GWT.log("6.1 contactDataProviders " + c2.toString());
+					// Wenn in allen Kontakten der Liste Kontakt c ist...
+					if (c2.getId() == c.getId()) {
+						int i = cProvider.getList().indexOf(c2);
+						cProvider.getList().set(i, c);
+					}
 				}
+				contactDataProviders.get(cl).refresh();
+				contactDataProviders.get(cl).flush();
 			}
-			contactDataProviders.get(cl).refresh();
-			contactDataProviders.get(cl).flush();
+			contactListDataProviders.flush();
 		}
-		contactListDataProviders.flush();
 	}
 
 	/**

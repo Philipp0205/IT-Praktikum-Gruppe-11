@@ -69,6 +69,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		existingCollaborators = new ArrayList<JabicsUser>();
 		finalCollaborators = new ArrayList<JabicsUser>();
 		
+		oracle = new MultiWordSuggestOracle();
+		suggestBox = new SuggestBox(oracle);
 		
 		listPanel.setStyleName("listpanel");
 		GWT.log("#####################ContactListCollab onLoad");
@@ -309,8 +311,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 */
 	public void createSuggestBox() {
 
-		oracle = new MultiWordSuggestOracle();
-		suggestBox = new SuggestBox(oracle);
+		
 
 		for (JabicsUser u : allUser) {
 			GWT.log("SuggestBoxalluser");
