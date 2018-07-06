@@ -68,6 +68,7 @@ public class SearchForm extends VerticalPanel {
 	Label propertyLabel;
 	Label datatypeLabel;
 	ListBox datatypemenu;
+	Label noresultLabel;
 
 	MultiWordSuggestOracle propertyToSuggest;
 	SuggestBox propertySuggest;
@@ -95,6 +96,7 @@ public class SearchForm extends VerticalPanel {
 	public void onLoad() {
 		listInfoLabel = new Label();
 		ausgabeLabel = new Label();
+		noresultLabel = new Label("Keine Ergebnisse.");
 		verPanel1 = new VerticalPanel();
 		verPanel2 = new VerticalPanel();
 		verPanel3 = new VerticalPanel();
@@ -119,6 +121,9 @@ public class SearchForm extends VerticalPanel {
 
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
 		listInfoLabel.setStyleName("contactListHeadline");
+		
+		noresultLabel.setStyleName("reslabel");
+		ausgabeLabel.setStyleName("successfulresultl");
 		
 		verPanel1.add(propertyLabel);
 		mainpanel.add(verPanel1);
@@ -148,9 +153,11 @@ public class SearchForm extends VerticalPanel {
 		this.add(mainpanel);
 		this.add(sp);
 		this.add(ausgabeLabel);
+		this.add(noresultLabel);
 		this.add(back);
 
 		ausgabeLabel.setVisible(false);
+		noresultLabel.setVisible(false);
 
 		ct.setEditor(e);
 
@@ -344,8 +351,7 @@ public class SearchForm extends VerticalPanel {
 
 	
 	public void showNoResults() {
-		Label l = new Label("Keine Ergebnisse für diese Suche");
-		
+		noresultLabel.setVisible(true);
 	}
 	/**
 	 * Eine Methode zum Setzen der zu durchsuchenden Kontaktliste.

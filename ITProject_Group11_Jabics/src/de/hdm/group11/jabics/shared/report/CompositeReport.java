@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Implementierung von zusammengesetzen Reports, diser kann aus mehren simplen
- * oder zusammengesetzen Reports bestehen.
+ * Implementierung von zusammengesetzen <code>CompositeReport</code>, diser kann
+ * aus mehren simplen oder zusammengesetzen <code>Report</code> bestehen.
  * 
- * @author Kurrle and Anders
- * 
+ * @author Kurrle
+ * @author Anders
+ * @author Stahl
  */
 
 public class CompositeReport<T extends Report> extends Report implements Serializable {
@@ -16,114 +17,156 @@ public class CompositeReport<T extends Report> extends Report implements Seriali
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Ein CompositeReport besteht aus subReports und einer Kopf und Fußzeile, in
-	 * denen Informationen gegeben werden
+	 * Eine Instanz von
+	 * <code>CompositeReport<code> besteht aus mehreren <code>subReports</code>.
 	 */
 	private ArrayList<T> subReports;
+
+	/**
+	 * Kopfzeile einer Instanz dieser Klasse.
+	 */
 	Paragraph headline;
+
+	/**
+	 * Fusszeile einer Instanz dieser Klasse.
+	 */
 	Paragraph footline;
 
 	/**
-	 * Leerer Konstruktor, der ausschließlich super() aufruft. Wird für die
-	 * Serialisierung benötigt
+	 * Default Konstruktor.
 	 */
 	public CompositeReport() {
 	}
 
 	/**
-	 * Konstruktor, der einen neuen Report für eine generische Liste aus Subreports,
-	 * eine Kopf und eine Fuzeile erstellt
+	 * Konstruktor um eine Instanz dieser Klasse für eine generische Liste aus
+	 * <code>subReports</code>, <code>headline</code> und einer
+	 * <code>footline</code> zu erstellen.
 	 * 
-	 * @param reports,
-	 *            Report Objekte, die in diesem Report gespeichert sind
-	 * @param head,
-	 *            Kopfzeile als Paragraph
-	 * @param foot,
-	 *            Fußzeile als Paragraph
+	 * @param reports
+	 * @param headline
+	 * @param footline
 	 */
-	public CompositeReport(ArrayList<T> reports, Paragraph head, Paragraph foot) {
+	public CompositeReport(ArrayList<T> reports, Paragraph headline, Paragraph footline) {
 		this.subReports = reports;
-		/**
-		 * TODO: change Date to Calendar or whatever is not deprecated this.creationDate
-		 * = ;
-		 */
-		this.headline = head;
-		this.footline = foot;
+		this.headline = headline;
+		this.footline = footline;
 	}
 
 	/**
-	 * Konstruktor für einen Report, der ausschließlich die Subreports bestimmt.
-	 * Wenn Headline und Footline bekannt sind, diesen Konstruktor nicht verwenden
+	 * Konstruktor um eine Instanz dieser Klasse für eine generische Liste aus
+	 * <code>subReports</code> zu erstellen.
+	 * 
+	 * @param reports
 	 */
 	public CompositeReport(ArrayList<T> reports) {
 		this.subReports = reports;
-		/**
-		 * TODO: change Date to Calendar or whatever is not deprecated this.creationDate
-		 * = ;
-		 */
 		this.headline.setContent("Report for unknownUser, containing " + reports.size() + " subreports");
 		this.footline.setContent("End of Report");
 	}
 
 	/**
-	 * Eine toString(), die als Ergebnis einen String mit einer textuellen Ausgabe
-	 * des Reports hat. Eine Ausgabe erfolgt in dieser Art: "Report for User,
-	 * containing XX subreports: Created on Date YYYY-MM-DD by name"
+	 * <p>
+	 * Textuelle Repräsentation des <code>CompositeReport</code> Objekts.
+	 * </p>
+	 * Eine Ausgabe erfolgt in dieser Art: "Report for User, containing XX
+	 * subreports: Created on Date YYYY-MM-DD by name"
 	 */
 	public String toString() {
 		if (this.headline != null && this.creationDate != null && this.creator != null) {
-			return this.headline.getContent() + ": Created on " + this.creationDate.toString() + " by " + this.creator.toString();
+			return this.headline.getContent() + ": Created on " + this.creationDate.toString() + " by "
+					+ this.creator.toString();
 		} else {
 			return this.headline.getContent();
 		}
 	}
 
 	/**
-	 * Hinzufügen und Entfernen eines Reports zu einem CompositeReport
+	 * <code>Report</code> zu einem <code>subReport</code> hinzufügen.
 	 * 
-	 * @param r
+	 * @param report
 	 */
 	public void addReport(T report) {
 		subReports.add(report);
 	}
 
-	public void removeReport(Report r) {
-		subReports.remove(r);
+	/**
+	 * <code>Report</code> von einem <code>subReport</code> entfernen.
+	 * 
+	 * @param report
+	 */
+	public void removeReport(Report report) {
+		subReports.remove(report);
 	}
 
 	/**
-	 * Getter and Setter
+	 * Auslesen der <code>headline</code>.
+	 * 
+	 * @return headline
 	 */
 	public Paragraph getHeadline() {
 		return headline;
 	}
 
+	/**
+	 * Setzen der <code>headline</code>.
+	 * 
+	 * @param headline
+	 */
 	public void setHeadline(Paragraph headline) {
 		this.headline = headline;
 	}
 
-	// Methode überladen, damit auch nur ein String mitgegeben werden kann.
-	public void setHeadline(String s) {
-		this.headline = new Paragraph(s);
+	/**
+	 * Setzen der <code>headline</code> mit einem <code>String</code>.
+	 * 
+	 * @param string
+	 */
+	public void setHeadline(String string) {
+		this.headline = new Paragraph(string);
 	}
 
+	/**
+	 * Auslesen der <code>footline</code>.
+	 * 
+	 * @return footline
+	 */
 	public Paragraph getFootline() {
 		return footline;
 	}
 
+	/**
+	 * Setzen der <code>footline</code>.
+	 * 
+	 * @param footline
+	 */
 	public void setFootline(Paragraph footline) {
 		this.footline = footline;
 	}
 
-	// Ebenfalls überladen
-	public void setFootline(String s) {
-		this.footline = new Paragraph(s);
+	/**
+	 * Setzen der <code>footline</code> mit einem <code>String</code>.
+	 * 
+	 * @param string
+	 */
+	public void setFootline(String string) {
+		this.footline = new Paragraph(string);
 	}
 
+	/**
+	 * Auslesen der <code>subReports</code>.
+	 * 
+	 * @return subReports
+	 */
 	public ArrayList<T> getSubReports() {
 		return this.subReports;
 	}
 
+	/**
+	 * Setzen der <code>subReports</code>.
+	 * 
+	 * @param subReports
+	 */
 	public void setSubReports(ArrayList<T> subReports) {
 		this.subReports = subReports;
 	}
