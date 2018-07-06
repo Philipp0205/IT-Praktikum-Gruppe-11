@@ -16,57 +16,81 @@ public class PropertyView implements Serializable {
 	private String pname;
 	private String pvalue;
 
-	public PropertyView() {}
+	public PropertyView() {
+	}
 
 	public PropertyView(String p, String v) {
 		this.pname = p;
 		this.pvalue = v;
 	}
 
+	/**
+	 * Eine neue View auf ein PValue Objekt erstellen
+	 * 
+	 * @param pv,
+	 *            PValue, für das die PropertyView erstellt werden soll
+	 * @throws IllegalArgumentException
+	 */
 	public PropertyView(PValue pv) throws IllegalArgumentException {
-		this.pname = pv.getProperty().getLabel();
-		System.err.println("KontsruktorPropView");
-		switch (pv.getPointer()) {
+		if (pv.getProperty() != null) {
+			this.pname = pv.getProperty().getLabel();
+		} else {
+			this.pname = "Property";
+		}
+		try {
+			switch (pv.getPointer()) {
 
-		case 1:
-			System.err.println("KontsruktorPropView1");
-			Integer i = pv.getIntValue();
-			this.pvalue = i.toString();
-			break;
-		case 2:
-			System.err.println("KontsruktorPropView2");
-			this.pvalue = pv.getStringValue();
-			break;
-		case 3:
-			System.err.println("KontsruktorPropView3");
-			Date dt = pv.getDateValue();
-			this.pvalue = dt.toString();
-			break;
-		case 4:
-			System.err.println("KontsruktorPropView4");
-			Float f = pv.getFloatValue();
-			this.pvalue = f.toString();
-			break;
-		default:
-			System.out.println("PropertyValue could not be found by PropertyView");
+			case 1:
+				Integer i = pv.getIntValue();
+				this.pvalue = i.toString();
+				break;
+			case 2:
+				this.pvalue = pv.getStringValue();
+				break;
+			case 3:
+				Date dt = pv.getDateValue();
+				this.pvalue = dt.toString();
+				break;
+			case 4:
+				Float f = pv.getFloatValue();
+				this.pvalue = f.toString();
+				break;
+			default:
+				System.out.println("PropertyValue could not be found by PropertyView");
+			}
+		} catch (Exception e) {
+			this.pvalue = "Value";
 		}
 	}
 
 	/**
-	 * Getter und Setter
+	 * Den Namen der Property dieser PropertyView erhalten
+	 * @return s, String mit Name der Eigenschaft
 	 */
 	public String getPname() {
 		return pname;
 	}
 
+	/**
+	 * Den Namen der Property dieser PropertyView setzen
+	 * @param s, String mit Name der Eigenschaft
+	 */
 	public void setPname(String pname) {
 		this.pname = pname;
 	}
 
+	/**
+	 * Den Namen der Ausprägung dieser PropertyView erhalten
+	 * @return s, String mit Name der Eigenschaftsausprägung
+	 */
 	public String getPvalue() {
 		return pvalue;
 	}
 
+	/**
+	 * Den Namen der Ausprägung dieser PropertyView setzen
+	 * @param s, String mit Name der Eigenschaftsausprägung
+	 */
 	public void setPvalue(String pvalue) {
 		this.pvalue = pvalue;
 	}

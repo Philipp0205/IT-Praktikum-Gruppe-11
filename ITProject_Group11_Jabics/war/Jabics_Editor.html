@@ -1,51 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <!-- The DOCTYPE declaration above will set the     -->
 <!-- browser's rendering engine into                -->
 <!-- "Standards Mode". Replacing this declaration   -->
 <!-- with a "Quirks Mode" doctype is not supported. -->
 
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <!--                                                               -->
-    <!-- Consider inlining CSS to reduce the number of requested files -->
-    <!--                                                               -->
-    <link type="text/css" rel="stylesheet" href="Jabics.css">
+<!--                                                               -->
+<!-- Consider inlining CSS to reduce the number of requested files -->
+<!--                                                               -->
+<link type="text/css" rel="stylesheet" href="Jabics.css">
 
-    <!--                                           -->
-    <!-- Any title is fine                         -->
-    <!--                                           -->
-    <title>Jabics - Editor</title>
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="itproject_group11_jabics_editor/itproject_group11_jabics_editor.nocache.js"></script>
-  </head>
+<!--                                           -->
+<!-- Any title is fine                         -->
+<!--                                           -->
+<title>Jabics - Editor</title>
+<!--                                           -->
+<!-- This script loads your compiled module.   -->
+<!-- If you add any GWT meta tags, they must   -->
+<!-- be added before this line.                -->
+<!--                                           -->
+<script type="text/javascript" language="javascript"
+	src="itproject_group11_jabics_editor/itproject_group11_jabics_editor.nocache.js"></script>
+</head>
 
-  <!--                                           -->
-  <!-- The body can have arbitrary html, or      -->
-  <!-- you can leave the body empty if you want  -->
-  <!-- to create a completely dynamic UI.        -->
-  <!--                                           -->
-  <body>
+<!--                                           -->
+<!-- The body can have arbitrary html, or      -->
+<!-- you can leave the body empty if you want  -->
+<!-- to create a completely dynamic UI.        -->
+<!--                                           -->
+<body id="body">
 
-    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
-    <noscript>
-      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled
-        in order for this application to display correctly.
-      </div>
-    </noscript>
-    
+	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly.</div>
+	</noscript>
+
+
+
 	<div id="TopLevelFrame">
-		<div id="header"><h1></h1> <a href="Jabics_Editor.html"><img class="logo" src=JabicsAnimationUnendlich.gif alt="JabicsLogo"></a></div>
-		<div id="navigator"></div>
-		<div id="details"></div>
-		<div id="trailer">Hochschule der Medien, Stuttgart</div>
+
+		<div id="header"></div>
+		<div id="navigator">
+			<nav class="navbar" id="nav">
+				<a class="navbarlogo" href="Jabics_Editor.html"><img class="navbrand"
+					src="JabicsLogo.png" alt="Jabics"></a>
+			</nav>
+		</div>
+		
+		<div id="content">
+			<div id="menu"></div>
+			<div id="details"></div>
+		
+			<div id="footer">
+			<div id="trailer"> <div>SW-Praktikum&emsp;Gruppe 11</div>
+			<div><a href="http://www.wi.hdm-stuttgart.de/">Wirtschaftsinformatik</a>
+				&nbsp;@&nbsp; <a href="https://www.hdm-stuttgart.de/">Hochschule
+					der Medien</a></div>    </div>
+					<div id="deleteAccount"></div>
+			</div>
+			
+		</div>
+
+
 	</div>
-	
-  </body>
+
+</body>
 </html>

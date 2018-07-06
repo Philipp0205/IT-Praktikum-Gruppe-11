@@ -8,4 +8,6 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 @RemoteServiceRelativePath("login")
 public interface LoginService extends RemoteService {
 	public LoginInfo login(String requestUri);
+	
+	public LoginInfo createUser(LoginInfo log, String requestUri);
 }

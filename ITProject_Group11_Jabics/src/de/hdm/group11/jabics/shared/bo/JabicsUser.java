@@ -2,65 +2,136 @@ package de.hdm.group11.jabics.shared.bo;
 
 import java.io.Serializable;
 
-/** 
- * Ein Nutzer ist in Jabics ein Bediener der Software, der sich über Google eingeloggt hat.
+/**
+ * <p>
+ * Die Klasse <code>JabicsUser</code> implementiert Nutzer im System Jabics, ein
+ * Nutzer ist ein Bediener des Systems, der sich über Google eingeloggt hat.
  * Viele Attribute werden direkt aus der Google Accounts API übernommen.
+ * </p>
  * 
- *  @author Kurrle and Anders
+ * @author Kurrle
+ * @author Anders
+ * @author Stahl
  */
 
 public class JabicsUser implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	private int id; 
+
+	/**
+	 * ID einer Instanz dieser Klasse.
+	 */
+	private int id;
+
+	/**
+	 * Mail Adresse einer Instanz dieser Klasse.
+	 */
 	private String email;
+
+	/**
+	 * Benutzername einer Instanz dieser Klasse.
+	 */
 	private String username;
-	private boolean isLoggedIn;
-	
-	public JabicsUser() {}
-	
-	public boolean getIsLoggedIn() {
-		return isLoggedIn;
+
+	/**
+	 * Leerer Konstruktor
+	 */
+	public JabicsUser() {
+
 	}
-	public void setLoggedIn(boolean isLoggedIn) {
-		this.isLoggedIn = isLoggedIn;
-	}
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit einer ID zu erzeugen.
+	 * 
+	 * @param id
+	 */
 	public JabicsUser(int id) {
-		this.id = id;	
+		this.id = id;
 	}
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Mail Adresse zu erzeugen.
+	 * 
+	 * @param email
+	 */
 	public JabicsUser(String email) {
 		this();
 		this.email = email;
 	}
-	public JabicsUser(String email, String user) {
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit Mail Adresse und Benutzername
+	 * zu erzeugen.
+	 * 
+	 * @param email
+	 * @param user
+	 */
+	public JabicsUser(String email, String username) {
 		this(email);
-		this.username = user;
+		this.username = username;
 	}
-	public String toString() {
+
+	/**
+	 * Setzen der Mail Adresse.
+	 * 
+	 * @return email
+	 */
+	public String getEmail() {
 		return this.email;
 	}
-	
-	/*
-	 *  Getter und Setter
+
+	/**
+	 * Auslesen der ID.
+	 * 
+	 * @return id
 	 */
 	public int getId() {
-		return id;
+		return this.id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
+	/**
+	 * Auslesen des Usernames.
+	 * 
+	 * @return username
+	 */
 	public String getUsername() {
 		return this.username;
 	}
-	public void setUsername(String user) {
-		this.username = user;
-	}
-	public String getEmail() {
-		return email;
-	}
+
+	/**
+	 * Auslesen der Mail Adresse.
+	 * 
+	 * @param email
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	/**
+	 * Setzen der ID.
+	 * 
+	 * @param id
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * Setzen des Usernames.
+	 * 
+	 * @param user
+	 */
+	public void setUsername(String user) {
+		this.username = user;
+	}
+
+	/**
+	 * Textuelle Repräsentation des <code>JabicsUser</code> durch die Mail Adresse.
+	 * 
+	 * @return email
+	 */
+	@Override
+	public String toString() {
+		return this.email;
+	}
 }

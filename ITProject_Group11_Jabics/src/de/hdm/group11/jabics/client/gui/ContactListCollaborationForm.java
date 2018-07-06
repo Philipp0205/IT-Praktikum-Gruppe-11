@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
+import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.*;
 import de.hdm.group11.jabics.shared.bo.*;
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.cell.client.*;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.Window;
@@ -18,123 +19,294 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.dom.client.Style.Unit;
 
-public class ContactListCollaborationForm extends HorizontalPanel {
+public class ContactListCollaborationForm extends VerticalPanel {
 
-	Editor e;
-	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	private EditorAdmin e;
+	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	ContactList sharedContactList;
-	ArrayList<JabicsUser> allUser = new ArrayList<JabicsUser>();
-	ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
+	private HorizontalPanel suggestionPanel = new HorizontalPanel();
+	private HorizontalPanel listPanel = new HorizontalPanel();
+	private HorizontalPanel buttonPanel = new HorizontalPanel();
 
-	Button shareContactList, exit, addButton, removeButton;
+	private ContactList sharedContactList;
 
-	JabicsUser selectedUserAdd, selectedUserRemove;
+	private Button exit, addButton, removeButton, shareList, deShareList;
 
 	MultiWordSuggestOracle oracle;
-	SuggestBox sug; // = new SuggestBox();
+	private SuggestBox suggestBox;
+	private JabicsUser suggestedUser;
+	private JabicsUser singleSelectedUser;
 
-	TextColumn<JabicsUser> username;
-	CellTable<JabicsUser> selUser;
-	ListDataProvider<JabicsUser> ldp;
-	SingleSelectionModel<JabicsUser> selectionModel;
+	// Für jede der beiden Auswahlmöglichkeiten CellTables, DataProvider,
+	// SelectionModels, ArrayLists aus Usern
+	private CellTable<JabicsUser> existingCollabTable;
+	private CellTable<JabicsUser> newCollabTable;
+	private ListDataProvider<JabicsUser> existingUserDataProvider;
+	private ListDataProvider<JabicsUser> newCollabDataProvider;
+	private MultiSelectionModel<JabicsUser> existingUserSelectionModel;
+	SingleSelectionModel<JabicsUser> newUserSelectionModel;
+	private ArrayList<JabicsUser> existingCollaborators;
+	private ArrayList<JabicsUser> newCollaborators;
 
-	HashSet<Contact> finalC = new HashSet<Contact>();
-	MultiSelectionModel<Contact> multiSelectionModel;
-	CellTable<Contact> selValues;
-	ListDataProvider<Contact> valueProvider;
+	private ArrayList<JabicsUser> finalCollaborators;
 
-	Column<Contact, Boolean> checkbox;
-	Column<Contact, String> contact;
+	private ArrayList<JabicsUser> allUser;
 
-	AbsolutePanel ap;
+	private TextColumn<JabicsUser> existingCollabName;
+	private TextColumn<JabicsUser> newCollabName;
 
+	Boolean otherCallbackArrived = false;
+	
+	private CellTableResources ctRes = GWT.create(CellTableResources.class);
+	
+	/**
+	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen für die
+	 * Funktionalität der Klasse gebraucht werden.
+	 */
 	public void onLoad() {
-		// SuggestOracle oracle =
-		retrieveUser();
-		createSuggestBox();
-		createContactBox();
+		listPanel.setStyleName("listpanel");
+		GWT.log("#####################ContactListCollab onLoad");
 
-		shareContactList = new Button("Kontaktliste freigeben");
-		shareContactList.addClickHandler(new ClickHandler() {
+		shareList = new Button("Ausgewählten Nutzern freigeben");
+		shareList.setStyleName("clcbtn");
+		shareList.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				shareContactList();
-				e.returnToContactListForm(sharedContactList);
+				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen"
+						+ " ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
+				shareContact();
 			}
 		});
-
-		exit = new Button("Abbrechen");
+		deShareList = new Button("Ausgewählten Nutzern entteilen");
+		deShareList.setStyleName("clcbtn");
+		deShareList.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent ev) {
+				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen "
+						+ "ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
+				deshareContact();
+			}
+		});
+		exit = new Button("Fertig");
+		exit.setStyleName("clcbtn");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				e.returnToContactListForm(sharedContactList);
 			}
 		});
 
-		ap = new AbsolutePanel();
-		ap.setSize("500px", "400px");
-		ap.add(sug, 20, 10);
-		ap.add(selUser, 0, 50);
-		ap.add(addButton, 200, 0);
-		ap.add(shareContactList, 450, 350);
-		ap.add(exit, 20, 350);
-		ap.add(selValues, 250, 0);
+		allUser = new ArrayList<JabicsUser>();
+		newCollaborators = new ArrayList<JabicsUser>();
+		existingCollaborators = new ArrayList<JabicsUser>();
+		finalCollaborators = new ArrayList<JabicsUser>();
+
+		retrieveUser();
 	}
 
-	// selUser.getResources und getRowElement
+	/**
+	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren aufgerufen wurde.
+	 */
+	public void continueOnLoad() {
 
-	public void createSuggestBox() {
+		createSuggestBox();
+		createTables();
+
+		suggestionPanel.add(suggestBox);
+		suggestionPanel.add(addButton);
+		suggestionPanel.add(removeButton);
+		suggestBox.setStyleName("TextBox");
+		addButton.setStyleName("clcbtn");
+		removeButton.setStyleName("clcbtn");
+		
+
+		listPanel.add(newCollabTable);
+		listPanel.add(existingCollabTable);
+		
+
+		buttonPanel.add(shareList);
+		buttonPanel.add(deShareList);
+
+		this.add(suggestionPanel);
+		this.add(listPanel);
+		this.add(buttonPanel);
+		this.add(exit);
+	}
+	
+	/**
+	 * Setzt einen neuen ausgewählten Nutzer
+	 * 
+	 * @param c
+	 * 			User der ausgewählt werden soll.
+	 */
+	public void addSelectedUser(JabicsUser c) {
+		this.existingCollaborators.add(c);
+	}
+
+	/**
+	 * Führt den RPC zur freigabe einens Kontakts mit allen ausgewählten Nutzern mit
+	 * den ausgewählten Parametern durch.
+	 */
+	public void shareContact() {
+		if (!newCollaborators.isEmpty()) {
+
+			for (JabicsUser u : newCollaborators) {
+				editorService.addCollaboration(sharedContactList, u, new AddContactListCollaborationCallback());
+			}
+		} else {
+			Window.alert("Keine Nutzer ausgewählt");
+		}
+	}
+	
+	/**
+	 * Ennteilt einen Kontakt. Dies bedeuetet, dass die Kollaboration des Kontakts gelöscht wird und
+	 * somit andere Nutzer keinen Zugriff mehr auf den Kontakt haben.
+	 */
+	public void deshareContact() {
+		if (!finalCollaborators.isEmpty()) {
+
+			for (JabicsUser u : finalCollaborators) {
+				GWT.log("deshareContactWithAll" + u.getUsername());
+				// editorService.addCollaboration(sharedContactList, u, new
+				// AddContactListCollaborationCallback());
+				editorService.deleteCollaboration(sharedContactList, u, new DeleteContactListCollaborationCallback());
+			}
+		} else {
+			Window.alert("Keine Nutzer ausgewählt");
+		}
+	}
+	
+	/**
+	 * Setzt die Kontaktliste, mit der dann später weitere Aktionen durchgeführt werden können 
+	 * wie z.B. teilen.
+	 * 
+	 * @param cl
+	 * 			Kontaktliste, die ausgewählt werden soll.
+	 */
+	public void setContactList(ContactList cl) {
+		if (cl != null) {
+			this.sharedContactList = cl;
+		} else {
+			Window.alert("Freigabe nicht möglich, da keine Kontaktliste ausgewählt.");
+		}
+	}
+	
+	/**
+	 * Setzt den Editor der ContactListCollaborationForm
+	 * 
+	 * @param e
+	 * 			Editor, der gesetzt werden soll.
+	 */
+	public void setEditor(EditorAdmin e) {
+		GWT.log("EditorAdmin in ContactlistCollab setzen");
+		this.e = e;
+	}
+
+	/**
+	 * Diese Methode holt sowohl alle Nutzer als auch alle bestehenden
+	 * Kollaboratoren vom Server. Im zuletzt ankommenden Callback wird
+	 * continueOnLoad() aufgerufen.
+	 */
+	private void retrieveUser() {
+		GWT.log("allUser");
+		editorService.getAllNotCollaboratingUser(sharedContactList, new GetAllNotCollaboratingUserCallback());
+		editorService.getCollaborators(sharedContactList, new GetAllCollaboratorsCallback());
+		GWT.log("allUserfetisch");
+	}
+	
+	/**
+	 * Setzt eine Variable, welche alle Nutzer enthält.
+	 * 
+	 * @param user
+	 * 				User, die übergeben werde sollen. In diesem Fall sind das alle User.
+	 */
+	private void setAllUser(ArrayList<JabicsUser> user) {
+		GWT.log("alleNutzersetzen");
+		this.allUser = user;
+		for (JabicsUser u : this.allUser) {
+			GWT.log(u.getEmail());
+		}
+	}
+	
+	/**
+	 * Sezt die alle Kollaboratoren.
+	 * 
+	 * @param user
+	 * 				User, die gesetzt werden sollen.
+	 */
+	public void setAllCollaborators(ArrayList<JabicsUser> user) {
+		GWT.log("setAllCollaborators");
+		this.existingCollaborators = user;
+	}
+	
+	/**
+	 *  Erstellt die tabellenfämige Ansicht, welche anzeigt mit welchen Usern die Kontaktliste
+	 *  bereits geteilt wurde und die neu hinzugeüfgten Usern mit denen der Teilvorgang gerade
+	 *  stattfindet. 
+	 */
+	public void createTables() {
+
 		/**
-		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
+		 * Provider erstellen, der ausgewählte Nutzer einer Tabelle zur Verfügung stellt
 		 */
-		ldp = new ListDataProvider<JabicsUser>();
-		selUser = new CellTable<JabicsUser>();
-		ldp.addDataDisplay(selUser);
-		selectionModel = new SingleSelectionModel<JabicsUser>();
+		newCollabDataProvider = new ListDataProvider<JabicsUser>();
+		newCollabTable = new CellTable<JabicsUser>(100,ctRes);
 
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		newCollabDataProvider.setList(newCollaborators);
+		newCollabDataProvider.addDataDisplay(newCollabTable);
+
+		newUserSelectionModel = new SingleSelectionModel<JabicsUser>();
+		newCollabTable.setSelectionModel(newUserSelectionModel);
+
+		newUserSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
-				selectedUserRemove = selectionModel.getSelectedObject();
-			}
-		});
-		selUser.setSelectionModel(selectionModel);
-
-		addButton = new Button("Nutzer hinzufügen");
-		addButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-				if (selectedUserAdd != null)
-					finalUser.add(selectedUserAdd);
-				ldp.setList(finalUser);
-				ldp.refresh();
-				ldp.flush();
+				singleSelectedUser = newUserSelectionModel.getSelectedObject();
 			}
 		});
 
-		removeButton = new Button("Entfernen");
-		removeButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent e) {
-				if (selectedUserRemove != null) {
-					finalUser.remove(selectedUserRemove);
-					ldp.setList(finalUser);
-					ldp.flush();
-				}
+		existingUserDataProvider = new ListDataProvider<JabicsUser>();
+		existingCollabTable = new CellTable<JabicsUser>(100,ctRes);
+
+		existingUserSelectionModel = new MultiSelectionModel<JabicsUser>();
+		existingCollabTable.setSelectionModel(existingUserSelectionModel);
+
+		existingUserDataProvider.setList(existingCollaborators);
+		existingUserDataProvider.addDataDisplay(existingCollabTable);
+
+		existingUserSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			public void onSelectionChange(SelectionChangeEvent event) {
+				if (!existingUserSelectionModel.getSelectedSet().isEmpty()) {
+					HashSet<JabicsUser> users = (HashSet<JabicsUser>) existingUserSelectionModel.getSelectedSet();
+					for (JabicsUser u : users) {
+						finalCollaborators.add(u);
+					}
+				} else
+					existingCollaborators.clear();
 			}
 		});
 
-		username = new TextColumn<JabicsUser>() {
+		existingCollabName = new TextColumn<JabicsUser>() {
 			public String getValue(JabicsUser u) {
 				return u.getUsername();
 			}
 		};
-		selUser.addColumn(username, "Nutzer");
+		newCollabName = new TextColumn<JabicsUser>() {
+			public String getValue(JabicsUser u) {
+				return u.getUsername();
+			}
+		};
+		existingCollabTable.addColumn(existingCollabName, "Bereits geteilt mit");
+		newCollabTable.addColumn(newCollabName, "Neu teilen mit");
+	}
 
-		/**
-		 * SuggestBox hinzufügen und mit Optionen befüllen
-		 */
+	/**
+	 * SuggestBox um Nutzer hinzufügen.
+	 */
+	public void createSuggestBox() {
+
 		oracle = new MultiWordSuggestOracle();
-		sug = new SuggestBox(oracle);
+		suggestBox = new SuggestBox(oracle);
+
 		for (JabicsUser u : allUser) {
+			GWT.log("SuggestBoxalluser");
 			try {
 				oracle.add(u.getUsername() + " " + u.getEmail());
 			} catch (NullPointerException e) {
@@ -147,121 +319,110 @@ public class ContactListCollaborationForm extends HorizontalPanel {
 				}
 			}
 		}
+
 		/**
-		 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
-		 * die suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
+		 * SelectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
+		 * die Suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
 		 * "Nutzer hinzufügen" zur liste der zu teilenden Nutzer hinzugefügt
 		 */
-		sug.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
 				for (JabicsUser u : allUser) {
-					if (sug.getValue().contains(u.getUsername()) && sug.getValue().contains(u.getEmail())) {
-						selectedUserAdd = u;
+					if (suggestBox.getValue().contains(u.getUsername())
+							&& suggestBox.getValue().contains(u.getEmail())) {
+						suggestedUser = u;
 					}
 				}
 			}
 		});
-		sug.setLimit(5);
 
-		// hier muss noch die Suggestbox in die form eingefügt werden.
-	}
+		suggestBox.setLimit(5);
 
-	public void createContactBox() {
-		// PValue selectedPV;
-		selValues = new CellTable<Contact>();
-		valueProvider = new ListDataProvider<Contact>();
-		valueProvider.addDataDisplay(selValues);
-		// Es kann sein, dass hier noch kexprovider benötigt werden
-		multiSelectionModel = new MultiSelectionModel<Contact>();
-
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			public void onSelectionChange(SelectionChangeEvent event) {
-				finalC = (HashSet<Contact>) multiSelectionModel.getSelectedSet();
-				Window.alert("Auswahl geändert");
+		// Buttons, die es ermöglichen Nutzer einer Table hinzuzufügen
+		addButton = new Button("Nutzer hinzufügen");
+		addButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				if (suggestedUser != null) {
+					newCollaborators.add(suggestedUser);
+				}
+				newCollabDataProvider.setList(newCollaborators);
+				suggestBox.setText("");
+				newCollabDataProvider.refresh();
+				newCollabDataProvider.flush();
+			}
+		});
+		GWT.log("SuggestBox4");
+		removeButton = new Button("Nutzer entfernen");
+		removeButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent e) {
+				if (newCollaborators != null) {
+					newCollaborators.remove(singleSelectedUser);
+					newCollabDataProvider.setList(newCollaborators);
+					newCollabDataProvider.flush();
+				}
 			}
 		});
 
-		selValues.setSelectionModel(multiSelectionModel);
-
-		checkbox = new Column<Contact, Boolean>(new CheckboxCell(true, false)) {
-			public Boolean getValue(Contact object) {
-				return multiSelectionModel.isSelected(object);
-			}
-		};
-		contact = new Column<Contact, String>(new TextCell()) {
-			public String getValue(Contact object) {
-				return object.toString();
-			}
-		};
-
-		selValues.addColumn(checkbox, "Auswahl");
-		selValues.setColumnWidth(checkbox, 50, Unit.PX);
-		selValues.addColumn(contact, "Kontakt");
-		selValues.setColumnWidth(contact, 50, Unit.EM);
 	}
+	
+	/**
+	 * Callback welches bei dem Erstellen einer neuenen Kollarboration einer Kontaktliste ausgeführt wird.
+	 * Bei einem erfolgreichem Callback wird der ShareStatus aktuallsiert und die Kontaktliste wird im Menü
+	 * aktuallisiert.
+	 *
+	 */
+	private class AddContactListCollaborationCallback implements AsyncCallback<JabicsUser> {
 
-	public void shareContactList() {
-		if (!finalUser.isEmpty()) {
-			/* oder aber: for (User u: ldp.getList()) { */
-			for (JabicsUser u : finalUser) {
-				for (Contact c : finalC) {
-					editorService.addCollaboration(c, u, new AddContactCollaborationCallback());
-				}
-				editorService.addCollaboration(sharedContactList, u, new AddContactListCollaborationCallback());
-			}
-		}
-
-	}
-
-	private void retrieveUser() {
-		editorService.getAllUsers(new GetAllUsersCallback());
-	}
-
-	public void setAllUser(ArrayList<JabicsUser> user) {
-		this.allUser = user;
-	}
-
-	public void setEditor(Editor e) {
-		this.e = e;
-	}
-
-	public void setList(ContactList cl) {
-		this.sharedContactList = cl;
-	}
-
-	private class AddContactCollaborationCallback implements AsyncCallback<Void> {
-		public void onFailure(Throwable arg0) {
-			Window.alert("Kontakt konnte nicht geteilt werden");
-		}
-
-		public void onSuccess(Void v) {
-			if (v != null) {
-				Window.alert("Kontakt erolgreich geteilt!");
-				/**
-				 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
-				 */
-			}
-
-		}
-	}
-
-	private class AddContactListCollaborationCallback implements AsyncCallback<Void> {
-		public void onFailure(Throwable arg0) {
+		@Override
+		public void onFailure(Throwable caught) {
 			Window.alert("Kontaktliste konnte nicht geteilt werden");
 		}
 
-		public void onSuccess(Void v) {
-			if (v != null) {
-				Window.alert("Kontaktliste erolgreich geteilt!");
-				/**
-				 * TODO: nach erfolgreichem teilen zur�ckkehren zur anzeige des kontakts.
-				 */
+		@Override
+		public void onSuccess(JabicsUser result) {
+			if (result != null) {
+				Window.alert("Kontaktliste erfolgreich geteilt!");
+				existingCollaborators.add(result);
+				existingUserDataProvider.refresh();
+				existingUserDataProvider.flush();
+				for (JabicsUser uu : newCollaborators) {
+					if (uu.getId() == result.getId()) {
+						newCollaborators.remove(uu);
+						newCollabDataProvider.flush();
+					}
+				}
+				sharedContactList.setShareStatus(BoStatus.IS_SHARED);
+				e.updateContactListInTree(sharedContactList);
 			}
-
 		}
 	}
+	
+	/**
+	 * Callback welcher bei Löschen einer Kollaboration einer Kontaktliste ausgeführt wird.
+	 * Bein einem erfolgreichen Callback wird die Kontaktliste aus den Menüs entfernt.
+	 *
+	 */
+	private class DeleteContactListCollaborationCallback implements AsyncCallback<ContactList> {
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert("Kontaktliste konnte nicht entteilt werden");
+		}
 
-	private class GetAllUsersCallback implements AsyncCallback<ArrayList<JabicsUser>> {
+		@Override
+		public void onSuccess(ContactList result) {
+			if (result != null) {
+				Window.alert("Kontakt erfolgreich entteilt!");
+				e.updateContactListInTree(result);
+			}
+		}
+	}
+	
+	/**
+	 * Ein Callbacker wecher beim Beziehen aller Kontakte die nicht Kollaborieren ausgeführt wird.
+	 * 
+	 *
+	 */
+	private class GetAllNotCollaboratingUserCallback implements AsyncCallback<ArrayList<JabicsUser>> {
 
 		public void onFailure(Throwable arg0) {
 			Window.alert("Nutzer konnten nicht geladen werden");
@@ -269,10 +430,37 @@ public class ContactListCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
+				GWT.log("GetAllNotCollaboratingUserCallback onSuccess");
 				setAllUser(user);
 			}
+			if (!otherCallbackArrived) {
+				otherCallbackArrived = true;
+			} else {
+				continueOnLoad();
+			}
+		}
+	}
+	
+	/**
+	 * Callback, welcher beim Beziehen aller Kollaboratoren einer Kontaktliste ausgeführt wird.
+	 *
+	 */
+	private class GetAllCollaboratorsCallback implements AsyncCallback<ArrayList<JabicsUser>> {
 
+		public void onFailure(Throwable arg0) {
+			Window.alert("Kollaboratoren konnten nicht geladen werden");
+		}
 
+		public void onSuccess(ArrayList<JabicsUser> user) {
+			if (user != null) {
+				GWT.log("GetAllCollaboratingUserCallback onSuccess");
+				setAllCollaborators(user);
+			}
+			if (!otherCallbackArrived) {
+				otherCallbackArrived = true;
+			} else {
+				continueOnLoad();
+			}
 		}
 	}
 }

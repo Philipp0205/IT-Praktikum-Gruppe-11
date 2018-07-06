@@ -1,0 +1,119 @@
+.cellTableOddRow {
+	font-family: Arial;
+	font-size: 20px !important;
+	color: #19376E;
+}
+
+.cellTableEvenRow {
+	font-family: Arial;
+	font-size: 20px !important;
+	color: #19376E;
+}
+
+.cellTableCell {
+	font-family: Arial;
+	font-size: 18px !important;
+	color: white;
+	background: #6D8EC2;
+	border: solid white 1px !important;
+}
+
+.cellTableLoading {
+	opacity: 0.45;
+	-moz-opacity: 0.45;
+	filter: alpha(opacity = 45);
+	width: 950px;
+	background-attachment: fixed;
+	/*background-image: url();*/
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.cellTableHoveredRowCell {
+	
+}
+
+.cellTableLastColumnFooter {
+	
+}
+
+.cellTableHeader {
+	font-family: Arial;
+	font-size: 16px !important;
+	text-shadow: none;
+	text-align: center;
+	color: #19376E;
+	border: solid #9FB8E0 1px !important;
+	margin-top: 20px;
+	margin-left: 10px;
+}
+
+.cellTableSelectedRowCell {
+	background-color:#061B42;
+}
+
+.cellTableLastColumnHeader {
+	
+}
+
+.cellTableSortedHeaderDescending {
+	
+}
+
+.cellTableKeyboardSelectedRowCell {
+	
+}
+
+.cellTableFirstColumn {
+}
+
+.cellTableSelectedRow {
+	
+}
+
+.cellTableKeyboardSelectedRow {
+	
+}
+
+.cellTableSortedHeaderAscending {
+	
+}
+
+.cellTableFirstColumnHeader {
+	
+}
+
+.cellTableLastColumn {
+	
+}
+
+.cellTableOddRowCell {
+	
+}
+
+.cellTableFooter {
+	
+}
+
+.cellTableWidget {
+}
+
+.cellTableHoveredRow {
+	
+}
+
+.cellTableFirstColumnFooter {
+	
+}
+
+.cellTableEvenRowCell {
+	
+}
+
+.cellTableKeyboardSelectedCell {
+	
+}
+
+.cellTableSortableHeader {
+	
+}

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 
-
 /**
  * Implementiert die Methoden aus ReportWriter, um Reports in das HTML-Format zu
  * übersetzen.
@@ -13,7 +12,7 @@ import com.google.gwt.core.client.GWT;
  * @author Anders
  *
  */
-public class HTMLReportWriter extends ReportWriter implements Serializable{
+public class HTMLReportWriter extends ReportWriter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -27,7 +26,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 	public void resetReportText() {
 		this.reportText = "";
 	}
-	
+
 	public String getReportText() {
 		return this.reportText;
 	}
@@ -45,103 +44,123 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 
 	public String paragraphWithFilter2HTML(Paragraph p) {
 		StringBuffer filt = new StringBuffer();
-		filt.append("<p>Es wurde nach ");
+		filt.append("<p>Es wurde nach \"");
 		for (String s : p.getFiltercriteria()) {
 			if (s != null) {
 				filt.append(s + ", ");
 			}
 		}
-		filt.append(" gefiltert. </p>");
+		filt.replace(0, filt.length(), filt.substring(0, filt.length() - 2));
+		filt.append("\" gefiltert. </p>");
 		return filt.toString();
 	}
 
+	/**
+	 * Den Kopf eines Reports in HTML überführen.
+	 * 
+	 * @param r, CompositeReport
+	 * @return String in HTML-Format
+	 */
 	public String createHeadOfReport(CompositeReport r) {
 		GWT.log("HeadOfReport erstellen");
 
 		if (r.getCreator() != null && r.getHeadline() != null) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div id=\"report\">");
-			sb.append("<h3> Report für " + r.getCreator().getUsername() + "</h3>");
-			//sb.append("<h5> Erstellt am " + r.getCreationDateAsString() + "</h5>");
+			sb.append("<h3> Report für " + r.getCreator().getContent() + "</h3>");
+			// sb.append("<h5> Erstellt am " + r.getCreationDateAsString() + "</h5>");
 			return sb.toString();
 		} else
 			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report ohne Name</h3>";
 	}
 
+	/**
+	 * Mehrere ContactReports in HTML überführen. Die Reports werden in einer
+	 * Tabellenstruktur ausgegeben
+	 * 
+	 * @param cons,
+	 *            ArrayList<ContactReport> die Kontakte, die in HTML überführt
+	 *            werden sollen
+	 * @return s, String im korrekten HTML Format.
+	 */
 	public String convertContactReportsToHTML(ArrayList<ContactReport> cons) {
 		GWT.log("Tabelle erstellen");
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div id=\"reportTable\">");
 		sb.append("<table style=\"width:700px; border: 1px solid black;\">");
-		// Die Spaltennamen definieren
-		sb.append("<tr>");
-		GWT.log("Tabelle erstellen");
-		for (int i = 0; i < 10; i++) {
-			sb.append("<th> <b>Spalte" + i + " </b> </th>");
-		}
-		GWT.log("Tabelle erstellen");
-		sb.append("</tr>");
 		// die Zeilen pro Kontakt füllen
 		for (ContactReport c : cons) {
 			GWT.log("HTML Writer: neuer Kontakt Report für " + c.getContactInfo());
 			if (c.getContactInfo() != null) {
-				sb.append(" <tr> <td> <b>" + c.getContactInfo() + "</b> </td>");
+				sb.append(" <tr> <td> <b>" + c.getContactInfo().getContent() + "</b> </td>");
 			} else {
 				GWT.log("Keinanzeigename");
-				sb.append("<tr><td> <b>kein Anzeigename</b> </td> </tr>");
+				sb.append("<tr><td> <b>Kein Anzeigename</b> </td> </tr>");
 			}
 			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
-			sb.append("<td> <p>Besitzer: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
-			//sb.append("<td> <p>Erstellt am " + c.getCreationDateAsString() + "</p> </td>");
-			//sb.append("<td> <p>Zuletzt geändert: " + c.getCreationDateAsString() + "</p> </td>");
+			sb.append("<td> <p>Teilhaber: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
+			sb.append("<td> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" + "</td>");
+			sb.append("<td> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>" + "</td>");
+
 			sb.append("</tr><tr>");
 			for (PropertyView pv : c.getContent()) {
-				int i = 0;
-				if (pv.getPname() != null && pv.getPvalue() != null && i < 10) {
+				if (pv.getPname() != null && pv.getPvalue() != null) {
 					sb.append("<td> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue() + " </p> </td>");
-					i++;
-				} else {
-					if (i < 10) {
-						sb.append("<td> <p>leer</p> </td>");
-						i++;
-					}
+				} else if (pv.getPname() != null) {
+					sb.append("<td> <p> " + pv.getPname() + "</p> </td>");
+				} else if (pv.getPvalue() != null) {
+					sb.append("<td> <p> " + pv.getPvalue() + "</p> </td>");
 				}
 			}
-			sb.append("</tr>");
+			sb.append("</tr><tr> <td> <b>&nbsp</b> </td>");
 		}
+
+		sb.append("</tr>");
 		sb.append("</table>");
 		sb.append("</div>");
 		GWT.log("Tabelle erstellenfertig" + sb.toString());
 		return sb.toString();
 	}
-	
+
+	/**
+	 * Einen AllContactsInSystemReport in HTML überführen. Speichert das Ergebnis in
+	 * der Instanzenvariable "reportText", die über getReportText() abgerufen werden
+	 * kann.
+	 */
 	public void process(AllContactsInSystemReport r) {
 		StringBuffer sb = new StringBuffer();
-		/**
-		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, Tabelle mit allen auszugebenden Kontakten
-		 * und eine Fußzeile hinzufügen
+		/*
+		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, Tabelle mit allen
+		 * auszugebenden Kontakten und eine Fußzeile hinzufügen
 		 */
 		sb.append(createHeadOfReport(r));
 		sb.append(paragraph2HTML(r.getHeadline()));
-		/**
-		 * Da ein AllContactsInSystem Report viele UserReports speichert, diese durchlaufen und für jeden 
-		 * die Tabelle mit allen Kontakten ausgeben
+		/*
+		 * Da ein AllContactsInSystem Report viele UserReports speichert, diese
+		 * durchlaufen und für jeden die Tabelle mit allen Kontakten ausgeben
 		 */
-		for(AllContactsOfUserReport acur : r.getSubReports()) {
-			sb.append("<p style=\"margin-bottom: 8px\">Alle Kontakte von " + acur.getCreator().getUsername() + "</p>");
+		for (AllContactsOfUserReport acur : r.getSubReports()) {
+			sb.append("<p style=\"margin-bottom: 8px\">Alle Kontakte von " + acur.getCreator().getContent() + "</p>");
 			sb.append(convertContactReportsToHTML(acur.getSubReports()));
-			sb.append("<p style=\"margin-bottom: 16px\">Ende des Reports von " + acur.getCreator().getUsername() + "</p>");
+			sb.append(
+					"<p style=\"margin-bottom: 16px\">Ende des Reports von " + acur.getCreator().getContent() + "</p>");
 		}
 		sb.append(paragraph2HTML(r.getFootline()));
 		sb.append("</div>");
 		this.reportText = sb.toString();
 	}
 
+	/**
+	 * Einen AllContactsOfUserReport in HTML überführen. Speichert das Ergebnis in
+	 * der Instanzenvariable "reportText", die über getReportText() abgerufen werden
+	 * kann.
+	 * @param r, AllContactsOfUserReport der konvertiert werden soll
+	 */
 	public void process(AllContactsOfUserReport r) {
 		StringBuffer sb = new StringBuffer();
 		/**
-		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen auszugebenden Kontakten
-		 * und eine Fußzeile hinzufügen
+		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen
+		 * auszugebenden Kontakten und eine Fußzeile hinzufügen
 		 */
 		sb.append(createHeadOfReport(r));
 		sb.append(paragraph2HTML(r.getHeadline()));
@@ -151,12 +170,18 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		this.reportText = sb.toString();
 	}
 
+	/**
+	 * Einen FilteredContactsOfUserReport in HTML überführen. Speichert das Ergebnis in
+	 * der Instanzenvariable "reportText", die über getReportText() abgerufen werden
+	 * kann.
+	 * @param r, FilteredContactsOfUserReport der konvertiert werden soll
+	 */
 	public void process(FilteredContactsOfUserReport r) {
 		GWT.log("Report zu HTML machen");
 		StringBuffer sb = new StringBuffer();
 		/**
-		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen auszugebenden Kontakten
-		 * und eine Fußzeile hinzufügen
+		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen
+		 * auszugebenden Kontakten und eine Fußzeile hinzufügen
 		 */
 		sb.append(createHeadOfReport(r));
 		sb.append(paragraphWithFilter2HTML(r.getFiltercriteria()));
@@ -164,7 +189,6 @@ public class HTMLReportWriter extends ReportWriter implements Serializable{
 		sb.append(paragraph2HTML(r.getFootline()));
 		sb.append("</div>");
 		this.reportText = sb.toString();
-		GWT.log("Report zu HTML machen fertig");
 	}
 
 }

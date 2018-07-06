@@ -1,149 +1,131 @@
-/**
- * 
- */
 package de.hdm.group11.jabics.shared.bo;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
- * Diese Klasse implementiert Kontakte in Jabics. In einem Kontakt sind mehrere PValue Objekte gespeichert.
- * PValues können hinzugefügt oder gelöscht werden, jedoch benötigt jeder Kontakt mindestens einen Namen, der
- * entweder über eine ArrayList<PValue>, in dem mindestens die PValues zu Name und Vorname vorhanden sind,
- * gesetzt werden kann, oder direkt über einen String.
+ * <p>
+ * Die Klasse <code>Contact</code> implementiert Kontakte in Jabics. In einem
+ * Kontakt sind mehrere <code>PValue</code> Objekte gespeichert.
+ * </p>
  * 
  * @author Anders
- * @author Kurrle 
+ * @author Kurrle
  */
+public class Contact extends BusinessObject implements Comparable<Contact>, Serializable {
 
-public class Contact extends BusinessObject implements Comparable<Contact>, Serializable{
-	
 	private static final long serialVersionUID = 1L;
+
 	/**
-	 * Instanzenvariablen
+	 * Der Key Provider für einen Contact
+	 */
+	public static final ProvidesKey<Contact> KEY_PROVIDER = new ProvidesKey<Contact>() {
+		public Object getKey(Contact c) {
+			return (Integer) c.getId();
+		}
+	};
+
+	/**
+	 * ArrayList aus Eigenschaftsauspräfungen, welcher einer Instanz dieser Klasse
+	 * zugeordnet werden.
 	 */
 	private ArrayList<PValue> values = new ArrayList<PValue>();
-	private String name;
-	private BoStatus shareStatus = BoStatus.NOT_SHARED;
-	
 
-	public Contact(ArrayList<PValue> a, JabicsUser u) { 
-		this(a);
+	/**
+	 * Name einer Instanz dieser Klasse.
+	 */
+	private String name;
+
+	/**
+	 * Share-Status einer Instanz dieser Klasse.
+	 */
+	private BoStatus shareStatus = BoStatus.NOT_SHARED;
+
+	/**
+	 * Leerer Konstruktor
+	 */
+	public Contact() {
+		super();
+	}
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten zu
+	 * erzeugen.
+	 * 
+	 * @param values
+	 */
+	public Contact(ArrayList<PValue> values) {
+		this();
+		this.values = values;
+	}
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten
+	 * und <code>JabicsUser</code> zu erzeugen.
+	 * 
+	 * @param a
+	 * @param u
+	 */
+	public Contact(ArrayList<PValue> values, JabicsUser u) {
+		this(values);
 		this.updateNickname();
 		this.owner = u;
 	}
-		
-	public Contact(ArrayList<PValue> a, String name) { 
-		this(a);
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten
+	 * und einem Name zu erzeugen.
+	 * 
+	 * @param values
+	 * @param name
+	 */
+	public Contact(ArrayList<PValue> values, String name) {
+		this(values);
 		this.name = name;
 	}
-	
-	public Contact(ArrayList<PValue> a) { 
-		this();
-		this.values = a;
+
+	/**
+	 * Fügt einen <code>PValue</code> der <code>ArrayList<code> <code>values</code>
+	 * hinzu.
+	 */
+	public void addPValue(PValue pValue) {
+		this.values.add(pValue);
 	}
 
-	//Leerer Konstruktor
-		public Contact() { 
-			super();
-		}
-
-	
-	@Override
-	public String toString() {		
-		return this.name;
-	}
-	
 	/**
-	 *  Adds value to the values Array 
-	 */
-	public void addPValue(PValue p) { 
-		this.values.add(p);	
-	}
-	/**
-	 *  Removes value from the value Array
-	 */
-	public void removePValue(PValue p) {
-		this.values.remove(p);
-	}
-	
-	/**
-	 *  Getter and Setter
-	 */
-	
-	public ArrayList<PValue> getValues() {
-		return this.values;
-	}
-	public void setValues(ArrayList<PValue> values) {
-		this.values = values;
-		//this.dateUpdated = LocalDateTime.now();
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-		//this.dateUpdated = LocalDateTime.now();
-	}
-	public BoStatus getShareStatus() {
-		return shareStatus;
-	}
-	public void setShareStatus(BoStatus shareStatus) {
-		this.shareStatus = shareStatus;
-	}
-	
-	/**
-	 * Überprüfen, ob der Nickname dieses Kontakts noch aktuell ist und neu setzen.
-	 */
-	public void updateNickname() {
-		StringBuffer sBuffer = new StringBuffer("VornameNachname");
-		for (PValue p : values) {
-			if (p.getProperty().getId() == 1) {
-				sBuffer.replace(0, sBuffer.length(), p.getStringValue());					
-				} else {
-					System.out.println("Constructor in Contact: No name in Array.");
-				}
-		}
-		for (PValue p2: values) {
-			if (p2.getProperty().getId() == 2) {
-				sBuffer.append(" " + p2.getStringValue());				
-			} else {
-				System.out.println("No lastname in Array");
-			}
-		}
-		System.out.println("Neuer Nickname: " + sBuffer.toString());
-		this.name = sBuffer.toString();
-	}
-	
-	/*
-	 * Relevante Methoden für die spätere Anzeige mittels selectionModels und ListDataProvider
+	 * <code>Contect</code> vergleichen.
+	 * 
+	 * @param c
+	 * 
+	 * @return int
 	 */
 	public int compareTo(Contact c) {
 		if (c.getId() == this.id) {
 			return 0;
-		} else return -1;
+		} else
+			return -1;
 	}
-	
+
 	/**
-	 * Check if BusinessObject is the same as transfer parameter
+	 * Prüfen ob das <code>Contact</code> Objekt, das Gleiche wie der Parameter ist.
+	 * 
+	 * @param obj
+	 * 
+	 * @return true oder false
 	 */
 	public boolean equals(Object obj) {
-		System.out.println("equals1");
 		if (obj instanceof Contact) {
 			Contact c = (Contact) obj;
 			if (c.getId() == this.id) {
-				System.out.println("equals2");
 				boolean bol = true;
-				// Wenn keine PValues vorhanden, wird in diese Zeilen gar nicht gesprungen
-				for(PValue pv : c.getValues()) {
+				for (PValue pv : c.getValues()) {
 					if (!this.values.contains(pv)) {
 						bol = false;
 					}
 				}
-				for(PValue pv : this.values) {
+				for (PValue pv : this.values) {
 					if (!c.getValues().contains(pv)) {
 						bol = false;
 					}
@@ -154,13 +136,100 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		}
 		return false;
 	}
+
 	/**
-     * Der Key Provider für einen Contact
-     */
-    public static final ProvidesKey<Contact> KEY_PROVIDER = new ProvidesKey<Contact>() {
-      public Object getKey(Contact c) {
-        return (Integer)c.getId();
-      }
-    };
-	
+	 * Auslesen des Namens
+	 * 
+	 * @return name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Auslesen des Share-Status.
+	 * 
+	 * @return shareStatus
+	 */
+	public BoStatus getShareStatus() {
+		return shareStatus;
+	}
+
+	/**
+	 * Auslesen der Eigenschaftsausprägungen
+	 * 
+	 * @return values
+	 */
+	public ArrayList<PValue> getValues() {
+		return this.values;
+	}
+
+	/**
+	 * Entfernt eine Ausprägung aus der Liste von Ausprägungen
+	 */
+	public void removePValue(PValue pValue) {
+		this.values.remove(pValue);
+	}
+
+	/**
+	 * Setzen des Namens.
+	 * 
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+		// this.dateUpdated = LocalDateTime.now();
+	}
+
+	/**
+	 * Setzen des Share-Status.
+	 * 
+	 * @param shareStatus
+	 */
+	public void setShareStatus(BoStatus shareStatus) {
+		this.shareStatus = shareStatus;
+	}
+
+	/**
+	 * Setzen der zugehörigen <code>PValue</code>.
+	 * 
+	 * @param values
+	 */
+	public void setValues(ArrayList<PValue> values) {
+		this.values = values;
+	}
+
+	/**
+	 * Textuelle Repräsentation des <code>Contact</code> Objekts durch den Name
+	 * 
+	 * @return name
+	 */
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
+	/**
+	 * Überprüfen, ob der Name dieses <code>Contact</code> Objekts noch aktuell ist,
+	 * wenn nicht wird der Name neu gesetzt.
+	 */
+	public void updateNickname() {
+		StringBuffer sBuffer = new StringBuffer("VornameNachname");
+		for (PValue p : values) {
+			if (p.getProperty().getId() == 1) {
+				sBuffer.replace(0, sBuffer.length(), p.getStringValue());
+			} else {
+				System.out.println("Constructor in Contact: No name in Array.");
+			}
+		}
+		for (PValue p2 : values) {
+			if (p2.getProperty().getId() == 2) {
+				sBuffer.append(" " + p2.getStringValue());
+			} else {
+				System.out.println("No lastname in Array");
+			}
+		}
+		System.out.println("Neuer Nickname: " + sBuffer.toString());
+		this.name = sBuffer.toString();
+	}
 }
