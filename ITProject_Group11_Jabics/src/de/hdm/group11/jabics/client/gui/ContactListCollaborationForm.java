@@ -394,6 +394,10 @@ public class ContactListCollaborationForm extends VerticalPanel {
 						newCollabDataProvider.flush();
 					}
 				}
+				for (Contact c : sharedContactList.getContacts() ) {
+					c.setShareStatus(BoStatus.IS_SHARED);
+					e.updateContactInTree(c);
+				}
 				sharedContactList.setShareStatus(BoStatus.IS_SHARED);
 				e.updateContactListInTree(sharedContactList);
 			}
