@@ -1,6 +1,5 @@
 package de.hdm.group11.jabics.client.gui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,7 +13,6 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -36,10 +34,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
-import de.hdm.group11.jabics.client.gui.ContactCollaborationForm.CellTableResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
-import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.ReportGeneratorServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
@@ -151,8 +147,11 @@ public class ReportAdmin {
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
 		
-		removeUserButton = new Button("entfernen");
-		addUserButton = new Button("hinzufügen");
+//		VerticalPanel addremovepanel = new VerticalPanel();
+//		removeUserButton = new Button("entfernen");
+//		addUserButton = new Button("hinzufügen");
+//		addremovepanel.add(removeUserButton);
+//		addremovepanel.add(addUserButton);
 		
 //		otherReportsPanel.add(allReportsInSystemButton);
 		datatypemenu.addItem("Text");
@@ -179,13 +178,10 @@ public class ReportAdmin {
 		userPanel.add(userTable);
 		GWT.log("Report6");
 		navPanel.add(userPanel);
-		navPanel.add(addUserButton);
-		navPanel.add(removeUserButton);
+//		navPanel.add(addremovepanel);
 		navPanel.add(sharedContactsButton);
 		navPanel.add(allReportButton);
 		GWT.log("Report");
-		mainPanel.add(navPanel);
-		mainPanel.add(otherReportsPanel);
 		
 		//Stylenames
 		
@@ -203,10 +199,7 @@ public class ReportAdmin {
 		navPanel.setStyleName("repnav");
 		userPanel.setStyleName("repusernav");
 		
-		loadReport();
-		createSelectionMenu();
-		loadLogout();
-		createUserSuggestMenu();
+		//loadReport();
 	}
 
 	public void loadReport() {
@@ -225,9 +218,13 @@ public class ReportAdmin {
 
 		// Nutzer selection aufbauen
 		retrieveUser();
+		loadLogout();
+		
 		
 		// Aufbauen des RootPanels
 		RootPanel.get("nav").add(logoutPanel);
+		RootPanel.get("selection").add(navPanel);
+		RootPanel.get("selection").add(otherReportsPanel);
 		RootPanel.get("content").add(mainPanel);
 
 	}
@@ -289,12 +286,10 @@ public class ReportAdmin {
 				if (finalPVal.getPointer() == 0) {
 					Window.alert("Bitte zuerst Datentyp auswählen!");
 				}
-
 			}
 		});
 
 		valueBox.addValueChangeHandler(new PValueChangeHandler<String>());
-
 		datatypemenu.addChangeHandler(new ChangeHandler() {
 
 			Button finish = new Button("Fertig");
@@ -634,7 +629,9 @@ public class ReportAdmin {
 			}
 
 			propertySuggest = new SuggestBox(propertyToSuggest);
-
+			propertySuggest.setStyleName("repBoxes");
+			
+			verPanel1.add(propertySuggest);
 			/**
 			 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
 			 * die suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
@@ -647,10 +644,7 @@ public class ReportAdmin {
 					GWT.log("Wert geändert " + finalPVal.getProperty().getLabel());
 				}
 			});
-
-			propertySuggest.setStyleName("repBoxes");
-			verPanel1.add(propertySuggest);
-
+			createSelectionMenu();
 		}
 	}
 

@@ -32,21 +32,15 @@ public class Report implements EntryPoint {
 		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
-
-		
-		
 		/**
 		 * Login
 		 */
-		//login();
-
-		useStaticUser();
+		login();
+		//useStaticUser();
 	}
 
 	public void login() {
 		loginService = ClientsideSettings.getLoginService();
-		GWT.log(GWT.getHostPageBaseURL());
-
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 	}
 	

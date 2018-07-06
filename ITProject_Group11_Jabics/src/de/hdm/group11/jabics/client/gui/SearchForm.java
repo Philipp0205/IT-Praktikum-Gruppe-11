@@ -100,6 +100,7 @@ public class SearchForm extends VerticalPanel {
 		verPanel3 = new VerticalPanel();
 		verPanel4 = new VerticalPanel();
 		verPanel5 = new VerticalPanel();
+		
 		pvalueLabel = new Label("Wert:");
 		pvalueLabel.setStyleName("wertlabel");
 		propertyLabel = new Label("Eigenschaft:");
@@ -110,6 +111,7 @@ public class SearchForm extends VerticalPanel {
 		datatypeLabel.setStyleName("datentyplabel");
 		datepicker = new DatePicker();
 		finalPVal = new PValue();
+		finalProperty = new Property();
 		back = new Button("↩");
 		back.setStyleName("sfback");
 		ct = new ContactCellListTab(currentUser, null);
@@ -342,7 +344,7 @@ public class SearchForm extends VerticalPanel {
 
 	
 	public void showNoResults() {
-		
+		Label l = new Label("Keine Ergebnisse für diese Suche");
 		
 	}
 	/**
@@ -399,7 +401,7 @@ public class SearchForm extends VerticalPanel {
 					}
 					ausgabeLabel.setVisible(true);
 				}
-			}
+			} else showNoResults();
 		}
 }
 
@@ -436,7 +438,6 @@ public class SearchForm extends VerticalPanel {
 			 */
 			propertySuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
-					finalProperty = new Property();
 					finalProperty.setLabel(propertySuggest.getText());
 					GWT.log(">>>>>>>>>>>>>" + finalProperty.getLabel());
 					finalPVal.setProperty(finalProperty);
