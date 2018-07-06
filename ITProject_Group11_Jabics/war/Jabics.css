@@ -675,6 +675,26 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 25px;
 	white-space: nowrap;
 }
+.successfulresultl {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 15px;
+	margin-left: 13px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+.reslabel {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 20px;
+	margin-left: 13px;
+	color: #19376E;
+	margin-left: 180px;
+	white-space: nowrap;
+}
 
 .datentyplabel {
 	font-family: Arial;
@@ -755,7 +775,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	background: #9FB8E0 !important;
 	color: white !important;
-	margin-top: 10px;
+	margin-top: 30px;
 	margin-left: 10px;
 	width: 280px;
 }
