@@ -57,13 +57,13 @@ public class ShowContactForm extends VerticalPanel {
 	HorizontalPanel mainPanel = new HorizontalPanel();
 
 	Button editButton = new Button("✎");
-	Label editLabel = new Label("Kontakt bearbeiten");
+	Button editLabel = new Button("Kontakt bearbeiten");
 	Button shareContactButton = new Button("⋲");
-	Label shareLabel = new Label("Kontakt teilen");
+	Button shareLabel = new Button("Kontakt teilen");
 	Button shareExistingContactButton = new Button("✎");
-	Label shareEditLabel = new Label("Teilen bearbeiten");
+	Button shareEditLabel = new Button("Teilen bearbeiten");
 	Button deleteButton = new Button("🗑");
-	Label deleteLabel = new Label("Kontakt löschen");
+	Button deleteLabel = new Button("Kontakt löschen");
 	
 	//cellTable Ressourcen	
 	public interface CellTableResources extends CellTable.Resources {

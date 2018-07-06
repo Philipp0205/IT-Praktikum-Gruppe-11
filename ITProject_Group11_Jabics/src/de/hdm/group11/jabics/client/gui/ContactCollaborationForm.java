@@ -68,6 +68,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		// Alles, was mit der PVal Tabelle zu tun hat
 		valueTable = new CellTable<PValue>(100, ctRes);
+		valueTable.setStyleName("ccvaltable");
 
 		valueProvider = new ListDataProvider<PValue>();
 		valueProvider.addDataDisplay(valueTable);
@@ -156,6 +157,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		// +++++++++++++Alle Buttons
 
 		removeButton = new Button("Nutzer entfernen");
+		removeButton.setStyleName("userselectbtn");
 		removeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if (selectedUser != null) {
@@ -166,6 +168,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 		addButton = new Button("Nutzer hinzufügen");
+		addButton.setStyleName("userselectbtn");
 		addButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if (suggestedUser != null) {
@@ -178,12 +181,12 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 		shareContactWUser = new Button("Für ausgewählten Nutzer freigeben");
+		shareContactWUser.setStyleName("sharebtn");
 		shareContactWUser.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				if (selectedUser != null) {
 					if (!selectedPV.isEmpty()) {
 						shareContactWithUser(selectedUser);
-						e.returnToContactForm(sharedContact);
 
 					} else
 						Window.alert(
@@ -193,19 +196,18 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 		});
 		shareContact = new Button("Für alle angegebenen Nutzer freigeben");
+		shareContact.setStyleName("sharebtn");
 		shareContact.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				Window.alert(
-						"Achtung! Damit überschreibst du alle Freigaben mit allen ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
 				shareContactWithAll();
-				e.returnToContactForm(sharedContact);
+				//e.showContact(sharedContact);
 			}
 		});
 
 		exit = new Button("Abbrechen/Zurück");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				e.returnToContactForm(sharedContact);
+				e.showContact(sharedContact);
 			}
 		});
 	}
@@ -223,15 +225,18 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		GWT.log("collab4");
 		grid = new Grid(5, 4);
+		HorizontalPanel userselectPanel = new HorizontalPanel();
+		HorizontalPanel sharePanel = new HorizontalPanel();
 		// grid.setSize("500px", "400px");
 		grid.setWidget(0, 0, suggestBox);
-
-		grid.setWidget(0, 1, addButton);
+		userselectPanel.add(addButton);
+		userselectPanel.add(removeButton);
+		sharePanel.add(shareContactWUser);
+		sharePanel.add(shareContact);
+		grid.setWidget(0, 1, userselectPanel);
 		grid.setWidget(1, 0, userTable);
-		grid.setWidget(2, 0, removeButton);
-		grid.setWidget(1, 2, valueTable);
-		grid.setWidget(3, 3, shareContact);
-		grid.setWidget(3, 2, shareContactWUser);
+		grid.setWidget(1, 1, valueTable);
+		grid.setWidget(3, 1, sharePanel);
 		grid.setWidget(3, 0, exit);
 
 		this.add(grid);
@@ -383,7 +388,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(Void v) {
 			Window.alert("Kontakt erfolgreich geteilt!");
-
 			updateShareStatus();
 		}
 	}
@@ -458,6 +462,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 			public void onSuccess(Contact result) {
 				GWT.log("Update ShareStatus: On Sucess");
+				setContact(result);
 				e.updateContactInTree(result);
 				e.showContact(result);
 			}

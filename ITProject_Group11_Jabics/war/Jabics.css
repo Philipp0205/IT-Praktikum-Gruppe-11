@@ -179,7 +179,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	padding: 6px 14px 6px 14px !important;
 	border: solid #000000 0px !important;
-	border-radius: 0px;
+	border-radius: 0px !important;
 	text-decoration: none;
 }
 
@@ -193,7 +193,7 @@ html>body .gwt-DecoratedStackPanel {
 	text-decoration: none;
 	cursor: pointer;
 	border: solid #000000 0px !important;
-	border-radius: 0px;
+	border-radius: 0px ;
 }
 
 .btn {
@@ -219,6 +219,45 @@ html>body .gwt-DecoratedStackPanel {
 	cursor: pointer;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
+}
+/*--------------------CCollabForm--------------------*/
+.userselectbtn{
+		color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	margin-left:15px !important;
+	margin-top:3px;
+}
+
+.userselectbtn:hover{
+	background: #accbf0 !important;
+		cursor: pointer;
+	border: solid #000000 0px !important;
+}
+
+.sharebtn{
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	margin-left:15px;
+}
+
+.sharebtn {
+
+	text-decoration: none;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+}
+.ccvaltable{
+	margin-top:15px;
 }
 /*--------------------CListCollabForm--------------------*/
 .listpanel {
@@ -338,6 +377,9 @@ html>body .gwt-DecoratedStackPanel {
 	/*color: #ff5e5e !important;*/
 	color: #19376E;
 	margin-left: 20px;
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 }
 
 .cdeleteBtn {
@@ -363,6 +405,9 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 20px;
 	margin-top: 29px;
 	color: #19376E;
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	/*color: #53f4af !important;*/
 }
 
@@ -382,6 +427,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .clsearchlabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -441,6 +489,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .cldeleteLabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -465,6 +516,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .clsaveLabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -491,6 +545,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .clshareLabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -618,6 +675,26 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 25px;
 	white-space: nowrap;
 }
+.successfulresultl {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 15px;
+	margin-left: 13px;
+	color: #19376E;
+	margin-left: 25px;
+	white-space: nowrap;
+}
+.reslabel {
+	font-family: Arial;
+	font-size: 16px !important;
+	test-align: center;
+	margin-top: 20px;
+	margin-left: 13px;
+	color: #19376E;
+	margin-left: 180px;
+	white-space: nowrap;
+}
 
 .datentyplabel {
 	font-family: Arial;
@@ -698,7 +775,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	background: #9FB8E0 !important;
 	color: white !important;
-	margin-top: 10px;
+	margin-top: 30px;
 	margin-left: 10px;
 	width: 280px;
 }
@@ -775,12 +852,16 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .editLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
+	
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 12px;
-	margin-left: 10px;
+	margin-left: 162px;
 	color: #19376E;
 	white-space: nowrap;
 }
@@ -798,6 +879,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .shareLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -822,6 +906,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .shareEditLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -845,6 +932,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .deleteLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -1052,7 +1142,7 @@ html>body .gwt-DecoratedStackPanel {
 	height: 58px;
 	margin-top: 20px;
 	color: #000;
-	background-color: #B6C9E7;
+	background: #6D8EC2;
 	display: block;
 	visibility: visible;
 }
@@ -1102,12 +1192,12 @@ html>body .gwt-DecoratedStackPanel {
 
 .logoutbutton:hover {
 	color: #fff;
-	background: #008fd1;
+	background: #7E9AC6;
 }
 
 .loginbutton:hover {
 	color: #fff;
-	background: #008fd1;
+	background: #7E9AC6;
 }
 
 .navbrand {
@@ -1147,7 +1237,7 @@ html>body .gwt-DecoratedStackPanel {
 
 .btn1:hover {
 	color: #fff;
-	background: #008fd1;
+	background: #7E9AC6;
 }
 
 .btn2 {
@@ -1170,7 +1260,7 @@ html>body .gwt-DecoratedStackPanel {
 
 .btn2:hover {
 	color: #fff;
-	background: #008fd1;
+	background: #7E9AC6;
 }
 /*
 table, th, td {
@@ -1179,4 +1269,9 @@ table, th, td {
 }*/
 .cellTree .gwt-CellTree {
 	color: red;
+}
+
+.legendPanel {
+	padding-top: 8px;
+
 }

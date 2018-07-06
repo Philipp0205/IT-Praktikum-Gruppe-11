@@ -7,37 +7,63 @@ import java.util.ArrayList;
  * Ein simpler Report, welcher die Superklasse Report erweitert und einen
  * einzelnen Kontakt mit dessen Eigenschaften repräsentiert.
  * 
- * @author Anders and Kurrle
+ * @author Anders
+ * @author Kurrle
+ * @author Stahl
  */
 public class ContactReport extends Report implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Liste aus <code>PropertyView</code> einer Instanz dieser Klasse.
+	 */
 	private ArrayList<PropertyView> content = new ArrayList<PropertyView>();
+
+	/**
+	 * Kontaktinfo einer Instanz dieser Klasse.
+	 */
 	private Paragraph contactInfo;
+
+	/**
+	 * Erstellungsinfo einer Instanz einer Klasse.
+	 */
 	private Paragraph creationInfo;
+
+	/**
+	 * Update Info einer Instanz einer Klasse.
+	 */
 	private Paragraph updateInfo;
+
+	/**
+	 * Nutzer Info einer Instanz dieser Klasse.
+	 */
 	private Paragraph userInfo;
+
+	/**
+	 * Kollaboration Info einer Instanz dieser Klasse.
+	 */
 	private Paragraph collaborationInfo;
 
+	/**
+	 * Default Konstruktor
+	 */
 	public ContactReport() {
 	}
 
 	/**
-	 * Einen neuen ContactReport erstellen.
+	 * Konstruktor um eine Instanz dieser Klasse mit einer Liste aus
+	 * <code>PropertyView</code>, der <code>contactInfo</code>, der
+	 * <code>userInfo</code>, der <code>creationInfo</code>, der
+	 * <code>updateInfo</code> und der <code>collaborationInfo</code> zu erstellen.
 	 * 
-	 * @param pv,
-	 *            ArrayList<PropertyView> mit allen anzuzeigenden Eigenschaften
-	 * @param contactInfo,
-	 *            Ein Paragraph mit dem Kontaktnamen
-	 * @param userInfo,
-	 *            ein Paragraph mit dem Nutzernamen
-	 * @param creationInfo,
-	 *            ein Paragraph mit dem Erstelldatum
-	 * @param updateInfo,
-	 *            ein Paragraph mit dem Updatedatum
-	 * @param collaborationInfo,
-	 *            ein Paragraph mit allen geteilten Nutzern
+	 * @param pv
+	 *            Liste aus <code>PropertyView</code>
+	 * @param contactInfo
+	 * @param userInfo
+	 * @param creationInfo
+	 * @param updateInfo
+	 * @param collaborationInfo
 	 */
 	public ContactReport(ArrayList<PropertyView> pv, Paragraph contactInfo, Paragraph userInfo, Paragraph creationInfo,
 			Paragraph updateInfo, Paragraph collaborationInfo) {
@@ -50,7 +76,14 @@ public class ContactReport extends Report implements Serializable {
 	}
 
 	/**
-	 * Diesen Konstruktor nur in Ausnahmefällen verwenden
+	 * Konstruktor um eine Instanz dieser Klasse mit einer Liste aus
+	 * <code>PropertyView</code>, der <code>contactInfo</code> und der
+	 * <code>userInfo</code> zu erstellen.
+	 * 
+	 * @param pv
+	 *            Liste aus <code>PropertyView</code>
+	 * @param contactInfo
+	 * @param userInfo
 	 */
 	public ContactReport(ArrayList<PropertyView> pv, Paragraph contactInfo, Paragraph userInfo) {
 		this(pv);
@@ -59,7 +92,11 @@ public class ContactReport extends Report implements Serializable {
 	}
 
 	/**
-	 * Konstruktor der nur eine Kontaktinfo und einen Nutzer erhält
+	 * Konstruktor um eine Instanz dieser Klasse mit der <code>contactInfo</code>
+	 * und der <code>userInfo</code> zu erstellen.
+	 * 
+	 * @param contactInfo
+	 * @param userInfo
 	 */
 	public ContactReport(Paragraph contactInfo, Paragraph userInfo) {
 		this.userInfo = userInfo;
@@ -67,10 +104,11 @@ public class ContactReport extends Report implements Serializable {
 	}
 
 	/**
-	 * constructor that needs at least one Property view in an ArrayList and sets
-	 * contactInfo based on Information in that ArrayList. Only the last name is set
-	 * as contactInfo, surnames are not searched for. Only use this Constructor if
-	 * contactName cannot be determined.
+	 * Konstruktor um eine Instanz dieser Klasse mit einer Liste aus
+	 * <code>PropertyView</code> zu erstellen.
+	 * 
+	 * @param pv
+	 *            Liste aus <code>PropertyView</code>.
 	 */
 	public ContactReport(ArrayList<PropertyView> pv) {
 		if (!pv.isEmpty()) {
@@ -89,74 +127,141 @@ public class ContactReport extends Report implements Serializable {
 	}
 
 	/**
-	 * Eine PropertsView dem Report hinzufügen
+	 * Eine <code>PropertsView</code> dem <code>Report</code> hinzufügen.
 	 * 
-	 * @param pv,
-	 *            PropertyView, die hinzugefügt werden soll
+	 * @param pv
+	 *            <code>PropertsView</code>, die hinzugefügt werden soll
 	 */
 	public void addProperty(PropertyView pv) {
 		this.content.add(pv);
 	}
 
 	/**
-	 * Den Namen des ContactReports erhalten
+	 * Textuelle Repräsentation des <code>ContactReport</code> Objekts durch die
+	 * <code>contactInfo</code>.
 	 * 
-	 * @return String im Format: "Report for Contact: " + Anzeigename des Kontakts
-	 */
+	 * @return String im Format: "Report for Contact: " + Anzeigename des Kontakts.
+	 */ 
+	@Override 
 	public String toString() {
 		return "Report for Contact: " + this.contactInfo;
 	}
 
+	/**
+	 * Auslesen des <code>content</code>.
+	 * 
+	 * @return Liste aus <code>PropertyView</code>.
+	 */
 	public ArrayList<PropertyView> getContent() {
 		return this.content;
 	}
 
+	/**
+	 * Setzen des <code>content</code>.
+	 * 
+	 * @param content
+	 *            Liste aus <code>PropertyView</code>.
+	 */
 	public void setContent(ArrayList<PropertyView> content) {
 		this.content = content;
 	}
 
+	/**
+	 * Auslesen der <code>contactInfo</code>.
+	 * 
+	 * @return Paragraph
+	 */
 	public Paragraph getContactInfo() {
 		return this.contactInfo;
 	}
 
-	public void setContactInfo(Paragraph value) {
-		this.contactInfo = value;
+	/**
+	 * Setzen der <code>contactInfo</code>.
+	 * 
+	 * @param contactInfo
+	 */
+	public void setContactInfo(Paragraph contactInfo) {
+		this.contactInfo = contactInfo;
 	}
 
+	/**
+	 * Auslesen der <code>collaborationInfo</code>.
+	 * 
+	 * @return Paragraph
+	 */
 	public Paragraph getCollaboratorInfo() {
 		return this.collaborationInfo;
 	}
 
-	public void setCollaboratorInfo(Paragraph value) {
-		this.collaborationInfo = value;
+	/**
+	 * Setzen der <code>collaborationInfo</code>.
+	 * 
+	 * @return collaborationInfo
+	 */
+	public void setCollaboratorInfo(Paragraph collaborationInfo) {
+		this.collaborationInfo = collaborationInfo;
 	}
 
+	/**
+	 * Auslesen der <code>creationInfo</code>.
+	 * 
+	 * @return Paragraph
+	 */
 	public Paragraph getCreationInfo() {
 		return creationInfo;
 	}
 
+	/**
+	 * Setzen der <code>creationInfo</code>.
+	 * 
+	 * @param creationInfo
+	 */
 	public void setCreationInfo(Paragraph creationInfo) {
 		this.creationInfo = creationInfo;
 	}
 
+	/**
+	 * Auslesen der <code>updateInfo</code>.
+	 * 
+	 * @return Paragraph
+	 */
 	public Paragraph getUpdateInfo() {
 		return updateInfo;
 	}
 
+	/**
+	 * Setzen der <code>updateInfo</code>.
+	 * 
+	 * @param updateInfo
+	 */
 	public void setUpdateInfo(Paragraph updateInfo) {
 		this.updateInfo = updateInfo;
 	}
 
+	/**
+	 * Auslesen der <code>userInfo</code>.
+	 * 
+	 * @return Paragraph
+	 */
 	public Paragraph getUserInfo() {
 		return this.userInfo;
 	}
 
-	public void setUserInfo(Paragraph value) {
-		this.userInfo = value;
+	/**
+	 * Setzen der <code>userInfo</code>.
+	 * 
+	 * @param userInfo
+	 */
+	public void setUserInfo(Paragraph userInfo) {
+		this.userInfo = userInfo;
 	}
 
+	/**
+	 * Auslesen der Liste der <code>PropertyView</code>.
+	 * 
+	 * @return content
+	 */
 	public ArrayList<PropertyView> getPropertyViews() {
 		return content;
 	}
-
 }

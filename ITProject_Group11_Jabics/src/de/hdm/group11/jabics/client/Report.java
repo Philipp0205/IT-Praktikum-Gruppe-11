@@ -68,23 +68,20 @@ public class Report implements EntryPoint {
 		// Assemble login panel.
 		Label l1 = new Label("Sie sind nicht eingeloggt");
 		Label l2 = new Label("Melden sie sich mit ihren Google-Account an, um Jabics zu nutzen.");
-		Label tempurl = new Label(logon.getLoginUrl());
 
 		Button b = new Button("Anmelden");
 		b.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ck) {
-				Window.Location.assign(getLoginInfo().getLoginUrl());
+				Window.Location.assign(logon.getLoginUrl());
 			}
 		});
 		loginPanel = new VerticalPanel();
 		loginPanel.add(l1);
 		loginPanel.add(l2);
-		loginPanel.add(tempurl);
 		loginPanel.add(b);
 
 		RootPanel.get("nav").add(b);
 		RootPanel.get("content").add(loginPanel);
-
 	}
 
 	private class loginServiceCallback implements AsyncCallback<LoginInfo> {

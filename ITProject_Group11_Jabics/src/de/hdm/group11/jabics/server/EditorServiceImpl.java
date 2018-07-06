@@ -13,7 +13,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * Die Klasse <code>EditorServiceImpl</code> implementiert die Applikationslogik
  * für die Klasse <code>EditorService</code>. Sie stellt die Logik zur
  * Verfügung, die bei einem RPC aufgerufen wird und gibt die angefragten Objekte
- * zurück.
+ * zurück. Die Methoden in dieser Klasse sind alphabetisch geordnet.
  * 
  * @author Anders
  * @author Kurrle
@@ -107,7 +107,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			ArrayList<Contact> contactsInList = cMapper.findContactsOfContactList(cl);
 			for (Contact c : contactsInList) {
 				addCollaboration(c, u);
-				for(PValue pv : pvMapper.findPValueForContact(c)) {
+				for (PValue pv : pvMapper.findPValueForContact(c)) {
 					addCollaboration(pv, u);
 				}
 			}
@@ -414,7 +414,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 *         wurde.
 	 */
 	public JabicsUser deleteCollaboration(Contact c, JabicsUser u) {
-		System.out.println("Lösche Kollaboration für User " + c.getId());
+		System.out.println("Lösche Kollaboration für User " + u.getId() + c.getId());
 		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
 		ArrayList<PValue> pVal = pvMapper.findPValueForContact(c);
 		for (PValue pv : pVal) {
@@ -604,11 +604,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		ArrayList<ContactList> allListsOfUser = getListsOf(u);
 		ArrayList<Contact> allContactsOfUser = getContactsOf(u);
 
-		if (allListsOfUser != null) { 
+		if (allListsOfUser != null) {
 
 			// Die Kontrolle, ob übergebener Nutzer der Eigentümer ist, regeln die
 			// jeweiligen Methoden
-			//Erst alle Kontakte löschen.
+			// Erst alle Kontakte löschen.
 			if (allContactsOfUser.isEmpty()) {
 				for (Contact c : allContactsOfUser) {
 					deleteContact(c, u);
@@ -922,20 +922,21 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					i++;
 				}
 				return result;
-			}
-
-			// PValues filtern, wenn nicht geteilt und den Share Status setzen
-			for (PValue pv : allPV) {
-				System.out.println("gefunden: " + pv.toString());
-				pv.setShareStatus(status.get(i));
-				i++;
-				for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
-					if (u.getId() == uu.getId()) {
-						result.add(pv);
+			} else {
+				// PValues filtern, wenn nicht geteilt und den Share Status setzen
+				for (PValue pv : allPV) {
+					System.out.println("gefunden: " + pv.toString());
+					pv.setShareStatus(status.get(i));
+					i++;
+					for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
+						if (u.getId() == uu.getId()) {
+							result.add(pv);
+						}
 					}
 				}
+				return result;
 			}
-			return result;
+
 		} else
 			return null;
 	}
@@ -1093,58 +1094,64 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		// }
 		// return alc;
 		// } else {
+		if (pv != null) {
 
-		ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		for (Contact c : contacts) {
-			c.setValues(pvMapper.findPValueForContact(c));
-		}
-
-		// Kontakte nach Property filtern, falls gesetzt
-		if (pv.getProperty().getLabel() != null) {
-			System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
-			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
-		}
-		System.err.println("Gefundene kontakte: ");
-		for (Contact c : contacts) {
-			System.err.println("Contact : " + c.getName());
-		}
-		// Kontakte nach PropertyValue filtern, falls gesetzt
-		switch (pv.getPointer()) {
-		case 1: {
-			if (pv.getIntValue() != -2147483648) {
-				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
+			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
+			for (Contact c : contacts) {
+				c.setValues(pvMapper.findPValueForContact(c));
 			}
-			break;
 
-		}
-		case 2: {
-			if (pv.getStringValue() != null) {
-				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+			if (pv.getProperty() != null) {
+				// Kontakte nach Property filtern, falls gesetzt
+				if (pv.getProperty().getLabel() != null) {
+					System.err.println("Nach Property filtern" + pv.getProperty().getLabel());
+					contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
+				}
 			}
-			break;
-		}
-		case 3: {
-			if (pv.getDateValue() != null) {
-				System.err.println("Nach PVal filtern");
-
-				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+			System.err.println("Gefundene kontakte: ");
+			for (Contact c : contacts) {
+				System.err.println("Contact : " + c.getName());
 			}
-			break;
+			// Kontakte nach PropertyValue filtern, falls gesetzt
 
-		}
-		case 4: {
-			if (pv.getFloatValue() != -99999997952f) {
-				System.err.println("Nach PVal filtern");
-				contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
+			switch (pv.getPointer()) {
+			case 1: {
+				if (pv.getIntValue() != -2147483648) {
+					System.err.println("Nach PVal filtern");
+					contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
+				}
+				break;
+
 			}
-			break;
+			case 2: {
+				if (pv.getStringValue() != null) {
+					System.err.println("Nach PVal filtern");
+					contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+				}
+				break;
+			}
+			case 3: {
+				if (pv.getDateValue() != null) {
+					System.err.println("Nach PVal filtern");
 
-		}
-		}
+					contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+				}
+				break;
 
-		return contacts;
+			}
+			case 4: {
+				if (pv.getFloatValue() != -99999997952f) {
+					System.err.println("Nach PVal filtern");
+					contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
+				}
+				break;
+
+			}
+			}
+
+			return contacts;
+		} else
+			return null;
 
 	}
 
