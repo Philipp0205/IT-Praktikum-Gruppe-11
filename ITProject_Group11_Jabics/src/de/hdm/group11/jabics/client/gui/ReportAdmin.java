@@ -147,8 +147,11 @@ public class ReportAdmin {
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
 		
-		removeUserButton = new Button("entfernen");
-		addUserButton = new Button("hinzufügen");
+//		VerticalPanel addremovepanel = new VerticalPanel();
+//		removeUserButton = new Button("entfernen");
+//		addUserButton = new Button("hinzufügen");
+//		addremovepanel.add(removeUserButton);
+//		addremovepanel.add(addUserButton);
 		
 //		otherReportsPanel.add(allReportsInSystemButton);
 		datatypemenu.addItem("Text");
@@ -175,13 +178,10 @@ public class ReportAdmin {
 		userPanel.add(userTable);
 		GWT.log("Report6");
 		navPanel.add(userPanel);
-		navPanel.add(addUserButton);
-		navPanel.add(removeUserButton);
+//		navPanel.add(addremovepanel);
 		navPanel.add(sharedContactsButton);
 		navPanel.add(allReportButton);
 		GWT.log("Report");
-		mainPanel.add(navPanel);
-		mainPanel.add(otherReportsPanel);
 		
 		//Stylenames
 		
@@ -223,6 +223,8 @@ public class ReportAdmin {
 		
 		// Aufbauen des RootPanels
 		RootPanel.get("nav").add(logoutPanel);
+		RootPanel.get("selection").add(navPanel);
+		RootPanel.get("selection").add(otherReportsPanel);
 		RootPanel.get("content").add(mainPanel);
 
 	}
