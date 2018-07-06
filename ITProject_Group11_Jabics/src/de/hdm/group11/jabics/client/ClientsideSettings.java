@@ -1,13 +1,15 @@
 package de.hdm.group11.jabics.client;
 
-import java.util.logging.Logger;
 import com.google.gwt.core.shared.GWT;
 import de.hdm.group11.jabics.shared.*;
 
-/*
+/**
+ * Klasse mit Eigenschaften und Diensten, die für alle Client-seitigen Klassen
+ * relevant sind.
+ * 
  * @author Thies
  * @author Gerlings
- * */
+ */
 public class ClientsideSettings {
 
 	public ClientsideSettings() {}
