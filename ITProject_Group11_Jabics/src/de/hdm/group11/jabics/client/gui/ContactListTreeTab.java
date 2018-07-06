@@ -140,19 +140,17 @@ public class ContactListTreeTab implements TreeViewModel {
 
 			BusinessObject selection = selectionModel.getSelectedObject();
 			GWT.log("selectionchange");
+			
 			if (selection instanceof Contact) {
-
+				Window.alert("selection ist Contact");
 				setSelectedContact((Contact) selection);
 			} else if (selection instanceof ContactList) {
-
 				setSelectedContactList((ContactList) selection);
-
 				treeViewMenu.showEmptyTab();
-
 			}
-
-			treeViewMenu.clearSelectionModelContactTab();
-			treeViewMenu.clearSelectionModelSharedContactTab();
+			//TODO
+			//treeViewMenu.clearSelectionModelContactTab();
+			//treeViewMenu.clearSelectionModelSharedContactTab();
 
 		}
 
@@ -239,6 +237,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 *            Kontakt der selektiert werden soll.
 	 */
 	public void setSelectedContact(Contact c) {
+		Window.alert("Kontakt in Tree ausgewählt");
 		GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
 		editor.showContact(c);
 	}
