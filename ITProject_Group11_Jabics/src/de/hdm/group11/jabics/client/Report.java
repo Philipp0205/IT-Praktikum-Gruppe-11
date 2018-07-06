@@ -17,44 +17,77 @@ import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
+/**
+ * 
+ * 
+ * @author Kurrle
+ * @author Anders
+ */
 public class Report implements EntryPoint {
+
+	/**
+	 * Aktueller <code>JabicsUser</code> einer Instanz dieser Klasse.
+	 */
 	JabicsUser currentUser;
+
+	/**
+	 * <code>LoginInfo</code> einer Instanz dieser Klasse.
+	 */
 	LoginInfo loginfo;
 
+	/**
+	 * <code>ReportAdmin</code> einer Instanz dieser Klasse.
+	 */
 	ReportAdmin report;
 
+	/**
+	 * <code>LoginServiceAsync</code> einer Instanz dieser Klasse.
+	 */
 	LoginServiceAsync loginService = null;
 
+	/**
+	 * <code>VerticalPanel</code> einer Instanz dieser Klasse.
+	 */
 	private VerticalPanel loginPanel = new VerticalPanel();
 
+	/**
+	 * Die onModuleLoad.
+	 */
 	@Override
 	public void onModuleLoad() {
 		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
-		/**
-		 * Login
-		 */
 		login();
-		//useStaticUser();
 	}
 
+	/**
+	 * Der Login
+	 */
 	public void login() {
 		loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 	}
-	
+
+	/**
+	 * Statischer <code>JabicsUser</code> für Testzwecke.
+	 */
 	public void useStaticUser() {
 		JabicsUser u = new JabicsUser(1);
 		u.setEmail("test@mail.com");
 		u.setUsername("ein nutzer");
 		u.setId(1);
-		
+
 		report = new ReportAdmin();
 		report.setJabicsUser(u);
-		report.loadReport();		
+		report.loadReport();
 	}
 
+	/**
+	 * Auslesen der <code>LoginInfo</code>.
+	 * 
+	 * @return <code>LoginInfo</code>
+	 */
 	public LoginInfo getLoginInfo() {
 		return this.loginfo;
 	}
@@ -84,6 +117,9 @@ public class Report implements EntryPoint {
 		RootPanel.get("content").add(loginPanel);
 	}
 
+	/**
+	 * 
+	 */
 	private class loginServiceCallback implements AsyncCallback<LoginInfo> {
 
 		@Override

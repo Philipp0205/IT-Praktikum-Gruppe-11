@@ -19,31 +19,49 @@ import de.hdm.group11.jabics.shared.report.*;
  * Klasse stellt die Logik zur Verfügung, die bei einem RPC aufgerufen wird und
  * gibt den angefragten Report zurück.
  * 
- * @see ReportGeneratorService
  * @author Kurrle
  * @author Anders
  * @author Brase
+ * @author Stahl
  */
 public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements ReportGeneratorService {
 
 	/**
-	 * Instanzenvariablen
+	 * <code>ContactMapper</code> in einer Instanz dieser Klasse.
 	 */
 	ContactMapper cMapper;
+
+	/**
+	 * <code>UserMapper</code> in einer Instanz dieser Klasse.
+	 */
 	UserMapper uMapper;
+
+	/**
+	 * <code>PValueMapper</code> in einer Instanz dieser Klasse.
+	 */
 	PValueMapper pvMapper;
+
+	/**
+	 * <code>PropertyMapper</code> in einer Instanz dieser Klasse.
+	 */
 	PropertyMapper pMapper;
+
 	private static final long serialVersionUID = -4462530285584570547L;
 
-	// Alternative Lösung die wir vorerst nicht beachten müssen
-	// private EditorServiceImpl eService = null;
-
+	/**
+	 * Default Konstruktor
+	 * 
+	 * @throws IllegalArgumentException
+	 */
 	public ReportGeneratorServiceImpl() throws IllegalArgumentException {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn der ReportGeneratorImpl instantiiert
-	 * werden soll
+	 * <p>
+	 * Diese Methode wird aufgerufen, wenn der
+	 * <code>ReportGeneratorServiceImpl</code> instanziiert werden soll.
+	 * </p>
+	 * Initialisierung der Mapper Klassen.
 	 */
 	public void init() throws IllegalArgumentException {
 		cMapper = ContactMapper.contactMapper();
@@ -53,10 +71,12 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode erstellt einen Report, der alle Kontakte im System wiedergibt.
-	 * Hierfür werden alle Kontakte eines Nutzers für alle Nutzer ausgegeben. Der
-	 * Report besteht aus einem Paragraphen am Anfang und einem Paragraphen am Ende
-	 * und vielen <code>AllContactsOfUserReport</code> in einer ArrayList.
+	 * Diese Methode erstellt einen Report, der alle <code>Contact</code> Objekte im
+	 * System wiedergibt. Hierfür werden alle <code>Contact</code> Objekte eines
+	 * <code>JabicsUser</code> Objekts für alle <code>JabicsUser</code> Objekte
+	 * ausgegeben. Der <code>Report</code> besteht aus einem <code>Paragraph</code>
+	 * am Anfang und einem <code>Paragraph</code> am Ende und vielen
+	 * <code>AllContactsOfUserReport</code> in einer Liste.
 	 * 
 	 * @return: AllContactsInSystemReport
 	 */
@@ -79,13 +99,20 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode erstellt einen Report, der alle Kontakte für den übergebenen
-	 * Nutzer wiedergibt. Es werden nur Kontakte wiedergegeben, die der Nutzer
-	 * erstellt hat, von welchen er also der Eigentümer ist. Der Report besteht aus
-	 * einem Paragraphen am Anfang und einem Paragraphen am Ende und vielen
-	 * <code>ContactReport</code> in einer ArrayList.
+	 * Diese Methode erstellt einen <code>Report</code>, der alle
+	 * <code>Contact</code> Objekte für das übergebene <code>JabicsUser</code>
+	 * Objekt wiedergibt. Es werden nur <code>Contact</code> Objekte wiedergegeben,
+	 * die der <code>JabicsUser</code> erstellt hat, von welchen er also der
+	 * Eigentümer ist. Der <code>Report</code> besteht aus einem
+	 * <code>Paragraph</code> am Anfang und einem <code>Paragraph</code> am Ende und
+	 * vielen <code>ContactReport</code> in einer Liste.
 	 * 
-	 * @return AllContactsOfUserReport mit allen Kontakten des übergebenen Nutzers
+	 * @param u
+	 *            das <code>JabicsUser</code> Objekt für welches der
+	 *            <code>AllContactsOfUserReport</code> erstellt werden soll.
+	 * 
+	 * @return <code>AllContactsOfUserReport</code> mit allen
+	 *         <code>ContactReport</code> des übergebenen <code>JabicsUser</code>.
 	 */
 	public AllContactsOfUserReport createAllContactsOfUserReport(JabicsUser u) {
 
@@ -132,15 +159,17 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Einen Contact Report für einen einzelnen Kontakt erstellen.
+	 * Einen <code>ContactReport</code> für einen <code>Contact</code> erstellen.
 	 * 
-	 * @param pv,
-	 *            ArrayList<PropertyView> aller PValues des zu erstelleden Reports
-	 * @param contact,
-	 *            Der Kontakt, für den der ContactReport erstellt werden soll
-	 * @param collaborators,
-	 *            Paragraph aller Teilhaber an diesem Kontakt
-	 * @return ContactReport, das erstellte ContactReport Objekt
+	 * @param pv
+	 *            die Liste von <code>PropertyView</code> Objekten.
+	 * @param contact
+	 *            das <code>Contact</code> Objekt für welches der
+	 *            <code>ContactReport</code> erstellt werden soll.
+	 * @param collaborators
+	 *            die Liste aller <code>JabicsUser</code>, welche eine
+	 *            Teilhaberschaft zu dem <code>Contact</code> Objekt besitzen.
+	 * @return das erstellte <code>ContactReport</code> Objekt.
 	 */
 	public ContactReport createContactReport(ArrayList<PropertyView> pv, Contact contact,
 			ArrayList<JabicsUser> collaborators) {
@@ -180,15 +209,17 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Einen Report für einen Nutzer erstellen, der nach Kollaborationen an
-	 * Kontakten gefiltert ist.
+	 * Einen <code>FilteredContactsOfUserReport</code> für einen
+	 * <code>JabicsUser</code> erstellen, der nach Kollaborationen an
+	 * <code>Contact</code> Objekten gefiltert ist.
 	 * 
-	 * @param u,
-	 *            JabicsUser, für den der Report erstellt werden soll
-	 * @param finalUser,
-	 *            ArrayList<JabicsUser> aller Nutzer, nach denen gefiltert werden
-	 *            soll
-	 * @return FilteredContactsOfUserReport, das erstellte Report Objekt
+	 * @param u
+	 *            das <code>JabicsUser</code> Objekt, für welches der
+	 *            <code>FilteredContactsOfUserReport</code> erstellt werden soll.
+	 * @param finalUser
+	 *            die Liste der <code>JabicsUser</code> Objekte, nach denen
+	 *            gefiltert werden soll.
+	 * @return das erstellte <code>FilteredContactsOfUserReport</code> Objekt.
 	 */
 	public FilteredContactsOfUserReport createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser) {
 
@@ -207,15 +238,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode filtert Contacte nach Filterkriterien und gibt ein Array aus
-	 * gefilterten ContactReport zurück.
+	 * Diese Methode filtert <code>Contact</code> Objekte eines
+	 * <code>JabicsUser</code> nach einem <code>PValue</code> Objekt.
 	 * 
-	 * @param ArrayList
-	 *            mit Contact-Objekten "contacts"
-	 * @param Ein
-	 *            PValue-Objekt pv
-	 * 
-	 * @return FilteredContactsOfUserReport
+	 * @param pv
+	 *            das <code>PValue</code> Objekt nach dem gefiltert werden soll.
+	 * @param u
+	 *            das <code>JabicsUser</code> Objekt dessen <code>Contact</code>
+	 *            Objekte gefiltert werden soll.
+	 * @return <code>FilteredContactsOfUserReport</code>
 	 */
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u)
 			throws IllegalArgumentException {
@@ -241,10 +272,6 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 
 		// Entscheidung nach was gefiltert wird. Die FilterByMethoden geben alle
 		// passenden Report Objekte mit, welche dann den results mitgegeben werden.
-		/**
-		 * TODO: zu einem späteren Zeitpunkt, wenn nach mehreren Punkten gefiltert
-		 * werden kann, die breaks entfernen und immer das vorergebnis einspeisen!
-		 */
 		switch (pv.getProperty().getType()) {
 		case STRING:
 			result.setSubReports(this.filterContactsByString(contacts, pv));
@@ -293,15 +320,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem StringValue,
-	 * das in einem PValue mitgegeben wird, und gibt eine fertige ArrayList,
-	 * bestehend aus ContactReports, zurück.
+	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
+	 * <code>String</code>, das in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            contacts
-	 * @param PValue
-	 *            pv
-	 * @return ArrayList mit Contact-Report-Objekten
+	 * @param contacts
+	 *            Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv
+	 *            <code>PValue</code> Objekt mit dem <code>String</code> Wert.
+	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
+	 *         entspricht.
 	 */
 	public ArrayList<ContactReport> filterContactsByString(ArrayList<Contact> contacts, PValue pv) {
 		ArrayList<ContactReport> results = new ArrayList<ContactReport>();
@@ -338,15 +365,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Int-Value, das
-	 * in einem PValue mitgegeben wird, und gibt eine fertige ArrayList, bestehend
-	 * aus ContactReports, zurück.
+	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
+	 * <code>int</code>, dass in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            contacts
-	 * @param PValue
-	 *            pv
-	 * @return ArrayList mit Contact-Report-Objekten
+	 * @param contacts
+	 *            Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv
+	 *            <code>PValue</code> Objekt mit dem <code>int</code> Wert.
+	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
+	 *         entspricht.
 	 */
 	public ArrayList<ContactReport> filterContactsByInt(ArrayList<Contact> contacts, PValue pv) {
 
@@ -376,15 +403,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem
-	 * LocalDateTime-Value, das in einem PValue mitgegeben wird, und gibt eine
-	 * fertige ArrayList, bestehend aus ContactReports, zurück.
+	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
+	 * <code>Date</code>, dass in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            contacts
-	 * @param PValue
-	 *            pv
-	 * @return ArrayList mit Contact-Report-Objekten
+	 * @param contacts
+	 *            Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv
+	 *            <code>PValue</code> Objekt mit dem <code>Date</code> Wert.
+	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
+	 *         entspricht.
 	 */
 	public ArrayList<ContactReport> filterContactsByDate(ArrayList<Contact> contacts, PValue pv) {
 
@@ -412,15 +439,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem oder mehreren
-	 * Nutzern, die in einem Array mitgegeben werden und gibt eine fertige
-	 * ArrayList, bestehend aus ContactReports, zurück.
+	 * Diese Methode filtert eine Liste von <code>Contact</code> Objekten nach einem
+	 * oder mehreren <code>JabicsUser</code>.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            contacts
-	 * @param finalUser,
-	 *            ArrayList<JabicsUser>
-	 * @return ArrayList mit Contact-Report-Objekten
+	 * @param contacts
+	 *            Liste der zu filternden <code>Contact</code> Objekte.
+	 * @param finalUser
+	 *            Liste der <code>JabicsUser</code> Objekte nach denen gefiltert
+	 *            werden soll.
+	 * @return Die gefilterte Liste aus den <code>ContactReport</code> Objekten.
 	 */
 	public ArrayList<ContactReport> filterContactsByCollaborators(ArrayList<Contact> allUserContacts,
 			ArrayList<JabicsUser> finalUser) {
@@ -444,15 +471,15 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	}
 
 	/**
-	 * Diese Methode filtert eine ArrayList aus Kontakten nach einem Float-Value,
-	 * das in einem PValue mitgegeben wird, und gibt eine fertige ArrayList,
-	 * bestehend aus ContactReports, zurück.
+	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
+	 * <code>float</code>, dass in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param ArrayList<Contact>
-	 *            contacts
-	 * @param PValue
-	 *            pv
-	 * @return ArrayList mit Contact-Report-Objekten
+	 * @param contacts
+	 *            Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv
+	 *            <code>PValue</code> Objekt mit dem <code>float</code> Wert.
+	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
+	 *         entspricht.
 	 */
 	public ArrayList<ContactReport> filterContactsByFloat(ArrayList<Contact> contacts, PValue pv) {
 
