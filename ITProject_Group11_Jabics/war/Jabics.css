@@ -377,6 +377,9 @@ html>body .gwt-DecoratedStackPanel {
 	/*color: #ff5e5e !important;*/
 	color: #19376E;
 	margin-left: 20px;
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 }
 
 .cdeleteBtn {
@@ -402,6 +405,9 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 20px;
 	margin-top: 29px;
 	color: #19376E;
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	/*color: #53f4af !important;*/
 }
 
@@ -421,6 +427,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .clsearchlabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -480,6 +489,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .cldeleteLabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -504,6 +516,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .clsaveLabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -530,6 +545,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .clshareLabel {
+	border: solid #000000 0px !important;
+	
+	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -814,12 +832,16 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .editLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
+	
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 12px;
-	margin-left: 147px;
+	margin-left: 162px;
 	color: #19376E;
 	white-space: nowrap;
 }
@@ -837,6 +859,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .shareLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -861,6 +886,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .shareEditLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
@@ -884,6 +912,9 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .deleteLabel {
+	border: solid #000000 0px !important;
+	background: #ECF2FF !important;
+	white-space: nowrap;
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
