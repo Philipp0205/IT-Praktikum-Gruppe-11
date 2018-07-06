@@ -156,7 +156,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		removeButton.setStyleName("clcbtn");
 
 		createTables();
-		
 	}
 
 	/**
@@ -282,6 +281,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	public void setAllCollaborators(ArrayList<JabicsUser> user) {
 		GWT.log("setAllCollaborators");
 		this.existingCollaborators = user;
+		this.existingUserDataProvider.flush();
 	}
 
 	/**
@@ -291,8 +291,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 */
 	public void createTables() {
 
-
-
 		/**
 		 * Provider erstellen, der ausgewählte Nutzer einer Tabelle zur Verfügung stellt
 		 */
@@ -301,7 +299,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 				singleSelectedUser = newUserSelectionModel.getSelectedObject();
 			}
 		});
-
 
 		existingUserSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
@@ -387,7 +384,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			if (result != null) {
 				Window.alert("Kontaktliste erfolgreich geteilt!");
 				existingCollaborators.add(result);
-				existingUserDataProvider.refresh();
+				//existingUserDataProvider.refresh();
 				existingUserDataProvider.flush();
 				for (JabicsUser uu : newCollaborators) {
 					if (uu.getId() == result.getId()) {
@@ -395,12 +392,12 @@ public class ContactListCollaborationForm extends VerticalPanel {
 						newCollabDataProvider.flush();
 					}
 				}
+				sharedContactList.setShareStatus(BoStatus.IS_SHARED);
+				e.updateContactListInTree(sharedContactList);
 				for (Contact c : sharedContactList.getContacts()) {
 					c.setShareStatus(BoStatus.IS_SHARED);
 					e.updateContactInTree(c);
 				}
-				sharedContactList.setShareStatus(BoStatus.IS_SHARED);
-				e.updateContactListInTree(sharedContactList);
 			}
 		}
 	}

@@ -52,7 +52,7 @@ public class EditorAdmin {
 	private HorizontalPanel topPanel = new HorizontalPanel();
 	private VerticalPanel menuPanel = new VerticalPanel();
 	private VerticalPanel mainPanel = new VerticalPanel();
-	
+
 	private HorizontalPanel legendPanel = new HorizontalPanel();
 
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
@@ -69,7 +69,7 @@ public class EditorAdmin {
 	private ExistingContactCollaborationForm eccForm;
 	private ContactListCollaborationForm clcForm;
 	private SearchForm sForm;
-	
+
 	private Label labelShared;
 	private Label labelNotShared;
 	private Image imageShared;
@@ -112,18 +112,17 @@ public class EditorAdmin {
 		treeViewMenu.setEditor(this);
 
 		treeViewMenu.setStyleName("treeView");
-		
+
 		imageShared = new Image(JabicsResources.INSTANCE.greendot());
 		imageNotShared = new Image(JabicsResources.INSTANCE.reddot());
 
 		labelShared = new Label("geteilt");
 		labelNotShared = new Label("nicht geteilt");
-		
+
 		legendPanel.add(imageShared);
 		legendPanel.add(labelShared);
 		legendPanel.add(imageNotShared);
 		legendPanel.add(labelNotShared);
-
 
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
@@ -174,14 +173,18 @@ public class EditorAdmin {
 	 * Den LogoutButton anzeigen
 	 */
 	public void loadLogout() {
-		logoutButton = new Button("Abmelden");
-		logoutButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.Location.assign(loginfo.getLogoutUrl());
-			}
-		});
-		logoutButton.setStyleName("logoutbutton");
-		logoutPanel.add(logoutButton);
+		if (loginfo != null) {
+			logoutButton = new Button("Abmelden");
+			logoutButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					Window.Location.assign(loginfo.getLogoutUrl());
+				}
+			});
+			logoutButton.setStyleName("logoutbutton");
+			logoutPanel.add(logoutButton);
+		} else {
+			Window.alert("loginfo null");
+		}
 	}
 
 	/**
@@ -218,7 +221,6 @@ public class EditorAdmin {
 	 * @param c, Kontakt, der editiert werden soll
 	 */
 	public void editContact(Contact c) {
-		Window.alert("Kontakt anzeigen");
 		if (c != null) {
 			GWT.log("editcont");
 			// if (this.cForm == null) {
@@ -247,7 +249,6 @@ public class EditorAdmin {
 	 * @param c, neuer Kontakt, der angelegt werden soll
 	 */
 	public void newContact(Contact c) {
-		GWT.log("editcont");
 		// if (this.cForm == null) {
 		ecForm = new EditContactForm();
 		ecForm.setEditor(this);
@@ -263,7 +264,6 @@ public class EditorAdmin {
 
 		formPanel.setStyleName("formPanel");
 	}
-	
 
 	/**
 	 * Eine ContactListForm für eine neue Kontaktliste anzeigen.
@@ -293,8 +293,6 @@ public class EditorAdmin {
 	 */
 	public void showContactList(ContactList cl) {
 		if (cl != null) {
-			GWT.log("7.x showContactList");
-			Window.alert("Kontaktliste anzeigen");
 			if (this.clForm == null) {
 				clForm = new ContactListForm();
 				clForm.setUser(this.currentUser);
@@ -363,7 +361,7 @@ public class EditorAdmin {
 		clcForm.clear();
 		clcForm.setContactList(cl);
 		formPanel.add(clcForm);
-		//formPanel.insert(clcForm, 0);
+		// formPanel.insert(clcForm, 0);
 	}
 
 	/**
@@ -575,6 +573,7 @@ public class EditorAdmin {
 		public void onFailure(Throwable caught) {
 			Window.alert("Da ist etwas schiefgegangen, bitte versuchen Sie es erneut");
 		}
+
 		@Override
 		public void onSuccess(Void v) {
 			try {

@@ -301,7 +301,6 @@ public class ContactListTreeTab implements TreeViewModel {
 			}
 		}
 		contactListDataProviders.refresh();
-		contactDataProviders.get(cl).flush();
 	}
 
 	/**
@@ -347,7 +346,7 @@ public class ContactListTreeTab implements TreeViewModel {
 		// eService.getContactListById(c.getOwner().getId(), new
 		// UpdateContactCallback(c));
 		if (c != null) {
-			ListDataProvider<Contact> cProvider = new ListDataProvider<Contact>();;
+			ListDataProvider<Contact> cProvider = new ListDataProvider<Contact>();
 
 			// Kontaktlisten werden durchsucht
 			for (ContactList cl : contactListDataProviders.getList()) {
