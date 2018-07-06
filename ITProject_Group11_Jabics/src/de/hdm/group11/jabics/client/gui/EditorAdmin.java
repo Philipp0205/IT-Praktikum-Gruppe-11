@@ -304,7 +304,6 @@ public class EditorAdmin {
 		}
 
 		formPanel.clear();
-		// ccForm.clear();
 		ccForm.setContact(c);
 		// ccForm.setUser(loginfo.getCurrentUser());
 		formPanel.add(ccForm);
@@ -334,18 +333,16 @@ public class EditorAdmin {
 	 * @param cl, Kontaktliste, für die Teilhaberschaften bearbeitet werden sollen
 	 */
 	public void showContactListCollab(ContactList cl) {
-
 		GWT.log("contactListCollab");
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
 		}
-
 		formPanel.clear();
 		clcForm.clear();
 		clcForm.setContactList(cl);
 		formPanel.add(clcForm);
-		// formPanel.insert(clcForm, 0);
+		//formPanel.insert(clcForm, 0);
 	}
 
 	/**
@@ -391,11 +388,13 @@ public class EditorAdmin {
 	public void returnToContactListForm(ContactList cl) {
 		if (this.clForm == null) {
 			clForm = new ContactListForm();
+			scForm.setEditor(this);
+			scForm.setUser(this.currentUser);
 		}
 		// addContactListToTree(cl);
 		formPanel.clear();
 		clForm.setCurrentList(cl);
-		widgetPanel.add(clForm);
+		formPanel.add(clForm);
 	}
 
 	/**

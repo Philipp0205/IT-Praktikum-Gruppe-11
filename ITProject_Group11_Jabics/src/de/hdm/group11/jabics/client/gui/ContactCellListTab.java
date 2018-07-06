@@ -180,11 +180,12 @@ public class ContactCellListTab {
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
-			this.setSelectedContact((Contact) selection);
-			// TODO
-			// treeViewMenu.clearSelectionModelSharedContactTab();
-			// treeViewMenu.clearSelectionModelContactListTab();
-
+			Window.alert("selection in model!");
+			if (selection != null) {
+				this.setSelectedContact((Contact) selection);
+				treeViewMenu.clearSelectionModelSharedContactTab();
+				treeViewMenu.clearSelectionModelContactListTab();
+			}
 		}
 
 		/**
@@ -193,10 +194,11 @@ public class ContactCellListTab {
 		 * @param c, der Kontakt der seletkiert werden soll.
 		 */
 		private void setSelectedContact(Contact c) {
-			GWT.log("3.1 Kontakt anzeigen " + c.getName());
-			Window.alert("Kontakt anzeigen" + c.getName());
-			editor.showContact(c);
-
+			if (c != null) {
+				GWT.log("3.1 Kontakt anzeigen " + c.getName());
+				Window.alert("Kontakt anzeigen" + c.getName());
+				editor.showContact(c);
+			}
 		}
 	}
 
