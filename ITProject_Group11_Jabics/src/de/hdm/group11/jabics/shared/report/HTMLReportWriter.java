@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 
 /**
- * Implementiert die Methoden aus ReportWriter, um Reports in das HTML-Format zu
- * übersetzen.
+ * Implementiert die Methoden aus <code>ReportWriter</code>, um Reports in das
+ * HTML-Format zu übersetzen.
  * 
  * @author Anders
  *
@@ -17,6 +17,8 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 
 	/**
 	 * Speichert das Ergebnis einer process Methode. Format: HTML
+	 * 
+	 * @return String
 	 */
 	private String reportText = "";
 
@@ -27,6 +29,11 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 		this.reportText = "";
 	}
 
+	/**
+	 * Auslesen des <code>reportText</code>.
+	 * 
+	 * @return String
+	 */
 	public String getReportText() {
 		return this.reportText;
 	}
@@ -35,6 +42,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * Konvertieren eines <code>Paragraph</code> in HTML.
 	 * 
 	 * @param Paragraph
+	 * 
 	 * @return String in HTML-Format
 	 */
 	public String paragraph2HTML(Paragraph p) {
@@ -42,6 +50,13 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 		return "<p>" + p.getContent() + "</p>";
 	}
 
+	/**
+	 * Konvertieren eines <code>Paragraph</code> mit Filter in HTML.
+	 * 
+	 * @param p
+	 * 
+	 * @return String
+	 */
 	public String paragraphWithFilter2HTML(Paragraph p) {
 		StringBuffer filt = new StringBuffer();
 		filt.append("<p>Es wurde nach \"");
@@ -58,7 +73,8 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	/**
 	 * Den Kopf eines Reports in HTML überführen.
 	 * 
-	 * @param r, CompositeReport
+	 * @param r
+	 *            CompositeReport
 	 * @return String in HTML-Format
 	 */
 	public String createHeadOfReport(CompositeReport r) {
@@ -78,10 +94,10 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * Mehrere ContactReports in HTML überführen. Die Reports werden in einer
 	 * Tabellenstruktur ausgegeben
 	 * 
-	 * @param cons,
+	 * @param cons
 	 *            ArrayList<ContactReport> die Kontakte, die in HTML überführt
 	 *            werden sollen
-	 * @return s, String im korrekten HTML Format.
+	 * @return String im korrekten HTML Format.
 	 */
 	public String convertContactReportsToHTML(ArrayList<ContactReport> cons) {
 		GWT.log("Tabelle erstellen");
@@ -154,7 +170,9 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * Einen AllContactsOfUserReport in HTML überführen. Speichert das Ergebnis in
 	 * der Instanzenvariable "reportText", die über getReportText() abgerufen werden
 	 * kann.
-	 * @param r, AllContactsOfUserReport der konvertiert werden soll
+	 * 
+	 * @param r
+	 *            AllContactsOfUserReport der konvertiert werden soll
 	 */
 	public void process(AllContactsOfUserReport r) {
 		StringBuffer sb = new StringBuffer();
@@ -171,10 +189,12 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	}
 
 	/**
-	 * Einen FilteredContactsOfUserReport in HTML überführen. Speichert das Ergebnis in
-	 * der Instanzenvariable "reportText", die über getReportText() abgerufen werden
-	 * kann.
-	 * @param r, FilteredContactsOfUserReport der konvertiert werden soll
+	 * Einen FilteredContactsOfUserReport in HTML überführen. Speichert das Ergebnis
+	 * in der Instanzenvariable "reportText", die über getReportText() abgerufen
+	 * werden kann.
+	 * 
+	 * @param r
+	 *            FilteredContactsOfUserReport der konvertiert werden soll
 	 */
 	public void process(FilteredContactsOfUserReport r) {
 		GWT.log("Report zu HTML machen");

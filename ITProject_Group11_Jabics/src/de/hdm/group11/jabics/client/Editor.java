@@ -45,23 +45,23 @@ public class Editor implements EntryPoint {
 		/*
 		 * Login
 		 */
-//		JabicsUser u = new JabicsUser(1);
-//		u.setEmail("test@mail.com");
-//		u.setUsername("ein nutzer");
-//		u.setId(1);
+		JabicsUser u = new JabicsUser(1);
+		u.setEmail("test@mail.com");
+		u.setUsername("ein nutzer");
+		u.setId(1);
 
-		//editor = new EditorAdmin(u);
+		editor = new EditorAdmin(u);
 //		logon = new LoginInfo();
 //		logon.setCurrentUser(u);
 //		editor.setLoginInfo(logon);
 //		editor.setJabicsUser(logon.getCurrentUser());
-		//editor.loadEditor();
+		editor.loadEditor();
 
 
 		// GWT.log("Load");
-		loginService = ClientsideSettings.getLoginService();
+		//loginService = ClientsideSettings.getLoginService();
 		// GWT.log(GWT.getHostPageBaseURL());
-		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 
 	}
 
@@ -144,6 +144,7 @@ public class Editor implements EntryPoint {
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
 				if (logon.getIsLoggedIn() && !logon.isNewUser()) {
+					GWT.log("HI");
 					currentUser = logon.getCurrentUser();
 					editor = new EditorAdmin(currentUser);
 					setLoginInfo(logon);
@@ -152,7 +153,10 @@ public class Editor implements EntryPoint {
 					// Den Editor laden
 					editor.loadEditor();
 				} else if (logon.getIsLoggedIn() && logon.isNewUser()) {
+					Window.alert("Neuer Nutzer");
+					GWT.log("!!" + logon.getCurrentUser().getEmail());
 					signUp = new SignUpForm(logon, getEditor());
+
 				} else {
 					Window.alert("User not logged in");
 					setLoginInfo(logon);

@@ -86,7 +86,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 				deshareContact();
 			}
 		});
-		exit = new Button("Fertig");
+		exit = new Button("Abbrechen");
 		exit.setStyleName("clcbtn");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {

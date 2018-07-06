@@ -3,6 +3,12 @@ package de.hdm.group11.jabics.shared.report;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * 
+ * 
+ * @author as2403
+ *
+ */
 public class AllContactsInSystemReport extends CompositeReport implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

@@ -5,30 +5,50 @@ import java.util.Date;
 
 import de.hdm.group11.jabics.shared.bo.PValue;
 
-/*
- * Die Klasse PropertyView implementiert eine generische Sicht auf ein PValue Objekt, das für die Anzeige einer
- * Eigenschaftsausprägung in einem Report geeignet ist. Ein PropertyView enthält einen String für den Namen 
- * der Eigenschaft und einen String für den Wert der Ausprägung.
+/**
+ * Die Klasse <code>PropertyView</code> implementiert eine generische Sicht auf
+ * ein <code>PValue</code> Objekt, das für die Anzeige einer
+ * Eigenschaftsausprägung in einem <code>Report</code> geeignet ist. Ein
+ * <code>PropertyView</code> enthält einen String für den Namen der Eigenschaft
+ * und einen String für den Wert der Ausprägung.
  */
 public class PropertyView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Name einer Instanz dieser Klasse.
+	 */
 	private String pname;
+
+	/**
+	 * Wert einer Instanz dieser Klasse.
+	 */
 	private String pvalue;
 
+	/**
+	 * Default Konstruktor
+	 */
 	public PropertyView() {
 	}
 
-	public PropertyView(String p, String v) {
-		this.pname = p;
-		this.pvalue = v;
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse mit <code>pname</code> und
+	 * <code>pvalue</code> zu erstellen.
+	 * 
+	 * @param pname
+	 * @param pvalue
+	 */
+	public PropertyView(String pname, String pvalue) {
+		this.pname = pname;
+		this.pvalue = pvalue;
 	}
 
 	/**
-	 * Eine neue View auf ein PValue Objekt erstellen
+	 * Eine neue View auf ein <code>PValue</code> Objekt erstellen.
 	 * 
-	 * @param pv,
-	 *            PValue, für das die PropertyView erstellt werden soll
+	 * @param pv
+	 *            <code>PValue</code>, für das die <code>PropertyView</code>
+	 *            erstellt werden soll.
 	 * @throws IllegalArgumentException
 	 */
 	public PropertyView(PValue pv) throws IllegalArgumentException {
@@ -64,32 +84,36 @@ public class PropertyView implements Serializable {
 	}
 
 	/**
-	 * Den Namen der Property dieser PropertyView erhalten
-	 * @return s, String mit Name der Eigenschaft
+	 * Auslesen des <code>pname</code>.
+	 * 
+	 * @return String
 	 */
 	public String getPname() {
 		return pname;
 	}
 
 	/**
-	 * Den Namen der Property dieser PropertyView setzen
-	 * @param s, String mit Name der Eigenschaft
+	 * Setzen des <code>pname</code>.
+	 * 
+	 * @param <code>pname</code>
 	 */
 	public void setPname(String pname) {
 		this.pname = pname;
 	}
 
 	/**
-	 * Den Namen der Ausprägung dieser PropertyView erhalten
-	 * @return s, String mit Name der Eigenschaftsausprägung
+	 * Auslesen des <code>pvalue</code>.
+	 * 
+	 * @return String
 	 */
 	public String getPvalue() {
 		return pvalue;
 	}
 
 	/**
-	 * Den Namen der Ausprägung dieser PropertyView setzen
-	 * @param s, String mit Name der Eigenschaftsausprägung
+	 * Setzen des <code>pvalue</code>.
+	 * 
+	 * @param <code>pvalue</code>
 	 */
 	public void setPvalue(String pvalue) {
 		this.pvalue = pvalue;

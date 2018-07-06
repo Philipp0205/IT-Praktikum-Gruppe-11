@@ -40,9 +40,8 @@ public class SharedContactCellListTab extends Widget {
 	//private final ArrayList<Contact> allcontacts = cMapper.findAllContacts(loginfo.getCurrentUser());
 	ListDataProvider<Contact> contactsProvider;
 	
-	public SharedContactCellListTab(JabicsUser u, TreeViewMenu tvm, CellListResources clRes) {
+	public SharedContactCellListTab(JabicsUser u, TreeViewMenu treeViewMenu2, CellListResources clRes) {
 		this.user = u;
-		this.treeViewMenu = tvm;
 		
 		keyProvider = new ContactKeyProvider();
 		// "A simple selection model, that allows only one item to be selected a time."
@@ -138,9 +137,10 @@ public class SharedContactCellListTab extends Widget {
 			BusinessObject selection = selectionModel.getSelectedObject();
 			this.setSelectedContact((Contact) selection);
 			
-			//TODO
-			//treeViewMenu.clearSelectionModelContactListTab();
-			//treeViewMenu.clearSelectionModelContactTab();
+			treeViewMenu.clearSelectionModelContactListTab();
+			treeViewMenu.clearSelectionModelContactTab();
+			
+			
 
 		}
 
