@@ -86,7 +86,6 @@ public class LoginInfo implements Serializable {
 	 * @return String
 	 */
 	public String getLoginUrl() {
-		Window.alert("4");
 		return this.loginUrl;
 	}
 

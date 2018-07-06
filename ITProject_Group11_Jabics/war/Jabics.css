@@ -14,6 +14,10 @@
 }
 
 .deleteAccount {
+	position: absolute;
+	right: 5px;
+	bottom: 1px;
+	margin-right: 20px;
 	font-family: Arial;
 	font-weight: 700;
 	font-size: 12px !important;
@@ -27,7 +31,6 @@
 	border-radius: 13px;
 	cursor: pointer;
 	white-space: nowrap;
-	margin-left: 720px;
 }
 
 .deleteAccount:hover {
@@ -51,15 +54,14 @@
 	position: fixed;
 	left: 0;
 	bottom: 0;
-	margin-bottom: 10px;
+	margin-bottom: 8px;
 	width: 100%;
 	color: black;
 	text-align: center;
 }
 
 #trailer {
-	margin-bottom: 5px;
-	text-align: center;
+	margin-bottom: 3px;
 }
 
 #menu {
@@ -1056,13 +1058,15 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .logoutbutton {
+	position: absolute;
+	right: 120px;
 	font-family: Arial;
 	font-weight: 700;
 	font-size: 18px !important;
 	float: right;
 	background: #6D8EC2;
 	margin-left: 500px;
-	margin-top: -44px;
+	margin-top: -43px;
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -1076,6 +1080,8 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .loginbutton {
+	position: absolute;
+	right: 120px;
 	font-family: Arial;
 	font-weight: 700;
 	font-size: 18px !important;

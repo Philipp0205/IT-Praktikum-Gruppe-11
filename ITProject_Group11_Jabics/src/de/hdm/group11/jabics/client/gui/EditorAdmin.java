@@ -198,21 +198,27 @@ public class EditorAdmin {
 	 * @param c, Kontakt, der editiert werden soll
 	 */
 	public void editContact(Contact c) {
-		GWT.log("editcont");
-		// if (this.cForm == null) {
-		ecForm = new EditContactForm();
-		ecForm.setEditor(this);
-		ecForm.setUser(this.currentUser);
+		Window.alert("Kontakt anzeigen");
+		if (c != null) {
+			GWT.log("editcont");
+			// if (this.cForm == null) {
+			ecForm = new EditContactForm();
+			ecForm.setEditor(this);
+			ecForm.setUser(this.currentUser);
 
-		formPanel.clear();
-		GWT.log("AltesWidgetEntfernt");
-		ecForm.setNewContact(false);
-		ecForm.setContact(c);
+			formPanel.clear();
+			GWT.log("AltesWidgetEntfernt");
+			ecForm.setNewContact(false);
+			Window.alert("Kontakt wird jetzt gleich in ShowContact gesetzt");
+			ecForm.setContact(c);
 
-		formPanel.insert(ecForm, 0);
-		GWT.log("editcontFertig");
+			formPanel.insert(ecForm, 0);
+			GWT.log("editcontFertig");
 
-		formPanel.setStyleName("formPanel");
+			formPanel.setStyleName("formPanel");
+		} else {
+			Window.alert("Kontakt anzeigen ist null");
+		}
 	}
 
 	/**
@@ -265,20 +271,24 @@ public class EditorAdmin {
 	 * @param cl, Kontaktliste, die angezeigt werden soll
 	 */
 	public void showContactList(ContactList cl) {
-		GWT.log("7.x showContactList");
+		if (cl != null) {
+			GWT.log("7.x showContactList");
+			Window.alert("Kontaktliste anzeigen");
+			if (this.clForm == null) {
+				clForm = new ContactListForm();
+				clForm.setUser(this.currentUser);
+				clForm.setEditor(this);
+			}
+			formPanel.clear();
 
-		if (this.clForm == null) {
-			clForm = new ContactListForm();
-			clForm.setUser(this.currentUser);
-			clForm.setEditor(this);
+			// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
+			// clForm.clear();
+			clForm.setIsNewList(false);
+			clForm.setCurrentList(cl);
+			formPanel.add(clForm);
+		} else {
+			Window.alert("Kontaktliste anzeigen ist null");
 		}
-		formPanel.clear();
-
-		// widgetPanel.add(treeViewMenu.getStackLayoutPanel());
-		// clForm.clear();
-		clForm.setIsNewList(false);
-		clForm.setCurrentList(cl);
-		formPanel.add(clForm);
 	}
 
 	/**
@@ -561,18 +571,18 @@ public class EditorAdmin {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert("Da ist etwas schiefgegangen, bitte versuchen Sie es erneut");
 		}
-
 		@Override
 		public void onSuccess(Void v) {
 			try {
 				Window.alert("Account erfolgreich gelöscht");
-				Editor e = new Editor();
-				e.onModuleLoad();
+				Window.Location.assign(loginfo.getLogoutUrl());
 
 			} catch (Exception e) {
 				Window.alert("Account erfolgreich gelöscht");
+				Editor ed = new Editor();
+				ed.onModuleLoad();
 			}
 		}
 	}
