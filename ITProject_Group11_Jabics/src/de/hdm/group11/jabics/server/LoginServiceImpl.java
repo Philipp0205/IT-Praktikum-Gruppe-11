@@ -10,15 +10,31 @@ import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginService;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
+/**
+ * Die Klasse <code>LoginServiceImpl</code> implementiert das Interface
+ * <code>LoginService</code> und stellt die Applikationslogik für den Login
+ * bereit.
+ * 
+ * @author Kurrle
+ * @author Anders
+ */
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Instanz der Klasse <code>UserMapper</code>.
+	 */
 	UserMapper uMapper = UserMapper.userMapper();
 
 	/**
-	 * Hier findet die komplette Logik des Loginprozesses statt, sofern der Nutzer nicht neu ist
+	 * Logik des Loginprozesses für dem System bekannten <code>JabicsUser</code>.
 	 * 
-	 * @return LoginInfo, das Objekt in dem die Information über den Erfolg des Logins gespeichert ist
+	 * @param requestUri
+	 *            der <code>String</code> mit der URL der Anfrage.
+	 * 
+	 * @return das <code>LoginInfo</code> Objekt in dem die Information über den
+	 *         Erfolg des Logins gespeichert ist
 	 */
 	@Override
 	public LoginInfo login(String requestUri) {
@@ -90,10 +106,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 
 	/**
 	 * Wenn der Nutzername eingegeben wurde wird diese Methode aufgerufen, die den
-	 * neuen Nutzer in die Datenbank inseriert. Darf nur ausfgerufen werden, wenn im
-	 * LoginInfo Objekt der Nutzer mit Name existiert
+	 * neuen <code>JabicsUser</code> in die Datenbank inseriert. Darf nur
+	 * ausfgerufen werden, wenn im <code>LoginInfo</code> Objekt der Nutzer mit Name
+	 * existiert
 	 * 
-	 * @return LoginInfo (Status: Logged in) mit dem neuen Nutzer und dessen Id
+	 * @param logon
+	 *            Instanz der Klasse <code>LoginInfo</code>.
+	 * @param requestUri
+	 *            der <code>String</code> mit der URL der Anfrage.
+	 * @return <code>LoginInfo</code> (Status: Logged in) mit dem neuen Nutzer und
+	 *         dessen Id
 	 */
 	public LoginInfo createUser(LoginInfo logon, String requestUri) {
 
