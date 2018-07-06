@@ -259,13 +259,22 @@ public class ContactCellListTab {
 	 * @param c, der zu aktualisierende Kontakt.
 	 */
 	public void updateContact(Contact c) {
-		for (Contact ci : contactDataProvider.getList()) {
-			if (c.getId() == ci.getId()) {
-				contactDataProvider.getList().set(0, c);
-				break;
+		Window.alert("kontatke updaten");
+		if (c != null) {
+			for (Contact c2 : contactDataProvider.getList()) {
+				// Wenn in allen Kontakten der Liste Kontakt c ist...
+				if (c2.getId() == c.getId()) {
+					
+					int i = contactDataProvider.getList().indexOf(c2);
+					Window.alert("konatk zum updaten gefunden! index: " + i);
+					Window.alert("Status des ersetzenden kontakts: " + c.getShareStatus());
+					contactDataProvider.getList().set(i, c);
+				}
 			}
+			contactDataProvider.refresh();
+			contactDataProvider.flush();
 		}
-		contactDataProvider.refresh();
+		return;
 	}
 
 	/**
