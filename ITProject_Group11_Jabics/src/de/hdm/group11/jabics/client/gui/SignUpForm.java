@@ -168,7 +168,6 @@ public class SignUpForm extends VerticalPanel {
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
 				if (logon.getIsLoggedIn() && (logon.isNewUser() == false)) {
-					Window.alert("Login success");
 					EditorAdmin editorAdmin = new EditorAdmin(logon.getCurrentUser());
 					editorAdmin.setLoginInfo(logon);
 					editorAdmin.setJabicsUser(logon.getCurrentUser());
