@@ -23,8 +23,7 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * werden. Im Programm wird die <code>CellList</code> innerhlab eines
  * <code>StackPanel</code> angezeigt.
  * 
- * 
- * @author Philipp
+ * @author Kurrle
  */
 public class ContactCellListTab {
 	TreeViewMenu treeViewMenu;
@@ -45,7 +44,7 @@ public class ContactCellListTab {
 	 * auch ein TreeViewMenu mitgegebn werden kann.
 	 * 
 	 * @param u             der Nutzer für den die Anzeige ausgegeben werden soll.
-	 * @param clRes2
+	 * @param clRes2        Die CellListRessources
 	 * @param treeViewMenu2
 	 */
 	public ContactCellListTab(JabicsUser u, TreeViewMenu tvm,
@@ -259,15 +258,13 @@ public class ContactCellListTab {
 	 * @param c, der zu aktualisierende Kontakt.
 	 */
 	public void updateContact(Contact c) {
-		Window.alert("kontatke updaten");
 		if (c != null) {
 			for (Contact c2 : contactDataProvider.getList()) {
 				// Wenn in allen Kontakten der Liste Kontakt c ist...
 				if (c2.getId() == c.getId()) {
-					
+
 					int i = contactDataProvider.getList().indexOf(c2);
 					Window.alert("konatk zum updaten gefunden! index: " + i);
-					Window.alert("Status des ersetzenden kontakts: " + c.getShareStatus());
 					contactDataProvider.getList().set(i, c);
 				}
 			}

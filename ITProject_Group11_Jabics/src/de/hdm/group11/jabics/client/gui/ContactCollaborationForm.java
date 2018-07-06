@@ -187,7 +187,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				if (selectedUser != null) {
 					if (!selectedPV.isEmpty()) {
 						shareContactWithUser(selectedUser);
-						e.showContact(sharedContact);
 
 					} else
 						Window.alert(
@@ -201,7 +200,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		shareContact.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				shareContactWithAll();
-				e.showContact(sharedContact);
+				//e.showContact(sharedContact);
 			}
 		});
 
@@ -465,7 +464,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				GWT.log("Update ShareStatus: On Sucess");
 				setContact(result);
 				e.updateContactInTree(result);
-				//e.showContact(result);
+				e.showContact(result);
 			}
 		});
 	}
