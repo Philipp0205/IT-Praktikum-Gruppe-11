@@ -62,7 +62,6 @@ public class ReportAdmin {
 	
 	//Celltable Ressourcen für Nutzeranzeige
 	public interface CellTableResources extends CellTable.Resources {
-
 		@Override
 		@Source("JabicsCellTable.css")
 		CellTable.Style cellTableStyle();
@@ -81,7 +80,6 @@ public class ReportAdmin {
 
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
-	private HorizontalPanel otherReportsPanel = new HorizontalPanel();
 	private HorizontalPanel navPanel = new HorizontalPanel();
 	private VerticalPanel userPanel = new VerticalPanel();
 	private VerticalPanel verPanel1 = new VerticalPanel();
@@ -117,8 +115,6 @@ public class ReportAdmin {
 	private CellTable<JabicsUser> userTable;
 	private JabicsUser suggestedUser;
 	private JabicsUser selectedUser;
-	
-	
 
 	/**
 	 * Die Anzeige ist in zwei große Bereiche aufgeteilt. Zum einen Elemente für die
@@ -205,7 +201,6 @@ public class ReportAdmin {
 	public void loadReport() {
 
 		if (reportGenerator == null || editorService == null) {
-
 			
 			reportGenerator = ClientsideSettings.getReportGeneratorService();
 			// TODO: Diese Zeile könnte kritisch werden, da zwei Module in einem Klasse
@@ -215,18 +210,15 @@ public class ReportAdmin {
 		// Alle Properties holen, nach denen vom Nutzer gefiltern werden kann
 		//Der Callback ruft createSelectionMenu() auf
 		reportGenerator.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
-
+		
 		// Nutzer selection aufbauen
 		retrieveUser();
 		loadLogout();
 		
-		
 		// Aufbauen des RootPanels
 		RootPanel.get("nav").add(logoutPanel);
 		RootPanel.get("selection").add(navPanel);
-		RootPanel.get("selection").add(otherReportsPanel);
 		RootPanel.get("content").add(mainPanel);
-
 	}
 	
 	public void loadLogout() {

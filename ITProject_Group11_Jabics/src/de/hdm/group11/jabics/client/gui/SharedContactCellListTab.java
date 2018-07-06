@@ -139,7 +139,7 @@ public class SharedContactCellListTab extends Widget {
 
 			if (selection != null) {
 				this.setSelectedContact((Contact) selection);
-				
+
 				treeViewMenu.clearSelectionModelContactListTab();
 				treeViewMenu.clearSelectionModelContactTab();
 			}
@@ -175,13 +175,19 @@ public class SharedContactCellListTab extends Widget {
 	}
 
 	public void updateContact(Contact c) {
-		for (Contact ci : contactDataProvider.getList()) {
-			if (c.getId() == ci.getId()) {
-				contactDataProvider.getList().set(0, c);
-				break;
+		if (c != null) {
+			for (Contact c2 : contactDataProvider.getList()) {
+				// Wenn in allen Kontakten der Liste Kontakt c ist...
+				if (c2.getId() == c.getId()) {
+					int i = contactDataProvider.getList().indexOf(c2);
+					Window.alert("konatk zum updaten gefunden! index: " + i);
+					contactDataProvider.getList().set(i, c);
+				}
 			}
+			contactDataProvider.refresh();
+			contactDataProvider.flush();
 		}
-		contactDataProvider.refresh();
+		return;
 	}
 
 	public void clearSelectionModel() {
