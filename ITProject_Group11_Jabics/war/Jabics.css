@@ -1219,3 +1219,8 @@ table, th, td {
 .cellTree .gwt-CellTree {
 	color: red;
 }
+
+.legendPanel {
+	padding-top: 8px;
+
+}
