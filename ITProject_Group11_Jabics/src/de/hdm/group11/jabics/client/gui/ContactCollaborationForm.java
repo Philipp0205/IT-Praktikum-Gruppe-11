@@ -187,7 +187,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 				if (selectedUser != null) {
 					if (!selectedPV.isEmpty()) {
 						shareContactWithUser(selectedUser);
-						e.returnToContactForm(sharedContact);
+						e.showContact(sharedContact);
 
 					} else
 						Window.alert(
@@ -200,17 +200,15 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		shareContact.setStyleName("sharebtn");
 		shareContact.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				Window.alert(
-						"Achtung! Damit überschreibst du alle Freigaben mit allen ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
 				shareContactWithAll();
-				e.returnToContactForm(sharedContact);
+				e.showContact(sharedContact);
 			}
 		});
 
 		exit = new Button("Abbrechen/Zurück");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				e.returnToContactForm(sharedContact);
+				e.showContact(sharedContact);
 			}
 		});
 	}
@@ -465,8 +463,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 			public void onSuccess(Contact result) {
 				GWT.log("Update ShareStatus: On Sucess");
+				setContact(result);
 				e.updateContactInTree(result);
-				e.showContact(result);
+				//e.showContact(result);
 			}
 		});
 	}

@@ -13,7 +13,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * Die Klasse <code>EditorServiceImpl</code> implementiert die Applikationslogik
  * für die Klasse <code>EditorService</code>. Sie stellt die Logik zur
  * Verfügung, die bei einem RPC aufgerufen wird und gibt die angefragten Objekte
- * zurück.
+ * zurück. Die Methoden in dieser Klasse sind alphabetisch geordnet.
  * 
  * @author Anders
  * @author Kurrle
@@ -922,20 +922,21 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					i++;
 				}
 				return result;
-			}
-
-			// PValues filtern, wenn nicht geteilt und den Share Status setzen
-			for (PValue pv : allPV) {
-				System.out.println("gefunden: " + pv.toString());
-				pv.setShareStatus(status.get(i));
-				i++;
-				for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
-					if (u.getId() == uu.getId()) {
-						result.add(pv);
+			} else {
+				// PValues filtern, wenn nicht geteilt und den Share Status setzen
+				for (PValue pv : allPV) {
+					System.out.println("gefunden: " + pv.toString());
+					pv.setShareStatus(status.get(i));
+					i++;
+					for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
+						if (u.getId() == uu.getId()) {
+							result.add(pv);
+						}
 					}
 				}
+				return result;
 			}
-			return result;
+
 		} else
 			return null;
 	}
@@ -1112,7 +1113,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				System.err.println("Contact : " + c.getName());
 			}
 			// Kontakte nach PropertyValue filtern, falls gesetzt
-			
+
 			switch (pv.getPointer()) {
 			case 1: {
 				if (pv.getIntValue() != -2147483648) {

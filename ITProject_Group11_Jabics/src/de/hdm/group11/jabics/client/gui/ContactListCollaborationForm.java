@@ -102,26 +102,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		buttonPanel.add(shareList);
 		buttonPanel.add(deShareList);
 		
-	}
-	
-	/**
-	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen für die
-	 * Funktionalität der Klasse gebraucht werden.
-	 */
-	public void onLoad() {
-		retrieveUser();
-		createTables();
-		
 		listPanel.add(newCollabTable);
 		listPanel.add(existingCollabTable);
-	}
-
-	/**
-	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren aufgerufen wurde.
-	 */
-	public void continueOnLoad() {
-		
-		createSuggestBox();
 		
 		suggestionPanel.add(suggestBox);
 		suggestionPanel.add(addButton);
@@ -135,6 +117,26 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		this.add(listPanel);
 		this.add(buttonPanel);
 		this.add(exit);
+		
+	}
+	
+	/**
+	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen für die
+	 * Funktionalität der Klasse gebraucht werden.
+	 */
+	public void onLoad() {
+		retrieveUser();
+		createTables();
+		listPanel.add(newCollabTable);
+		listPanel.add(existingCollabTable);
+	}
+
+	/**
+	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren aufgerufen wurde.
+	 */
+	public void continueOnLoad() {
+		
+		createSuggestBox();
 		
 	}
 	

@@ -201,18 +201,15 @@ public class EditorAdmin {
 	 * @param c, Kontakt, der angezeigt werden soll
 	 */
 	public void showContact(Contact c) {
-		GWT.log("showCOnt");
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
 			scForm.setUser(this.currentUser);
+			scForm.setStyleName("scForm");
 		}
 		formPanel.clear();
 		scForm.setContact(c);
-		GWT.log("form einfügen");
-		// formPanel.insert(scForm, 0);
 		formPanel.add(scForm);
-		GWT.log("ShowCont fertig");
 	}
 
 	/**
@@ -266,6 +263,7 @@ public class EditorAdmin {
 
 		formPanel.setStyleName("formPanel");
 	}
+	
 
 	/**
 	 * Eine ContactListForm für eine neue Kontaktliste anzeigen.
@@ -383,24 +381,6 @@ public class EditorAdmin {
 		formPanel.clear();
 		formPanel.add(sForm);
 		GWT.log("#######SearchForm");
-	}
-
-	/**
-	 * Zuruück zur Anzeige eines Kontakts
-	 * 
-	 * @param c, Kontakt, der angeziegt werden soll
-	 */
-	public void returnToContactForm(Contact c) {
-		if (this.scForm == null) {
-			scForm = new ShowContactForm();
-			scForm.setUser(this.currentUser);
-			scForm.setEditor(this);
-		}
-		// addContactToTree(c);
-		formPanel.clear();
-		scForm.setContact(c);
-		formPanel.add(scForm);
-		scForm.setStyleName("scForm");
 	}
 
 	/**
