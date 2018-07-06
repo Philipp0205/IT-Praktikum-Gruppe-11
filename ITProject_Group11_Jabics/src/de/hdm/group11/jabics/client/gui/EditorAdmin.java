@@ -8,12 +8,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.group11.jabics.client.ClientsideSettings;
 import de.hdm.group11.jabics.client.Editor;
+import de.hdm.group11.jabics.resource.JabicsResources;
 import de.hdm.group11.jabics.shared.EditorServiceAsync;
 import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.bo.Contact;
@@ -50,6 +52,8 @@ public class EditorAdmin {
 	private HorizontalPanel topPanel = new HorizontalPanel();
 	private VerticalPanel menuPanel = new VerticalPanel();
 	private VerticalPanel mainPanel = new VerticalPanel();
+	
+	private HorizontalPanel legendPanel = new HorizontalPanel();
 
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
 	private HorizontalPanel widgetPanel = new HorizontalPanel();
@@ -65,6 +69,11 @@ public class EditorAdmin {
 	private ExistingContactCollaborationForm eccForm;
 	private ContactListCollaborationForm clcForm;
 	private SearchForm sForm;
+	
+	private Label labelShared;
+	private Label labelNotShared;
+	private Image imageShared;
+	private Image imageNotShared;
 
 	private TreeViewMenu treeViewMenu;
 
@@ -103,11 +112,25 @@ public class EditorAdmin {
 		treeViewMenu.setEditor(this);
 
 		treeViewMenu.setStyleName("treeView");
+		
+		imageShared = new Image(JabicsResources.INSTANCE.greendot());
+		imageNotShared = new Image(JabicsResources.INSTANCE.reddot());
+
+		labelShared = new Label("  Kontakt geteilt  ");
+		labelNotShared = new Label("  Kontakt nicht geteilt ");
+		
+		legendPanel.add(imageShared);
+		legendPanel.add(labelShared);
+		legendPanel.add(imageNotShared);
+		legendPanel.add(labelNotShared);
+
 
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
+		menuPanel.add(legendPanel);
 
 		menuPanel.setStyleName("menuPanel");
+		legendPanel.addStyleName("legendPanel");
 	}
 
 	/**
