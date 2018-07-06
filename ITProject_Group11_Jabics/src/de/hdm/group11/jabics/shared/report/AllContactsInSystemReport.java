@@ -4,48 +4,59 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
+ * Die Klasse <code>AllContactsInSystemReport</code>, ist für die Erstellung von
+ * <code>CompositeReport</code> für alle <code>Contact</code> Objekte, welche
+ * dem System bekannt sind zuständig.
  * 
- * 
- * @author as2403
- *
+ * @author Anders
+ * @author Kurrle
+ * @author Stahl
  */
-public class AllContactsInSystemReport extends CompositeReport implements Serializable{
+public class AllContactsInSystemReport extends CompositeReport implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
+	/**
+	 * Eine Instanz von
+	 * <code>AllContactsInSystemReport<code> besteht aus mehreren <code>AllContactsOfUserReport</code>.
+	 */
+	private ArrayList<AllContactsOfUserReport> subReports;
+
+	/**
+	 * Konstruktor um eine Instanz dieser Klasse zu erzeugen.
+	 */
 	public AllContactsInSystemReport() {
 		subReports = new ArrayList<AllContactsOfUserReport>();
 	}
-	
-	private ArrayList<AllContactsOfUserReport> subReports;
-	
+
 	/**
-	 * Einen <code>AllContactsOfUserReport</code> zum Report hinzufügen
+	 * Einen <code>AllContactsOfUserReport</code> zu <code>subReports</code>
+	 * hinzufügen.
 	 * 
-	 * @param cr,
-	 *            Report, der hinzugefügt werden soll
+	 * @param allContactsOfUserReport
 	 */
-	public void addReport(AllContactsOfUserReport cr) {
-		this.subReports.add(cr);
+	public void addReport(AllContactsOfUserReport allContactsOfUserReport) {
+		this.subReports.add(allContactsOfUserReport);
 	}
-	
+
 	/**
-	 * Alle AllContactsOfUserReport aus dem Report erhalten
+	 * Auslesen aller <code>AllContactsOfUserReport</code> in
+	 * <code>subReports</code>.
 	 * 
-	 * @returns ArrayList<ContactReport>, alle ContactReports des Reports
+	 * @returns Liste aller <code>AllContactsOfUserReport</code> in
+	 *          <code>subReports</code>.
 	 */
-	public ArrayList<AllContactsOfUserReport> getSubReports(){
+	public ArrayList<AllContactsOfUserReport> getSubReports() {
 		return this.subReports;
 	}
-	
+
 	/**
-	 * Einen <code>AllContactsOfUserReport</code> aus dem Report entfernen
+	 * Einen <code>AllContactsOfUserReport</code> von <code>subReports</code>
+	 * löschen.
 	 * 
-	 * @param cr,
-	 *            Report, der entfernt werden soll. Muss die gleiche Referenz
-	 *            aufweisen wie der bereits enthaltete Report
+	 * @param allContactsOfUserReport
 	 */
-	public void removeReport(AllContactsOfUserReport cr) {
-		subReports.remove(cr);
+	public void removeReport(AllContactsOfUserReport allContactsOfUserReport) {
+		subReports.remove(allContactsOfUserReport);
 	}
-	
+
 }
