@@ -13,6 +13,24 @@
 	color: black;
 }
 
+#report{
+	
+}
+#reportTable{
+	padding: 4px;
+	
+	border: solid black 1px !important;
+}
+#contactReport1{
+	padding: 4px;
+}
+#contactReport2{
+	padding:4px;
+}
+#reportSpacer{
+	
+}
+
 .deleteAccount {
 	position: absolute;
 	right: 5px;
