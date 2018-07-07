@@ -7,6 +7,7 @@ import de.hdm.group11.jabics.server.db.*;
 import de.hdm.group11.jabics.shared.bo.*;
 import de.hdm.group11.jabics.shared.EditorService;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -474,27 +475,39 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @param ju der aktuelle <code>JabicsUser</code>.
 	 */
 	public void deleteContact(Contact c, JabicsUser ju) {
+
+		System.out.println("kontakt löschen" + c.getId() + ju.getId());
+
 		if (c != null && ju != null) {
 			if (uMapper.findUserByContact(c).getId() == ju.getId()) {
+				System.out.println("Kontakt löschen1");
 				ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
+				System.out.println("Kontakt löschen2");
 				ArrayList<PValue> pvalues = pvMapper.findPValueForContact(c);
+				System.out.println("Kontakt löschen3");
 				ArrayList<ContactList> allCL = clMapper.findContactListByContact(c);
-				for(ContactList cl : allCL) {
-					clMapper.deleteContactfromContactList(cl, c);
-					System.out.println("Kontakt aus liste löschen");
-				}
+				System.out.println("Kontakt löschen4");
+
 				for (JabicsUser u : users) {
-					cMapper.deleteCollaboration(c, u);
-					ArrayList<PValue> userValues = getPValueOf(c, ju);
+					ArrayList<PValue> userValues = getPValueOf(c, u);
 					for (PValue pvUser : userValues) {
 						pvMapper.deleteCollaboration(pvUser, u);
 					}
+					cMapper.deleteCollaboration(c, u);
 					System.out.println("Contact " + c.getId() + "Collabs deleted");
 				}
+				System.out.println("Kontakt löschen5");
+
 				for (PValue pv : pvalues) {
 					pvMapper.deletePValue(pv);
 					System.out.println("PValue " + pv.getId() + "deleted");
 				}
+				System.out.println("Kontakt löschen6");
+				for (ContactList cl : allCL) {
+					clMapper.deleteContactfromContactList(cl, c);
+					System.out.println("Kontakt aus liste löschen");
+				}
+				System.out.println("Kontakt löschen7");
 				cMapper.deleteContact(c);
 				System.out.println("Contact " + c.getId() + "deleted");
 			} else {
@@ -522,6 +535,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		if (uMapper.findUserByContactList(cl).getId() == ju.getId()) {
 
 			ArrayList<JabicsUser> users = clMapper.findCollaborators(cl);
+			JabicsUser owner = uMapper.findUserByContactList(cl);
 			System.out.println(users.toString());
 
 			ArrayList<Contact> contacts = cl.getContacts();
@@ -919,7 +933,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u) {
 		if (c != null && u != null) {
-			System.out.println("getpvof" + u.getUsername() + c.getId());
+			System.out.println("getpvof" + u.getUsername() + "userid" + u.getId() + c.getId());
 
 			ArrayList<PValue> allPV = pvMapper.findPValueForContact(c);
 			ArrayList<BoStatus> status = pvMapper.findShareStatus(allPV);
@@ -928,27 +942,33 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 			// Im Fall, dass der Owner des Kontakt anfragt, schnellere Abfertigung
 			JabicsUser owner = uMapper.findUserByContact(c);
-			if (u.getId() == owner.getId()) {
+			if (owner != null) {
+				System.out.println("Owner gefunden " + owner.getId());
 
-				for (PValue pv : allPV) {
-					System.out.println("gefunden: " + pv.toString());
-					pv.setShareStatus(status.get(i));
-					result.add(pv);
-					i++;
-				}
-				return result;
-			} else {
-				// PValues filtern, wenn nicht geteilt und den Share Status setzen
-				for (PValue pv : allPV) {
-					System.out.println("gefunden: " + pv.toString());
-					pv.setShareStatus(status.get(i));
-					i++;
-					for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
-						if (u.getId() == uu.getId()) {
-							result.add(pv);
+				if (u.getId() == owner.getId()) {
+
+					for (PValue pv : allPV) {
+						System.out.println("gefunden: " + pv.toString());
+						pv.setShareStatus(status.get(i));
+						result.add(pv);
+						i++;
+					}
+					return result;
+				} else {
+					// PValues filtern, wenn nicht geteilt und den Share Status setzen
+					for (PValue pv : allPV) {
+						System.out.println("gefunden: " + pv.toString());
+						pv.setShareStatus(status.get(i));
+						i++;
+						for (JabicsUser uu : pvMapper.findCollaborators(pv)) {
+							if (u.getId() == uu.getId()) {
+								result.add(pv);
+							}
 						}
 					}
+					return result;
 				}
+			} else {
 				return result;
 			}
 
@@ -1015,7 +1035,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					}
 				}
 
-				if (bol) {
+				if (bol && (u.getId() != uMapper.findUserByContactList(cl).getId())) {
 					for (PValue pv : pVals) {
 						deleteCollaboration(pv, u);
 					}

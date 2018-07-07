@@ -439,6 +439,7 @@ public class EditorAdmin {
 	 * aktualisiert werden soll
 	 */
 	public void updateContactInTree(Contact c) {
+		Window.alert("im tree updaten 2: " + c.getId());
 		treeViewMenu.updateContact(c);
 	}
 

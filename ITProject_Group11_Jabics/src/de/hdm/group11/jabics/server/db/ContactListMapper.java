@@ -301,15 +301,6 @@ public class ContactListMapper {
 				result.add(cl);
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
 			// Rückgabe der Kontaktliste
 			return result;
 		} catch (SQLException e) {

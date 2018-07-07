@@ -69,6 +69,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 	public void onLoad() {
 		exit.setText("Abbrechen");
+		exit.setEnabled(true);
 		retrieveSharedUser();
 	}
 
@@ -285,7 +286,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 
 			public void onSuccess(Contact result) {
-				GWT.log("updateShareStatus on SUCCESS" );
+				Window.alert("contact updaten ist da!");
 				sharedContact = result;
 				updateContact(result);
 			}
@@ -332,6 +333,11 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	 * @param result
 	 */
 	public void updateContact(Contact result) {
+		exit.setText("Zurück");
+		exit.setEnabled(true);
+		if(e != null) {
+			Window.alert("editoradmin ist im existingCollab da");
+		}
 		e.updateContactInTree(result);
 	}
 
@@ -362,7 +368,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		for (JabicsUser user : u) {
 			editorService.deleteCollaboration(sharedContact, user, new DeleteContactCollaborationCallback());
 		}
-		exit.setVisible(false);
+		exit.setEnabled(false);
 		// e.returnToContactForm(sharedContact);
 	}
 

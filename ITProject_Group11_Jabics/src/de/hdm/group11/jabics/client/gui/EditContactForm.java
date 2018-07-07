@@ -293,7 +293,7 @@ public class EditContactForm extends VerticalPanel {
 
 		// Überprüfen, ob der Name vollständig gesetzt ist
 		boolean nameExistent = false;
-		for (PValue pv : allPV) {
+		for (PValue pv : filledPV) {
 			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2) {
 				nameExistent = true;
 			}
@@ -317,10 +317,6 @@ public class EditContactForm extends VerticalPanel {
 					public void onSuccess(Contact result) {
 
 						if (result != null) {
-							for (PValue pv : result.getValues()) {
-								GWT.log(pv.toString());
-							}
-
 							setContact(result);
 							e.addContactToTree(result);
 							addPPanel.setVisible(true);

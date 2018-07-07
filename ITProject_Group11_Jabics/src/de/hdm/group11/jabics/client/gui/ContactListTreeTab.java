@@ -72,9 +72,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Erzeugt Instanzen des KeyProvider und des selectonModel.
 	 * 
-	 * @param u 
-	 * 			der User für den die Kontaktlisten und Kontakte angezeigt werden
-	 *        	sollen.
+	 * @param u der User für den die Kontaktlisten und Kontakte angezeigt werden
+	 *          sollen.
 	 */
 	public ContactListTreeTab(JabicsUser u) {
 		GWT.log("2: Konstruktor ContactListTreeTab");
@@ -98,12 +97,10 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Erzeugt Instanzen des KeyProvider und des selectonModel.
 	 * 
-	 * @param u 
-	 * 		  der User für den die Kontaktlisten und Kontakte angezeigt werden
-	 *        sollen.
-	 * @param tvm
-	 * 		  das TreeViewModel welches später für das Selection-Handling
-	 *        gebraucht wird.
+	 * @param u   der User für den die Kontaktlisten und Kontakte angezeigt werden
+	 *            sollen.
+	 * @param tvm das TreeViewModel welches später für das Selection-Handling
+	 *            gebraucht wird.
 	 */
 	public ContactListTreeTab(JabicsUser u, TreeViewMenu tvm) {
 		this.jabicsUser = u;
@@ -177,8 +174,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setzt den Editor der Instanz.
 	 * 
-	 * @param editor 
-	 * 				<code>Editor</code> der gesetzt werden soll.
+	 * @param editor <code>Editor</code> der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in contactlisttree");
@@ -189,8 +185,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setzt den User.
 	 * 
-	 * @param user 
- * 				<code>JabicsUser</code> der gesetzt werden soll.
+	 * @param user <code>JabicsUser</code> der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser user) {
 		this.jabicsUser = user;
@@ -207,8 +202,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setzt die momentan selktierte Kontaktliste.
 	 * 
-	 * @param cl 
-	 * 			<code>ContactList</code> die gesetzt werden soll.
+	 * @param cl <code>ContactList</code> die gesetzt werden soll.
 	 */
 	public void setSelectedContactList(ContactList cl) {
 		if (cl != null) {
@@ -229,8 +223,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Setzt einen neuen Selelktieren Kontakt.
 	 * 
-	 * @param c 
-	 * 			Kontakt der selektiert werden soll.
+	 * @param c Kontakt der selektiert werden soll.
 	 */
 	public void setSelectedContact(Contact c) {
 		if (c != null) {
@@ -252,8 +245,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Erstellen einer neuen Kontaktliste. Fügt eine neue Kotantkliste dem CellTree
 	 * hinzu. Die Selektion und die Anzeige werden entsprechend aktuallisiert.
 	 * 
-	 * @param cl 
-	 * 			<code>ContactList</code> die dem <code>CellTree</code> hinzugefügt werden soll.
+	 * @param cl <code>ContactList</code> die dem <code>CellTree</code> hinzugefügt
+	 *           werden soll.
 	 */
 	public void addContactList(ContactList cl) {
 		// Neue Kontaktliste wird dem DataProvider hinzugefügt.
@@ -273,8 +266,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Kontakteliste wird aus dem CellTree Widget entfernt. Die Selektion und die
 	 * Dataprovider werden ebenfalls entsprechend angepasst.
 	 * 
-	 * @param cl 
-	 * 			<code>ContactList</code> die entfernt werden soll.
+	 * @param cl <code>ContactList</code> die entfernt werden soll.
 	 */
 	public void removeContactList(ContactList cl) {
 
@@ -292,8 +284,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Aktualisiert eine Kontaktliste im CellTree-Widget.
 	 * 
-	 * @param cl 
-	 *			<code>ContactList</code> welche aktuallisiert werden soll.
+	 * @param cl <code>ContactList</code> welche aktuallisiert werden soll.
 	 */
 	public void updateContactList(ContactList cl) {
 		List<ContactList> contactlists = contactListDataProviders.getList();
@@ -312,8 +303,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Entfernt einen Kontakt aus dem CellTree Widget.
 	 * 
-	 * @param c 
-	 * 			<code>Contact</code> der entfernt werden soll.
+	 * @param c <code>Contact</code> der entfernt werden soll.
 	 */
 	public void removeContact(Contact c) {
 
@@ -323,19 +313,17 @@ public class ContactListTreeTab implements TreeViewModel {
 		for (ContactList cl : contactListDataProviders.getList()) {
 			cProvider = contactDataProviders.get(cl);
 
-			int i = 0;
 			for (Contact c2 : cProvider.getList()) {
 				// Wenn in allen Kontakten der Liste Kontakt c ist...
 				if (c2.getId() == c.getId()) {
-
-					cProvider.getList().set(i, c);
+					int ii = cProvider.getList().indexOf(c2);
+					cProvider.getList().remove(ii);
 					contactDataProviders.get(cl).refresh();
-					return;
 
-				} else
-					i++;
+				}
 			}
 		}
+		return;
 	}
 
 	/*
@@ -352,23 +340,31 @@ public class ContactListTreeTab implements TreeViewModel {
 
 			// Kontaktlisten werden durchsucht
 			for (ContactList cl : contactListDataProviders.getList()) {
-
 				GWT.log("6.1 CL:" + cl.getListName());
-
+				Window.alert("update Contact im tree tab2");
 				cProvider = contactDataProviders.get(cl);
+				Window.alert("update Contact im tree tab3");
 				
-				for (Contact c2 : cProvider.getList()) {
-					GWT.log("6.1 contactDataProviders " + c2.toString());
-					// Wenn in allen Kontakten der Liste Kontakt c ist...
-					if (c2.getId() == c.getId()) {
-						int i = cProvider.getList().indexOf(c2);
-						cProvider.getList().set(i, c);
+				Window.alert("update Contact im tree tab2" + cProvider.toString());
+				
+				if (cProvider.getList() != null) {
+					Window.alert("cProvider ungleich null");
+
+					for (Contact c2 : cProvider.getList()) {
+						Window.alert("update Contact im tree tab3");
+						GWT.log("6.1 contactDataProviders " + c2.toString());
+						// Wenn in allen Kontakten der Liste Kontakt c ist...
+						if (c2.getId() == c.getId()) {
+							int i = cProvider.getList().indexOf(c2);
+							cProvider.getList().set(i, c);
+						}
 					}
-				}
+					Window.alert("update Contact im tree tab4");
 //				contactDataProviders.get(cl).refresh();
-				contactDataProviders.get(cl).flush();
-			}
+					contactDataProviders.get(cl).flush();
+				}
 //			contactListDataProviders.flush();
+			}
 		}
 	}
 
@@ -376,10 +372,8 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Ein <code>Conact</code> wird einer bestimmen <code>ContactList</code>
 	 * hinzugefügt.
 	 * 
-	 * @param cl 
-	 * 			<code>ContactList</code> dem der Kontakt hinzugefügt werden soll.
-	 * @param c 
-	 * 			<code>Contact</code> der Liste der hinzugeügt werden soll.
+	 * @param cl <code>ContactList</code> dem der Kontakt hinzugefügt werden soll.
+	 * @param c  <code>Contact</code> der Liste der hinzugeügt werden soll.
 	 */
 	public void addContactOfList(ContactList cl, Contact c) {
 
@@ -392,18 +386,14 @@ public class ContactListTreeTab implements TreeViewModel {
 
 		contactsProvider.getList().add(c);
 
-		// contactsProvider.flush();
-
-		// selectionModel.setSelected(c, true);
+		contactsProvider.flush();
 	}
 
 	/**
 	 * Ein <code>Conact</code> wird einer <code>ContactList</code> hinzugefügt.
 	 * 
-	 * @param cl 
-	 * 			<code>ContactList</code> in welcher der Kontakt liegt.
-	 * @param c 
-	 * 			<code>Contact</code> der hinzugefügt werden soll.
+	 * @param cl <code>ContactList</code> in welcher der Kontakt liegt.
+	 * @param c  <code>Contact</code> der hinzugefügt werden soll.
 	 */
 	public void removeContactOfContactList(ContactList cl, Contact c) {
 		GWT.log("Kontakt aus Liste entfernen " + c.getName());
@@ -473,8 +463,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * Der Inhalt des CellTrees wird hier befüllgt. Dabei dienen Kontaktlisten als
 	 * obere Knoten und Kontakte als untergeordnete Knoten.
 	 * 
-	 * @param value 
-	 * 				der Root werd des <code>CellTres</code> .
+	 * @param value der Root werd des <code>CellTres</code> .
 	 */
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
@@ -568,8 +557,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	/**
 	 * Überprüfen, ob ein Objekt eine Leaf-Node ist.
 	 * 
-	 * value	
-	 * 		<code>Object</code> welches überpüft werden soll.
+	 * value <code>Object</code> welches überpüft werden soll.
 	 */
 	@Override
 	public boolean isLeaf(Object value) {

@@ -88,7 +88,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 
 		listPanel.setStyleName("listpanel");
 
-
 		shareList = new Button("Ausgewählten Nutzern freigeben");
 		shareList.setStyleName("clcbtn");
 		shareList.addClickHandler(new ClickHandler() {
@@ -187,7 +186,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 				updateShareStatus();
 			}	
 		});
-		
 	}
 
 	/**
@@ -246,6 +244,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		if (c != null) {
 			this.sharedContactList.setContacts(c);
 			for(Contact cl : sharedContactList.getContacts()) {
+				Window.alert("Kontakt:" + cl.getId());
 			}
 		} else {
 			Window.alert("Kontakte hinzufügen null");
@@ -312,6 +311,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	
 	public void updateShareStatus() {
 		for (Contact c : sharedContactList.getContacts()) {
+			Window.alert("Im tree updaten: " + c.getId());
+			c.setShareStatus(BoStatus.IS_SHARED);
 			e.updateContactInTree(c);
 		}
 		sharedContactList.setShareStatus(BoStatus.IS_SHARED);
@@ -424,8 +425,9 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		@Override
 		public void onSuccess(JabicsUser result) {
 			if (result != null) {
-				existingCollaborators.add(result);
-				existingUserDataProvider.setList(existingCollaborators);
+				ArrayList<JabicsUser> existing = new ArrayList<JabicsUser>();
+				existing.add(result);
+				existingUserDataProvider.setList(existing);
 				existingUserDataProvider.flush();
 				for (JabicsUser uu : newCollaborators) {
 					if (uu.getId() == result.getId()) {
@@ -435,7 +437,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 					}
 				}
 				//Kontakte holen, um sie im Tree view upzudaten
-				getContacts();
+				//getContacts();
+				updateShareStatus();
 
 			}
 		}

@@ -136,8 +136,8 @@ public class ContactListForm extends VerticalPanel {
 		addPanelButtons.add(add);
 		addPanelButtons.add(doneAdd);
 		
-		removePanelButtons.remove(remove);
-		removePanelButtons.remove(doneRemove);
+		removePanelButtons.add(remove);
+		removePanelButtons.add(doneRemove);
 
 		removeButton.setStyleName("cdeleteBtn");
 		addButton.setStyleName("caddButton");
