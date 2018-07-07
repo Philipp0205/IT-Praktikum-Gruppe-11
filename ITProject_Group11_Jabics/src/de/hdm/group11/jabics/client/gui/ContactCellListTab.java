@@ -43,9 +43,15 @@ public class ContactCellListTab {
 	 * für die Klasse gebraicht werden. Der Konstruktor ist mehrfach überladen damit
 	 * auch ein TreeViewMenu mitgegebn werden kann.
 	 * 
-	 * @param u             der Nutzer für den die Anzeige ausgegeben werden soll.
-	 * @param clRes2        Die CellListRessources
-	 * @param treeViewMenu2
+	 * @param u            
+	 * 			 der Nutzer für den die Anzeige ausgegeben werden soll.
+	 * @param clRes2
+	 * 			Objekt der Klasse <code>CellListResources</code>, welche die Bilder für die
+	 *   		<code>ContactCellListTab</code> bereitstellt.
+	 *   
+	 * @param treeViewMenu2 
+	 * 			Objekt der Klasse <code>TreeViewMenu<code> welche ein <code>TreeViewMenu<code> dem ContactCellListTab 
+	 * 			zuordnet					
 	 */
 	public ContactCellListTab(JabicsUser u, TreeViewMenu tvm,
 			de.hdm.group11.jabics.client.gui.TreeViewMenu.CellListResources clRes2) {
@@ -61,7 +67,7 @@ public class ContactCellListTab {
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 	}
-
+	
 	public ContactCellListTab(JabicsUser u, TreeViewMenu tvm) {
 		this.user = u;
 		this.treeViewMenu = tvm;
@@ -74,7 +80,10 @@ public class ContactCellListTab {
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 	}
-
+	
+	/**
+	 *  Ein Interface welches die den css-
+	 */
 	public interface CellListResources extends CellList.Resources {
 		@Override
 		@Source("JabicsCellList.css")
@@ -153,8 +162,6 @@ public class ContactCellListTab {
 	 * Wenn ein Kontakt geändert wird bleibt der Key, welcher in folgender privater
 	 * Klasse festgelegt wird gleich, weshalb die Selektion des Kontaktes auch dann
 	 * erhalten bleibt.
-	 * 
-	 * @author Kurrle
 	 *
 	 */
 	private class ContactKeyProvider implements ProvidesKey<Contact> {
@@ -172,8 +179,6 @@ public class ContactCellListTab {
 	 * Weiteren werden die Selektionen in den anderen Tabs entfern, damit Bugs
 	 * vermieden werden.
 	 * 
-	 * @author Kurrle
-	 *
 	 */
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
 		@Override
@@ -189,7 +194,8 @@ public class ContactCellListTab {
 		/**
 		 * Setzt den selektierten Kontakt.
 		 * 
-		 * @param c, der Kontakt der seletkiert werden soll.
+		 * @param c 
+		 * 			der Kontakt der seletkiert werden soll.
 		 */
 		private void setSelectedContact(Contact c) {
 			if (c != null) {
@@ -201,7 +207,8 @@ public class ContactCellListTab {
 	/**
 	 * Setzt den Editor.
 	 * 
-	 * @param editor, der gesetzt werden soll.
+	 * @param editor 
+	 * 				der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin editor) {
 		GWT.log("Editor setzen in contactCellListTab");
@@ -212,7 +219,8 @@ public class ContactCellListTab {
 	/**
 	 * Setzt den User
 	 * 
-	 * @param u, User der gesetzt werden soll.
+	 * @param u 
+	 * 			User der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
 		GWT.log("User setzen in contactCellListTab");
@@ -222,7 +230,8 @@ public class ContactCellListTab {
 	/**
 	 * Fügt einen Kontakt zu der CellList hinzu.
 	 * 
-	 * @param c, der Kontakt der hinzugefügt werden soll.
+	 * @param c 
+	 * 			der Kontakt der hinzugefügt werden soll.
 	 */
 	public void addContact(Contact c) {
 		contactDataProvider.getList().add(c);
@@ -232,7 +241,8 @@ public class ContactCellListTab {
 	/**
 	 * Der Anzeige der gesuchten Kontakte wird ein Kontakt hinzugefügt.
 	 * 
-	 * @param c, der hinzuzufügende Kontakt,
+	 * @param c 
+	 * 			der hinzuzufügende Kontakt,
 	 */
 	public void addsearchedContact(Contact c) {
 		contactDataProvider.getList().add(c);
@@ -242,7 +252,8 @@ public class ContactCellListTab {
 	/**
 	 * Kontakt wird aus der CellList entfernt.
 	 * 
-	 * @param c, der zu entfernende Kontakt.
+	 * @param c 
+	 * 			der zu entfernende Kontakt.
 	 */
 	public void removeContact(Contact c) {
 		contactDataProvider.getList().remove(c);
@@ -252,7 +263,8 @@ public class ContactCellListTab {
 	/**
 	 * Kontakt wird in der CellList aktualisiert.
 	 * 
-	 * @param c, der zu aktualisierende Kontakt.
+	 * @param c 
+	 * 			der zu aktualisierende Kontakt.
 	 */
 	public void updateContact(Contact c) {
 		if (c != null) {
@@ -281,7 +293,7 @@ public class ContactCellListTab {
 	/**
 	 * Gibt das <code>SingleSelectionModel</code> zurück.
 	 * 
-	 * @return
+	 * @return das selectionModel.
 	 */
 	public SingleSelectionModel<Contact> getSelectionModel() {
 		return this.selectionModel;
@@ -301,7 +313,6 @@ public class ContactCellListTab {
 	/**
 	 * TODO wird eigentlich nicht mehr gebraucht.
 	 * 
-	 * @author Kurrle
 	 */
 	public class AsyncDataProvider extends AbstractCell<Contact> {
 		@Override

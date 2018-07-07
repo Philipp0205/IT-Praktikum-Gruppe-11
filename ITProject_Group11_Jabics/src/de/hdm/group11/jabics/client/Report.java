@@ -106,7 +106,7 @@ public class Report implements EntryPoint {
 		Button b = new Button("Anmelden");
 		b.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ck) {
-				Window.Location.assign(logon.getLoginUrl());
+				//Window.Location.assign(logon.getLoginUrl());
 			}
 		});
 		b.setStyleName("loginbutton");

@@ -82,7 +82,6 @@ public class Editor implements EntryPoint {
 
 		loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-
 	}
 
 	/**
