@@ -313,6 +313,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 			c.setShareStatus(BoStatus.IS_SHARED);
 			e.updateContactInTree(c);
 		}
+		
 		sharedContactList.setShareStatus(BoStatus.IS_SHARED);
 		e.updateContactListInTree(sharedContactList);
 	}
@@ -435,8 +436,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 					}
 				}
 				//Kontakte holen, um sie im Tree view upzudaten
-				//getContacts();
-				updateShareStatus();
+				getContacts();
 
 			}
 		}
@@ -461,6 +461,10 @@ public class ContactListCollaborationForm extends VerticalPanel {
 					existingCollaborators.remove(u);
 				}
 				existingUserDataProvider.flush();
+				for(Contact c : result.getContacts()) {
+			          e.updateContactInTree(c);
+			        }
+				
 				e.updateContactListInTree(result);
 			}
 		}

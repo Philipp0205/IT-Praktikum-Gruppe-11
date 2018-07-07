@@ -335,31 +335,34 @@ public class ContactListTreeTab implements TreeViewModel {
 	 */
 	public void updateContact(Contact c) {
 
-		if (c != null) {
-			ListDataProvider<Contact> cProvider = new ListDataProvider<Contact>();
+	    if (c != null) {
+	      ListDataProvider<Contact> cProvider = new ListDataProvider<Contact>();
+	      // Kontaktlisten werden durchsucht
+	      for (ContactList cl : contactListDataProviders.getList()) {
+	        GWT.log("6.1 CL:" + cl.getListName());
+	        try {
+	          cProvider = contactDataProviders.get(cl);
+	          if (cProvider.getList() != null) {
 
-			// Kontaktlisten werden durchsucht
-			for (ContactList cl : contactListDataProviders.getList()) {
-				GWT.log("6.1 CL:" + cl.getListName());
-				cProvider = contactDataProviders.get(cl);
-				
-				if (cProvider.getList() != null) {
+	            for (Contact c2 : cProvider.getList()) {
 
-					for (Contact c2 : cProvider.getList()) {
-						GWT.log("6.1 contactDataProviders " + c2.toString());
-						// Wenn in allen Kontakten der Liste Kontakt c ist...
-						if (c2.getId() == c.getId()) {
-							int i = cProvider.getList().indexOf(c2);
-							cProvider.getList().set(i, c);
-						}
-					}
-//				contactDataProviders.get(cl).refresh();
-					contactDataProviders.get(cl).flush();
-				}
-//			contactListDataProviders.flush();
-			}
-		}
-	}
+	              GWT.log("6.1 contactDataProviders " + c2.toString());
+	              // Wenn in allen Kontakten der Liste Kontakt c ist...
+	              if (c2.getId() == c.getId()) {
+	                int i = cProvider.getList().indexOf(c2);
+	                cProvider.getList().set(i, c);
+	              }
+	            }
+	           //	        contactDataProviders.get(cl).refresh();
+	            contactDataProviders.get(cl).flush();
+	          }
+	          // contactListDataProviders.flush();
+	        } catch (Exception e) {
+	          Window.alert(e.toString());
+	        }
+	      }
+	    }
+	  }
 
 	/**
 	 * Ein <code>Conact</code> wird einer bestimmen <code>ContactList</code>
