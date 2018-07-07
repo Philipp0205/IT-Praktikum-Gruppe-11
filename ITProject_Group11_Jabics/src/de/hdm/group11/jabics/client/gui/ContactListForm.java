@@ -52,7 +52,7 @@ public class ContactListForm extends VerticalPanel {
 	CellTable<Contact> selValuesRemove;
 	ListDataProvider<Contact> valueProviderAdd;
 	ListDataProvider<Contact> valueProviderRemove;
-	
+
 	HashSet<Contact> finalContactAdd;
 	HashSet<Contact> finalContactRemove;
 
@@ -202,14 +202,12 @@ public class ContactListForm extends VerticalPanel {
 		selectionModelAdd.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				finalContactAdd = (HashSet<Contact>) selectionModelAdd.getSelectedSet();
-				Window.alert("Auswahl geändert");
 			}
 		});
-		
+
 		selectionModelRemove.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				finalContactRemove = (HashSet<Contact>) selectionModelRemove.getSelectedSet();
-				Window.alert("Auswahl geändert");
 			}
 		});
 
@@ -251,9 +249,8 @@ public class ContactListForm extends VerticalPanel {
 		addContactsPanel.add(selValuesAdd);
 		addContactsPanel.add(add);
 		addContactsPanel.add(doneAdd);
-
 	}
-	
+
 	/**
 	 * Wird beim ersten laden der ContactListForm ausgeführt.
 	 */
@@ -272,12 +269,15 @@ public class ContactListForm extends VerticalPanel {
 
 		if (isNewList == true) {
 			GWT.log("7.1 isNewList true");
+			saveLabel.setText("Liste erstellen");
 			deletePanel.setVisible(false);
 			removeButtonPanel.setVisible(false);
 
 		} else {
+			addButtonPanel.setVisible(true);
 			deletePanel.setVisible(true);
 			removeButtonPanel.setVisible(true);
+			addButtonPanel.setVisible(true);
 		}
 
 		searchInListButton.addClickHandler(new SearchClickHandler());
@@ -291,12 +291,11 @@ public class ContactListForm extends VerticalPanel {
 		addContactsPanel.setVisible(false);
 		removeContactsPanel.setVisible(false);
 	}
-	
+
 	/**
 	 * Setzt die aktuelle Liste.
 	 * 
-	 * @param cl
-	 * 			Liste, die gesetzt werden soll.
+	 * @param cl Liste, die gesetzt werden soll.
 	 */
 	public void setCurrentList(ContactList cl) {
 		if (cl != null) {
@@ -388,39 +387,38 @@ public class ContactListForm extends VerticalPanel {
 		removeContactsPanel.setVisible(true);
 
 	}
-	
+
 	/**
 	 * Setzt den Indikator, der angiebt, ob es sich um eine neue Liste handelt.
-	 * @param b
-	 * 			Wert der gesetzt werden soll.
+	 * 
+	 * @param b Wert der gesetzt werden soll.
 	 */
 	public void setIsNewList(boolean b) {
 		this.isNewList = b;
 	}
-	
+
 	/**
 	 * Setzt die aktuelle Kontaktliste
 	 * 
-	 * @param cl
-	 * 			Kontaktliste, die gesetzt werden soll.
+	 * @param cl Kontaktliste, die gesetzt werden soll.
 	 */
 	public void setContactList(ContactList cl) {
 		this.currentList = cl;
 	}
-	
+
 	/**
 	 * Setzt den Editor.
-	 * @param e
-	 * 			Editor, der gesetzt werden soll.
+	 * 
+	 * @param e Editor, der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
 		this.e = e;
 	}
-	
+
 	/**
 	 * Setzt den User der ContactListForm
-	 * @param u
-	 * 			User, der gesetzt werden soll.
+	 * 
+	 * @param u User, der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
 		this.u = u;
@@ -429,7 +427,8 @@ public class ContactListForm extends VerticalPanel {
 	/* ------------------CLICK HANDLER ------------------- */
 
 	/**
-	 * Clickhanlder welcher für das Löschen von Konrakten aus Listen verantwortlich ist.
+	 * Clickhanlder welcher für das Löschen von Konrakten aus Listen verantwortlich
+	 * ist.
 	 *
 	 */
 	private class DeleteContactsFromListClickHandler implements ClickHandler {
@@ -442,9 +441,10 @@ public class ContactListForm extends VerticalPanel {
 			}
 		}
 	}
-	
+
 	/**
-	 * ClickHandler, welcher für das Hinzufügen von Kontakten zu Listen verantwortlich ist.
+	 * ClickHandler, welcher für das Hinzufügen von Kontakten zu Listen
+	 * verantwortlich ist.
 	 *
 	 */
 	private class AddContactsToContactListClickHandler implements ClickHandler {
@@ -457,10 +457,10 @@ public class ContactListForm extends VerticalPanel {
 			}
 		}
 	}
-	
+
 	/**
-	 * ClickHanlder welcher Panel beim Klicken auf "Fertig" entfernt.
-	 * Der Button wird beim Hinzufügen von Kontakten zu einer Liste angezeigt.
+	 * ClickHanlder welcher Panel beim Klicken auf "Fertig" entfernt. Der Button
+	 * wird beim Hinzufügen von Kontakten zu einer Liste angezeigt.
 	 *
 	 */
 	private class DoneAddingClickHandler implements ClickHandler {
@@ -472,10 +472,10 @@ public class ContactListForm extends VerticalPanel {
 			valueProviderAdd.flush();
 		}
 	}
-	
+
 	/**
-	 * ClickHanlder welcher Panel beim Klicken auf "Fertig" entfernt. 
-	 * DEr Button wird beim Entfernen von Kotakten aus einer Liste angezeigt.
+	 * ClickHanlder welcher Panel beim Klicken auf "Fertig" entfernt. DEr Button
+	 * wird beim Entfernen von Kotakten aus einer Liste angezeigt.
 	 *
 	 */
 	private class DoneRemovingClickHandler implements ClickHandler {
@@ -487,9 +487,10 @@ public class ContactListForm extends VerticalPanel {
 			valueProviderAdd.flush();
 		}
 	}
-	
+
 	/**
-	 * CLickHanlder, welcher für das Löschen eines Kontaktes aus einer Liste verantwortlich ist.
+	 * CLickHanlder, welcher für das Löschen eines Kontaktes aus einer Liste
+	 * verantwortlich ist.
 	 *
 	 */
 	class DeleteClickHandler implements ClickHandler {
@@ -498,7 +499,7 @@ public class ContactListForm extends VerticalPanel {
 			editorService.deleteContactList(currentList, u, new DeleteContactListCallback());
 		}
 	}
-	
+
 	/**
 	 * KlickHandler, welcher für das Speichern verantwortlich ist.
 	 *
@@ -506,10 +507,14 @@ public class ContactListForm extends VerticalPanel {
 	class SaveClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
-			save();
+			if (isNewList) {
+				editorService.createContactList(listBox.getText(), cArray, u, new CreateContactListCallback());
+			} else {
+				save();
+			}
 		}
 	}
-	
+
 	/**
 	 * Clickhanlder welcher für das Teilen von Kontakten verantwortlich ist.
 	 *
@@ -631,7 +636,6 @@ public class ContactListForm extends VerticalPanel {
 		}
 	}
 
-
 	/**
 	 * Alle Kontakte eines Nutzers erhalten, damit Kontakte zu einer Liste
 	 * hinzugefügt werden können.
@@ -649,7 +653,6 @@ public class ContactListForm extends VerticalPanel {
 			}
 		}
 	}
-
 
 	/**
 	 * Einen Kontakt im Tree hinzufügen, wenn er erfolgreich zur Liste hinzugefügt
@@ -697,7 +700,6 @@ public class ContactListForm extends VerticalPanel {
 		}
 	}
 
-
 	/**
 	 * Eine neu erstellte Liste zurodnen und im Tree anzeigen, wenn Sie erstellt
 	 * wurde.
@@ -706,22 +708,20 @@ public class ContactListForm extends VerticalPanel {
 	private class CreateContactListCallback implements AsyncCallback<ContactList> {
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			
 		}
-
 		@Override
 		public void onSuccess(ContactList cl) {
 			if (cl != null) {
-				GWT.log("7.3 createContactListCallback onSuccess ContactListID " + cl.getId());
-
-				setCurrentList(cl);
-				e.addContactListToTree(cl);
 				isNewList = false;
-				deleteButton.setVisible(true);
+				GWT.log("7.3 createContactListCallback onSuccess ContactListID " + cl.getId());
+				setCurrentList(cl);
+				saveLabel.setText("Änderungen speichern");
+				deletePanel.setVisible(true);
+				e.addContactListToTree(cl);
 			}
 		}
 	}
-
 
 	/**
 	 * Eine Liste löschen, wenn erfolgreich nichts anzeigen.
@@ -730,7 +730,7 @@ public class ContactListForm extends VerticalPanel {
 	private class DeleteContactListCallback implements AsyncCallback<ContactList> {
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Fehler 5 Kontakt konnte nicht gelöscht werden.");
+			Window.alert("Kontaktliste konnte nicht gelöscht werden.");
 
 		}
 

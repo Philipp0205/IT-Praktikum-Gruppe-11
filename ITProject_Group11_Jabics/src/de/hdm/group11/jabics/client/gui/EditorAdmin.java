@@ -52,7 +52,7 @@ public class EditorAdmin {
 	private HorizontalPanel topPanel = new HorizontalPanel();
 	private VerticalPanel menuPanel = new VerticalPanel();
 	private VerticalPanel mainPanel = new VerticalPanel();
-	
+
 	private HorizontalPanel legendPanel = new HorizontalPanel();
 
 	private HorizontalPanel logoutPanel = new HorizontalPanel();
@@ -69,7 +69,7 @@ public class EditorAdmin {
 	private ExistingContactCollaborationForm eccForm;
 	private ContactListCollaborationForm clcForm;
 	private SearchForm sForm;
-	
+
 	private Label labelShared;
 	private Label labelNotShared;
 	private Image imageShared;
@@ -112,18 +112,17 @@ public class EditorAdmin {
 		treeViewMenu.setEditor(this);
 
 		treeViewMenu.setStyleName("treeView");
-		
+
 		imageShared = new Image(JabicsResources.INSTANCE.greendot());
 		imageNotShared = new Image(JabicsResources.INSTANCE.reddot());
 
 		labelShared = new Label("geteilt");
 		labelNotShared = new Label("nicht geteilt");
-		
+
 		legendPanel.add(imageShared);
 		legendPanel.add(labelShared);
 		legendPanel.add(imageNotShared);
 		legendPanel.add(labelNotShared);
-
 
 		menuPanel.add(treeViewMenu.getStackPanel1());
 		menuPanel.add(treeViewMenu.getStackPanel2());
@@ -174,14 +173,18 @@ public class EditorAdmin {
 	 * Den LogoutButton anzeigen
 	 */
 	public void loadLogout() {
-		logoutButton = new Button("Abmelden");
-		logoutButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.Location.assign(loginfo.getLogoutUrl());
-			}
-		});
-		logoutButton.setStyleName("logoutbutton");
-		logoutPanel.add(logoutButton);
+		if (loginfo != null) {
+			logoutButton = new Button("Abmelden");
+			logoutButton.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					Window.Location.assign(loginfo.getLogoutUrl());
+				}
+			});
+			logoutButton.setStyleName("logoutbutton");
+			logoutPanel.add(logoutButton);
+		} else {
+			Window.alert("loginfo null");
+		}
 	}
 
 	/**
@@ -201,18 +204,15 @@ public class EditorAdmin {
 	 * @param c, Kontakt, der angezeigt werden soll
 	 */
 	public void showContact(Contact c) {
-		GWT.log("showCOnt");
 		if (this.scForm == null) {
 			scForm = new ShowContactForm();
 			scForm.setEditor(this);
 			scForm.setUser(this.currentUser);
+			scForm.setStyleName("scForm");
 		}
 		formPanel.clear();
 		scForm.setContact(c);
-		GWT.log("form einfügen");
-		// formPanel.insert(scForm, 0);
 		formPanel.add(scForm);
-		GWT.log("ShowCont fertig");
 	}
 
 	/**
@@ -221,7 +221,6 @@ public class EditorAdmin {
 	 * @param c, Kontakt, der editiert werden soll
 	 */
 	public void editContact(Contact c) {
-		Window.alert("Kontakt anzeigen");
 		if (c != null) {
 			GWT.log("editcont");
 			// if (this.cForm == null) {
@@ -232,7 +231,6 @@ public class EditorAdmin {
 			formPanel.clear();
 			GWT.log("AltesWidgetEntfernt");
 			ecForm.setNewContact(false);
-			Window.alert("Kontakt wird jetzt gleich in ShowContact gesetzt");
 			ecForm.setContact(c);
 
 			formPanel.insert(ecForm, 0);
@@ -250,7 +248,6 @@ public class EditorAdmin {
 	 * @param c, neuer Kontakt, der angelegt werden soll
 	 */
 	public void newContact(Contact c) {
-		GWT.log("editcont");
 		// if (this.cForm == null) {
 		ecForm = new EditContactForm();
 		ecForm.setEditor(this);
@@ -295,8 +292,6 @@ public class EditorAdmin {
 	 */
 	public void showContactList(ContactList cl) {
 		if (cl != null) {
-			GWT.log("7.x showContactList");
-			Window.alert("Kontaktliste anzeigen");
 			if (this.clForm == null) {
 				clForm = new ContactListForm();
 				clForm.setUser(this.currentUser);
@@ -360,12 +355,13 @@ public class EditorAdmin {
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
+			clcForm.setUser(this.currentUser);
 		}
 		formPanel.clear();
 		clcForm.clear();
 		clcForm.setContactList(cl);
 		formPanel.add(clcForm);
-		//formPanel.insert(clcForm, 0);
+		// formPanel.insert(clcForm, 0);
 	}
 
 	/**
@@ -383,24 +379,6 @@ public class EditorAdmin {
 		formPanel.clear();
 		formPanel.add(sForm);
 		GWT.log("#######SearchForm");
-	}
-
-	/**
-	 * Zuruück zur Anzeige eines Kontakts
-	 * 
-	 * @param c, Kontakt, der angeziegt werden soll
-	 */
-	public void returnToContactForm(Contact c) {
-		if (this.scForm == null) {
-			scForm = new ShowContactForm();
-			scForm.setUser(this.currentUser);
-			scForm.setEditor(this);
-		}
-		// addContactToTree(c);
-		formPanel.clear();
-		scForm.setContact(c);
-		formPanel.add(scForm);
-		scForm.setStyleName("scForm");
 	}
 
 	/**
@@ -425,7 +403,6 @@ public class EditorAdmin {
 	 * beim Aufruf diser Methode!
 	 */
 	public void deleteUser() {
-		Window.alert("Achtung nicht auf ok drücken");
 		editorService.deleteUser(currentUser, new DeleteUserCallback());
 	}
 
@@ -595,6 +572,7 @@ public class EditorAdmin {
 		public void onFailure(Throwable caught) {
 			Window.alert("Da ist etwas schiefgegangen, bitte versuchen Sie es erneut");
 		}
+
 		@Override
 		public void onSuccess(Void v) {
 			try {

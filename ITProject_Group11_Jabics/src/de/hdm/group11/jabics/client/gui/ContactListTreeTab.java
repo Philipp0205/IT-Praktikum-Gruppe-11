@@ -140,7 +140,6 @@ public class ContactListTreeTab implements TreeViewModel {
 
 			if (selection != null) {
 				if (selection instanceof Contact) {
-					Window.alert("selection ist Contact");
 					setSelectedContact((Contact) selection);
 				} else if (selection instanceof ContactList) {
 					setSelectedContactList((ContactList) selection);
@@ -235,7 +234,6 @@ public class ContactListTreeTab implements TreeViewModel {
 	 */
 	public void setSelectedContact(Contact c) {
 		if (c != null) {
-			Window.alert("Kontakt in Tree ausgewählt");
 			GWT.log("2.2 Zurück zum Editor: " + editor.hashCode() + c.getName());
 			editor.showContact(c);
 		}
@@ -309,7 +307,6 @@ public class ContactListTreeTab implements TreeViewModel {
 			}
 		}
 		contactListDataProviders.refresh();
-		contactDataProviders.get(cl).flush();
 	}
 
 	/**
@@ -352,29 +349,30 @@ public class ContactListTreeTab implements TreeViewModel {
 	 * 
 	 */
 	public void updateContact(Contact c) {
-		// eService.getContactListById(c.getOwner().getId(), new
-		// UpdateContactCallback(c));
 
-		ListDataProvider<Contact> cProvider;
+		if (c != null) {
+			ListDataProvider<Contact> cProvider = new ListDataProvider<Contact>();
 
-		// Kontaktlisten werden durchsucht
-		for (ContactList cl : contactListDataProviders.getList()) {
+			// Kontaktlisten werden durchsucht
+			for (ContactList cl : contactListDataProviders.getList()) {
 
-			GWT.log("6.1 CL:" + cl.getListName());
+				GWT.log("6.1 CL:" + cl.getListName());
 
-			cProvider = contactDataProviders.get(cl);
-			for (Contact c2 : cProvider.getList()) {
-				GWT.log("6.1 contactDataProviders " + c2.toString());
-				// Wenn in allen Kontakten der Liste Kontakt c ist...
-				if (c2.getId() == c.getId()) {
-					int i = cProvider.getList().indexOf(c2);
-					cProvider.getList().set(i, c);
+				cProvider = contactDataProviders.get(cl);
+				
+				for (Contact c2 : cProvider.getList()) {
+					GWT.log("6.1 contactDataProviders " + c2.toString());
+					// Wenn in allen Kontakten der Liste Kontakt c ist...
+					if (c2.getId() == c.getId()) {
+						int i = cProvider.getList().indexOf(c2);
+						cProvider.getList().set(i, c);
+					}
 				}
+//				contactDataProviders.get(cl).refresh();
+				contactDataProviders.get(cl).flush();
 			}
-			contactDataProviders.get(cl).refresh();
-			contactDataProviders.get(cl).flush();
+//			contactListDataProviders.flush();
 		}
-		contactListDataProviders.flush();
 	}
 
 	/**

@@ -23,8 +23,7 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * werden. Im Programm wird die <code>CellList</code> innerhlab eines
  * <code>StackPanel</code> angezeigt.
  * 
- * 
- * @author Philipp
+ * @author Kurrle
  */
 public class ContactCellListTab {
 	TreeViewMenu treeViewMenu;
@@ -185,7 +184,6 @@ public class ContactCellListTab {
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
 			BusinessObject selection = selectionModel.getSelectedObject();
-			Window.alert("selection in model!");
 			if (selection != null) {
 				this.setSelectedContact((Contact) selection);
 				treeViewMenu.clearSelectionModelSharedContactTab();
@@ -201,8 +199,6 @@ public class ContactCellListTab {
 		 */
 		private void setSelectedContact(Contact c) {
 			if (c != null) {
-				GWT.log("3.1 Kontakt anzeigen " + c.getName());
-				Window.alert("Kontakt anzeigen" + c.getName());
 				editor.showContact(c);
 			}
 		}
@@ -271,15 +267,11 @@ public class ContactCellListTab {
 	 * 			der zu aktualisierende Kontakt.
 	 */
 	public void updateContact(Contact c) {
-		Window.alert("kontatke updaten");
 		if (c != null) {
 			for (Contact c2 : contactDataProvider.getList()) {
 				// Wenn in allen Kontakten der Liste Kontakt c ist...
 				if (c2.getId() == c.getId()) {
-					
 					int i = contactDataProvider.getList().indexOf(c2);
-					Window.alert("konatk zum updaten gefunden! index: " + i);
-					Window.alert("Status des ersetzenden kontakts: " + c.getShareStatus());
 					contactDataProvider.getList().set(i, c);
 				}
 			}

@@ -77,7 +77,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	public ExistingContactCollaborationForm() {
 
 		grid = new Grid(4, 3);
-
 		valueLabel = new Label("Eigenschaften, die der ausgewählte Nutzer sehen darf");
 
 		selValues = new CellTable<PValue>(100,ctRes);
@@ -191,7 +190,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		exit = new Button("Abbrechen/Zurück");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				e.returnToContactForm(sharedContact);
+				e.showContact(sharedContact);
 			}
 		});
 
@@ -290,8 +289,9 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 			public void onSuccess(Contact result) {
 				GWT.log("updateShareStatus on SUCCESS" );
+				sharedContact = result;
 				e.updateContactInTree(result);
-				e.showContact(result);
+				//e.showContact(result);
 			}
 		});
 	}
@@ -399,6 +399,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(Void v) {
+			updateShareStatus();
 		}
 	}
 
@@ -408,7 +409,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		}
 
 		public void onSuccess(JabicsUser u) {
-			Window.alert("Kontakt erfolgreich entteilt!");
 			removeUserFromTable(u);
 			updateShareStatus();
 			exit.setVisible(true);
