@@ -17,8 +17,6 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 
 	/**
 	 * Speichert das Ergebnis einer process Methode. Format: HTML
-	 * 
-	 * @return String
 	 */
 	private String reportText = "";
 
@@ -41,9 +39,10 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	/**
 	 * Konvertieren eines <code>Paragraph</code> in HTML.
 	 * 
-	 * @param Paragraph
+	 * @param p
+	 *            das <code>Paragraph</code> Objekt.
 	 * 
-	 * @return String in HTML-Format
+	 * @return den <code>String</code> in HTML-Format
 	 */
 	public String paragraph2HTML(Paragraph p) {
 
@@ -94,8 +93,8 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * Tabellenstruktur ausgegeben
 	 * 
 	 * @param cons
-	 *            ArrayList<ContactReport> die Kontakte, die in HTML überführt
-	 *            werden sollen
+	 *            Liste von <code>ContactReport</code>, die in HTML überführt werden
+	 *            sollen
 	 * @return String im korrekten HTML Format.
 	 */
 	public String convertContactReportsToHTML(ArrayList<ContactReport> cons) {
@@ -111,13 +110,16 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 			}
 			sb.append("<td class=\"reportCell\"> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
 			sb.append("<td class=\"reportCell\"> <p>Teilhaber: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
-			sb.append("<td class=\"reportCell\"> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" + "</td>");
-			sb.append("<td class=\"reportCell\"> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>" + "</td>");
+			sb.append(
+					"<td class=\"reportCell\"> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" + "</td>");
+			sb.append("<td class=\"reportCell\"> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>"
+					+ "</td>");
 
 			sb.append("</tr><tr class=\"contactReport2\">");
 			for (PropertyView pv : c.getContent()) {
 				if (pv.getPname() != null && pv.getPvalue() != null) {
-					sb.append("<td class=\"reportCell\"> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue() + " </p> </td>");
+					sb.append("<td class=\"reportCell\"> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue()
+							+ " </p> </td>");
 				} else if (pv.getPname() != null) {
 					sb.append("<td class=\"reportCell\"> <p> " + pv.getPname() + "</p> </td>");
 				} else if (pv.getPvalue() != null) {

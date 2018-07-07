@@ -80,8 +80,8 @@ public class Editor implements EntryPoint {
 		editor.setJabicsUser(logon.getCurrentUser());
 		editor.loadEditor();
 
-		//loginService = ClientsideSettings.getLoginService();
-		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		// loginService = ClientsideSettings.getLoginService();
+		// loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class Editor implements EntryPoint {
 	/**
 	 * Auslesen der <code>LoginInfo</code>.
 	 * 
-	 * @returns <code>LoginInfo</code>
+	 * @return <code>LoginInfo</code>
 	 */
 	public LoginInfo getLoginInfo() {
 		return this.logon;
@@ -129,7 +129,7 @@ public class Editor implements EntryPoint {
 	/**
 	 * Auslesen des <code>Editor</code>.
 	 * 
-	 * @returns <code>Editor</code>
+	 * @return Das <code>Editor</code> Objekt.
 	 */
 	public Editor getEditor() {
 		return this;

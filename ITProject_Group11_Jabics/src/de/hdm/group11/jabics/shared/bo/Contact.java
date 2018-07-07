@@ -65,7 +65,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten
 	 * und <code>JabicsUser</code> zu erzeugen.
 	 * 
-	 * @param a
+	 * @param values
 	 * @param u
 	 */
 	public Contact(ArrayList<PValue> values, JabicsUser u) {
@@ -87,8 +87,9 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Fügt einen <code>PValue</code> der <code>ArrayList<code> <code>values</code>
-	 * hinzu.
+	 * Fügt einen <code>PValue</code> der <code>values</code> hinzu.
+	 * 
+	 * @param pValue
 	 */
 	public void addPValue(PValue pValue) {
 		this.values.add(pValue);
@@ -166,6 +167,8 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 
 	/**
 	 * Entfernt eine Ausprägung aus der Liste von Ausprägungen
+	 * 
+	 * @param pValue
 	 */
 	public void removePValue(PValue pValue) {
 		this.values.remove(pValue);

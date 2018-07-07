@@ -130,9 +130,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		 */
 		ArrayList<Contact> allContactsOfUser = cMapper.findAllContacts(u);
 		if (allContactsOfUser.isEmpty())
-		for (Contact c : allContactsOfUser) {
-			c.setOwner(uMapper.findUserByContact(c));
-		}
+			for (Contact c : allContactsOfUser) {
+				c.setOwner(uMapper.findUserByContact(c));
+			}
 		for (Contact c : allContactsOfUser) {
 			ArrayList<PropertyView> pval = new ArrayList<PropertyView>();
 			ArrayList<JabicsUser> allCollaborators = cMapper.findCollaborators(c);
@@ -435,7 +435,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert eine Liste von <code>Contact</code> Objekten nach einem
 	 * oder mehreren <code>JabicsUser</code>.
 	 * 
-	 * @param contacts
+	 * @param allUserContacts
 	 *            Liste der zu filternden <code>Contact</code> Objekte.
 	 * @param finalUser
 	 *            Liste der <code>JabicsUser</code> Objekte nach denen gefiltert

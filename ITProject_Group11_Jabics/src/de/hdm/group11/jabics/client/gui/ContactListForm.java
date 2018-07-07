@@ -362,8 +362,8 @@ public class ContactListForm extends VerticalPanel {
 	 * allgemeinen Informationen) ein. Es können Kontakte ausgewählt werden und
 	 * durch Klick auf einen Button der Liste hinzugefügt werden.
 	 * 
-	 * @param ArrayList<Contact> 
-	 * 				alle Kontakte eines Nutzers
+	 * @param allC
+	 * 				Liste alle <code>Contact</code> eines Nutzers
 	 */
 	public void showAddContactPanel(ArrayList<Contact> allC) {
 		GWT.log("setvisible true addpanel");
@@ -382,8 +382,8 @@ public class ContactListForm extends VerticalPanel {
 	 * ein. Es können Kontakte ausgewählt werden und durch Klick auf einen Button
 	 * aus der Liste entfernt werden.
 	 * 
-	 * @param ArrayList<Contact> 
-	 * 			alle Kontakte eines Nutzers
+	 * @param allC
+	 * 			Liste alle <code>Contact</code> Objekte eines Nutzers
 	 */
 	public void showRemoveContactPanel(ArrayList<Contact> allC) {
 		GWT.log("7.7 removeContactPanel");
@@ -417,7 +417,7 @@ public class ContactListForm extends VerticalPanel {
 	 * Setzt den Editor.
 	 * 
 	 * @param e 
-	 * 		<code>Editor<code> der gesetzt werden soll.
+	 * 		<code>Editor</code> der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
 		this.e = e;

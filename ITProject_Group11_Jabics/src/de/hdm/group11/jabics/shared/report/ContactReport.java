@@ -196,7 +196,7 @@ public class ContactReport extends Report implements Serializable {
 	/**
 	 * Setzen der <code>collaborationInfo</code>.
 	 * 
-	 * @return collaborationInfo
+	 * @param collaborationInfo
 	 */
 	public void setCollaboratorInfo(Paragraph collaborationInfo) {
 		this.collaborationInfo = collaborationInfo;

@@ -56,12 +56,12 @@ public class SharedContactCellListTab extends Widget {
 	 * 
 	 * @param u            
 	 * 			 der Nutzer für den die Anzeige ausgegeben werden soll.
-	 * @param clRes2
+	 * @param tvm 
+	 * 			Objekt der Klasse <code>TreeViewMenu</code> welche ein <code>TreeViewMenu</code> dem <code>ContactCellListTab</code> 
+	 * 			zuordnet.
+	 * @param clRes
 	 * 			Objekt der Klasse <code>CellListResources</code>, welche die Anzeige-Resourcen für die
-	 *   		<code>ContactCellListTab</code> bereitstellt.
-	 * @param treeViewMenu2 
-	 * 			Objekt der Klasse <code>TreeViewMenu<code> welche ein <code>TreeViewMenu<code> dem <code>ContactCellListTab</code> 
-	 * 			zuordnet					
+	 *   		<code>ContactCellListTab</code> bereitstellt.				
 	 */
 	public SharedContactCellListTab(JabicsUser u, TreeViewMenu tvm, CellListResources clRes) {
 		this.user = u;
@@ -112,7 +112,7 @@ public class SharedContactCellListTab extends Widget {
 	}
 	
 	/**
-	 * Wird beim erstellen des <contact>SharedContactTabs</contact> aufgerufen. Es werden alle Kontakte des
+	 * Wird beim erstellen des <code>SharedContactTabs</code> aufgerufen. Es werden alle Kontakte des
 	 * Nutzers aus de Datenbank geoholt um diese später anzeigen zu können.
 	 * 
 	 * Des Weiteren werden die DataProvider aktuallisiert damit die Anzeige
@@ -194,8 +194,8 @@ public class SharedContactCellListTab extends Widget {
 		/**
 		 * Setzt den Editor.
 		 * 
-		 * @param editor 
-		 * 				der gesetzt werden soll.
+		 * @param c 
+		 * 				der <code>Contact</code> welcher gesetzt werden soll.
 		 */
 		private void setSelectedContact(Contact c) {
 			GWT.log("4.1 Kontakt anzeigen" + c.getName());
