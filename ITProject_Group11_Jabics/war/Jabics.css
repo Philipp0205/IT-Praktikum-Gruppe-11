@@ -42,10 +42,7 @@
 	width: 100%;
 }
 
-/*.logo {
-	width: 100px;
-	max-width: 100%;
-	padding: 5px;*/
+
 #footline {
 	text-align: center;
 }
@@ -1149,7 +1146,7 @@ html>body .gwt-DecoratedStackPanel {
 	float: right;
 	background: #6D8EC2;
 	margin-left: 500px;
-	margin-top: -43px;
+	margin-top: -49px;
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -1171,7 +1168,7 @@ html>body .gwt-DecoratedStackPanel {
 	float: right;
 	background: #6D8EC2;
 	margin-left: 600px;
-	margin-top: -43px;
+	margin-top: -49px;
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -1194,17 +1191,16 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .navbrand {
+	margin-top: 6px;
 	max-width: 20%;
 	max-height: 40px;
 }
 
 .navbarlogo {
 	width: 10px;
-	margin-left: 70px;
+	margin-left: 130px;
 	align-content: center;
-	margin-top: 1000px;
 	color: #000;
-	background-color: #8cd2f0;
 	visibility: visible;
 }
 
@@ -1219,7 +1215,7 @@ html>body .gwt-DecoratedStackPanel {
 	color: #fff;
 	font-size: 14px;
 	padding: 18px 20px 18px 20px;
-	margin-top: -43px;
+	margin-top: -49px;
 	margin-left: 360px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
@@ -1241,7 +1237,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: 700;
 	font-size: 18px !important;
 	color: #fff;
-	margin-top: -43px;
+	margin-top: -49px;
 	margin-left: -15px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;

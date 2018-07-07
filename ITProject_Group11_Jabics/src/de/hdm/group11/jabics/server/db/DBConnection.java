@@ -61,7 +61,7 @@ public class DBConnection {
 				url = localUrl;
 			}
 
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(url);
 		} catch (Exception e) {
 			con = null;
 			e.printStackTrace();
