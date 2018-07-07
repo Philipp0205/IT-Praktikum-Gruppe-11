@@ -13,6 +13,27 @@
 	color: black;
 }
 
+#report {
+	
+}
+
+#reportTable {
+	padding: 4px;
+	border: solid black 1px !important;
+}
+
+#contactReport1 {
+	padding: 4px;
+}
+
+#contactReport2 {
+	padding: 4px;
+}
+
+#reportSpacer {
+	
+}
+
 .deleteAccount {
 	position: absolute;
 	right: 5px;
@@ -41,7 +62,6 @@
 #OuterTabel, #Tabellenstruktur {
 	width: 100%;
 }
-
 
 #footline {
 	text-align: center;
@@ -247,8 +267,9 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 15px;
 }
 
-.sharebtn {
+.sharebtn:hover {
 	text-decoration: none;
+	background: #accbf0 !important;
 	cursor: pointer;
 	border: solid #000000 0px !important;
 }
@@ -284,6 +305,7 @@ html>body .gwt-DecoratedStackPanel {
 	background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
 	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
 	text-decoration: none;
+	background: #accbf0 !important;
 	cursor: pointer;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
@@ -362,7 +384,14 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 	text-decoration: none;
-	margin-top: 17px;
+	margin-top: 18px;
+}
+
+.paddbutton:hover {
+	background: #accbf0 !important;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
 }
 /*--------------------ContactListForm--------------------*/
 .clremlabel {
@@ -557,7 +586,7 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
-	margin-top:3px;
+	margin-top: 3px;
 	font-weight: bold;
 }
 
@@ -787,8 +816,13 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	padding: 6px 14px 6px 14px !important;
 	border: solid #000000 0px !important;
-	border-radius: 3px;
+	border-radius: 0px;
 	text-decoration: none;
+}
+
+.removeexisting:hover {
+	cursor: pointer;
+	background: #9FB8E0 !important;
 }
 /*-------------------ContactShowForm-------------------*/
 /*.get.textCell{
@@ -1090,6 +1124,18 @@ html>body .gwt-DecoratedStackPanel {
 	border-radius: 0px;
 	text-decoration: none;
 	margin-top: 50px;
+	margin-left: 20px;
+}
+.RemBtn {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 10px;
 	margin-left: 20px;
 }
 
