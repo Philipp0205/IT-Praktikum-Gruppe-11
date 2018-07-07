@@ -109,19 +109,19 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 			} else {
 				sb.append("<tr class=\"contactReport1\"><td> <b>Kein Anzeigename</b> </td>");
 			}
-			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
-			sb.append("<td> <p>Teilhaber: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
-			sb.append("<td> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" + "</td>");
-			sb.append("<td> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>" + "</td>");
+			sb.append("<td class=\"reportCell\"> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
+			sb.append("<td class=\"reportCell\"> <p>Teilhaber: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
+			sb.append("<td class=\"reportCell\"> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" + "</td>");
+			sb.append("<td class=\"reportCell\"> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>" + "</td>");
 
 			sb.append("</tr><tr class=\"contactReport2\">");
 			for (PropertyView pv : c.getContent()) {
 				if (pv.getPname() != null && pv.getPvalue() != null) {
-					sb.append("<td> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue() + " </p> </td>");
+					sb.append("<td class=\"reportCell\"> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue() + " </p> </td>");
 				} else if (pv.getPname() != null) {
-					sb.append("<td> <p> " + pv.getPname() + "</p> </td>");
+					sb.append("<td class=\"reportCell\"> <p> " + pv.getPname() + "</p> </td>");
 				} else if (pv.getPvalue() != null) {
-					sb.append("<td> <p> " + pv.getPvalue() + "</p> </td>");
+					sb.append("<td class=\"reportCell\"> <p> " + pv.getPvalue() + "</p> </td>");
 				}
 			}
 			sb.append("</tr><tr class=\"reportSpacer\"> <td> <b>&nbsp</b> </td>");

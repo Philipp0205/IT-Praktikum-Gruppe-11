@@ -167,19 +167,19 @@ public class ReportAdmin {
 		datepicker.setStyleName("datepicker");
 		datepicker.setVisible(false);
 		navPanel.add(verPanel1);
-		navPanel.add(verPanel2);
 		navPanel.add(verPanel3);
+		navPanel.add(verPanel2);
 		navPanel.add(verPanel4);
 		navPanel.add(filteredReportButton);
+		
 		userPanel.add(userSuggest);
 		userPanel.add(userTable);
-		navPanel.add(addRemovePanel);
-		GWT.log("Report6");
+
 		navPanel.add(userPanel);
-//		navPanel.add(addremovepanel);
+		navPanel.add(addRemovePanel);
+
 		navPanel.add(sharedContactsButton);
 		navPanel.add(allReportButton);
-		GWT.log("Report");
 		
 		//Stylenames
 		

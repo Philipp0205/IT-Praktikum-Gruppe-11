@@ -334,11 +334,8 @@ public class ContactListTreeTab implements TreeViewModel {
 
 				} else
 					i++;
-
 			}
-
 		}
-
 	}
 
 	/*

@@ -185,7 +185,6 @@ public class ShowContactForm extends VerticalPanel {
 		} else {
 			renderTable(currentContact.getValues());
 		}
-		Window.alert("ShowContact onload ende");
 	}
 
 	/**
@@ -297,7 +296,6 @@ public class ShowContactForm extends VerticalPanel {
 
 		public void onSuccess(JabicsUser result) {
 			if (result != null) {
-				GWT.log("Besitzer geholt!");
 				currentContact.setOwner(result);
 				userIsOwner();
 			} else
@@ -312,7 +310,6 @@ public class ShowContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			Window.alert("ShowContact PValues geholt");
 			if (result != null) {
 				currentContact.setValues(result);
 				renderTable(result);
