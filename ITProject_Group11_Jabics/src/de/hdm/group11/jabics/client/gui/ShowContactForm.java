@@ -33,6 +33,11 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
+/**
+ * Eine <code>ShowContactListForm</code> welche einen <code>Contact</code> zur Anzeige bringt.
+ * 
+ * @author Anders, Kurrle, Brase
+ */
 public class ShowContactForm extends VerticalPanel {
 
 	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
@@ -71,7 +76,11 @@ public class ShowContactForm extends VerticalPanel {
 		@Source("JabicsCellTable.css")
 		CellTable.Style cellTableStyle();
 	}
-
+	
+	/**
+	 * Konstruktor welcher eine Instanz von <code>ShowContactForm</code> erzeugt.
+	 * Die <code>Property<code>s und die <code>PValue<code>s werden in einer Tabelle ausgebegen.
+	 */
 	public ShowContactForm() {
 
 		editPanel.add(editLabel);
@@ -170,7 +179,10 @@ public class ShowContactForm extends VerticalPanel {
 		}
 
 	}
-
+	
+	/**
+	 * Wird beim ersten laden der ContactListForm ausgeführt.
+	 */
 	public void onLoad() {
 		userIsOwner();
 		// den Status des Boolschen Werts userIsOwner ermitteln
@@ -235,9 +247,11 @@ public class ShowContactForm extends VerticalPanel {
 		valueProvider.setList(result);
 		valueProvider.flush();
 	}
-
+	
+	/**
+	 *  Setzt den aktuellen User als Besitzer des Kontaktes.
+	 */
 	public void userIsOwner() {
-		GWT.log("userIsOwner");
 		try {
 			if (currentContact.getOwner() != null) {
 				if (currentContact.getOwner().getId() == u.getId()) {
@@ -247,15 +261,19 @@ public class ShowContactForm extends VerticalPanel {
 				}
 			} else {
 				editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
-				GWT.log("userIsOwner holt den Owner");
 			}
 
 		} catch (Exception e) {
-			GWT.log("Besitzer in Kontakt nicht gesetzt");
 			editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
 		}
 	}
-
+	
+	/**
+	 * Setzt den aktuellen Kontakt.
+	 * 
+	 * @param c
+	 * 			<code>Contact</code>welcher gesetzt werden soll.
+	 */
 	public void setContact(Contact c) {
 		if (c != null) {
 			this.currentContact = c;
@@ -269,7 +287,13 @@ public class ShowContactForm extends VerticalPanel {
 			Window.alert("kontakt nicht bekannt");
 		}
 	}
-
+	
+	/**
+	 * Setzt den User der ContactListForm
+	 * 
+	 * @param u 
+	 * 			<code>User</code> der gesetzt werden soll.
+	 */
 	public void setUser(JabicsUser u) {
 		if (u != null) {
 			this.u = u;
@@ -277,14 +301,24 @@ public class ShowContactForm extends VerticalPanel {
 			Window.alert("user is null");
 
 	}
-
+	
+	/**
+	 * Setzt den Editor.
+	 * 
+	 * @param e 
+	 * 		<code>Editor<code> der gesetzt werden soll.
+	 */
 	public void setEditor(EditorAdmin e) {
 		if (e != null) {
 			this.e = e;
 		} else
 			Window.alert("editor null");
 	}
-
+	
+	/**
+	 * Callback welcher ausgelöst weg wenn der Owner des Kontakts bezogen wird.
+	 * 
+	 */
 	class GetOwnerOfContactCallback implements AsyncCallback<JabicsUser> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
@@ -299,7 +333,11 @@ public class ShowContactForm extends VerticalPanel {
 				Window.alert("Besitzer konnte nicht ermittelt werden");
 		}
 	}
-
+	
+	/**
+	 * Callback welcher ausgelöst wird, wenn die <code>PValues</code> des Kontakts beozogen werden.
+	 *
+	 */
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
@@ -314,26 +352,41 @@ public class ShowContactForm extends VerticalPanel {
 			}
 		}
 	}
-
+	
+	/**
+	 * <code>CLickHandler</code> welcher für das Editieren eines Kontaktes verantwortlich ist.
+	 *
+	 */
 	class editClickHandler implements ClickHandler {
 		public void onClick(ClickEvent ev) {
 			e.editContact(currentContact);
 		}
 	}
-
+	
+	/**
+	 * <code>ClickHandler</code> welcher das Anzeigen des <code>ExisitingContactCollaborationForm</code> auslöst.
+	 *
+	 */
 	class shareExistingClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
 			GWT.log(currentContact.getName());
 			e.showExistingContactCollab(currentContact);
 		}
 	}
-
+	
+	/**
+	 * <code>ClickHandler</code> welcher das Anzeigen der <code>ContactForm</code> auslöst.
+	 */
 	class shareClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
 			e.showContactCollab(currentContact);
 		}
 	}
-
+	
+	/**
+	 * <code>ClickHanlder</code>Welcher für das Löschen eines Kontaktst verantwortlich ist.
+	 *
+	 */
 	class deleteClickHandler implements ClickHandler {
 		public void onClick(ClickEvent e) {
 			editorService.deleteContact(currentContact, u, new AsyncCallback<Void>() {
