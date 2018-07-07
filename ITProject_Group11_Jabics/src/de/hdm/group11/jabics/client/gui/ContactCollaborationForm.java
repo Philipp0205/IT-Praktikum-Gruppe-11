@@ -207,6 +207,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		exit = new Button("Abbrechen/Zurück");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
+				finalUser = null;
+				userDataProvider.flush();
+				multiSelectionModel.clear();
 				e.showContact(sharedContact);
 			}
 		});
@@ -456,7 +459,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	public void updateShareStatus() {
 		editorService.getUpdatedContact(sharedContact, new AsyncCallback<Contact>() {
 			public void onFailure(Throwable caught) {
-				Window.alert("Failed to update Contact" + caught.toString());
+				Window.alert("Update fehlgeschlagen");
 			}
 
 			public void onSuccess(Contact result) {

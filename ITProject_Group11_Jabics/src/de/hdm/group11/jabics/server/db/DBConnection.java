@@ -23,11 +23,9 @@ public class DBConnection {
 	 */
 	private static Connection con = null;
 
-	private static String user = "root";
-	private static String password = "ThieskesOberesDrittel!";
 	private static String url;
 	private static String googleUrl = "jdbc:google:mysql://it-projekt-jabics:europe-west3:jabics/jabics?user=root&password=ThieskesOberesDrittel!";
-	private static String localUrl = "jdbc:mysql://35.198.159.112:3306/jabics?verifyServerCertificate=false&useSSL=true";
+	private static String localUrl = "jdbc:mysql://127.0.0.0:3306/jabics?user=root&password=1234";
 
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
@@ -63,7 +61,7 @@ public class DBConnection {
 				url = localUrl;
 			}
 
-			con = DriverManager.getConnection(url, user, password);
+			con = DriverManager.getConnection(url);
 		} catch (Exception e) {
 			con = null;
 			e.printStackTrace();
