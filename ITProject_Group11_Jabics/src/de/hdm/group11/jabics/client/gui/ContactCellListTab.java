@@ -268,16 +268,11 @@ public class ContactCellListTab {
 	 * 			der zu aktualisierende Kontakt.
 	 */
 	public void updateContact(Contact c) {
-		Window.alert("im tab updaten 2.2: " + c.getId());
 		if (c != null) {
-			Window.alert("im tree updaten 3: " + c.getId());
 			for (Contact c2 : contactDataProvider.getList()) {
-				Window.alert("im tree updaten 4: " + c.getId());
 				// Wenn in allen Kontakten der Liste Kontakt c ist...
 				if (c2.getId() == c.getId()) {
-					Window.alert("im tree updaten 5: " + c.getId());
 					int i = contactDataProvider.getList().indexOf(c2);
-					Window.alert("index " + i);
 					contactDataProvider.getList().set(i, c);
 				}
 			}
