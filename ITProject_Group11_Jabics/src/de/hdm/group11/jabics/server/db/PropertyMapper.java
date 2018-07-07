@@ -76,14 +76,6 @@ public class PropertyMapper {
 			// Ausführen des SQL-Statements
 			stmt.executeUpdate("DELETE FROM property WHERE propertyID = " + p.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -118,15 +110,6 @@ public class PropertyMapper {
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
 				al.add(p);
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe der ArrayList
@@ -164,15 +147,6 @@ public class PropertyMapper {
 				p.setStandard(rs.getBoolean("isStandard"));
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des Property Objekts
@@ -213,18 +187,6 @@ public class PropertyMapper {
 			// Property Objekt mit ID befüllen
 			if (rs.next()) {
 				p.setId(rs.getInt(1));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des Property Objekts
