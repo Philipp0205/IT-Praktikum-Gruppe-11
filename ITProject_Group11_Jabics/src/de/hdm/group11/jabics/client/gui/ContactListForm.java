@@ -106,7 +106,8 @@ public class ContactListForm extends VerticalPanel {
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	/**
-	 * Eine neue ContactListForm erstellen 2 Reihen: Die erste bietet die Optionen
+	 * Konstruktor welcher eine Instanz von <code>ContactListForm</code> erzeugt.
+	 * Eine neue <code>ContactListForm</code> erstellt 2 Reihen: Die erste bietet die Optionen
 	 * innerhalb der Liste an (Kontakt hinzufügen, Kontakt entfernen, suchen). Die
 	 * zweite Reihe bietet Funktionen wie Liste teilen, löschen und abbrechen (Dies
 	 * ist der vermutlich längste Konstruktor der Welt)
@@ -345,7 +346,10 @@ public class ContactListForm extends VerticalPanel {
 		removeButtonPanel.setVisible(true);
 		removeContactsPanel.setVisible(false);
 	}
-
+	
+	/**
+	 * Speichert die Änderungen, indem die <code>ContctList</code> aktuallisiert wird.
+	 */
 	void save() {
 		currentList.setListName(listBox.getValue());
 		editorService.updateContactList(currentList, new UpdateContactListCallback());
@@ -358,7 +362,8 @@ public class ContactListForm extends VerticalPanel {
 	 * allgemeinen Informationen) ein. Es können Kontakte ausgewählt werden und
 	 * durch Klick auf einen Button der Liste hinzugefügt werden.
 	 * 
-	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> 
+	 * 				alle Kontakte eines Nutzers
 	 */
 	public void showAddContactPanel(ArrayList<Contact> allC) {
 		GWT.log("setvisible true addpanel");
@@ -377,7 +382,8 @@ public class ContactListForm extends VerticalPanel {
 	 * ein. Es können Kontakte ausgewählt werden und durch Klick auf einen Button
 	 * aus der Liste entfernt werden.
 	 * 
-	 * @param ArrayList<Contact> alle Kontakte eines Nutzers
+	 * @param ArrayList<Contact> 
+	 * 			alle Kontakte eines Nutzers
 	 */
 	public void showRemoveContactPanel(ArrayList<Contact> allC) {
 		GWT.log("7.7 removeContactPanel");

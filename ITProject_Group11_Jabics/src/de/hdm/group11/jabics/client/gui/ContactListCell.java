@@ -53,10 +53,6 @@ public class ContactListCell extends AbstractCell<ContactList> {
 			}
 		}
 
-		//sb.appendHtmlConstant("<div>");
-		
-		//sb.appendHtmlConstant("</div>");
-
 	}
 
 }

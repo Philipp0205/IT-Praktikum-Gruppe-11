@@ -76,6 +76,8 @@ public class ShowContactForm extends VerticalPanel {
 
 		editPanel.add(editLabel);
 		editPanel.add(editButton);
+		editPanel.add(deleteLabel);
+		editPanel.add(deleteButton);
 		
 		shareSubPanel1.add(shareLabel);
 		shareSubPanel1.add(shareContactButton);
@@ -85,8 +87,6 @@ public class ShowContactForm extends VerticalPanel {
 		sharePanel.add(shareSubPanel1);
 		sharePanel.add(shareSubPanel2);
 		
-		deletePanel.add(deleteLabel);
-		deletePanel.add(deleteButton);
 		
 		mainPanel.add(sharePanel);
 		mainPanel.add(deletePanel);
