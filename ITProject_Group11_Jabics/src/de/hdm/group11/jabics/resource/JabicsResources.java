@@ -12,25 +12,10 @@ import com.google.gwt.resources.client.ImageResource;
 public interface JabicsResources extends ClientBundle  {
 	JabicsResources INSTANCE = GWT.create(JabicsResources.class);
 	
-	 @Source("LogoSmall.png")
-	  ImageResource logo();
+	 @Source("isshared.png")
+	  ImageResource isshared();
 	 
-	 @Source("greendot.png")
-	  ImageResource greendot();
-	 
-	 @Source("greendot.png")
-	  ImageResource greendotlist();
-	 
-	 @Source("yellowdot.png")
-	  ImageResource yellowdot();
-	 
-	 @Source("reddot.png")
-	  ImageResource reddot();
-	 
-	 @Source("reddot.png")
-	  ImageResource reddotlist();
-	 
-	 @Source("Save.png")
-	  ImageResource save();
+	 @Source("isnotshared.png")
+	  ImageResource isnotshared();
 
 }

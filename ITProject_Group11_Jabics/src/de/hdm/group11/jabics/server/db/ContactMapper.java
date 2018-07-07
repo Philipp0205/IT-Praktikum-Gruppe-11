@@ -83,14 +83,6 @@ public class ContactMapper {
 			stmt.executeUpdate("DELETE FROM contactCollaboration WHERE systemUserID = " + u.getId()
 					+ " AND contactID = " + c.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -117,15 +109,6 @@ public class ContactMapper {
 
 			// Befüllen und ausführen des zweiten SQL-Statements
 			stmt2.executeUpdate("DELETE FROM contact WHERE contactID = " + c.getId());
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -173,15 +156,6 @@ public class ContactMapper {
 				al.add(c);
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
 			// Rückgabe der mit <code>Contact</code>-Objekt befüllten ArrayList.
 			return al;
 		} catch (SQLException e) {
@@ -227,15 +201,6 @@ public class ContactMapper {
 				al.add(u);
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
 			// Rückgabe der mit JabicsUsern befüllten ArrayList
 			return al;
 		} catch (SQLException e) {
@@ -272,15 +237,6 @@ public class ContactMapper {
 				c.setDateCreated(rs.getTimestamp("dateCreated"));
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				c.setName(rs.getString("nickname"));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des Contact Objekts
@@ -330,15 +286,6 @@ public class ContactMapper {
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
 				c.setName(rs.getString("nickname"));
 				al.add(c);
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe der mit Contact Objekten befüllten ArrayList
@@ -412,15 +359,6 @@ public class ContactMapper {
 				}
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
 			// Rückgabe der ArrayList<BoStatus>
 			return al;
 		} catch (SQLException e) {
@@ -454,15 +392,6 @@ public class ContactMapper {
 			// Befüllen und ausführen des SQL-Statements
 			stmt.executeUpdate("INSERT INTO contactCollaboration (isOwner, contactID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + c.getId() + ", " + u.getId() + ")");
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 
 			// Rückgabe des Contact-Objekts
 			return c;
@@ -510,18 +439,6 @@ public class ContactMapper {
 				}
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
 			// Rückgabe des Objekts.
 			return c;
 		} catch (SQLException e) {
@@ -555,18 +472,6 @@ public class ContactMapper {
 			// Auslesen und setzen des letzten Updates
 			if (rs.next()) {
 				c.setDateUpdated(rs.getTimestamp("dateUpdated"));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!stmt2.isClosed()) {
-				stmt2.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 		} catch (SQLException e) {

@@ -80,6 +80,9 @@ public class ContactListForm extends VerticalPanel {
 	// Panels, die erscheinen, wenn kontakte hinzugefügt/entfernt werden
 	VerticalPanel addContactsPanel = new VerticalPanel();
 	VerticalPanel removeContactsPanel = new VerticalPanel();
+	
+	HorizontalPanel addPanelButtons = new HorizontalPanel();
+	HorizontalPanel removePanelButtons = new HorizontalPanel();
 
 	Button searchInListButton = new Button("🔍");
 	Button deleteButton = new Button("🗑");
@@ -95,8 +98,8 @@ public class ContactListForm extends VerticalPanel {
 	Button remLabel = new Button("Kontakt");
 	Button searchLabel = new Button("Suche");
 
-	Button doneRemove = new Button("Fertig");
-	Button doneAdd = new Button("Fertig");
+	Button doneRemove = new Button("✖");
+	Button doneAdd = new Button("✖");
 	Button remove = new Button("Ausgewählte Kontakte aus Liste entfernen");
 	Button add = new Button("Ausgewählte Kontakte hinzufügen");
 
@@ -129,6 +132,12 @@ public class ContactListForm extends VerticalPanel {
 		mainPanel1.add(addButtonPanel);
 		mainPanel1.add(removeButtonPanel);
 		mainPanel1.add(searchButtonPanel);
+		
+		addPanelButtons.add(add);
+		addPanelButtons.add(doneAdd);
+		
+		removePanelButtons.add(remove);
+		removePanelButtons.add(doneRemove);
 
 		removeButton.setStyleName("cdeleteBtn");
 		addButton.setStyleName("caddButton");
@@ -243,12 +252,10 @@ public class ContactListForm extends VerticalPanel {
 		selValuesRemove.setColumnWidth(contactRemove, 300, Unit.PX);
 
 		removeContactsPanel.add(selValuesRemove);
-		removeContactsPanel.add(remove);
-		removeContactsPanel.add(doneRemove);
+		removeContactsPanel.add(removePanelButtons);
 
 		addContactsPanel.add(selValuesAdd);
-		addContactsPanel.add(add);
-		addContactsPanel.add(doneAdd);
+		addContactsPanel.add(addPanelButtons);
 	}
 
 	/**

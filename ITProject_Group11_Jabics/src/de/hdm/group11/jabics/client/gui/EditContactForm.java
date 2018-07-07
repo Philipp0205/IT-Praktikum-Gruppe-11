@@ -63,15 +63,14 @@ public class EditContactForm extends VerticalPanel {
 	DatePicker dp2;
 	Button done2;
 	Date tempDate;
-	
+
+	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+
 	/**
 	 * Wird beim erstellen der <code>EditContactForm</code> aufgerufen. Initalisiert alle Objekte, welche die 
 	 * <code>EditContactform</code> benötigt. Vor allem GWT-Panels und Objekte der Klasse <code>Button</code> 
 	 * Des Weiteren werden <code>ClickHandler<c/ode> für die Buttons gesetzt.
 	 */
-
-	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
-  
 	public void onLoad() {
 		if (contact != null) {
 			GWT.log("EditCont");
@@ -293,10 +292,10 @@ public class EditContactForm extends VerticalPanel {
 
 		// Überprüfen, ob der Name vollständig gesetzt ist
 		boolean nameExistent = false;
-		for (PValue pv : allPV) {
-			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
-				GWT.log("Name vorhanden");
-			nameExistent = true;
+		for (PValue pv : filledPV) {
+			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2) {
+				nameExistent = true;
+			}
 		}
 
 		// alle pv aus dem PRopArray rausziehen und hier speichern
@@ -317,10 +316,6 @@ public class EditContactForm extends VerticalPanel {
 					public void onSuccess(Contact result) {
 
 						if (result != null) {
-							for (PValue pv : result.getValues()) {
-								GWT.log(pv.toString());
-							}
-
 							setContact(result);
 							e.addContactToTree(result);
 							addPPanel.setVisible(true);

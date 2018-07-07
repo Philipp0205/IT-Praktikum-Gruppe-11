@@ -68,7 +68,7 @@ public class SearchForm extends VerticalPanel {
 	Label propertyLabel;
 	Label datatypeLabel;
 	ListBox datatypemenu;
-	Label noresultLabel;
+	Label noResultLabel;
 
 	MultiWordSuggestOracle propertyToSuggest;
 	SuggestBox propertySuggest;
@@ -96,7 +96,7 @@ public class SearchForm extends VerticalPanel {
 	public void onLoad() {
 		listInfoLabel = new Label();
 		ausgabeLabel = new Label();
-		noresultLabel = new Label("Keine Ergebnisse.");
+		noResultLabel = new Label("Keine Ergebnisse.");
 		verPanel1 = new VerticalPanel();
 		verPanel2 = new VerticalPanel();
 		verPanel3 = new VerticalPanel();
@@ -122,7 +122,7 @@ public class SearchForm extends VerticalPanel {
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
 		listInfoLabel.setStyleName("contactListHeadline");
 		
-		noresultLabel.setStyleName("reslabel");
+		noResultLabel.setStyleName("reslabel");
 		ausgabeLabel.setStyleName("successfulresultl");
 		
 		verPanel1.add(propertyLabel);
@@ -153,11 +153,11 @@ public class SearchForm extends VerticalPanel {
 		this.add(mainpanel);
 		this.add(sp);
 		this.add(ausgabeLabel);
-		this.add(noresultLabel);
+		this.add(noResultLabel);
 		this.add(back);
 
 		ausgabeLabel.setVisible(false);
-		noresultLabel.setVisible(false);
+		noResultLabel.setVisible(false);
 
 		ct.setEditor(e);
 
@@ -351,7 +351,7 @@ public class SearchForm extends VerticalPanel {
 
 	
 	public void showNoResults() {
-		noresultLabel.setVisible(true);
+		noResultLabel.setVisible(true);
 	}
 	/**
 	 * Eine Methode zum Setzen der zu durchsuchenden Kontaktliste.
@@ -389,6 +389,7 @@ public class SearchForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Contact> result) {
+			noResultLabel.setVisible(false);
 			if (result != null) {
 				if(result.isEmpty()) {
 					showNoResults();
@@ -445,7 +446,6 @@ public class SearchForm extends VerticalPanel {
 			propertySuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
 					finalProperty.setLabel(propertySuggest.getText());
-					GWT.log(">>>>>>>>>>>>>" + finalProperty.getLabel());
 					finalPVal.setProperty(finalProperty);
 					// finalPVal.getProperty().setType(Type.STRING);
 				}

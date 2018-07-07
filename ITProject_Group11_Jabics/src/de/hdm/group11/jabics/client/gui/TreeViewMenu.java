@@ -9,6 +9,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -38,7 +39,6 @@ public class TreeViewMenu extends VerticalPanel {
 	StackPanel stackPanel1;
 	StackPanel stackPanel2;
 	CellTree tree;
-	ContactCellListTab cellListTab;
 	
 	SafeHtmlBuilder builder;
 	SafeHtml safeHtml;
@@ -111,12 +111,20 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public void removeContact(Contact c) {
+		contactListTab.removeContact(c);
 		contactTab.removeContact(c);
+		sharedContactListTab.removeContact(c);
 	}
 
 	public void updateContact(Contact c) {
 		contactListTab.updateContact(c);
+		Window.alert("kontakt im tree updated");
+		Window.alert("ist contact tab null?");
+		if(contactTab == null) {
+			Window.alert("ja");
+		} else Window.alert("nein");
 		contactTab.updateContact(c);
+		Window.alert("kontakt im tab geupdatet");
 		sharedContactListTab.updateContact(c);
 	}
 
@@ -126,7 +134,6 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public StackPanel getStackPanel2() {
 		return this.stackPanel2;
-
 	}
 
 	public void setEditor(EditorAdmin editor) {

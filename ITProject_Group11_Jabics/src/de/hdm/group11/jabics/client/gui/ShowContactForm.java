@@ -85,6 +85,8 @@ public class ShowContactForm extends VerticalPanel {
 
 		editPanel.add(editLabel);
 		editPanel.add(editButton);
+		editPanel.add(deleteLabel);
+		editPanel.add(deleteButton);
 		
 		shareSubPanel1.add(shareLabel);
 		shareSubPanel1.add(shareContactButton);
@@ -94,8 +96,6 @@ public class ShowContactForm extends VerticalPanel {
 		sharePanel.add(shareSubPanel1);
 		sharePanel.add(shareSubPanel2);
 		
-		deletePanel.add(deleteLabel);
-		deletePanel.add(deleteButton);
 		
 		mainPanel.add(sharePanel);
 		mainPanel.add(deletePanel);
@@ -135,10 +135,10 @@ public class ShowContactForm extends VerticalPanel {
 			@Override
 			public ImageResource getValue(PValue object) {
 				if (object.getShareStatus() == BoStatus.IS_SHARED) {
-					return JabicsResources.INSTANCE.greendot();
+					return JabicsResources.INSTANCE.isshared();
 				}
 				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
-					return JabicsResources.INSTANCE.reddot();
+					return JabicsResources.INSTANCE.isnotshared();
 				}
 				return null; 
 				
@@ -197,7 +197,6 @@ public class ShowContactForm extends VerticalPanel {
 		} else {
 			renderTable(currentContact.getValues());
 		}
-		Window.alert("ShowContact onload ende");
 	}
 
 	/**
@@ -287,8 +286,14 @@ public class ShowContactForm extends VerticalPanel {
 			Window.alert("kontakt nicht bekannt");
 		}
 	}
-	
-	/**
+  
+
+	public void removeContact(){
+		e.removeContact(currentContact);
+		e.showMenuOnly();
+	}
+
+  /**
 	 * Setzt den User der ContactListForm
 	 * 
 	 * @param u 
@@ -326,7 +331,6 @@ public class ShowContactForm extends VerticalPanel {
 
 		public void onSuccess(JabicsUser result) {
 			if (result != null) {
-				GWT.log("Besitzer geholt!");
 				currentContact.setOwner(result);
 				userIsOwner();
 			} else
@@ -345,7 +349,6 @@ public class ShowContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			Window.alert("ShowContact PValues geholt");
 			if (result != null) {
 				currentContact.setValues(result);
 				renderTable(result);
@@ -388,13 +391,15 @@ public class ShowContactForm extends VerticalPanel {
 	 *
 	 */
 	class deleteClickHandler implements ClickHandler {
-		public void onClick(ClickEvent e) {
+		public void onClick(ClickEvent ec) {
 			editorService.deleteContact(currentContact, u, new AsyncCallback<Void>() {
 				public void onFailure(Throwable caught) {
 					Window.alert("Löschen fehlgeschlagen");
 				}
 
 				public void onSuccess(Void v) {
+					Window.alert("kontakt gelöscht");
+					removeContact();
 				}
 			});
 		}

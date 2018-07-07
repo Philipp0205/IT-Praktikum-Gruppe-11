@@ -66,6 +66,8 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 */
 	public ContactCollaborationForm() {
 
+		grid = new Grid(5, 4);
+
 		// Alles, was mit der PVal Tabelle zu tun hat
 		valueTable = new CellTable<PValue>(100, ctRes);
 		valueTable.setStyleName("ccvaltable");
@@ -171,6 +173,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		addButton.setStyleName("userselectbtn");
 		addButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
+				if (finalUser == null) {
+					finalUser = new ArrayList<JabicsUser>();
+				}
 				if (suggestedUser != null) {
 					finalUser.add(suggestedUser);
 				}
@@ -200,13 +205,17 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		shareContact.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
 				shareContactWithAll();
-				//e.showContact(sharedContact);
+				// e.showContact(sharedContact);
 			}
 		});
 
-		exit = new Button("Abbrechen/Zurück");
+		exit = new Button("Abbrechen");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
+				finalUser = new ArrayList<JabicsUser>();
+				userDataProvider.setList(finalUser);
+				userDataProvider.flush();
+				multiSelectionModel.clear();
 				e.showContact(sharedContact);
 			}
 		});
@@ -223,8 +232,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		fillSuggestBox();
 		fillPValueBox(sharedContact.getValues());
 
-		GWT.log("collab4");
-		grid = new Grid(5, 4);
 		HorizontalPanel userselectPanel = new HorizontalPanel();
 		HorizontalPanel sharePanel = new HorizontalPanel();
 		// grid.setSize("500px", "400px");
@@ -246,8 +253,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 * Befüllt die PValueBox, welche alle Eigenschaftsausprägungen eines Kontakes
 	 * anzeigt.
 	 * 
-	 * @param pv 
-	 * 			eine ArrayList von PValues welche angezeigt werden soll.
+	 * @param pv eine ArrayList von PValues welche angezeigt werden soll.
 	 */
 	public void fillPValueBox(ArrayList<PValue> pv) {
 		valueProvider.setList(pv);
@@ -279,14 +285,13 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	}
 
 	/**
-	 * Die onLoadd Methode, die alle Nutzer für die SuggestBox lädt und erst im
+	 * Die onLoad Methode, die alle Nutzer für die SuggestBox lädt und erst im
 	 * Callback dieses RPC weiterläuft
 	 */
 	public void onLoad() {
-		GWT.log("ONLOAD");
+		exit.setText("Abbruch");
 		allUser = new ArrayList<JabicsUser>();
 		retrieveUser();
-
 	}
 
 	/**
@@ -302,22 +307,19 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	/**
 	 * Setzt die Variable allUser, die alle User enhält.
 	 * 
-	 * @param user
-	 * 				eine ArrayList, in der alle <code>JabicsUser</code> enthalten sind.
+	 * @param user eine ArrayList, in der alle <code>JabicsUser</code> enthalten
+	 *             sind.
 	 */
 	private void setAllUser(ArrayList<JabicsUser> user) {
-		GWT.log("alleNutzersetzen");
-		this.allUser = user;
-		for (JabicsUser u : this.allUser) {
-			GWT.log(u.getEmail());
+		if (user != null) {
+			this.allUser = user;
 		}
 	}
 
 	/**
 	 * Setzt den aktuellen Kontakt, der geteilt werden soll.
 	 * 
-	 * @param c
-	 * 			Kontakt der gesetzt werden soll.
+	 * @param c Kontakt der gesetzt werden soll.
 	 */
 	public void setContact(Contact c) {
 		if (c != null) {
@@ -358,8 +360,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 * Führt den RPC zur Freigabe eines Kontakts mit den ausgewählten Parametern
 	 * durch.
 	 * 
-	 * @param u
-	 * 			 der freizugebende User
+	 * @param u der freizugebende User
 	 */
 	public void shareContactWithUser(JabicsUser u) {
 		GWT.log(selectedUser.getEmail());
@@ -388,6 +389,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(Void v) {
 			updateShareStatus();
+			exit.setText("Zurück");
 		}
 	}
 
@@ -456,14 +458,13 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	public void updateShareStatus() {
 		editorService.getUpdatedContact(sharedContact, new AsyncCallback<Contact>() {
 			public void onFailure(Throwable caught) {
-				Window.alert("Failed to update Contact" + caught.toString());
+				Window.alert("Update fehlgeschlagen");
 			}
 
 			public void onSuccess(Contact result) {
 				GWT.log("Update ShareStatus: On Sucess");
 				setContact(result);
 				e.updateContactInTree(result);
-				e.showContact(result);
 			}
 		});
 	}
