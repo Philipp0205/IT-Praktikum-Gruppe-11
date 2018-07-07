@@ -148,7 +148,6 @@ public class UserMapper {
 
 			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
 			while (rs.next()) {
-				System.out.println("Owner gefunden");
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));

@@ -416,26 +416,29 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 */
 	public JabicsUser deleteCollaboration(Contact c, JabicsUser u) {
 		System.out.println("Lösche Kollaboration für User " + u.getId() + c.getId());
-		ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
-		ArrayList<PValue> pVal = pvMapper.findPValueForContact(c);
-		for (PValue pv : pVal) {
-			for (JabicsUser uu : users) {
-				if (u.getId() == uu.getId()) {
-					pvMapper.deleteCollaboration(pv, u);
+		if (c != null && u != null) {
+			ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
+			ArrayList<PValue> pVal = pvMapper.findPValueForContact(c);
+			JabicsUser owner = uMapper.findUserByContact(c);
+			if (owner.getId() != u.getId()) {
+				for (PValue pv : pVal) {
+					for (JabicsUser uu : users) {
+						if (u.getId() == uu.getId()) {
+							pvMapper.deleteCollaboration(pv, u);
+						}
+					}
 				}
+
+				cMapper.deleteCollaboration(c, u);
 			}
 		}
-		// if (users.isEmpty() || (users.size() == 1 && (users.get(0).getId() ==
-		// u.getId()))) {
-		// c.setShareStatus(BoStatus.NOT_SHARED);
-		// }
-		cMapper.deleteCollaboration(c, u);
 		return u;
 	}
 
 	/**
 	 * Teilhaberschaft eines <code>JabicsUser</code> an einer
-	 * <code>ContactList</code> entfernen.
+	 * <code>ContactList</code> entfernen. Alle Kontakte, die dem Nutzer nicht
+	 * ausserhalb der Liste noch einmal geteilt sind,w erden ebenfalls entteilt.
 	 * 
 	 * @param cl das <code>ContactList</code> Objekt, zu welchem die Teilhaberschaft
 	 *           entzogen werden soll.
@@ -444,11 +447,48 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Die <code>ContactList</code>
 	 */
 	public ContactList deleteCollaboration(ContactList cl, JabicsUser u) {
+		ArrayList<Contact> contactsInList = cMapper.findContactsOfContactList(cl);
+
+		for (Contact c : contactsInList) {
+			try {
+				int i = 0;
+				for (ContactList clAll : clMapper.findContactListOfUser(u)) {
+					for (Contact cAll : getContactsOfList(clAll, u)) {
+						if (cAll.getId() == c.getId()) {
+							i++;
+						}
+					}
+				}
+				System.out.println("anzahl kontakte" + i);
+				if ((i < 2) && (u.getId() != uMapper.findUserByContactList(cl).getId())) {
+					// Damit werden auch alle Collabs an PValues gelöscht
+					System.out.println("Lösche Collab von " + u.getId() + "an" + c.getId());
+					deleteCollaboration(c, u);
+				}
+			} catch (Exception e) {
+				System.err.println("Failed to delete Collaboration for ContactList: " + e.toString());
+			}
+		}
+		System.out.println("kollab am liste jetzt löschen");
 		clMapper.deleteCollaboration(cl, u);
+
+		ArrayList<BoStatus> statusContacts = cMapper.findShareStatus(contactsInList);
+		if (statusContacts.size() == contactsInList.size()) {
+			int i = 0;
+			for (Contact c : contactsInList) {
+				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+				c.setShareStatus(statusContacts.get(i));
+				c.setOwner(uMapper.findUserByContact(c));
+				cl.addContact(c);
+				i++;
+			}
+		}
+
+		// Den Share Status der Liste neu setzen
 		ArrayList<ContactList> cls = new ArrayList<ContactList>();
 		cls.add(cl);
 		ArrayList<BoStatus> status = clMapper.findShareStatus(cls);
-		if (!status.isEmpty()) {
+		if (!statusContacts.isEmpty()) {
 			cl.setShareStatus(status.get(0));
 		}
 		return cl;
