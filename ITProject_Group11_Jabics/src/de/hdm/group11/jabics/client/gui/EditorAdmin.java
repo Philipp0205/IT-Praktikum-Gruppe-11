@@ -237,8 +237,6 @@ public class EditorAdmin {
 			GWT.log("editcontFertig");
 
 			formPanel.setStyleName("formPanel");
-		} else {
-			Window.alert("Kontakt anzeigen ist null");
 		}
 	}
 
@@ -304,8 +302,6 @@ public class EditorAdmin {
 			clForm.setIsNewList(false);
 			clForm.setCurrentList(cl);
 			formPanel.add(clForm);
-		} else {
-			Window.alert("Kontaktliste anzeigen ist null");
 		}
 	}
 

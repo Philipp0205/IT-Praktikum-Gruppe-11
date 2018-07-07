@@ -51,11 +51,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	UserMapper uMapper = UserMapper.userMapper();
 
 	/**
-	 * Objekt des aktuellen <code>JabicsUser</code>
-	 */
-	JabicsUser jabicsUser = new JabicsUser();
-
-	/**
 	 * Default Konstruktor
 	 */
 	public EditorServiceImpl() {
@@ -942,6 +937,18 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public JabicsUser getOwnerOfContact(Contact c) {
 		return uMapper.findUserByContact(c);
 	}
+	
+	/**
+	 * Auslesen des <code>JabicsUser</code> Objekts, welches der Besitzer eines
+	 * <code>ContactList</code> Objekts ist.
+	 * 
+	 * @param cl <code>ContactList</code> Objekt für welches der Besitzer ermittelt
+	 *          werden soll.
+	 * @return Der besitzende <code>JabicsUser</code>
+	 */
+	public JabicsUser getOwnerOfContactList(ContactList cl) {
+		return uMapper.findUserByContactList(cl);
+	}
 
 	/**
 	 * Auslesen aller <code>Property</code> Objekte eines <code>JabicsUser</code>.
@@ -1152,21 +1159,8 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @return Liste aller <code>Contact</code> Objekte, welche das
 	 *         <code>PValue</code> Objekt enthalten.
 	 */
-	public ArrayList<Contact> searchInList(ContactList cl, PValue pv) {
+	public ArrayList<Contact> searchInList(ContactList cl, PValue pv, JabicsUser u) {
 
-		// Wenn die PValue leer ist, wird lediglich nach dem String-Wert in Labels und
-		// Werten der Kontakte gesucht.
-		// if (pv.getStringValue() == null && pv.getProperty() == null) {
-		// ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
-		// for (Contact c : contacts) {
-		// c.setValues(pvMapper.findPValueForContact(c));
-		// }
-		// ArrayList<Contact> alc = Filter.filterContactsByString(contacts, s);
-		// for (Contact c : alc) {
-		// System.out.println(c.getName());
-		// }
-		// return alc;
-		// } else {
 		if (pv != null) {
 
 			ArrayList<Contact> contacts = cMapper.findContactsOfContactList(cl);
@@ -1228,6 +1222,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 					int i = 0;
 					for (Contact c : contacts) {
 						c.setOwner(uMapper.findUserByContact(c));
+						c.setValues(getPValueOf(c, u));
 						c.setShareStatus(status.get(i));
 						i++;
 					}

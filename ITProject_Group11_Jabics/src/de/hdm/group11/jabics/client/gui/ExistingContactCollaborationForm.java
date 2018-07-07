@@ -286,7 +286,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 
 			public void onSuccess(Contact result) {
-				Window.alert("contact updaten ist da!");
 				sharedContact = result;
 				updateContact(result);
 			}
@@ -335,9 +334,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	public void updateContact(Contact result) {
 		exit.setText("Zurück");
 		exit.setEnabled(true);
-		if(e != null) {
-			Window.alert("editoradmin ist im existingCollab da");
-		}
 		e.updateContactInTree(result);
 	}
 

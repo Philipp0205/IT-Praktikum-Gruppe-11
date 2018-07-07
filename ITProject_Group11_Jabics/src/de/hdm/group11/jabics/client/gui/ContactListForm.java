@@ -262,7 +262,9 @@ public class ContactListForm extends VerticalPanel {
 	 * Wird beim ersten laden der ContactListForm ausgeführt.
 	 */
 	public void onLoad() {
-		super.onLoad();
+
+		sharePanel.setVisible(false);
+		userIsOwner();
 		// For Debugging
 		GWT.log("7.1 onLoad");
 
@@ -289,6 +291,7 @@ public class ContactListForm extends VerticalPanel {
 
 		searchInListButton.addClickHandler(new SearchClickHandler());
 
+		
 		sharePanel.setStyleName("sharePanel");
 
 		this.add(mainPanel1);
@@ -324,6 +327,37 @@ public class ContactListForm extends VerticalPanel {
 				deletePanel.setVisible(false);
 				sharePanel.setVisible(false);
 			}
+		}
+	}
+	
+	/**
+	 * Den Besitzer der Liste setzen
+	 */
+	public void setOwner(JabicsUser u) {
+		this.currentList.setOwner(u);
+	}
+	
+	/**
+	 * Feststellen, ob der Besitzer der Kontaktliste der aktuelle Nutzer ist
+	 */
+	public void userIsOwner() {
+		if(currentList.getOwner() == null) {
+			editorService.getOwnerOfContactList(currentList, new AsyncCallback<JabicsUser>() {
+				public void onFailure(Throwable caught) {
+				}
+
+				public void onSuccess(JabicsUser result) {
+					setOwner(result);
+					userIsOwner();
+				}
+			});
+		}
+		if(u != null && currentList.getOwner() != null) {
+			if(u.getId() == currentList.getOwner().getId()) {
+				this.sharePanel.setVisible(true);
+			}
+		}else {
+			this.sharePanel.setVisible(false);
 		}
 	}
 
@@ -632,7 +666,7 @@ public class ContactListForm extends VerticalPanel {
 	private class GetContactsOfListCallback implements AsyncCallback<ArrayList<Contact>> {
 
 		public void onFailure(Throwable arg0) {
-			Window.alert("Fehler1! Kontakte konnten nicht geladen werden.");
+			Window.alert("Kontakte konnten nicht geladen werden.");
 		}
 
 		public void onSuccess(ArrayList<Contact> al) {
@@ -653,7 +687,7 @@ public class ContactListForm extends VerticalPanel {
 	private class GetAllContactsOfUserCallback implements AsyncCallback<ArrayList<Contact>> {
 
 		public void onFailure(Throwable arg0) {
-			Window.alert("Fehler2! Kontakte konnten nicht geladen werden.");
+			Window.alert("Kontakte konnten nicht geladen werden.");
 		}
 
 		public void onSuccess(ArrayList<Contact> al) {
@@ -693,7 +727,7 @@ public class ContactListForm extends VerticalPanel {
 	private class RemoveContactFromListCallback implements AsyncCallback<Contact> {
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Fehler 5! Kontakt konnte nicht hinzugefügt werden");
+			Window.alert("Kontakt konnte nicht hinzugefügt werden");
 		}
 
 		@Override

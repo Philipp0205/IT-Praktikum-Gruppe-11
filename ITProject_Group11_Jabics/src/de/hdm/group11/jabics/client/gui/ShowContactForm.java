@@ -163,7 +163,7 @@ public class ShowContactForm extends VerticalPanel {
 		values.setColumnWidth(prop, 50, Unit.PX);
 		values.addColumn(pval, "Ausprägung");
 		values.setColumnWidth(pval, 50, Unit.PX);
-		values.addColumn(shareStatus, "Share");
+		values.addColumn(shareStatus, "Status");
 		values.setColumnWidth(pval, 50, Unit.PX);
 		values.setStyleName("Tabelle");
 
@@ -177,7 +177,6 @@ public class ShowContactForm extends VerticalPanel {
 		} catch (Exception caught) {
 			Window.alert(caught.toString());
 		}
-
 	}
 	
 	/**
@@ -240,8 +239,6 @@ public class ShowContactForm extends VerticalPanel {
 			}
 			// Den Kontakt mit den sortierten Werten updaten
 			currentContact.setValues(result);
-		} else {
-			Window.alert("values sind null");
 		}
 		valueProvider.setList(result);
 		valueProvider.flush();
@@ -302,9 +299,7 @@ public class ShowContactForm extends VerticalPanel {
 	public void setUser(JabicsUser u) {
 		if (u != null) {
 			this.u = u;
-		} else
-			Window.alert("user is null");
-
+		}
 	}
 	
 	/**

@@ -60,6 +60,7 @@ public class SearchForm extends VerticalPanel {
 	Label listInfoLabel;
 	ContactList cl;
 	EditorAdmin e;
+	JabicsUser currentUser;
 
 	DatePicker datepicker;
 
@@ -79,7 +80,7 @@ public class SearchForm extends VerticalPanel {
 	VerticalPanel verPanel3;
 	VerticalPanel verPanel4;
 	VerticalPanel verPanel5;
-	JabicsUser currentUser;
+
 	ArrayList<Property> PropertyArrayList;
 	Date tempDate;
 	HorizontalPanel mainpanel = new HorizontalPanel();
@@ -204,7 +205,7 @@ public class SearchForm extends VerticalPanel {
 					finalPVal.setProperty(finalProperty);
 					GWT.log(finalProperty.getLabel());
 					// Aufruf des der Listensuche in der EditorServiceImpl+
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 					break;
 				case "Ganzzahl":
 					if (valueBox.getValue() != "") {
@@ -214,7 +215,7 @@ public class SearchForm extends VerticalPanel {
 					}
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 
 					break;
 				case "Datum":
@@ -225,7 +226,7 @@ public class SearchForm extends VerticalPanel {
 					}
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 
 					break;
 				case "Dezimalzahl":
@@ -236,7 +237,7 @@ public class SearchForm extends VerticalPanel {
 					}
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 					break;
 				default:
 					break;

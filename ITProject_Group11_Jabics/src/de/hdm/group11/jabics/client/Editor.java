@@ -65,23 +65,8 @@ public class Editor implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		/*
-		 * Login
-		 */
-		JabicsUser u = new JabicsUser(1);
-		u.setEmail("test@mail.com");
-		u.setUsername("ein nutzer");
-		u.setId(38);
-
-		editor = new EditorAdmin(u);
-		logon = new LoginInfo();
-		logon.setCurrentUser(u);
-		editor.setLoginInfo(logon);
-		editor.setJabicsUser(logon.getCurrentUser());
-		editor.loadEditor();
-
-		//loginService = ClientsideSettings.getLoginService();
-		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		loginService = ClientsideSettings.getLoginService();
+		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 	}
 
 	/**

@@ -262,7 +262,6 @@ public class SharedContactCellListTab extends Widget {
 				// Wenn in allen Kontakten der Liste Kontakt c ist...
 				if (c2.getId() == c.getId()) {
 					int i = contactDataProvider.getList().indexOf(c2);
-					Window.alert("konatk zum updaten gefunden! index: " + i);
 					contactDataProvider.getList().set(i, c);
 				}
 			}
