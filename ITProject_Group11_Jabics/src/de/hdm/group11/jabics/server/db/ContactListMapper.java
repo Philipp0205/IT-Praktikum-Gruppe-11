@@ -65,11 +65,9 @@ public class ContactListMapper {
 	 * Diese Methode löscht eine Teilhaberschaft zwischen einem
 	 * <code>JabicsUser</code> Objekt und einem <code>ContactList</code> Objekt.
 	 * 
-	 * @param cl
-	 *            die ausgewählte Kontaktliste.
-	 * @param u
-	 *            der Nutzer der die Teilhaberschaft zu der Kontaktliste verlieren
-	 *            soll.
+	 * @param cl die ausgewählte Kontaktliste.
+	 * @param u  der Nutzer der die Teilhaberschaft zu der Kontaktliste verlieren
+	 *           soll.
 	 */
 	public void deleteCollaboration(ContactList cl, JabicsUser u) {
 		// Erzeugen der Datenbankverbindung
@@ -101,12 +99,10 @@ public class ContactListMapper {
 	 * Diese Methode löscht ein <code>Contact</code> Objekt aus einer
 	 * <code>ContactList</code>.
 	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, aus welchem der Kontakt
-	 *            gelöscht werden soll.
-	 * @param c
-	 *            das <code>Contact</code> Objekt, dass aus der Liste gelöscht
-	 *            werden soll.
+	 * @param cl das <code>ContactList</code> Objekt, aus welchem der Kontakt
+	 *           gelöscht werden soll.
+	 * @param c  das <code>Contact</code> Objekt, dass aus der Liste gelöscht werden
+	 *           soll.
 	 */
 	public void deleteContactfromContactList(ContactList cl, Contact c) {
 		// Erzeugen der Datenbankverbindung
@@ -146,8 +142,7 @@ public class ContactListMapper {
 	/**
 	 * Diese Methode löscht ein <code>ContactList</code> Objekt aus der Datenbank.
 	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dass gelöscht werden soll.
+	 * @param cl das <code>ContactList</code> Objekt, dass gelöscht werden soll.
 	 */
 	public void deleteContactList(ContactList cl) {
 		// Erzeugen der Datenbankverbindung
@@ -178,9 +173,8 @@ public class ContactListMapper {
 	 * Auslesen einer Liste von <code>JabicsUser</code> Objekten, welche eine
 	 * Teilhaberschaft an einem <code>ContactList</code> Objekt besitzen.
 	 * 
-	 * @param cl
-	 *            Das <code>ContactList</code> Objekt, dessen Teilhaber gesucht
-	 *            werden.
+	 * @param cl Das <code>ContactList</code> Objekt, dessen Teilhaber gesucht
+	 *           werden.
 	 * @return Die <code>ArrayList</code> mit den Teilhabern.
 	 */
 	public ArrayList<JabicsUser> findCollaborators(ContactList cl) {
@@ -230,8 +224,7 @@ public class ContactListMapper {
 	 * Diese Methode gibt ein <code>ContactList</code> Objekt zurück, dass eine
 	 * bestimmte ID hat.
 	 * 
-	 * @param id
-	 *            die Id nach welcher gesucht werden soll.
+	 * @param id die Id nach welcher gesucht werden soll.
 	 * @return Das <code>ContactList</code> Objekt mit der gesuchten id.
 	 */
 	public ContactList findContactListById(int id) {
@@ -278,9 +271,8 @@ public class ContactListMapper {
 	 * Diese Methode gibt alle <code>ContactList</code> Objekte zurück, die einen
 	 * bestimmten Teilhaber haben haben.
 	 * 
-	 * @param u
-	 *            der Teilhaber, dessen <code>ContactList</code> Objekte
-	 *            zurückgegeben werden sollen.
+	 * @param u der Teilhaber, dessen <code>ContactList</code> Objekte zurückgegeben
+	 *          werden sollen.
 	 * @return Die ArrayList, die mit den <code>ContactList</code> Objekten befüllt
 	 *         ist.
 	 */
@@ -334,12 +326,58 @@ public class ContactListMapper {
 	}
 
 	/**
+	 * Diese Methode gibt eine ArrayList aus <code>ContactList</code> Objekten
+	 * zurück, welche einen bestimmten Kontakt beinhalten.
+	 * 
+	 * @param c das Kontaktobjekt nach welchem gesucht werden soll.
+	 * @return Das <code>ArrayList<ContactList></code> Objekt mit den gesuchten
+	 *         Listen.
+	 */
+	public ArrayList<ContactList> findContactListByContact(Contact c) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			ArrayList<ContactList> result = new ArrayList<ContactList>();
+			// Erzeugen eines Kontaktlisten-Objektes
+
+			// Auswählen eines Contaktlistenobjekts mit einer bestimmten ID.
+			// Befüllen und ausführen des SQL-Statements
+			ResultSet rs = stmt.executeQuery("SELECT * FROM contactContactLists WHERE contactID = " + c.getId());
+
+			// Befüllen des Kontaktlisten Objekts
+			while (rs.next()) {
+				ContactList cl = new ContactList();
+				cl.setId(rs.getInt("contactListID"));
+				result.add(cl);
+			}
+
+			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
+			// werden diese geschlossen.
+			if (!stmt.isClosed()) {
+				stmt.close();
+			}
+			if (!con.isClosed()) {
+				con.close();
+			}
+
+			// Rückgabe der Kontaktliste
+			return result;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+	}
+
+	/**
 	 * Auslesen aller <code>BoStatus</code> aus einer Liste von
 	 * <code>ContactList</code> Objekten.
 	 * 
-	 * @param alContactList
-	 *            Die <code>ArrayList</code> aus <code>ContactList</code> Objekten,
-	 *            für welche der Share Status benötigt wird.
+	 * @param alContactList Die <code>ArrayList</code> aus <code>ContactList</code>
+	 *                      Objekten, für welche der Share Status benötigt wird.
 	 * @return <code>ArrayList</code> mit <code>BoStatus</code>
 	 */
 	public ArrayList<BoStatus> findShareStatus(ArrayList<ContactList> alContactList) {
@@ -418,15 +456,12 @@ public class ContactListMapper {
 	 * Diese Methode trägt eine Teilhaberschaft eines <code>JabicsUser</code>
 	 * Objekts zu einem <code>ContactList</code> Objekt in die Datenbank ein.
 	 * 
-	 * @param u
-	 *            der <code>JabicsUser</code> der an der <code>ContactList</code>
-	 *            Teilhaberschaftsrechte erlangen soll.
-	 * @param cl
-	 *            die <code>ContactList</code> an welcher ein der
-	 *            <code>JabicsUser</code> eine Teilhaberschaft bekommen soll.
-	 * @param IsOwner
-	 *            ein <code>boolean</code> Wert der wiederspiegelt ob der
-	 *            zuzuweisende Teilhaber auch der Besitzer ist.
+	 * @param u       der <code>JabicsUser</code> der an der
+	 *                <code>ContactList</code> Teilhaberschaftsrechte erlangen soll.
+	 * @param cl      die <code>ContactList</code> an welcher ein der
+	 *                <code>JabicsUser</code> eine Teilhaberschaft bekommen soll.
+	 * @param IsOwner ein <code>boolean</code> Wert der wiederspiegelt ob der
+	 *                zuzuweisende Teilhaber auch der Besitzer ist.
 	 * @return Das übergebene <code>ContactList</code> Objekt
 	 */
 	public ContactList insertCollaboration(JabicsUser u, ContactList cl, boolean IsOwner) {
@@ -466,12 +501,10 @@ public class ContactListMapper {
 	 * Datenbank ein neues Tupel in der Kontakt-Kontaktliste-Tabelle angelegt
 	 * werden.
 	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, welchem das
-	 *            <code>Contact</code> Objekt zugeordnet wird.
-	 * @param c
-	 *            das <code>ContactList</code> Objekt, welches einer
-	 *            <code>ContactList</code> hinzugefügt werden soll.
+	 * @param cl das <code>ContactList</code> Objekt, welchem das
+	 *           <code>Contact</code> Objekt zugeordnet wird.
+	 * @param c  das <code>ContactList</code> Objekt, welches einer
+	 *           <code>ContactList</code> hinzugefügt werden soll.
 	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList insertContactIntoContactList(ContactList cl, Contact c) {
@@ -518,9 +551,8 @@ public class ContactListMapper {
 	/**
 	 * Diese Methode trägt ein <code>ContactList</code> Objekt in die Datenbank ein.
 	 *
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dass in die Datenbank
-	 *            eingetragen werden soll.
+	 * @param cl das <code>ContactList</code> Objekt, dass in die Datenbank
+	 *           eingetragen werden soll.
 	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList insertContactList(ContactList cl) {
@@ -578,9 +610,7 @@ public class ContactListMapper {
 	 * Diese Methode aktualisiert den Namen des <code>ContactList</code> Objekts in
 	 * der Datenbank.
 	 * 
-	 * @param cl
-	 *            das <code>ContactList</code> Objekt, dass aktualisiert werden
-	 *            soll.
+	 * @param cl das <code>ContactList</code> Objekt, dass aktualisiert werden soll.
 	 * @return Das als Parameter übergebene <code>ContactList</code> Objekt.
 	 */
 	public ContactList updateContactList(ContactList cl) {

@@ -474,26 +474,38 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	 * @param ju der aktuelle <code>JabicsUser</code>.
 	 */
 	public void deleteContact(Contact c, JabicsUser ju) {
-		if (uMapper.findUserByContact(c).getId() == ju.getId()) {
-			ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
-			ArrayList<PValue> pvalues = pvMapper.findPValueForContact(c);
-			for (JabicsUser u : users) {
-				cMapper.deleteCollaboration(c, u);
-				for (int i = 0; i < pvalues.size(); i++) {
-					pvMapper.deleteCollaboration(pvalues.get(i), u);
+		if (c != null && ju != null) {
+			if (uMapper.findUserByContact(c).getId() == ju.getId()) {
+				ArrayList<JabicsUser> users = cMapper.findCollaborators(c);
+				ArrayList<PValue> pvalues = pvMapper.findPValueForContact(c);
+				ArrayList<ContactList> allCL = clMapper.findContactListByContact(c);
+				for(ContactList cl : allCL) {
+					clMapper.deleteContactfromContactList(cl, c);
+					System.out.println("Kontakt aus liste löschen");
 				}
-				System.out.println("Contact " + c.getId() + "Collabs deleted");
+				for (JabicsUser u : users) {
+					cMapper.deleteCollaboration(c, u);
+					ArrayList<PValue> userValues = getPValueOf(c, ju);
+					for (PValue pvUser : userValues) {
+						pvMapper.deleteCollaboration(pvUser, u);
+					}
+					System.out.println("Contact " + c.getId() + "Collabs deleted");
+				}
+				for (PValue pv : pvalues) {
+					pvMapper.deletePValue(pv);
+					System.out.println("PValue " + pv.getId() + "deleted");
+				}
+				cMapper.deleteContact(c);
+				System.out.println("Contact " + c.getId() + "deleted");
+			} else {
+				ArrayList<PValue> pvalues = getPValueOf(c, ju);
+				for (PValue pv : pvalues) {
+					pvMapper.deleteCollaboration(pv, ju);
+				}
+				deleteCollaboration(c, ju);
 			}
-			for (PValue pv : pvalues) {
-				pvMapper.deletePValue(pv);
-				System.out.println("PValue " + pv.getId() + "deleted");
-			}
-			cMapper.deleteContact(c);
-			System.out.println("Contact " + c.getId() + "deleted");
-		} else {
-			System.out.println("Löschversuch ohne Besitzerschaft");
-			deleteCollaboration(c, ju);
 		}
+		return;
 	}
 
 	/**
@@ -914,7 +926,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 			ArrayList<PValue> result = new ArrayList<PValue>();
 			int i = 0;
 
-			// Im Fall, dass der Owner des Kontakt vorliegt, schnellere Abfertigung
+			// Im Fall, dass der Owner des Kontakt anfragt, schnellere Abfertigung
 			JabicsUser owner = uMapper.findUserByContact(c);
 			if (u.getId() == owner.getId()) {
 
@@ -993,12 +1005,11 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 
 		// cl.removeContact(c);
 		ArrayList<PValue> pVals = pvMapper.findPValueForContact(c);
-		System.err.println("Kollaboratoren finden:");
 		for (JabicsUser u : cMapper.findCollaborators(c)) {
 			try {
 				boolean bol = true;
 				for (ContactList clAll : clMapper.findContactListOfUser(u)) {
-					for (Contact cAll : getContactsOfList(cl, u)) {
+					for (Contact cAll : getContactsOfList(clAll, u)) {
 						if (cAll.getId() == c.getId())
 							bol = false;
 					}
@@ -1015,7 +1026,6 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 				deleteCollaboration(c, u);
 			}
 		}
-		System.err.println("editorSerivce -> removeContactFromList: Kontakt in Liste löschen: " + c.getName());
 
 		clMapper.deleteContactfromContactList(cl, c);
 		return c;
@@ -1277,10 +1287,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 						bol = true;
 				}
 				if (bol == false) {
-					clMapper.insertContactIntoContactList(cl, c);
-					for (JabicsUser u : clMapper.findCollaborators(cl)) {
-						addCollaboration(c, u);
-					}
+					addContactToList(c, cl);
 				}
 			}
 			// Alle Kontakte in der neuen Liste durchlaufen, ob einer weggefallen ist, wenn
@@ -1292,10 +1299,7 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 						bol = true;
 				}
 				if (bol == false) {
-					clMapper.deleteContactfromContactList(cl, ctemp);
-					for (JabicsUser u : clMapper.findCollaborators(cl)) {
-						deleteCollaboration(ctemp, u);
-					}
+					removeContactFromList(ctemp, cl);
 				}
 			}
 			return clMapper.updateContactList(cl);

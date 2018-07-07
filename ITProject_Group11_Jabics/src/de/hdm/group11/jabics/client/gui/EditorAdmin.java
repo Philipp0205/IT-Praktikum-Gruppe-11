@@ -113,8 +113,8 @@ public class EditorAdmin {
 
 		treeViewMenu.setStyleName("treeView");
 
-		imageShared = new Image(JabicsResources.INSTANCE.greendot());
-		imageNotShared = new Image(JabicsResources.INSTANCE.reddot());
+		imageShared = new Image(JabicsResources.INSTANCE.isshared());
+		imageNotShared = new Image(JabicsResources.INSTANCE.isnotshared());
 
 		labelShared = new Label("geteilt");
 		labelNotShared = new Label("nicht geteilt");

@@ -126,10 +126,10 @@ public class ShowContactForm extends VerticalPanel {
 			@Override
 			public ImageResource getValue(PValue object) {
 				if (object.getShareStatus() == BoStatus.IS_SHARED) {
-					return JabicsResources.INSTANCE.greendot();
+					return JabicsResources.INSTANCE.isshared();
 				}
 				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
-					return JabicsResources.INSTANCE.reddot();
+					return JabicsResources.INSTANCE.isnotshared();
 				}
 				return null; 
 				
@@ -269,6 +269,11 @@ public class ShowContactForm extends VerticalPanel {
 			Window.alert("kontakt nicht bekannt");
 		}
 	}
+	
+	public void removeContact(){
+		e.removeContact(currentContact);
+		e.showMenuOnly();
+	}
 
 	public void setUser(JabicsUser u) {
 		if (u != null) {
@@ -335,13 +340,15 @@ public class ShowContactForm extends VerticalPanel {
 	}
 
 	class deleteClickHandler implements ClickHandler {
-		public void onClick(ClickEvent e) {
+		public void onClick(ClickEvent ec) {
 			editorService.deleteContact(currentContact, u, new AsyncCallback<Void>() {
 				public void onFailure(Throwable caught) {
 					Window.alert("Löschen fehlgeschlagen");
 				}
 
 				public void onSuccess(Void v) {
+					Window.alert("kontakt gelöscht");
+					removeContact();
 				}
 			});
 		}

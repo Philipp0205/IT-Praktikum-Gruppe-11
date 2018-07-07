@@ -190,6 +190,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		exit = new Button("Abbrechen/Zurück");
 		exit.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
+				sharedUser = null;
 				e.showContact(sharedContact);
 			}
 		});
@@ -217,15 +218,12 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 		grid.setWidget(3, 0, exit);
 		this.add(grid);
-		GWT.log("collab5");
 	}
 
 	/**
 	 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 	 */
 	public void createSelectionBox() {
-
-		GWT.log("SelectBox");
 		userProvider.setList(sharedUser);
 		userProvider.flush();
 	}
@@ -234,8 +232,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		GWT.log("Editor in Collab setzen");
 		this.e = e;
 	}
-
-	// selUser.getResources und getRowElement
 
 	public void setUser(JabicsUser u) {
 		this.u = u;
@@ -377,16 +373,11 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	}
 
 	private void retrieveSharedUser() {
-		GWT.log("allUser");
 		editorService.getCollaborators(sharedContact, new GetCollaboratorsCallback());
-		GWT.log("allUserfetisch");
 	}
 
 	private void setSharedUser(ArrayList<JabicsUser> user) {
 		this.sharedUser = user;
-		for (JabicsUser u : this.sharedUser) {
-			GWT.log(u.getEmail());
-		}
 	}
 
 	public JabicsUser getUser() {

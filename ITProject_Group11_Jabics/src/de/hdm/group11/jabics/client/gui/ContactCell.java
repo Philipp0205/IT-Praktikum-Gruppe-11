@@ -42,17 +42,17 @@ public class ContactCell extends AbstractCell<Contact> {
 			      try {
 			        switch (c.getShareStatus()) {
 			        case IS_SHARED:
-			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isshared()).getHTML());
 			          break;
 			        case NOT_SHARED:
-			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isnotshared()).getHTML());
 			          break;
 			        default:
-			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddot()).getHTML());
+			          sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isnotshared()).getHTML());
 			        }
 			      } catch (Exception e) {
 			        GWT.log("ShareStatus undefined for Contact" + c.getName());
-			        sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendot()).getHTML());
+			        sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isshared()).getHTML());
 			      }
 		}
 

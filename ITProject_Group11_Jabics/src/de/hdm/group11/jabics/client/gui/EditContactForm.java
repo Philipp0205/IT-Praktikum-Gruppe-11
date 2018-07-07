@@ -64,8 +64,8 @@ public class EditContactForm extends VerticalPanel {
 	DatePicker dp2;
 	Button done2;
 	Date tempDate;
-	
-	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
+
+	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 
 	public void onLoad() {
 		if (contact != null) {
@@ -292,9 +292,9 @@ public class EditContactForm extends VerticalPanel {
 		// Überprüfen, ob der Name vollständig gesetzt ist
 		boolean nameExistent = false;
 		for (PValue pv : allPV) {
-			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2)
-				GWT.log("Name vorhanden");
-			nameExistent = true;
+			if (pv.getProperty().getId() == 1 || pv.getProperty().getId() == 2) {
+				nameExistent = true;
+			}
 		}
 
 		// alle pv aus dem PRopArray rausziehen und hier speichern
