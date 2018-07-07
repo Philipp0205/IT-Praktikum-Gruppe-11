@@ -31,7 +31,7 @@ import de.hdm.group11.jabics.shared.bo.ContactList;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
- * Eine ContactListForm zeigt Optionen für eine Kontaktliste an, um Kontakte zu
+ * Eine <code>ContactListForm</code> zeigt Optionen für eine Kontaktliste an, um Kontakte zu
  * dieser hinzuzufügen oder welche aus dieser zu entfernen.
  * 
  * @author Anders, Kurrle, Brase
@@ -416,7 +416,8 @@ public class ContactListForm extends VerticalPanel {
 	/**
 	 * Setzt den Editor.
 	 * 
-	 * @param e Editor, der gesetzt werden soll.
+	 * @param e 
+	 * 		<code>Editor<code> der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
 		this.e = e;
@@ -425,7 +426,8 @@ public class ContactListForm extends VerticalPanel {
 	/**
 	 * Setzt den User der ContactListForm
 	 * 
-	 * @param u User, der gesetzt werden soll.
+	 * @param u 
+	 * 			<code>User</code> der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
 		this.u = u;

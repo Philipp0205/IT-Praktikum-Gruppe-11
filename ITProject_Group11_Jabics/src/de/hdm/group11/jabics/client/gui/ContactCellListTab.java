@@ -24,6 +24,7 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * werden. Im Programm wird die <code>CellList</code> innerhlab eines
  * <code>StackPanel</code> angezeigt.
  * 
+ * Struktur von @author Thies
  * @author Kurrle
  */
 public class ContactCellListTab {
@@ -47,7 +48,7 @@ public class ContactCellListTab {
 	 * @param u            
 	 * 			 der Nutzer für den die Anzeige ausgegeben werden soll.
 	 * @param clRes2
-	 * 			Objekt der Klasse <code>CellListResources</code>, welche die Bilder für die
+	 * 			Objekt der Klasse <code>CellListResources</code>, welche die Anzeige-Resourcen für die
 	 *   		<code>ContactCellListTab</code> bereitstellt.
 	 *   
 	 * @param treeViewMenu2 
@@ -120,7 +121,7 @@ public class ContactCellListTab {
 	}
 
 	/**
-	 * Wird beim erstellen des ContactTabs aufgerufen. Es werden alle Kontakte des
+	 * Wird beim erstellen des <contact>ContactTabs</contact> aufgerufen. Es werden alle Kontakte des
 	 * Nutzers aus de Datenbank geoholt um diese später anzeigen zu können.
 	 * 
 	 * Des Weiteren werden die DataProvider aktuallisiert damit die Anzeige
@@ -176,10 +177,9 @@ public class ContactCellListTab {
 
 	/**
 	 * Implementiert das Verhalten der Selektion verschiedener Kontakte. Wenn ein
-	 * anderer Kontakt selektiert wird, wird das selectionModel aktallisiert. Des
+	 * anderer Kontakt selektiert wird, wird das selectionModel aktualisiert. Des
 	 * Weiteren werden die Selektionen in den anderen Tabs entfern, damit Bugs
 	 * vermieden werden.
-	 * 
 	 */
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
 		@Override
@@ -193,10 +193,10 @@ public class ContactCellListTab {
 		}
 
 		/**
-		 * Setzt den selektierten Kontakt.
+		 * Setzt den Editor.
 		 * 
-		 * @param c 
-		 * 			der Kontakt der seletkiert werden soll.
+		 * @param editor 
+		 * 				der gesetzt werden soll.
 		 */
 		private void setSelectedContact(Contact c) {
 			if (c != null) {
