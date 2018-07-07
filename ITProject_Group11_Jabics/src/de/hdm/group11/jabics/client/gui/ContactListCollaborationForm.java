@@ -244,7 +244,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		if (c != null) {
 			this.sharedContactList.setContacts(c);
 			for(Contact cl : sharedContactList.getContacts()) {
-				Window.alert("Kontakt:" + cl.getId());
 			}
 		} else {
 			Window.alert("Kontakte hinzufügen null");
@@ -311,7 +310,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	
 	public void updateShareStatus() {
 		for (Contact c : sharedContactList.getContacts()) {
-			Window.alert("Im tree updaten: " + c.getId());
 			c.setShareStatus(BoStatus.IS_SHARED);
 			e.updateContactInTree(c);
 		}
