@@ -193,7 +193,7 @@ html>body .gwt-DecoratedStackPanel {
 	text-decoration: none;
 	cursor: pointer;
 	border: solid #000000 0px !important;
-	border-radius: 0px ;
+	border-radius: 0px;
 }
 
 .btn {
@@ -221,25 +221,7 @@ html>body .gwt-DecoratedStackPanel {
 	border-radius: 0px;
 }
 /*--------------------CCollabForm--------------------*/
-.userselectbtn{
-		color: #ffffff !important;
-	font-size: 16px !important;
-	background: #4D70A8 !important;
-	font-family: Arial;
-	padding: 6px 14px 6px 14px !important;
-	border: solid #000000 0px !important;
-	text-decoration: none;
-	margin-left:15px !important;
-	margin-top:3px;
-}
-
-.userselectbtn:hover{
-	background: #accbf0 !important;
-		cursor: pointer;
-	border: solid #000000 0px !important;
-}
-
-.sharebtn{
+.userselectbtn {
 	color: #ffffff !important;
 	font-size: 16px !important;
 	background: #4D70A8 !important;
@@ -247,17 +229,35 @@ html>body .gwt-DecoratedStackPanel {
 	padding: 6px 14px 6px 14px !important;
 	border: solid #000000 0px !important;
 	text-decoration: none;
-	margin-left:15px;
+	margin-left: 15px !important;
+	margin-top: 3px;
+}
+
+.userselectbtn:hover {
+	background: #accbf0 !important;
+	cursor: pointer;
+	border: solid #000000 0px !important;
 }
 
 .sharebtn {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	margin-left: 15px;
+}
 
+.sharebtn {
 	text-decoration: none;
 	cursor: pointer;
 	border: solid #000000 0px !important;
 }
-.ccvaltable{
-	margin-top:15px;
+
+.ccvaltable {
+	margin-top: 15px;
 }
 /*--------------------CListCollabForm--------------------*/
 .listpanel {
@@ -378,7 +378,6 @@ html>body .gwt-DecoratedStackPanel {
 	color: #19376E;
 	margin-left: 20px;
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 }
 
@@ -390,7 +389,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-top: 7px;
-	margin-left: 10px;
+	margin-left: -5px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -406,7 +405,6 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 29px;
 	color: #19376E;
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	/*color: #53f4af !important;*/
 }
@@ -419,7 +417,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 29px !important;
 	background: #ECF2FF !important;
 	margin-top: 19px;
-	margin-left: 10px;
+	margin-left: -5px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -428,7 +426,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .clsearchlabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -447,7 +444,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	background: #ECF2FF !important;
 	margin-top: 22px;
-	margin-left: 6px;
+	margin-left: 2px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -490,7 +487,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .cldeleteLabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -507,8 +503,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 33px !important;
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
-	margin-top: 7px;
-	margin-left: 10px;
+	margin-top: 9px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -517,7 +512,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .clsaveLabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -536,8 +530,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 33px !important;
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
-	margin-top: 7px;
-	margin-left: 10px;
+	margin-top: 9px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -546,7 +539,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .clshareLabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -565,11 +557,10 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 39px !important;
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
-	margin-top: 4px;
-	margin-left: 10px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
+	margin-top:3px;
 	font-weight: bold;
 }
 
@@ -591,6 +582,7 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 }
+
 .createUButton2 {
 	font-family: Arial;
 	color: #19376E;
@@ -601,11 +593,11 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 10px !important;
 	border: solid #19376E 1px !important;
 	border-padding: 4px;
-	border-radius:0px;
+	border-radius: 0px;
 	text-decoration: none;
 	cursor: pointer;
 	font-weight: bold;
-	margin-left:38px;
+	margin-left: 38px;
 }
 
 .createUButton1 {
@@ -618,14 +610,12 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 116px !important;
 	border: solid #19376E 1px !important;
 	border-padding: 4px;
-	border-radius:0px;
+	border-radius: 0px;
 	text-decoration: none;
 	cursor: pointer;
 	font-weight: bold;
-	margin-left:38px;
+	margin-left: 38px;
 }
-
-
 
 .createUButton:hover {
 	text-decoration: none;
@@ -659,10 +649,9 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 16px;
 }
 
-.lnPanel{
-	margin-left:30px !important;
+.lnPanel {
+	margin-left: 30px !important;
 }
-
 
 /*-------------------SearchForm-------------------*/
 .eigenschaftlabel {
@@ -675,6 +664,7 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 25px;
 	white-space: nowrap;
 }
+
 .successfulresultl {
 	font-family: Arial;
 	font-size: 16px !important;
@@ -685,6 +675,7 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 25px;
 	white-space: nowrap;
 }
+
 .reslabel {
 	font-family: Arial;
 	font-size: 16px !important;
@@ -845,6 +836,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 20px !important;
 	background: #ECF2FF !important;
 	margin-top: 7px;
+	margin-left: -3px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -855,13 +847,11 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	background: #ECF2FF !important;
 	white-space: nowrap;
-	
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 12px;
-	margin-left: 162px;
 	color: #19376E;
 	white-space: nowrap;
 }
@@ -873,6 +863,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ECF2FF !important;
 	border: solid #000000 0px !important;
 	text-decoration: none;
+	margin-left: -6px;
 	cursor: pointer;
 	font-weight: bold;
 	margin-top: -2px;
@@ -899,6 +890,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ECF2FF !important;
 	margin-top: 7px;
 	margin-right: 20px;
+	margin-left: -3px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -925,6 +917,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 20px !important;
 	background: #ECF2FF !important;
 	margin-top: 8px;
+	margin-left: -3px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -1273,5 +1266,4 @@ table, th, td {
 
 .legendPanel {
 	padding-top: 8px;
-
 }
