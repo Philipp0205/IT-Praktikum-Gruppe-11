@@ -111,7 +111,9 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 
 	public void removeContact(Contact c) {
+		contactListTab.removeContact(c);
 		contactTab.removeContact(c);
+		sharedContactListTab.removeContact(c);
 	}
 
 	public void updateContact(Contact c) {
@@ -126,7 +128,6 @@ public class TreeViewMenu extends VerticalPanel {
 
 	public StackPanel getStackPanel2() {
 		return this.stackPanel2;
-
 	}
 
 	public void setEditor(EditorAdmin editor) {

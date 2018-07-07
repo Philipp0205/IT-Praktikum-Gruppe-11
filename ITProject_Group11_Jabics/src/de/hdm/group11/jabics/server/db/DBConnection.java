@@ -52,20 +52,24 @@ public class DBConnection {
 	 */
 	public static Connection connection() {
 
-		try {
-			if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
-				Class.forName("com.mysql.jdbc.GoogleDriver");
-				url = googleUrl;
-			} else {
-				Class.forName("com.mysql.jdbc.Driver");
-				url = localUrl;
-			}
+		if (con == null) {
+			url = null;
 
-			con = DriverManager.getConnection(url);
-		} catch (Exception e) {
-			con = null;
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			try {
+				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+					Class.forName("com.mysql.jdbc.GoogleDriver");
+					url = googleUrl;
+				} else {
+					Class.forName("com.mysql.jdbc.Driver");
+					url = localUrl;
+				}
+
+				con = DriverManager.getConnection(url);
+			} catch (Exception e) {
+				con = null;
+				e.printStackTrace();
+				throw new RuntimeException(e.getMessage());
+			}
 		}
 		return con;
 	}
