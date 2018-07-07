@@ -45,23 +45,23 @@ public class Editor implements EntryPoint {
 		/*
 		 * Login
 		 */
-//		JabicsUser u = new JabicsUser(1);
-//		u.setEmail("test@mail.com");
-//		u.setUsername("ein nutzer");
-//		u.setId(1);
+		JabicsUser u = new JabicsUser(1);
+		u.setEmail("test@mail.com");
+		u.setUsername("ein nutzer");
+		u.setId(1);
 
-		//editor = new EditorAdmin(u);
-//		logon = new LoginInfo();
-//		logon.setCurrentUser(u);
-//		editor.setLoginInfo(logon);
-//		editor.setJabicsUser(logon.getCurrentUser());
-		//editor.loadEditor();
+		editor = new EditorAdmin(u);
+		logon = new LoginInfo();
+		logon.setCurrentUser(u);
+		editor.setLoginInfo(logon);
+		editor.setJabicsUser(logon.getCurrentUser());
+		editor.loadEditor();
 
 
 		// GWT.log("Load");
-		loginService = ClientsideSettings.getLoginService();
+		//loginService = ClientsideSettings.getLoginService();
 		// GWT.log(GWT.getHostPageBaseURL());
-		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+		//loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 
 	}
 

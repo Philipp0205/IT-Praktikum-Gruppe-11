@@ -61,7 +61,11 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	
-	
+	/**
+	 *  Konstruktor welcher einer Instanz der Klasse <code>ContactListCollaborationForm</code> erzeugt, welcher alle Objekte 
+	 *  inistialisiert welcher die Form braucht. Darunter Fallen Objekte der Klassen <code>Button</code> <code>HorizontalPanel</code>. 
+	 *  Des weiteren werden verschiedene <code>ClickHandler</code> der Buttons gesetzt.
+	 */
 	public ContactListCollaborationForm() {
 		
 		allUser = new ArrayList<JabicsUser>();
@@ -105,7 +109,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	}
 	
 	/**
-	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen für die
+	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklariert welchen für die
 	 * Funktionalität der Klasse gebraucht werden.
 	 */
 	public void onLoad() {
