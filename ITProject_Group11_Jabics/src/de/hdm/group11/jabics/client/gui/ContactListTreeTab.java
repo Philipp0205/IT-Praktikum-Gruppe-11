@@ -358,7 +358,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	          }
 	          // contactListDataProviders.flush();
 	        } catch (Exception e) {
-	          Window.alert(e.toString());
+	          GWT.log(e.toString());
 	        }
 	      }
 	    }

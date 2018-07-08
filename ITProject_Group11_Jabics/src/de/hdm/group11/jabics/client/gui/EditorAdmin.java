@@ -136,7 +136,6 @@ public class EditorAdmin {
 	 * Den Editor anzeigen, dem Rootpanel hinzufügen.
 	 */
 	public void loadEditor() {
-		GWT.log("hallo gwt");
 		if (editorService == null) {
 			editorService = ClientsideSettings.getEditorService();
 		}
@@ -222,19 +221,16 @@ public class EditorAdmin {
 	 */
 	public void editContact(Contact c) {
 		if (c != null) {
-			GWT.log("editcont");
 			// if (this.cForm == null) {
 			ecForm = new EditContactForm();
 			ecForm.setEditor(this);
 			ecForm.setUser(this.currentUser);
 
 			formPanel.clear();
-			GWT.log("AltesWidgetEntfernt");
 			ecForm.setNewContact(false);
 			ecForm.setContact(c);
 
 			formPanel.insert(ecForm, 0);
-			GWT.log("editcontFertig");
 
 			formPanel.setStyleName("formPanel");
 		}
@@ -252,12 +248,10 @@ public class EditorAdmin {
 		ecForm.setUser(this.currentUser);
 
 		formPanel.clear();
-		GWT.log("AltesWidgetEntfernt");
 		ecForm.setNewContact(true);
 		ecForm.setContact(c);
 
 		formPanel.insert(ecForm, 0);
-		GWT.log("editcontFertig");
 
 		formPanel.setStyleName("formPanel");
 	}
@@ -274,7 +268,6 @@ public class EditorAdmin {
 		clForm.setUser(this.currentUser);
 
 		formPanel.clear();
-		GWT.log("Editor: isNewList true");
 		clForm.setIsNewList(true);
 		clForm.setContactList(cl);
 
@@ -311,7 +304,6 @@ public class EditorAdmin {
 	 * @param c, Kontakt, der geteilt werden soll
 	 */
 	public void showContactCollab(Contact c) {
-		GWT.log("contactCollab");
 		if (this.ccForm == null) {
 			ccForm = new ContactCollaborationForm();
 			ccForm.setEditor(this);
@@ -329,7 +321,6 @@ public class EditorAdmin {
 	 * @param c, Kontakt, dessen Kollaborationen bearbeitet werden sollen.
 	 */
 	public void showExistingContactCollab(Contact c) {
-		GWT.log("existingContactCollab");
 		if (this.eccForm == null) {
 			eccForm = new ExistingContactCollaborationForm();
 			eccForm.setEditor(this);
@@ -347,7 +338,6 @@ public class EditorAdmin {
 	 * @param cl, Kontaktliste, für die Teilhaberschaften bearbeitet werden sollen
 	 */
 	public void showContactListCollab(ContactList cl) {
-		GWT.log("contactListCollab");
 		if (this.clcForm == null) {
 			clcForm = new ContactListCollaborationForm();
 			clcForm.setEditor(this);
@@ -374,7 +364,6 @@ public class EditorAdmin {
 		sForm.setJabicsUser(currentUser);
 		formPanel.clear();
 		formPanel.add(sForm);
-		GWT.log("#######SearchForm");
 	}
 
 	/**

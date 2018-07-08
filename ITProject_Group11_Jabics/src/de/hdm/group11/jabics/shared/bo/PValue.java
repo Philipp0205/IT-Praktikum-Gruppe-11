@@ -379,6 +379,14 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 		this.contains = true;
 		this.pointer = 2;
 	}
+	
+	/**
+	 * Setzen, ob im PValue ein Wert vorhanden ist.
+	 * @param bol
+	 */
+	public void setContainsValue(boolean bol) {
+		this.contains = bol;
+	}
 
 	/**
 	 * Textuelle Repräsentation des <code>PValue</code> Obejekts durch den Wert der

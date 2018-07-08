@@ -107,9 +107,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * <code>Paragraph</code> am Anfang und einem <code>Paragraph</code> am Ende und
 	 * vielen <code>ContactReport</code> in einer Liste.
 	 * 
-	 * @param u
-	 *            das <code>JabicsUser</code> Objekt für welches der
-	 *            <code>AllContactsOfUserReport</code> erstellt werden soll.
+	 * @param u das <code>JabicsUser</code> Objekt für welches der
+	 *          <code>AllContactsOfUserReport</code> erstellt werden soll.
 	 * 
 	 * @return <code>AllContactsOfUserReport</code> mit allen
 	 *         <code>ContactReport</code> des übergebenen <code>JabicsUser</code>.
@@ -130,9 +129,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		 */
 		ArrayList<Contact> allContactsOfUser = cMapper.findAllContacts(u);
 		if (allContactsOfUser.isEmpty())
-		for (Contact c : allContactsOfUser) {
-			c.setOwner(uMapper.findUserByContact(c));
-		}
+			for (Contact c : allContactsOfUser) {
+				c.setOwner(uMapper.findUserByContact(c));
+			}
 		for (Contact c : allContactsOfUser) {
 			ArrayList<PropertyView> pval = new ArrayList<PropertyView>();
 			ArrayList<JabicsUser> allCollaborators = cMapper.findCollaborators(c);
@@ -159,14 +158,12 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	/**
 	 * Einen <code>ContactReport</code> für einen <code>Contact</code> erstellen.
 	 * 
-	 * @param pv
-	 *            die Liste von <code>PropertyView</code> Objekten.
-	 * @param contact
-	 *            das <code>Contact</code> Objekt für welches der
-	 *            <code>ContactReport</code> erstellt werden soll.
-	 * @param collaborators
-	 *            die Liste aller <code>JabicsUser</code>, welche eine
-	 *            Teilhaberschaft zu dem <code>Contact</code> Objekt besitzen.
+	 * @param pv            die Liste von <code>PropertyView</code> Objekten.
+	 * @param contact       das <code>Contact</code> Objekt für welches der
+	 *                      <code>ContactReport</code> erstellt werden soll.
+	 * @param collaborators die Liste aller <code>JabicsUser</code>, welche eine
+	 *                      Teilhaberschaft zu dem <code>Contact</code> Objekt
+	 *                      besitzen.
 	 * @return das erstellte <code>ContactReport</code> Objekt.
 	 */
 	public ContactReport createContactReport(ArrayList<PropertyView> pv, Contact contact,
@@ -211,12 +208,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * <code>JabicsUser</code> erstellen, der nach Kollaborationen an
 	 * <code>Contact</code> Objekten gefiltert ist.
 	 * 
-	 * @param u
-	 *            das <code>JabicsUser</code> Objekt, für welches der
-	 *            <code>FilteredContactsOfUserReport</code> erstellt werden soll.
-	 * @param finalUser
-	 *            die Liste der <code>JabicsUser</code> Objekte, nach denen
-	 *            gefiltert werden soll.
+	 * @param u         das <code>JabicsUser</code> Objekt, für welches der
+	 *                  <code>FilteredContactsOfUserReport</code> erstellt werden
+	 *                  soll.
+	 * @param finalUser die Liste der <code>JabicsUser</code> Objekte, nach denen
+	 *                  gefiltert werden soll.
 	 * @return das erstellte <code>FilteredContactsOfUserReport</code> Objekt.
 	 */
 	public FilteredContactsOfUserReport createAllSharedContactsReport(JabicsUser u, ArrayList<JabicsUser> finalUser) {
@@ -224,8 +220,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		FilteredContactsOfUserReport report = new FilteredContactsOfUserReport();
 		String[] filtercriteria = new String[finalUser.size()];
 
-		report.setHeadline(new Paragraph("Alle Kontakte, die Sie geteilt haben."));
+		report.setHeadline(new Paragraph("Kontakte, die Sie geteilt haben."));
 		report.setCreator(new Paragraph(u.getUsername()));
+		report.setCreationDate(new Date());
 		report.setFootline(new Paragraph("Ende des Reports"));
 		ArrayList<Contact> allUserContacts = cMapper.findAllContacts(u);
 		report.setSubReports(filterContactsByCollaborators(allUserContacts, finalUser));
@@ -240,11 +237,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert <code>Contact</code> Objekte eines
 	 * <code>JabicsUser</code> nach einem <code>PValue</code> Objekt.
 	 * 
-	 * @param pv
-	 *            das <code>PValue</code> Objekt nach dem gefiltert werden soll.
-	 * @param u
-	 *            das <code>JabicsUser</code> Objekt dessen <code>Contact</code>
-	 *            Objekte gefiltert werden soll.
+	 * @param pv das <code>PValue</code> Objekt nach dem gefiltert werden soll.
+	 * @param u  das <code>JabicsUser</code> Objekt dessen <code>Contact</code>
+	 *           Objekte gefiltert werden soll.
 	 * @return <code>FilteredContactsOfUserReport</code>
 	 */
 	public FilteredContactsOfUserReport createFilteredContactsOfUserReport(PValue pv, JabicsUser u)
@@ -260,7 +255,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 
 		// Jeder Report hat eine Überschrift sowe eine abschließende Nachricht, welche
 		// hier headline und footline genannt werden.
-		result.setHeadline("Gefilterter Report für Nutzer " + u.getUsername());
+		result.setHeadline("Gefilterter Report");
 		result.setCreator(new Paragraph(u.getUsername()));
 		result.setFootline("Ende des Reports.");
 
@@ -322,10 +317,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
 	 * <code>String</code>, das in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param contacts
-	 *            Liste zu filternder <code>Contact</code> Objekte.
-	 * @param pv
-	 *            <code>PValue</code> Objekt mit dem <code>String</code> Wert.
+	 * @param contacts Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv       <code>PValue</code> Objekt mit dem <code>String</code> Wert.
 	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
 	 *         entspricht.
 	 */
@@ -343,9 +336,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		for (Contact c : contacts) {
 			System.err.println("Contact : " + c.getName());
 		}
-		// Kontakte nach PropertyValue filtern, falls gesetzt
-		if (pv.getStringValue() != null) {
-			contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+		if (pv.containsValue()) {
+			// Kontakte nach PropertyValue filtern, falls gesetzt
+			if (pv.getStringValue() != null) {
+				contacts = Filter.filterContactsByString(contacts, pv.getStringValue());
+			}
 		}
 		// Reports für die gefilterten Kontakte erstellen
 		for (Contact c : contacts) {
@@ -362,10 +357,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
 	 * <code>int</code>, dass in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param contacts
-	 *            Liste zu filternder <code>Contact</code> Objekte.
-	 * @param pv
-	 *            <code>PValue</code> Objekt mit dem <code>int</code> Wert.
+	 * @param contacts Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv       <code>PValue</code> Objekt mit dem <code>int</code> Wert.
 	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
 	 *         entspricht.
 	 */
@@ -379,11 +372,12 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		if (pv.getProperty().getLabel() != null) {
 			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
 		}
-		// Kontakte nach PropertyValue filtern, falls gesetzt
-		if (pv.getIntValue() != Integer.MIN_VALUE) {
-			contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
+		if (pv.containsValue()) {
+			// Kontakte nach PropertyValue filtern, falls gesetzt
+			if (pv.getIntValue() != Integer.MIN_VALUE) {
+				contacts = Filter.filterContactsByInt(contacts, pv.getIntValue());
+			}
 		}
-
 		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
 			for (PValue p : c.getValues()) {
@@ -399,10 +393,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
 	 * <code>Date</code>, dass in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param contacts
-	 *            Liste zu filternder <code>Contact</code> Objekte.
-	 * @param pv
-	 *            <code>PValue</code> Objekt mit dem <code>Date</code> Wert.
+	 * @param contacts Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv       <code>PValue</code> Objekt mit dem <code>Date</code> Wert.
 	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
 	 *         entspricht.
 	 */
@@ -416,9 +408,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		if (pv.getProperty().getLabel() != null) {
 			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
 		}
-		// Kontakte nach PropertyValue filtern, falls gesetzt
-		if (pv.getDateValue() != null) {
-			contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+		if (pv.containsValue()) {
+			// Kontakte nach PropertyValue filtern, falls gesetzt
+			if (pv.getDateValue() != null) {
+				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
+			}
 		}
 		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
@@ -435,11 +429,9 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert eine Liste von <code>Contact</code> Objekten nach einem
 	 * oder mehreren <code>JabicsUser</code>.
 	 * 
-	 * @param contacts
-	 *            Liste der zu filternden <code>Contact</code> Objekte.
-	 * @param finalUser
-	 *            Liste der <code>JabicsUser</code> Objekte nach denen gefiltert
-	 *            werden soll.
+	 * @param contacts  Liste der zu filternden <code>Contact</code> Objekte.
+	 * @param finalUser Liste der <code>JabicsUser</code> Objekte nach denen
+	 *                  gefiltert werden soll.
 	 * @return Die gefilterte Liste aus den <code>ContactReport</code> Objekten.
 	 */
 	public ArrayList<ContactReport> filterContactsByCollaborators(ArrayList<Contact> allUserContacts,
@@ -467,10 +459,8 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert eine Liste aus <code>Contact</code> Objekte nach einem
 	 * <code>float</code>, dass in einem <code>PValue</code> mitgegeben wird.
 	 * 
-	 * @param contacts
-	 *            Liste zu filternder <code>Contact</code> Objekte.
-	 * @param pv
-	 *            <code>PValue</code> Objekt mit dem <code>float</code> Wert.
+	 * @param contacts Liste zu filternder <code>Contact</code> Objekte.
+	 * @param pv       <code>PValue</code> Objekt mit dem <code>float</code> Wert.
 	 * @return Liste aller <code>ContactReport</code>, welche dem Filterkriterium
 	 *         entspricht.
 	 */
@@ -485,8 +475,10 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 			contacts = Filter.filterContactsByProperty(contacts, pv.getProperty());
 		}
 		// Kontakte nach PropertyValue filtern, falls gesetzt
-		if (pv.getFloatValue() != -99999997952f) {
-			contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
+		if (pv.containsValue()) {
+			if (pv.getFloatValue() != -99999997952f) {
+				contacts = Filter.filterContactsByFloat(contacts, pv.getFloatValue());
+			}
 		}
 		for (Contact c : contacts) {
 			ArrayList<PropertyView> pviews = new ArrayList<PropertyView>();
@@ -496,7 +488,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 
 			results.add(createContactReport(pviews, c, cMapper.findCollaborators(c)));
 		}
-		return results; // ?
+		return results;
 	}
 
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) {

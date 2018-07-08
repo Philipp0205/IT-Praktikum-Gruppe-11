@@ -59,13 +59,14 @@ import de.hdm.group11.jabics.shared.report.HTMLReportWriter;
  * @author Kurrle
  */
 public class ReportAdmin {
-	
-	//Celltable Ressourcen für Nutzeranzeige
+
+	// Celltable Ressourcen für Nutzeranzeige
 	public interface CellTableResources extends CellTable.Resources {
 		@Override
 		@Source("JabicsCellTable.css")
 		CellTable.Style cellTableStyle();
 	}
+
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 	private JabicsUser currentUser;
 	private LoginInfo loginfo;
@@ -133,24 +134,24 @@ public class ReportAdmin {
 	 * 
 	 */
 	public ReportAdmin() {
-		
+
 		// Instantitierung relevanter Variablen für UserSuggestion
 		sharedContactsButton = new Button("gemeinsame Kontakte");
 		finalUser = new ArrayList<JabicsUser>();
 		finalPVal = new PValue();
 		userSelectionModel = new SingleSelectionModel<JabicsUser>();
 		userDataProvider = new ListDataProvider<JabicsUser>();
-		userTable = new CellTable<JabicsUser>(100,ctRes);
+		userTable = new CellTable<JabicsUser>(100, ctRes);
+		userTable.setWidth("160px");
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
-		
+
 		removeUserButton = new Button("entfernen");
 		addUserButton = new Button("hinzufügen");
-	
-		addRemovePanel.add(removeUserButton);
+
 		addRemovePanel.add(addUserButton);
-		
-//		otherReportsPanel.add(allReportsInSystemButton);
+		addRemovePanel.add(removeUserButton);
+
 		datatypemenu.addItem("Text");
 		datatypemenu.addItem("Datum");
 		datatypemenu.addItem("Dezimalzahl");
@@ -161,7 +162,6 @@ public class ReportAdmin {
 		verPanel2.add(valueBox);
 		verPanel3.add(datatypel);
 		verPanel3.add(datatypemenu);
-		// verPanel4.add(db);
 		datepicker.setValue(null);
 		verPanel4.add(datepicker);
 		datepicker.setStyleName("datepicker");
@@ -171,7 +171,7 @@ public class ReportAdmin {
 		navPanel.add(verPanel2);
 		navPanel.add(verPanel4);
 		navPanel.add(filteredReportButton);
-		
+
 		userPanel.add(userSuggest);
 		userPanel.add(userTable);
 
@@ -180,9 +180,9 @@ public class ReportAdmin {
 
 		navPanel.add(sharedContactsButton);
 		navPanel.add(allReportButton);
-		
-		//Stylenames
-		
+
+		// Stylenames
+
 		datatypel.setStyleName("repl");
 		valuelabel.setStyleName("repl");
 		propertyl.setStyleName("repl");
@@ -190,39 +190,40 @@ public class ReportAdmin {
 		datatypemenu.setStyleName("repBoxes");
 		filteredReportButton.setStyleName("RepBtn");
 		allReportButton.setStyleName("RepBtn");
-		
-		removeUserButton.setStyleName("RepBtn");
-		addUserButton.setStyleName("RepBtn");
-		sharedContactsButton.setStyleName("RepBtn");
+
+		addUserButton.setStyleName("addUserReport");
+		removeUserButton.setStyleName("removeUserReport");
+		sharedContactsButton.setStyleName("sharedReportButton");
+
 		navPanel.setStyleName("repnav");
 		userPanel.setStyleName("repusernav");
-		
-		//loadReport();
+
+		// loadReport();
 	}
 
 	public void loadReport() {
 
 		if (reportGenerator == null || editorService == null) {
-			
+
 			reportGenerator = ClientsideSettings.getReportGeneratorService();
 			// TODO: Diese Zeile könnte kritisch werden, da zwei Module in einem Klasse
 			editorService = ClientsideSettings.getEditorService();
 		}
 
 		// Alle Properties holen, nach denen vom Nutzer gefiltern werden kann
-		//Der Callback ruft createSelectionMenu() auf
+		// Der Callback ruft createSelectionMenu() auf
 		reportGenerator.getPropertysOfJabicsUser(currentUser, new getPropertysOfJabicsUserCallback());
-		
+
 		// Nutzer selection aufbauen
 		retrieveUser();
 		loadLogout();
-		
+
 		// Aufbauen des RootPanels
 		RootPanel.get("nav").add(logoutPanel);
 		RootPanel.get("selection").add(navPanel);
 		RootPanel.get("content").add(mainPanel);
 	}
-	
+
 	public void loadLogout() {
 		logoutButton = new Button("Abmelden");
 		logoutButton.addClickHandler(new ClickHandler() {
@@ -337,6 +338,9 @@ public class ReportAdmin {
 				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
 
 					GWT.log("Gefilterten Report erstellen");
+					if (valueBox.getText() == "" || valueBox.getText() == " ") {
+						finalPVal.setContainsValue(false);
+					}
 					reportGenerator.createFilteredContactsOfUserReport(finalPVal, currentUser,
 							new CreateFilteredContactsOfUserReportCallback());
 				} else
@@ -354,8 +358,8 @@ public class ReportAdmin {
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				if (datepicker != null) {
 					// pval.setDateValue(event.getValue());
-					DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
-					
+					DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+
 					valueBox.setText(dateTimeFormat.format(event.getValue()));
 				}
 			}
@@ -378,9 +382,12 @@ public class ReportAdmin {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				System.out.println(finalUser.get(0).getUsername());
-				reportGenerator.createAllSharedContactsReport(currentUser, finalUser,
-						new CreateAllSharedContactsReportCallback());
+				if (currentUser != null && !finalUser.isEmpty()) {
+					reportGenerator.createAllSharedContactsReport(currentUser, finalUser,
+							new CreateAllSharedContactsReportCallback());
+				} else {
+					Window.alert("Bitte mindestens einen Nutzer angeben");
+				}
 			}
 		});
 
@@ -394,6 +401,7 @@ public class ReportAdmin {
 			public void onClick(ClickEvent e) {
 				if (suggestedUser != null) {
 					finalUser.add(suggestedUser);
+					suggestedUser = null;
 					userSuggest.setText("");
 					userDataProvider.refresh();
 					userDataProvider.flush();
@@ -401,8 +409,6 @@ public class ReportAdmin {
 			}
 		});
 
-		GWT.log("SuggestBox4");
-		
 		removeUserButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
 				if (selectedUser != null) {
@@ -413,7 +419,6 @@ public class ReportAdmin {
 			}
 		});
 
-		GWT.log("SuggestBox5");
 		TextColumn<JabicsUser> username = new TextColumn<JabicsUser>() {
 			public String getValue(JabicsUser u) {
 				return u.getUsername();
@@ -517,7 +522,7 @@ public class ReportAdmin {
 	private class CreateAllSharedContactsReportCallback implements AsyncCallback<FilteredContactsOfUserReport> {
 		@Override
 		public void onFailure(Throwable caught) {
-			GWT.log(caught.toString());
+			Window.alert(caught.toString());
 		}
 
 		@Override
@@ -526,6 +531,7 @@ public class ReportAdmin {
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();
+				Window.alert("gecleart");
 				RootPanel.get("content").add(new HTML(writer.getReportText()));
 			}
 		}
@@ -624,8 +630,9 @@ public class ReportAdmin {
 
 			propertySuggest = new SuggestBox(propertyToSuggest);
 			propertySuggest.setStyleName("repBoxes");
-			
+
 			verPanel1.add(propertySuggest);
+			
 			/**
 			 * selectionHandler, der den hinzuzufügenden Nutzer setzt, sobald einer durch
 			 * die suggestbox ausgewählt wurde. Dieser wird durch Klick auf den button
