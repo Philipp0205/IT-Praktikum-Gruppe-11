@@ -29,13 +29,13 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * @author Kurrle
  */
 public class ContactCellListTab {
-	TreeViewMenu treeViewMenu;
-	EditorAdmin editor;
-	JabicsUser user;
+	private TreeViewMenu treeViewMenu;
+	private EditorAdmin editor;
+	private JabicsUser user;
 
 	private EditorServiceAsync eService = ClientsideSettings.getEditorService();
-	CellList<Contact> contactCell;
-	ListDataProvider<Contact> contactDataProvider;
+	private CellList<Contact> contactCell;
+	private ListDataProvider<Contact> contactDataProvider;
 	private ContactKeyProvider keyProvider = null;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
@@ -131,24 +131,19 @@ public class ContactCellListTab {
 	 */
 	public void onLoad() {
 
-		GWT.log("3.1 createContactTab");
-
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		GWT.log("2.1 User: " + user.getId());
 		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("3.1 CellList onFailure" + caught.toString());
 			}
 
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
 
 				if (contacts != null) {
-					GWT.log("3.1 CellList onSuccess");
 
 					for (Contact c : contacts) {
 						contactDataProvider.getList().add(c);
@@ -214,8 +209,6 @@ public class ContactCellListTab {
 	 *            der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin editor) {
-		GWT.log("Editor setzen in contactCellListTab");
-		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;
 	}
 
@@ -226,7 +219,6 @@ public class ContactCellListTab {
 	 *            User der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
-		GWT.log("User setzen in contactCellListTab");
 		this.user = u;
 	}
 

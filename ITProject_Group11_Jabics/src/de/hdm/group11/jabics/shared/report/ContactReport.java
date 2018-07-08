@@ -113,8 +113,7 @@ public class ContactReport extends Report implements Serializable {
 	public ContactReport(ArrayList<PropertyView> pv) {
 		if (!pv.isEmpty()) {
 			this.content = pv;
-		} else
-			System.out.println("Beim Erstellen des ContactReports waren keine PValues vorhanden");
+		}
 
 		/*
 		 * try { for(PropertyView p : pv) { if(p.getPname() == "firstname")

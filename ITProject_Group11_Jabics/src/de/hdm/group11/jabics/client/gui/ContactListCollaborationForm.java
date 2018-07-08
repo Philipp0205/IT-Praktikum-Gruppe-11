@@ -36,7 +36,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 
 	private Boolean otherCallbackArrived = false;
 
-	MultiWordSuggestOracle oracle;
+	private MultiWordSuggestOracle oracle;
 	private SuggestBox suggestBox;
 	private JabicsUser suggestedUser;
 	private JabicsUser singleSelectedUser;
@@ -124,7 +124,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 				newCollabDataProvider.flush();
 			}
 		});
-		GWT.log("SuggestBox4");
 		removeButton = new Button("Nutzer entfernen");
 		removeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
@@ -213,7 +212,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		if (!finalCollaborators.isEmpty()) {
 
 			for (JabicsUser u : finalCollaborators) {
-				GWT.log("deshareContactWithAll" + u.getUsername());
 				editorService.deleteCollaboration(sharedContactList, u, new DeleteContactListCollaborationCallback());
 			}
 		} else {
@@ -270,7 +268,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 *            Editor, der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
-		GWT.log("EditorAdmin in ContactlistCollab setzen");
 		this.e = e;
 	}
 
@@ -280,10 +277,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * continueOnLoad() aufgerufen.
 	 */
 	private void retrieveUser() {
-		GWT.log("allUser");
 		editorService.getAllNotCollaboratingUser(sharedContactList, new GetAllNotCollaboratingUserCallback());
 		editorService.getCollaborators(sharedContactList, new GetAllCollaboratorsCallback());
-		GWT.log("allUserfetisch");
 	}
 
 	/**
@@ -294,11 +289,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 *            User.
 	 */
 	private void setAllUser(ArrayList<JabicsUser> user) {
-		GWT.log("alleNutzersetzen");
 		this.allUser = user;
-		for (JabicsUser u : this.allUser) {
-			GWT.log(u.getEmail());
-		}
 	}
 
 	/**
@@ -380,7 +371,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	public void createSuggestBox() {
 
 		for (JabicsUser u : allUser) {
-			GWT.log("SuggestBoxalluser");
 			try {
 				oracle.add(u.getUsername() + " " + u.getEmail());
 			} catch (NullPointerException e) {
@@ -489,7 +479,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("GetAllNotCollaboratingUserCallback onSuccess");
 				setAllUser(user);
 			}
 			if (!otherCallbackArrived) {

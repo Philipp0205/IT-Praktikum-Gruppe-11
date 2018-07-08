@@ -75,7 +75,7 @@ public class ReportAdmin {
 	private ReportGeneratorServiceAsync reportGenerator = null;
 	private EditorServiceAsync editorService = null;
 
-	private Button allReportsInSystemButton = new Button("systemweiter Report");
+	private Button allReportsInSystemButton = new Button("Systemweiter Report");
 	private Button filteredReportButton = new Button("Finden");
 	private Button allReportButton = new Button("Alle Kontakte");
 
@@ -138,13 +138,13 @@ public class ReportAdmin {
 	public ReportAdmin() {
 
 		// Instantitierung relevanter Variablen für UserSuggestion
-		sharedContactsButton = new Button("gemeinsame Kontakte");
+		sharedContactsButton = new Button("Gemeinsame Kontakte");
 		finalUser = new ArrayList<JabicsUser>();
 		finalPVal = new PValue();
 		userSelectionModel = new SingleSelectionModel<JabicsUser>();
 		userDataProvider = new ListDataProvider<JabicsUser>();
 		userTable = new CellTable<JabicsUser>(100, ctRes);
-		userTable.setWidth("160px");
+		userTable.setWidth("144px");
 		userToSuggest = new MultiWordSuggestOracle();
 		userSuggest = new SuggestBox(userToSuggest);
 
@@ -250,11 +250,9 @@ public class ReportAdmin {
 
 	// Alle Nutzer des Systems holen
 	private void retrieveUser() {
-		GWT.log("allUser");
 		if (editorService != null) {
 			editorService.getAllUsers(new GetAllUserCallback());
 		}
-		GWT.log("allUserfetisch");
 	}
 
 	public void createSelectionMenu() {
@@ -303,7 +301,6 @@ public class ReportAdmin {
 					finalPVal.getProperty().setType(Type.INT);
 					break;
 				case "Datum":
-					GWT.log("true!");
 					datepicker.setVisible(true);
 					finish.setVisible(true);
 					verPanel4.add(finish);
@@ -335,11 +332,9 @@ public class ReportAdmin {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				GWT.log("log!");
 
 				if (finalPVal.getProperty().getType() != null || finalPVal.containsValue()) {
 
-					GWT.log("Gefilterten Report erstellen");
 					if (valueBox.getText() == "" || valueBox.getText() == " ") {
 						finalPVal.setContainsValue(false);
 					}
@@ -374,8 +369,6 @@ public class ReportAdmin {
 		/**
 		 * Tabelle erstellen, die ausgewählte Nutzer anzeigt.
 		 */
-		GWT.log("SuggestBox");
-
 		userTable.setSelectionModel(userSelectionModel);
 		userDataProvider.addDataDisplay(userTable);
 		userDataProvider.setList(finalUser);
@@ -434,10 +427,8 @@ public class ReportAdmin {
 		 */
 
 		for (JabicsUser u : allUser) {
-			GWT.log("SuggestBoxalluser");
 			try {
 				userToSuggest.add(u.getUsername() + " " + u.getEmail());
-				GWT.log("Nutzer zu Sug hinzugefügt");
 			} catch (NullPointerException e) {
 				Window.alert(
 						"setzen des nutzernamens oder mailadresse in sugstbox failed, Nutzer mit Id: " + u.getId());
@@ -495,9 +486,7 @@ public class ReportAdmin {
 	class PValueChangeHandler<String> implements ValueChangeHandler {
 		@Override
 		public void onValueChange(ValueChangeEvent event) {
-			GWT.log("Änderungen in pValue: " + event.getValue());
 			try {
-				GWT.log("Pointer: " + finalPVal.getPointer());
 				switch (finalPVal.getPointer()) {
 				case 1:
 					finalPVal.setIntValue(Integer.parseInt((java.lang.String) event.getValue()));
@@ -533,7 +522,6 @@ public class ReportAdmin {
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
 				RootPanel.get("content").clear();
-				Window.alert("gecleart");
 				RootPanel.get("content").add(new HTML(writer.getReportText()));
 			}
 		}
@@ -543,13 +531,10 @@ public class ReportAdmin {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// Fehler werden gelogt.
-			GWT.log(caught.toString());
 		}
 
 		@Override
 		public void onSuccess(AllContactsInSystemReport report) {
-			GWT.log("Report zurück!");
 			if (report != null) {
 
 				HTMLReportWriter writer = new HTMLReportWriter();
@@ -564,12 +549,10 @@ public class ReportAdmin {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			GWT.log(caught.toString());
 		}
 
 		@Override
 		public void onSuccess(FilteredContactsOfUserReport report) {
-			GWT.log("Filtered Report zurück!");
 			if (report != null) {
 				HTMLReportWriter writer = new HTMLReportWriter();
 				writer.process(report);
@@ -586,7 +569,6 @@ public class ReportAdmin {
 		}
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
-			GWT.log("alleNutzergesetzt   " + user.get(1).getEmail());
 			setAllUser(user);
 			createUserSuggestMenu();
 		}
@@ -603,7 +585,6 @@ public class ReportAdmin {
 		public void onSuccess(AllContactsOfUserReport report) {
 			if (report != null) {
 				for (ContactReport c : report.getSubReports()) {
-					GWT.log(c.getContactInfo().getContent());
 				}
 
 				HTMLReportWriter writer = new HTMLReportWriter();
@@ -644,11 +625,9 @@ public class ReportAdmin {
 				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
 
 					finalPVal.getProperty().setLabel(propertySuggest.getValue());
-					GWT.log("Wert geändert " + finalPVal.getProperty().getLabel());
 				}
 			});
 			createSelectionMenu();
 		}
 	}
-
 }

@@ -96,8 +96,6 @@ public class SignUpForm extends VerticalPanel {
 		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
-		GWT.log("HI");
-
 	}
 
 	/**

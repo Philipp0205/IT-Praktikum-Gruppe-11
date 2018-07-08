@@ -25,12 +25,12 @@ public class CompositeReport<T extends Report> extends Report implements Seriali
 	/**
 	 * Kopfzeile einer Instanz dieser Klasse.
 	 */
-	Paragraph headline;
+	private Paragraph headline;
 
 	/**
 	 * Fusszeile einer Instanz dieser Klasse.
 	 */
-	Paragraph footline;
+	private Paragraph footline;
 
 	/**
 	 * Default Konstruktor.

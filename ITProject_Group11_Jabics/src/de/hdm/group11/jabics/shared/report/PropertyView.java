@@ -76,7 +76,7 @@ public class PropertyView implements Serializable {
 				this.pvalue = f.toString();
 				break;
 			default:
-				System.out.println("PropertyValue could not be found by PropertyView");
+				this.pvalue = "Kein Wert";
 			}
 		} catch (Exception e) {
 			this.pvalue = "Value";

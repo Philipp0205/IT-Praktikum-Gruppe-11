@@ -1131,6 +1131,7 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 50px;
 	margin-left: 20px;
 }
+
 .addUserReport {
 	color: #ffffff !important;
 	font-size: 16px !important;
@@ -1143,18 +1144,37 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 25px;
 	margin-left: 10px;
 }
+
+.addUserReport:hover {
+	background: #accbf0 !important;
+    text-decoration: none;
+    cursor: pointer;
+    border: solid #000000 0px !important;
+    border-radius: 0px;
+}
+
+
 .removeUserReport {
 	color: #ffffff !important;
 	font-size: 16px !important;
 	background: #4D70A8 !important;
 	font-family: Arial;
-	padding: 6px 14px 6px 14px !important;
+	padding: 6px 16px 6px 16px !important;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 	text-decoration: none;
 	margin-top: 10px;
 	margin-left: 10px;
 }
+
+.removeUserReport:hover {
+	background: #accbf0 !important;
+    text-decoration: none;
+    cursor: pointer;
+    border: solid #000000 0px !important;
+    border-radius: 0px;
+}
+
 .sharedReportButton {
 	color: #ffffff !important;
 	font-size: 16px !important;
@@ -1164,9 +1184,17 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 	text-decoration: none;
-	margin-top: 40px;
-	margin-left: 20px;
+	margin-top: 50px;
+	margin-left: 10px;
 	margin-right: 40px;
+}
+
+.sharedReportButton:hover {
+	background: #accbf0 !important;
+    text-decoration: none;
+    cursor: pointer;
+    border: solid #000000 0px !important;
+    border-radius: 0px;
 }
 
 .RemBtn {

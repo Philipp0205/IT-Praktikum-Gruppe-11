@@ -28,43 +28,43 @@ import de.hdm.group11.jabics.shared.bo.Property;
 import de.hdm.group11.jabics.shared.bo.Type;
 
 public class EditContactForm extends VerticalPanel {
-	EditorAdmin e;
-	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	private EditorAdmin e;
+	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	Grid grid;
+	private Grid grid;
 
-	JabicsUser u;
-	Contact contact;
-	Boolean isNewContact;
-	Boolean userIsOwner;
+	private JabicsUser u;
+	private Contact contact;
+	private Boolean isNewContact;
+	private Boolean userIsOwner;
 	// True = gerade am editieren, Buttons anzeigen, False = keine Buttons anzeigen
-	Boolean editContactState = false;
+	private Boolean editContactState = false;
 
-	Button deleteContactButton = new Button("Kontakt löschen");
-	Button saveButton = new Button("Änderungen speichern");
-	Button editButton = new Button("Ausprägungen hinzufügen/löschen");
-	Button exitButton = new Button("Abbruch");
-	Button existingSharedContactButton;
+	private Button deleteContactButton = new Button("Kontakt löschen");
+	private Button saveButton = new Button("Änderungen speichern");
+	private Button editButton = new Button("Ausprägungen hinzufügen/löschen");
+	private Button exitButton = new Button("Abbruch");
+	private Button existingSharedContactButton;
 
-	VerticalPanel pPanel;
-	HorizontalPanel buttonPanel;
-	HorizontalPanel addPPanel;
+	private VerticalPanel pPanel;
+	private HorizontalPanel buttonPanel;
+	private HorizontalPanel addPPanel;
 
-	ArrayList<PValue> allPV;
+	private ArrayList<PValue> allPV;
 
-	ArrayList<PropForm> val;
+	private ArrayList<PropForm> val;
 
-	ArrayList<Property> standardProperties;
+	private ArrayList<Property> standardProperties;
 
-	ListBox formattype = new ListBox();
-	TextBox propertyName = new TextBox();
-	TextBox pValueTextBox = new TextBox();
-	DatePicker dp;
-	DatePicker dp2;
-	Button done2;
-	Date tempDate;
+	private ListBox formattype = new ListBox();
+	private TextBox propertyName = new TextBox();
+	private TextBox pValueTextBox = new TextBox();
+	private DatePicker dp;
+	private DatePicker dp2;
+	private Button done2;
+	private Date tempDate;
 
-	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
+	private DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 
 	/**
 	 * Wird beim erstellen der <code>EditContactForm</code> aufgerufen. Initalisiert
@@ -74,7 +74,6 @@ public class EditContactForm extends VerticalPanel {
 	 */
 	public void onLoad() {
 		if (contact != null) {
-			GWT.log("EditCont");
 			pPanel = new VerticalPanel();
 			buttonPanel = new HorizontalPanel();
 			addPPanel = new HorizontalPanel();
@@ -219,13 +218,9 @@ public class EditContactForm extends VerticalPanel {
 			// zuordnen, ansonsten eine neue PropForm erstellen
 			for (PValue pv : this.contact.getValues()) {
 				if (pv.getProperty().isStandard()) {
-					GWT.log("Standardeigenschaft : " + pv.getPropertyId());
 					for (PropForm p : val) {
-						GWT.log("+++++++Suche nach richtigem+++++++++");
 						if (p.getProperty().getId() == pv.getProperty().getId()) {
-							GWT.log("RichtigeGefunden!");
 							p.replacePValue(pv);
-							GWT.log("PValue zugeordnet");
 						}
 					}
 				} else {
@@ -234,11 +229,9 @@ public class EditContactForm extends VerticalPanel {
 					// der richtigen Stellen ein
 					for (PropForm p : val) {
 						if (p.getProperty().getId() == pv.getProperty().getId()) {
-							GWT.log("RichtigeGefunden!");
 							bol = false;
 							// Neue PVForm hinzufügen
 							p.addPValue(pv);
-							GWT.log("PValue zugeordnet");
 						}
 
 					}
@@ -271,7 +264,6 @@ public class EditContactForm extends VerticalPanel {
 	 * einem bereits exisiterenden <code>Contact</code> unterschieden.
 	 */
 	public void save() {
-		GWT.log("6.1 Save Contact");
 
 		// Alle PValues aus der Tabelle ziehen
 		ArrayList<PValue> allPV = new ArrayList<PValue>();
@@ -306,7 +298,6 @@ public class EditContactForm extends VerticalPanel {
 			if (isNewContact) {
 
 				// Es werden alle befüllten PValues übergeben
-				GWT.log("6.4 " + filledPV.toString());
 				editorService.createContact(filledPV, u, new AsyncCallback<Contact>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -448,13 +439,8 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Property result) {
-			if (result != null) {
-				GWT.log(result.getTypeInString() + "Hinzufügen neue Property zur Tabelle");
-
-			}
 
 			if (result != null) {
-				GWT.log(result.getTypeInString());
 				switch (formattype.getSelectedItemText()) {
 				case "Text":
 					editorService.createPValue(result, pValueTextBox.getText(), contact, u, new CreatePValueCallback());
@@ -487,11 +473,6 @@ public class EditContactForm extends VerticalPanel {
 
 		public void onSuccess(Contact result) {
 			if (result != null) {
-
-				GWT.log("Kontakt " + result.getName() + " erfolgreich gespeichert mit diesen PV:");
-				for (PValue pv : result.getValues()) {
-					GWT.log(pv.toString());
-				}
 				setContact(result);
 				exitButton.setText("Zurück");
 				exitButton.setVisible(true);
@@ -542,8 +523,6 @@ public class EditContactForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Void result) {
-
-			Window.alert("Erfolgreich gelöscht");
 			pvForm.setVisible(false);
 			pvForm.setPV(null);
 		}
@@ -720,7 +699,6 @@ public class EditContactForm extends VerticalPanel {
 		PVForm(PValue pv) {
 			create(pv);
 			if (pv.getProperty().getType() == Type.DATE) {
-				GWT.log("Datum!");
 				dp = new DatePicker();
 				dp.setVisible(false);
 				done.setVisible(false);
@@ -734,11 +712,9 @@ public class EditContactForm extends VerticalPanel {
 				try {
 					val.setText(pv.getDateValue().toString());
 				} catch (Exception e) {
-					GWT.log("Fehler: " + e.toString());
 				}
 				this.add(dp);
 				this.add(done);
-				GWT.log("DatumEnde");
 			}
 			show();
 		}
@@ -800,13 +776,10 @@ public class EditContactForm extends VerticalPanel {
 			 */
 			@Override
 			public void onValueChange(ValueChangeEvent event) {
-				GWT.log("Änderungen in pValue: " + event.getValue());
 				try {
-					GWT.log("Pointer: " + pv.getPointer());
 					switch (pv.getPointer()) {
 					case 1:
 						pv.setIntValue(Integer.parseInt((java.lang.String) event.getValue()));
-						Window.alert("Int registriert");
 						break;
 					case 2:
 						pv.setStringValue((java.lang.String) event.getValue());

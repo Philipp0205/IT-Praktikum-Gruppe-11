@@ -30,18 +30,15 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  *         Struktur und Styling von @author Thies
  */
 public class TreeViewMenu extends VerticalPanel {
-	EditorAdmin e;
-	JabicsUser user;
 
-	ContactListTreeTab contactListTab;
-	SharedContactCellListTab sharedContactListTab;
-	ContactCellListTab contactTab;
-	StackPanel stackPanel1;
-	StackPanel stackPanel2;
-	CellTree tree;
+
+	private ContactListTreeTab contactListTab;
+	private SharedContactCellListTab sharedContactListTab;
+	private ContactCellListTab contactTab;
+	private StackPanel stackPanel1;
+	private StackPanel stackPanel2;
 	
-	SafeHtmlBuilder builder;
-	SafeHtml safeHtml;
+	private SafeHtml safeHtml;
 
 	private CellTreeResources ctRes = GWT.create(CellTreeResources.class);
 	
@@ -51,8 +48,6 @@ public class TreeViewMenu extends VerticalPanel {
 	 */
 	public TreeViewMenu(JabicsUser u) {
 
-		String tip = new String("▶");
-		Label tip2 = new Label("tip");
 		
 		safeHtml = SafeHtmlUtils.fromString("X ");
 
@@ -62,7 +57,7 @@ public class TreeViewMenu extends VerticalPanel {
 		
 		stackPanel2.add(new Label(""), safeHtml);
 		stackPanel2.add(createContactCellListTab(u), " ▶ Alle Kontakte");
-		stackPanel2.add(createSharedContactListTreeTab(u), " ▶  Mir geteilte Kontakte");
+		stackPanel2.add(createSharedContactListTreeTab(u), " ▶  Mit mir geteilt");
 		stackPanel2.setStyleName("stackPanel2");
 		stackPanel1.setStyleName("stackPanel1");
 		
@@ -91,7 +86,6 @@ public class TreeViewMenu extends VerticalPanel {
 		contactListTab.addContactList(cl);
 
 		for (Contact c : cl.getContacts()) {
-			GWT.log("8.1 add Contact " + c.getName() + " to List " + cl.getListName());
 			contactListTab.addContactOfList(cl, c);
 		}
 	}
@@ -123,7 +117,6 @@ public class TreeViewMenu extends VerticalPanel {
 	 * 			<code>JabicsUser</code> welcher gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
-		this.user = u;
 		contactListTab.setUser(u);
 		contactTab.setUser(u);
 		sharedContactListTab.setUser(u);
@@ -214,10 +207,6 @@ public class TreeViewMenu extends VerticalPanel {
 	 * 			<code>EditorAdmin</code> welcher gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin editor) {
-		GWT.log("Editor setzen in tree view");
-		GWT.log("Editor: " + editor.hashCode());
-		this.e = editor;
-
 		contactListTab.setEditor(editor);
 		contactTab.setEditor(editor);
 		sharedContactListTab.setEditor(editor);
@@ -259,8 +248,6 @@ public class TreeViewMenu extends VerticalPanel {
 		this.contactListTab = new ContactListTreeTab(u, this);
 		CellTree tree = new CellTree(contactListTab, "Root", ctRes);
 		tree.setAnimationEnabled(true);
-
-		GWT.log("TreeViewMenu: createListTab");
 
 		return tree;
 	}

@@ -141,7 +141,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	public PValue(Property p, JabicsUser u) {
 		this();
 		this.property = p;
-		this.owner = u;
+		this.setOwner(u);
 		try {
 			switch (p.getType()) {
 			case STRING:
