@@ -338,6 +338,9 @@ public class ReportAdmin {
 					if (valueBox.getText() == "" || valueBox.getText() == " ") {
 						finalPVal.setContainsValue(false);
 					}
+					if(datatypemenu.getSelectedItemText() == "Datum" && valueBox.getText() != "") {
+						finalPVal.setDateValue(dateTimeFormat.parse((java.lang.String) valueBox.getValue()));
+					}
 					reportGenerator.createFilteredContactsOfUserReport(finalPVal, currentUser,
 							new CreateFilteredContactsOfUserReportCallback());
 				} else
@@ -495,7 +498,7 @@ public class ReportAdmin {
 					finalPVal.setStringValue((java.lang.String) event.getValue());
 					break;
 				case 3:
-					finalPVal.setDateValue(dateTimeFormat.parse((java.lang.String) event.getValue()));
+					finalPVal.setDateValue(dateTimeFormat.parse((java.lang.String) valueBox.getValue()));
 					break;
 				case 4:
 					finalPVal.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));
