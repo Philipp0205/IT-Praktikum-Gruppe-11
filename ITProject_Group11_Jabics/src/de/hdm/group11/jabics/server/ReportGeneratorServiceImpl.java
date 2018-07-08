@@ -404,6 +404,7 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 		if (pv.containsValue()) {
 			// Kontakte nach PropertyValue filtern, falls gesetzt
 			if (pv.getDateValue() != null) {
+				System.out.println("report 3");
 				contacts = Filter.filterContactsByDate(contacts, pv.getDateValue());
 			}
 		}
