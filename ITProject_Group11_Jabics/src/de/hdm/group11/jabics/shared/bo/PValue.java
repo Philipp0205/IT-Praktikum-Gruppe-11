@@ -404,8 +404,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 			case 2:
 				return stringValue;
 			case 3:
-				DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
-				return dateTimeFormat.format(dateValue).toString();
+				return this.dateValue.toString();
 			case 4:
 				return Float.toString(floatValue);
 			default:
