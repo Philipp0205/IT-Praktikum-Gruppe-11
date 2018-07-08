@@ -429,9 +429,11 @@ public class ReportGeneratorServiceImpl extends RemoteServiceServlet implements 
 	 * Diese Methode filtert eine Liste von <code>Contact</code> Objekten nach einem
 	 * oder mehreren <code>JabicsUser</code>.
 	 * 
-	 * @param contacts  Liste der zu filternden <code>Contact</code> Objekte.
-	 * @param finalUser Liste der <code>JabicsUser</code> Objekte nach denen
-	 *                  gefiltert werden soll.
+	 * @param allUserContacts
+	 *            Liste der zu filternden <code>Contact</code> Objekte.
+	 * @param finalUser
+	 *            Liste der <code>JabicsUser</code> Objekte nach denen gefiltert
+	 *            werden soll.
 	 * @return Die gefilterte Liste aus den <code>ContactReport</code> Objekten.
 	 */
 	public ArrayList<ContactReport> filterContactsByCollaborators(ArrayList<Contact> allUserContacts,

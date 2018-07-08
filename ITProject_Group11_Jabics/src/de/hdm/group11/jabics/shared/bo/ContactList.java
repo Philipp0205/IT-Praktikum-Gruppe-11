@@ -78,14 +78,14 @@ public class ContactList extends BusinessObject implements Serializable {
 	/**
 	 * Ein <code>Contact</code> Objekt einer Instanz dieser Klasse
 	 * 
-	 * @param <code>Contact</code>
+	 * @param c
 	 */
 	public void addContact(Contact c) {
 		contacts.add(c);
 	}
 
 	/**
-	 * Fügt alle Kontakte in einer ArrayList<Contact> zur Liste hinzu
+	 * Fügt alle <code>Contact</code> Objekte einer Liste zur Liste hinzu
 	 */
 	public void addContacts(ArrayList<Contact> conts) {
 		this.contacts.addAll(conts);

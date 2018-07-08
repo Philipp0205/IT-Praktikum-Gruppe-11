@@ -394,7 +394,7 @@ public class EditorAdmin {
 	/**
 	 * Contact zum Menü hinzufügen
 	 * 
-	 * @param
+	 * @param c
 	 */
 	public void addContactToTree(Contact c) {
 		treeViewMenu.addContact(c);

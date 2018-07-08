@@ -15,11 +15,11 @@ public class DBConnection {
 	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
 	 * einzige Instanz dieser Klasse.
 	 * 
-	 * @see ContactMapper.contactMapper()
-	 * @see PValueMapper.pValueMapper()
-	 * @see ContactListMapper.contactListMapper()
-	 * @see PropertyMapper().propertyMapper()
-	 * @see UserMapper().userMapper()
+	 * @see ContactMapper
+	 * @see PValueMapper
+	 * @see ContactListMapper
+	 * @see PropertyMapper
+	 * @see UserMapper
 	 */
 	private static Connection con = null;
 

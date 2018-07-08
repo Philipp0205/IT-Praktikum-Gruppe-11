@@ -29,7 +29,7 @@ public class Filter {
 	 * @param finalUser
 	 *            <code>JabicsUser</code> Objekte, für die das <code>Contact</code>
 	 *            Objekte angefragt werden.
-	 * @param collaborator
+	 * @param collaborators
 	 *            <code>JabicsUser</code> Objekte, welche eine Collaboration
 	 *            besitzen.
 	 * @param c

@@ -225,7 +225,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * Setzt die Kontaktliste, mit der dann später weitere Aktionen durchgeführt
 	 * werden können wie z.B. teilen.
 	 * 
-	 * @param cl Kontaktliste, die ausgewählt werden soll.
+	 * @param cl
+	 *            Kontaktliste, die ausgewählt werden soll.
 	 */
 	public void setContactList(ContactList cl) {
 		if (cl != null) {
@@ -239,7 +240,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * Setzt die Kontakte der Liste, mit der dann später weitere Aktionen
 	 * durchgeführt werden können wie z.B. teilen.
 	 * 
-	 * @param contacts, ArrayList<Contact>, die in der Liste liegen.
+	 * @param c
+	 *            Liste von <code>Contact</code>, die in der Liste liegen.
 	 */
 	public void setContacts(ArrayList<Contact> c) {
 		if (c != null) {
@@ -254,7 +256,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	/**
 	 * Setzt den User der ContactListCollaborationForm
 	 * 
-	 * @param u User, der gesetzt werden soll.
+	 * @param u
+	 *            User, der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
 		this.u = u;
@@ -263,7 +266,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	/**
 	 * Setzt den Editor der ContactListCollaborationForm
 	 * 
-	 * @param e Editor, der gesetzt werden soll.
+	 * @param e
+	 *            Editor, der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
 		GWT.log("EditorAdmin in ContactlistCollab setzen");
@@ -285,8 +289,9 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	/**
 	 * Setzt eine Variable, welche alle Nutzer enthält.
 	 * 
-	 * @param user User, die übergeben werde sollen. In diesem Fall sind das alle
-	 *             User.
+	 * @param user
+	 *            User, die übergeben werde sollen. In diesem Fall sind das alle
+	 *            User.
 	 */
 	private void setAllUser(ArrayList<JabicsUser> user) {
 		GWT.log("alleNutzersetzen");
@@ -299,7 +304,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	/**
 	 * Sezt die alle Kollaboratoren.
 	 * 
-	 * @param user User, die gesetzt werden sollen.
+	 * @param user
+	 *            User, die gesetzt werden sollen.
 	 */
 	public void setAllCollaborators(ArrayList<JabicsUser> user) {
 		this.existingCollaborators = user;

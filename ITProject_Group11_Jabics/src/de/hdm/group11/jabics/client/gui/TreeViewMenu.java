@@ -130,7 +130,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 	
 	/**
-	 * Fügt der dem Menü einen neuen <code>Contact<code> innerhalbt einer Kontaktliste hinzu.
+	 * Fügt der dem Menü einen neuen <code>Contact</code> innerhalbt einer Kontaktliste hinzu.
 	 * 
 	 * @param cl
 	 * 			<code>ContactList</code> welcher der Kontakt angehört.
@@ -142,7 +142,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 	
 	/**
-	 * Entfernt aus dem Menü einen <code>Contact<code> innerhalbt einer Kontaktliste.
+	 * Entfernt aus dem Menü einen <code>Contact</code> innerhalbt einer Kontaktliste.
 	 * 
 	 * @param cl
 	 * @param c
@@ -165,7 +165,7 @@ public class TreeViewMenu extends VerticalPanel {
 	 * Entfernt einen <code>Contact</code> aus dem Menü .
 	 * 
 	 * @param c
-	 * 			<code>Contact<code> welcher entfernt werden soll.
+	 * 			<code>Contact</code> welcher entfernt werden soll.
 	 */
 	public void removeContact(Contact c) {
 		contactListTab.removeContact(c);
@@ -198,7 +198,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 	
 	/**
-	 * Bezieht das <code>StackPanel<code> in welchem Alle Kontakte des Nutzers sowie alle geteilten 
+	 * Bezieht das <code>StackPanel</code> in welchem Alle Kontakte des Nutzers sowie alle geteilten 
 	 * Kontakt des Nutzes angezeigt werden. 
 	 * 
 	 * @return das angeforderte <code>StackPanel</code>
@@ -293,7 +293,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 	
 	/**
-	 * Leert das Leert das <code>SelectionModel</code> im entsprechenenden Tab. SelectionModel</code> im entsprechenenden Tab. 
+	 * Leert das Leert das <code>SelectionModel</code> im entsprechenenden Tab. <code>SelectionModel</code> im entsprechenenden Tab. 
 	 */
 	public void clearSelectionModelSharedContactTab() {
 		sharedContactListTab.clearSelectionModel();

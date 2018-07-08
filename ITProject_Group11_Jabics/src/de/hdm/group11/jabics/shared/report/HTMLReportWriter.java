@@ -17,8 +17,6 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 
 	/**
 	 * Speichert das Ergebnis einer process Methode. Format: HTML
-	 * 
-	 * @return String
 	 */
 	private String reportText = "";
 
@@ -41,9 +39,10 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	/**
 	 * Konvertieren eines <code>Paragraph</code> in HTML.
 	 * 
-	 * @param Paragraph
+	 * @param p
+	 *            das <code>Paragraph</code> Objekt.
 	 * 
-	 * @return String in HTML-Format
+	 * @return den <code>String</code> in HTML-Format
 	 */
 	public String paragraph2HTML(Paragraph p) {
 
@@ -94,8 +93,9 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * Mehrere ContactReports in HTML überführen. Die Reports werden in einer
 	 * Tabellenstruktur ausgegeben
 	 * 
-	 * @param cons ArrayList<ContactReport> die Kontakte, die in HTML überführt
-	 *             werden sollen
+	 * @param cons
+	 *            Liste von <code>ContactReport</code>, die in HTML überführt werden
+	 *            sollen
 	 * @return String im korrekten HTML Format.
 	 */
 	public String convertContactReportsToHTML(ArrayList<ContactReport> cons) {

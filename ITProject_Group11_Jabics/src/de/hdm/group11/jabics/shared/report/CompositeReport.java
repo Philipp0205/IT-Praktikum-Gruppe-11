@@ -17,8 +17,8 @@ public class CompositeReport<T extends Report> extends Report implements Seriali
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Eine Instanz von
-	 * <code>CompositeReport<code> besteht aus mehreren <code>subReports</code>.
+	 * Eine Instanz von <code>CompositeReport</code> besteht aus mehreren
+	 * <code>subReports</code>.
 	 */
 	private ArrayList<T> subReports;
 

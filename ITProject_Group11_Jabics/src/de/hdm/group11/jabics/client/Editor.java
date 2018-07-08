@@ -64,9 +64,10 @@ public class Editor implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
-
+    
 		loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
+    
 	}
 
 	/**
@@ -105,7 +106,7 @@ public class Editor implements EntryPoint {
 	/**
 	 * Auslesen der <code>LoginInfo</code>.
 	 * 
-	 * @returns <code>LoginInfo</code>
+	 * @return <code>LoginInfo</code>
 	 */
 	public LoginInfo getLoginInfo() {
 		return this.logon;
@@ -114,7 +115,7 @@ public class Editor implements EntryPoint {
 	/**
 	 * Auslesen des <code>Editor</code>.
 	 * 
-	 * @returns <code>Editor</code>
+	 * @return Das <code>Editor</code> Objekt.
 	 */
 	public Editor getEditor() {
 		return this;

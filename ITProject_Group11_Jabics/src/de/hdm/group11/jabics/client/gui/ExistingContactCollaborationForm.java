@@ -63,8 +63,8 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	Column<PValue, String> propertyvalue;
 
 	Grid grid;
-	
-	//Ressourcen für CellTables
+
+	// Ressourcen für CellTables
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
 	public void onLoad() {
@@ -81,7 +81,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		grid = new Grid(4, 3);
 		valueLabel = new Label("Eigenschaften, die der ausgewählte Nutzer sehen darf");
 
-		selValues = new CellTable<PValue>(100,ctRes);
+		selValues = new CellTable<PValue>(100, ctRes);
 		valueProvider = new ListDataProvider<PValue>();
 
 		userProvider = new ListDataProvider<JabicsUser>();
@@ -169,7 +169,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			public void onClick(ClickEvent ev) {
 				if (singleSelectedUser != null) {
 					updateContactShareForUser(singleSelectedUser);
-				}else {
+				} else {
 					Window.alert("Kein einzelner Nutzer ausgewählt");
 				}
 			}
@@ -306,9 +306,10 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 		}
 	}
-	
+
 	/**
 	 * Einen Kontakt, wenn er zurückgegeben wird, im Menu updaten
+	 * 
 	 * @param result
 	 */
 	public void updateContact(Contact result) {
@@ -321,7 +322,8 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	 * Einen Nutzer aus der Tabelle, die alle Nutzer, mit denen der Kontakt geteilt
 	 * ist, anzeigt, entfernen
 	 * 
-	 * @param JabicsUser der Nutzer der entfernt werden soll
+	 * @param u
+	 *            <code>JabicsUser</code> der Nutzer der entfernt werden soll
 	 */
 	public void removeUserFromTable(JabicsUser u) {
 		for (JabicsUser uu : sharedUser) {
@@ -347,7 +349,8 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	/**
 	 * Den aktuell angezeigten Kontakt setzen
 	 * 
-	 * @param c der Kontakt der angezeigt werden soll
+	 * @param c
+	 *            der Kontakt der angezeigt werden soll
 	 */
 	public void setContact(Contact c) {
 		if (c != null) {

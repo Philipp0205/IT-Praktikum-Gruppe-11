@@ -67,9 +67,10 @@ public class EditContactForm extends VerticalPanel {
 	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 
 	/**
-	 * Wird beim erstellen der <code>EditContactForm</code> aufgerufen. Initalisiert alle Objekte, welche die 
-	 * <code>EditContactform</code> benötigt. Vor allem GWT-Panels und Objekte der Klasse <code>Button</code> 
-	 * Des Weiteren werden <code>ClickHandler<c/ode> für die Buttons gesetzt.
+	 * Wird beim erstellen der <code>EditContactForm</code> aufgerufen. Initalisiert
+	 * alle Objekte, welche die <code>EditContactform</code> benötigt. Vor allem
+	 * GWT-Panels und Objekte der Klasse <code>Button</code> Des Weiteren werden
+	 * <code>ClickHandler</code> für die Buttons gesetzt.
 	 */
 	public void onLoad() {
 		if (contact != null) {
@@ -202,10 +203,10 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	/**
-	 *  Bezieht alle <code>PValue</code>s des <code>Contact</code>s und zeigt diese in einem <code>VerticalPanel</code> 
-	 *  an.
+	 * Bezieht alle <code>PValue</code>s des <code>Contact</code>s und zeigt diese
+	 * in einem <code>VerticalPanel</code> an.
 	 */
 	public void renderContact() {
 		val = new ArrayList<PropForm>();
@@ -263,11 +264,11 @@ public class EditContactForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	/**
-	 * Speichert die vom Nutzer vorgenommenen ändernungen, indem der Kontakt gespeichert wird.
-	 * Dabei wird zwischen einem neuen <code>Contact</code> und einem bereits exisiterenden <code>Contact</code>
-	 * unterschieden.
+	 * Speichert die vom Nutzer vorgenommenen ändernungen, indem der Kontakt
+	 * gespeichert wird. Dabei wird zwischen einem neuen <code>Contact</code> und
+	 * einem bereits exisiterenden <code>Contact</code> unterschieden.
 	 */
 	public void save() {
 		GWT.log("6.1 Save Contact");
@@ -360,23 +361,23 @@ public class EditContactForm extends VerticalPanel {
 			}
 		}
 	}
-	
+
 	/**
 	 * Setzt den <code>Contact</code> der Instanz.
 	 * 
 	 * @param c
-	 * 			<code>Contact</code> welcher gesetzt werden soll.
+	 *            <code>Contact</code> welcher gesetzt werden soll.
 	 */
 	public void setContact(Contact c) {
 		this.contact = c;
 	}
-	
+
 	/**
-	 * Setzten des Indiktator, ob es sich um einen neuen oder bereits exisiterenden <code>Contact</code>
-	 * handelt.
+	 * Setzten des Indiktator, ob es sich um einen neuen oder bereits exisiterenden
+	 * <code>Contact</code> handelt.
 	 * 
 	 * @param bol
-	 * 			Status der gesetzt weden soll.
+	 *            Status der gesetzt weden soll.
 	 */
 	public void setNewContact(Boolean bol) {
 		this.isNewContact = bol;
@@ -416,9 +417,10 @@ public class EditContactForm extends VerticalPanel {
 			}
 		}
 	}
-	
+
 	/**
-	 * Callback welcher welcher ausgelöst wer wenn <code>PValue<code>s bezogen werden.
+	 * Callback welcher welcher ausgelöst wer wenn <code>PValue</code>s bezogen
+	 * werden.
 	 *
 	 */
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
@@ -565,7 +567,8 @@ public class EditContactForm extends VerticalPanel {
 	}
 
 	/**
-	 *  Realisiert die Anzeige einer Property wenn der Nutzer einen Kontakt bearbeitet.
+	 * Realisiert die Anzeige einer Property wenn der Nutzer einen Kontakt
+	 * bearbeitet.
 	 *
 	 */
 	private class PropForm extends HorizontalPanel {
@@ -608,9 +611,10 @@ public class EditContactForm extends VerticalPanel {
 			addButton.setStyleName("addButton");
 
 		}
-		
+
 		/**
-		 * Konstruktor welcher ein Objekt vom Datentyp <code>PropForm</code> 
+		 * Konstruktor welcher ein Objekt vom Datentyp <code>PropForm</code>
+		 * 
 		 * @param pp
 		 */
 		PropForm(Property pp) {
@@ -628,7 +632,8 @@ public class EditContactForm extends VerticalPanel {
 		/**
 		 * Hinzufügen eines PValues zur Form.
 		 * 
-		 * @param PValue pv
+		 * @param pv
+		 *            das <code>PValue</code> Objekt.
 		 */
 		void addPValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -640,7 +645,8 @@ public class EditContactForm extends VerticalPanel {
 		 * Löschen des initial erstellten PVForms und ersetzen durch ein befülltes. Darf
 		 * nur von renderContact() aufgerufen werden
 		 * 
-		 * @param PValue pv
+		 * @param pv
+		 *            das <code>PValue</code> Objekt welches ersetzt werden soll.
 		 */
 		void replacePValue(PValue pv) {
 			PVForm pvform = new PVForm(pv);
@@ -648,16 +654,17 @@ public class EditContactForm extends VerticalPanel {
 			pvForms.add(pvform);
 			pvPanel.add(pvform);
 		}
-		
+
 		/**
 		 * Konstruktor welcher eine Instanz der Klasse <code>PValue</code> erzeugt.
+		 * 
 		 * @param pv
 		 */
 		PropForm(PValue pv) {
 			this(pv.getProperty());
 			addPValue(pv);
 		}
-		
+
 		/**
 		 * Bezieht die aktuelle <code>Property</code>
 		 * 
@@ -681,7 +688,7 @@ public class EditContactForm extends VerticalPanel {
 			return res;
 		}
 	}
-	
+
 	/**
 	 * Realisiert die Anzeige der PValues beim Editieren eines Kontaktes.
 	 *
@@ -706,9 +713,9 @@ public class EditContactForm extends VerticalPanel {
 		public void hideDeleteButton() {
 			this.delete.setVisible(false);
 		}
-		
+
 		/**
-		 *  Konstruktor welcher eine Instanz von <code>PVForm</code> erzeugt.
+		 * Konstruktor welcher eine Instanz von <code>PVForm</code> erzeugt.
 		 */
 		PVForm(PValue pv) {
 			create(pv);
@@ -735,7 +742,7 @@ public class EditContactForm extends VerticalPanel {
 			}
 			show();
 		}
-		
+
 		/**
 		 * Klasse welche neue Werte für Daten und den Text einer eines PropertyValues.
 		 *
@@ -748,9 +755,9 @@ public class EditContactForm extends VerticalPanel {
 				}
 			}
 		}
-		
+
 		/**
-		 *  Bezieht das aktuell gesezte PeoprtyValue.
+		 * Bezieht das aktuell gesezte PeoprtyValue.
 		 */
 		PValue getPV() {
 			if (this.pval != null) {
@@ -758,7 +765,7 @@ public class EditContactForm extends VerticalPanel {
 			} else
 				return null;
 		}
-		
+
 		/**
 		 * Setzt ein <code>PValue</code>
 		 * 
@@ -767,9 +774,9 @@ public class EditContactForm extends VerticalPanel {
 		void setPV(PValue pv) {
 			this.pval = pv;
 		}
-		
+
 		/**
-		 *  Setzt das PValue der Instant neu und setzt ClickHandler.
+		 * Setzt das PValue der Instant neu und setzt ClickHandler.
 		 * 
 		 * @param pv
 		 */
@@ -787,9 +794,9 @@ public class EditContactForm extends VerticalPanel {
 			PValueChangeHandler(PValue pv) {
 				this.pv = pv;
 			}
-			
+
 			/**
-			 *  TODO
+			 * TODO
 			 */
 			@Override
 			public void onValueChange(ValueChangeEvent event) {
@@ -822,9 +829,10 @@ public class EditContactForm extends VerticalPanel {
 		class DateClickHandler implements ClickHandler {
 			PValue pv;
 			Button done;
-			
+
 			/**
 			 * TODO
+			 * 
 			 * @param pv
 			 * @param done
 			 */
@@ -845,9 +853,10 @@ public class EditContactForm extends VerticalPanel {
 
 	class DeleteClickHandler implements ClickHandler {
 		PVForm pv;
-		
+
 		/**
 		 * TODO
+		 * 
 		 * @param pv
 		 */
 		DeleteClickHandler(PVForm pv) {

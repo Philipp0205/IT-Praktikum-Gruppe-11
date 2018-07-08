@@ -91,7 +91,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
-	 * @param date
+	 * @param dateValue
 	 * @param u
 	 */
 	public PValue(Property p, Date dateValue, JabicsUser u) {
@@ -106,7 +106,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
-	 * @param f
+	 * @param floatValue
 	 * @param u
 	 */
 	public PValue(Property p, float floatValue, JabicsUser u) {
@@ -170,7 +170,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
-	 * @param s
+	 * @param stringValue
 	 * @param u
 	 */
 	public PValue(Property p, String stringValue, JabicsUser u) {

@@ -79,7 +79,7 @@ public class ShowContactForm extends VerticalPanel {
 	
 	/**
 	 * Konstruktor welcher eine Instanz von <code>ShowContactForm</code> erzeugt.
-	 * Die <code>Property<code>s und die <code>PValue<code>s werden in einer Tabelle ausgebegen.
+	 * Die <code>Property</code>s und die <code>PValue</code>s werden in einer Tabelle ausgebegen.
 	 */
 	public ShowContactForm() {
 
@@ -306,7 +306,7 @@ public class ShowContactForm extends VerticalPanel {
 	 * Setzt den Editor.
 	 * 
 	 * @param e 
-	 * 		<code>Editor<code> der gesetzt werden soll.
+	 * 		<code>Editor</code> der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
 		if (e != null) {
