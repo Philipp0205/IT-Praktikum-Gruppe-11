@@ -17,8 +17,6 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 
 	/**
 	 * Speichert das Ergebnis einer process Methode. Format: HTML
-	 * 
-	 * @return String
 	 */
 	private String reportText = "";
 
@@ -41,9 +39,10 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	/**
 	 * Konvertieren eines <code>Paragraph</code> in HTML.
 	 * 
-	 * @param Paragraph
+	 * @param p
+	 *            das <code>Paragraph</code> Objekt.
 	 * 
-	 * @return String in HTML-Format
+	 * @return den <code>String</code> in HTML-Format
 	 */
 	public String paragraph2HTML(Paragraph p) {
 
@@ -78,16 +77,16 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * @return String in HTML-Format
 	 */
 	public String createHeadOfReport(CompositeReport r) {
-		GWT.log("HeadOfReport erstellen");
 
 		if (r.getCreator() != null && r.getHeadline() != null) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div id=\"report\">");
-			sb.append("<h3> Report für " + r.getCreator().getContent() + "</h3>");
-			// sb.append("<h5> Erstellt am " + r.getCreationDateAsString() + "</h5>");
+			sb.append("<h3>" + r.getHeadline().getContent() + "</h3>");
+			sb.append("<h5> Report für " + r.getCreator().getContent()
+					 + ", erstellt am " + r.getCreationDateAsString() + "</h5>");
 			return sb.toString();
 		} else
-			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report ohne Name</h3>";
+			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report</h3>";
 	}
 
 	/**
@@ -95,46 +94,45 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * Tabellenstruktur ausgegeben
 	 * 
 	 * @param cons
-	 *            ArrayList<ContactReport> die Kontakte, die in HTML überführt
-	 *            werden sollen
+	 *            Liste von <code>ContactReport</code>, die in HTML überführt werden
+	 *            sollen
 	 * @return String im korrekten HTML Format.
 	 */
 	public String convertContactReportsToHTML(ArrayList<ContactReport> cons) {
-		GWT.log("Tabelle erstellen");
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div id=\"reportTable\">");
-		sb.append("<table style=\"width:700px; border: 1px solid black;\">");
+		sb.append("<div id=\"report\">");
+		sb.append("<table class=\"reportTable\">");
 		// die Zeilen pro Kontakt füllen
 		for (ContactReport c : cons) {
-			GWT.log("HTML Writer: neuer Kontakt Report für " + c.getContactInfo());
 			if (c.getContactInfo() != null) {
-				sb.append(" <tr> <td> <b>" + c.getContactInfo().getContent() + "</b> </td>");
+				sb.append(" <tr class=\"contactReport1\"> <td> <b>" + c.getContactInfo().getContent() + "</b> </td>");
 			} else {
-				GWT.log("Keinanzeigename");
-				sb.append("<tr><td> <b>Kein Anzeigename</b> </td> </tr>");
+				sb.append("<tr class=\"contactReport1\"><td> <b>Kein Anzeigename</b> </td>");
 			}
-			sb.append("<td> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
-			sb.append("<td> <p>Teilhaber: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
-			sb.append("<td> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" + "</td>");
-			sb.append("<td> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>" + "</td>");
+			sb.append("<td class=\"reportCell\"> <p>Besitzer: " + c.getUserInfo().getContent() + "</p> </td>");
+			sb.append("<td class=\"reportCell\"> <p>Teilhaber: " + c.getCollaboratorInfo().getContent() + "</p> </td>");
+			sb.append(
+					"<td class=\"reportCell\"> <p>Erstellt am " + c.getCreationInfo().getContent() + "</p>" + "</td>");
+			sb.append("<td class=\"reportCell\"> <p>Zuletzt geändert: " + c.getUpdateInfo().getContent() + "</p>"
+					+ "</td>");
 
-			sb.append("</tr><tr>");
+			sb.append("</tr><tr class=\"contactReport2\">");
 			for (PropertyView pv : c.getContent()) {
 				if (pv.getPname() != null && pv.getPvalue() != null) {
-					sb.append("<td> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue() + " </p> </td>");
+					sb.append("<td class=\"reportCell\"> <b>" + pv.getPname() + "</b> \n <p>" + pv.getPvalue()
+							+ " </p> </td>");
 				} else if (pv.getPname() != null) {
-					sb.append("<td> <p> " + pv.getPname() + "</p> </td>");
+					sb.append("<td class=\"reportCell\"> <p> " + pv.getPname() + "</p> </td>");
 				} else if (pv.getPvalue() != null) {
-					sb.append("<td> <p> " + pv.getPvalue() + "</p> </td>");
+					sb.append("<td class=\"reportCell\"> <p> " + pv.getPvalue() + "</p> </td>");
 				}
 			}
-			sb.append("</tr><tr> <td> <b>&nbsp</b> </td>");
+			sb.append("</tr><tr class=\"reportSpacer\"> <td> <b>&nbsp</b> </td>");
 		}
 
 		sb.append("</tr>");
 		sb.append("</table>");
 		sb.append("</div>");
-		GWT.log("Tabelle erstellenfertig" + sb.toString());
 		return sb.toString();
 	}
 
@@ -171,8 +169,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * der Instanzenvariable "reportText", die über getReportText() abgerufen werden
 	 * kann.
 	 * 
-	 * @param r
-	 *            AllContactsOfUserReport der konvertiert werden soll
+	 * @param r AllContactsOfUserReport der konvertiert werden soll
 	 */
 	public void process(AllContactsOfUserReport r) {
 		StringBuffer sb = new StringBuffer();
@@ -193,11 +190,9 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * in der Instanzenvariable "reportText", die über getReportText() abgerufen
 	 * werden kann.
 	 * 
-	 * @param r
-	 *            FilteredContactsOfUserReport der konvertiert werden soll
+	 * @param r FilteredContactsOfUserReport der konvertiert werden soll
 	 */
 	public void process(FilteredContactsOfUserReport r) {
-		GWT.log("Report zu HTML machen");
 		StringBuffer sb = new StringBuffer();
 		/**
 		 * Dem Ergebnis einen Kopf, Text unterhalb des Kopfes, eine Tabelle mit allen

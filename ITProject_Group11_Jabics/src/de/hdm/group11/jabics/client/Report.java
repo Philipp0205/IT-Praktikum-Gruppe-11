@@ -1,3 +1,4 @@
+
 package de.hdm.group11.jabics.client;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -18,44 +19,62 @@ import de.hdm.group11.jabics.shared.LoginInfo;
 import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
+/**
+ * @author Kurrle
+ * @author Anders
+ */
 public class Report implements EntryPoint {
-	JabicsUser currentUser;
-	LoginInfo loginfo;
 
-	ReportAdmin report;
+	/**
+	 * Aktueller <code>JabicsUser</code> einer Instanz dieser Klasse.
+	 */
+	private JabicsUser currentUser;
 
-	LoginServiceAsync loginService = null;
+	/**
+	 * <code>LoginInfo</code> einer Instanz dieser Klasse.
+	 */
+	private LoginInfo loginfo;
 
+	/**
+	 * <code>ReportAdmin</code> einer Instanz dieser Klasse.
+	 */
+	private ReportAdmin report;
+
+	/**
+	 * <code>LoginServiceAsync</code> einer Instanz dieser Klasse.
+	 */
+	private LoginServiceAsync loginService = null;
+
+	/**
+	 * <code>VerticalPanel</code> einer Instanz dieser Klasse.
+	 */
 	private VerticalPanel loginPanel = new VerticalPanel();
 
+	/**
+	 * Die onModuleLoad welche beom ersten aufrufen der Klasse aufgerufen wird.
+	 */
 	@Override
 	public void onModuleLoad() {
 		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
-		/**
-		 * Login
-		 */
 		login();
-		//useStaticUser();
 	}
 
+	/**
+	 * Der Login welcher nötig ist bevor der Reprt geladen wird. 
+	 * Ein Nutzer muss sich zuerst einloggen und wird anschließend zum Report weitgergeleitet.
+	 */
 	public void login() {
 		loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
 	}
-	
-	public void useStaticUser() {
-		JabicsUser u = new JabicsUser(1);
-		u.setEmail("test@mail.com");
-		u.setUsername("ein nutzer");
-		u.setId(1);
-		
-		report = new ReportAdmin();
-		report.setJabicsUser(u);
-		report.loadReport();		
-	}
 
+	/**
+	 * Auslesen der <code>LoginInfo</code>.
+	 * 
+	 * @return <code>LoginInfo</code>
+	 */
 	public LoginInfo getLoginInfo() {
 		return this.loginfo;
 	}
@@ -73,7 +92,7 @@ public class Report implements EntryPoint {
 		Button b = new Button("Anmelden");
 		b.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ck) {
-				Window.Location.assign(logon.getLoginUrl());
+				//Window.Location.assign(logon.getLoginUrl());
 			}
 		});
 		b.setStyleName("loginbutton");
@@ -87,6 +106,10 @@ public class Report implements EntryPoint {
 		RootPanel.get("content").add(loginPanel);
 	}
 
+	/**
+	 *  Callback welcher beim ausführen eines Logins ausgelöst wird. 
+	 *  Bei einem erfolgreichen Callback wird die <code>LoginInfo</code> gesetzt und der Report wird geladen.
+	 */
 	private class loginServiceCallback implements AsyncCallback<LoginInfo> {
 
 		@Override

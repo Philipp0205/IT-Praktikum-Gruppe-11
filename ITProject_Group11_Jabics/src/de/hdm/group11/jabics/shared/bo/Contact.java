@@ -65,13 +65,13 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	 * Konstruktor um eine Instanz dieser Klasse mit <code>PValue</code> Objekten
 	 * und <code>JabicsUser</code> zu erzeugen.
 	 * 
-	 * @param a
+	 * @param values
 	 * @param u
 	 */
 	public Contact(ArrayList<PValue> values, JabicsUser u) {
 		this(values);
 		this.updateNickname();
-		this.owner = u;
+		this.setOwner(u);
 	}
 
 	/**
@@ -87,8 +87,9 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	}
 
 	/**
-	 * Fügt einen <code>PValue</code> der <code>ArrayList<code> <code>values</code>
-	 * hinzu.
+	 * Fügt einen <code>PValue</code> der <code>values</code> hinzu.
+	 * 
+	 * @param pValue
 	 */
 	public void addPValue(PValue pValue) {
 		this.values.add(pValue);
@@ -166,6 +167,8 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 
 	/**
 	 * Entfernt eine Ausprägung aus der Liste von Ausprägungen
+	 * 
+	 * @param pValue
 	 */
 	public void removePValue(PValue pValue) {
 		this.values.remove(pValue);
@@ -218,18 +221,13 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		for (PValue p : values) {
 			if (p.getProperty().getId() == 1) {
 				sBuffer.replace(0, sBuffer.length(), p.getStringValue());
-			} else {
-				System.out.println("Constructor in Contact: No name in Array.");
 			}
 		}
 		for (PValue p2 : values) {
 			if (p2.getProperty().getId() == 2) {
 				sBuffer.append(" " + p2.getStringValue());
-			} else {
-				System.out.println("No lastname in Array");
 			}
 		}
-		System.out.println("Neuer Nickname: " + sBuffer.toString());
 		this.name = sBuffer.toString();
 	}
 }

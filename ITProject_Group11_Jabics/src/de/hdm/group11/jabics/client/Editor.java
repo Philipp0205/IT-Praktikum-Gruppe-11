@@ -20,53 +20,61 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 /**
  * In der Klasse <code>Editor</code> liegt die onModuleLoad() Methode und mit
  * dieser der Login.
+ * 
+ * @author Kurrle
+ * @author Anders
  */
 public class Editor implements EntryPoint {
 
 	private static final String SERVER_ERROR = "Der Server ist nicht erreichbar.";
 
+	/**
+	 * <code>LoginInfo</code> einer Instanz dieser Klasse.
+	 */
 	private LoginInfo logon;
+
+	/**
+	 * Aktueller <code>JabicsUser</code> einer Instanz dieser Klasse.
+	 */
 	private JabicsUser currentUser;
 
+	/**
+	 * <code>EditorAdmin</code> einer Instanz dieser Klasse.
+	 */
 	private EditorAdmin editor;
+
+	/**
+	 * <code>SignUpForm</code> einer Instanz dieser Klasse.
+	 */
 	private SignUpForm signUp;
 
+	/**
+	 * <code>LoginServiceAsync</code> einer Instanz dieser Klasse.
+	 */
 	private LoginServiceAsync loginService;
 
+	/**
+	 * <code>VerticalPanel</code> einer Instanz dieser Klasse.
+	 */
 	private VerticalPanel loginPanel = new VerticalPanel();
 
 	/**
 	 * Die Methode, die aufgerufen wird, wenn die Seite neu geladen wird. Tätigt
-	 * ausschließlich den Login, durch diesen wird weiter entschieden, was passiert
+	 * ausschließlich den Login, durch diesen wird weiter entschieden, was passiert.
 	 */
 	@Override
 	public void onModuleLoad() {
-
-		/*
-		 * Login
-		 */
-//		JabicsUser u = new JabicsUser(1);
-//		u.setEmail("test@mail.com");
-//		u.setUsername("ein nutzer");
-//		u.setId(28);
-//
-//		editor = new EditorAdmin(u);
-//		logon = new LoginInfo();
-//		logon.setCurrentUser(u);
-//		editor.setLoginInfo(logon);
-//		editor.setJabicsUser(logon.getCurrentUser());
-//		editor.loadEditor();
-
+    
 		loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-
+    
 	}
 
 	/**
-	 * Den Login laden und anzeigen
+	 * Den Login laden und anzeigen.
 	 * 
 	 * @param logon,
-	 *            LoginInfo in der die LoginURL liegt
+	 *            <code>LoginInfo</code> in der die <code>loginUrl</code> liegt.
 	 */
 	private void loadLogin(LoginInfo logon) {
 		// Assemble login panel.
@@ -87,38 +95,36 @@ public class Editor implements EntryPoint {
 	}
 
 	/**
-	 * LoginInfo setzen
+	 * Setzen der <code>LoginInfo</code>.
 	 * 
-	 * @param logon,
-	 *            LoginInfo, die gesetzt werden soll
+	 * @param logon
 	 */
 	public void setLoginInfo(LoginInfo logon) {
 		this.logon = logon;
 	}
 
 	/**
-	 * LoginInfo erhalten
+	 * Auslesen der <code>LoginInfo</code>.
 	 * 
-	 * @returns LoginInfo, die aktuell gesetzt ist
+	 * @return <code>LoginInfo</code>
 	 */
 	public LoginInfo getLoginInfo() {
 		return this.logon;
 	}
 
 	/**
-	 * Editor erhalten (ist für anonymeKlasse notwendig)
+	 * Auslesen des <code>Editor</code>.
 	 * 
-	 * @returns this (Editor)
+	 * @return Das <code>Editor</code> Objekt.
 	 */
 	public Editor getEditor() {
 		return this;
 	}
 
 	/**
-	 * Den aktuellen Nutzer setzen
+	 * Den aktuellen <code>JabicsUser</code> setzen.
 	 * 
-	 * @param u,
-	 *            Aktueller Nutzer
+	 * @param u
 	 */
 	public void setJabicsUser(JabicsUser u) {
 		this.currentUser = u;
@@ -127,9 +133,6 @@ public class Editor implements EntryPoint {
 	/**
 	 * Diese Klasse fertigt den ankommenden Callback, wenn der Login beim Laden der
 	 * Webseite oder bei KLick auf anmelden erfolgt, ab.
-	 * 
-	 * @author Anders
-	 *
 	 */
 	private class loginServiceCallback implements AsyncCallback<LoginInfo> {
 		@Override

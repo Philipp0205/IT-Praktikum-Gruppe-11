@@ -25,7 +25,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	/**
 	 * Instanz der Klasse <code>UserMapper</code>.
 	 */
-	UserMapper uMapper = UserMapper.userMapper();
+	private UserMapper uMapper = UserMapper.userMapper();
 
 	/**
 	 * Logik des Loginprozesses für dem System bekannten <code>JabicsUser</code>.
@@ -38,11 +38,9 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	 */
 	@Override
 	public LoginInfo login(String requestUri) {
-		System.out.println("login");
 		// Google User bestimmen.
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
-		System.out.println("login GoogleUser");
 		LoginInfo loginInfo = new LoginInfo();
 
 		/**
@@ -55,25 +53,19 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 				JabicsUser existingJabicsUser = UserMapper.userMapper().findUserByEmail(user.getEmail());
 
 				if (existingJabicsUser != null) {
-					System.out.println("Nutzer gefunden");
 					loginInfo.setCurrentUser(existingJabicsUser);
-					System.out.println("6########" + existingJabicsUser.getId() + existingJabicsUser.getEmail());
 					loginInfo.setLoggedIn(true);
 					loginInfo.setIsNewUser(false);
 					loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 				} else {
 					// Nutzer existiert noch nicht im System, neuen erstellen und zurückgeben
-					System.out.println("neuer Nutzer");
 					JabicsUser newJabicsUser = new JabicsUser();
 					newJabicsUser.setEmail(user.getEmail());
 					// Temporär den Nutzernamen aus Google setzen, damit der Nutzer wenigstens
 					// irgendetwas hat
 					try {
 						newJabicsUser.setUsername(user.getNickname());
-						System.out.println(newJabicsUser.getEmail());
-						System.out.println("nick:" + newJabicsUser.getUsername());
 					} catch (Exception e) {
-						System.err.println("Username not found" + e.toString());
 						newJabicsUser.setUsername("not found");
 					}
 					loginInfo.setLoggedIn(true);
@@ -86,7 +78,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 				return loginInfo;
 
 			} catch (Exception e) {
-				System.out.println("Nutzer nicht gefunden: Exception");
 				System.out.println(e.toString());
 				String s = userService.createLoginURL(requestUri);
 				loginInfo.setLoginUrl(s);
@@ -123,14 +114,12 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		User user = userService.getCurrentUser();
 
 		try {
-			System.out.println("Nutzer erstellen");
 			// Sicherheitshalber neues LoginInfo Objekt erstellen
 			LoginInfo newLogon = new LoginInfo();
 			// Neuen Nutzer setzen mit dem gesetzten Nutzernamen
 			JabicsUser newUser = logon.getCurrentUser();
 
 			// Ist es auch wirklich der gleiche Nutzer
-			System.out.println(logon.getCurrentUser().getEmail() + ":" + user.getEmail());
 			if (newUser.getEmail().contentEquals(user.getEmail())) {
 				newUser.setEmail(logon.getCurrentUser().getEmail());
 				// Nutzer in DB einfügen und mit Id zurückbekommen
@@ -140,7 +129,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 				newLogon.setLogoutUrl(userService.createLogoutURL(requestUri));
 				newLogon.setCurrentUser(newUser);
 			} else {
-				System.out.println("Nicht die gleiche Mail");
 				String s = userService.createLoginURL(requestUri);
 				newLogon.setLoginUrl(s);
 				newLogon.setLoggedIn(false);

@@ -29,7 +29,7 @@ public class Filter {
 	 * @param finalUser
 	 *            <code>JabicsUser</code> Objekte, für die das <code>Contact</code>
 	 *            Objekte angefragt werden.
-	 * @param collaborator
+	 * @param collaborators
 	 *            <code>JabicsUser</code> Objekte, welche eine Collaboration
 	 *            besitzen.
 	 * @param c
@@ -177,13 +177,10 @@ public class Filter {
 
 		for (Contact c : contacts) {
 			boolean bol = false;
-			System.out.println("Kontakt filtern: " + c.getName());
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue pv : pvalues) {
-				System.out.println("PValue filtern: " + p.getLabel() + "|" + pv.getProperty().getLabel());
 				// Die Logik der Methode
 				if (p.getLabel() != null && pv.getProperty().getLabel().equals(p.getLabel())) {
-					System.err.println("Gefunden");
 					bol = true;
 					for (Contact c2 : result) {
 						if (c.getId() == c2.getId())

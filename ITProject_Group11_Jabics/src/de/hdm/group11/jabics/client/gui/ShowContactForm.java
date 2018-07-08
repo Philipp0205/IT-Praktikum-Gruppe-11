@@ -33,37 +33,42 @@ import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
+/**
+ * Eine <code>ShowContactListForm</code> welche einen <code>Contact</code> zur Anzeige bringt.
+ * 
+ * @author Anders, Kurrle, Brase
+ */
 public class ShowContactForm extends VerticalPanel {
 
-	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	EditorAdmin e;
-	JabicsUser u;
-	Contact currentContact = new Contact();
-	Boolean userIsOwner = false;
+	private EditorAdmin e;
+	private JabicsUser u;
+	private Contact currentContact = new Contact();
+	private Boolean userIsOwner = false;
 
-	CellTable<PValue> values;
-	ListDataProvider<PValue> valueProvider;
+	private CellTable<PValue> values;
+	private ListDataProvider<PValue> valueProvider;
 
-	Column<PValue, String> prop;
-	Column<PValue, String> pval;
-	Column<PValue, ImageResource> shareStatus;
+	private Column<PValue, String> prop;
+	private Column<PValue, String> pval;
+	private Column<PValue, ImageResource> shareStatus;
 
-	HorizontalPanel editPanel = new HorizontalPanel();
-	HorizontalPanel sharePanel = new HorizontalPanel();
-	HorizontalPanel shareSubPanel1 = new HorizontalPanel();
-	HorizontalPanel shareSubPanel2 = new HorizontalPanel();
-	HorizontalPanel deletePanel = new HorizontalPanel();
-	HorizontalPanel mainPanel = new HorizontalPanel();
+	private HorizontalPanel editPanel = new HorizontalPanel();
+	private HorizontalPanel sharePanel = new HorizontalPanel();
+	private HorizontalPanel shareSubPanel1 = new HorizontalPanel();
+	private HorizontalPanel shareSubPanel2 = new HorizontalPanel();
+	private HorizontalPanel deletePanel = new HorizontalPanel();
+	private HorizontalPanel mainPanel = new HorizontalPanel();
 
-	Button editButton = new Button("✎");
-	Button editLabel = new Button("Kontakt bearbeiten");
-	Button shareContactButton = new Button("⋲");
-	Button shareLabel = new Button("Kontakt teilen");
-	Button shareExistingContactButton = new Button("✎");
-	Button shareEditLabel = new Button("Teilen bearbeiten");
-	Button deleteButton = new Button("🗑");
-	Button deleteLabel = new Button("Kontakt löschen");
+	private Button editButton = new Button("✎");
+	private Button editLabel = new Button("Kontakt bearbeiten");
+	private Button shareContactButton = new Button("⋲");
+	private Button shareLabel = new Button("Kontakt teilen");
+	private Button shareExistingContactButton = new Button("✎");
+	private Button shareEditLabel = new Button("Teilen bearbeiten");
+	private Button deleteButton = new Button("🗑");
+	private Button deleteLabel = new Button("Kontakt löschen");
 	
 	//cellTable Ressourcen	
 	public interface CellTableResources extends CellTable.Resources {
@@ -71,11 +76,17 @@ public class ShowContactForm extends VerticalPanel {
 		@Source("JabicsCellTable.css")
 		CellTable.Style cellTableStyle();
 	}
-
+	
+	/**
+	 * Konstruktor welcher eine Instanz von <code>ShowContactForm</code> erzeugt.
+	 * Die <code>Property</code>s und die <code>PValue</code>s werden in einer Tabelle ausgebegen.
+	 */
 	public ShowContactForm() {
 
 		editPanel.add(editLabel);
 		editPanel.add(editButton);
+		editPanel.add(deleteLabel);
+		editPanel.add(deleteButton);
 		
 		shareSubPanel1.add(shareLabel);
 		shareSubPanel1.add(shareContactButton);
@@ -85,8 +96,6 @@ public class ShowContactForm extends VerticalPanel {
 		sharePanel.add(shareSubPanel1);
 		sharePanel.add(shareSubPanel2);
 		
-		deletePanel.add(deleteLabel);
-		deletePanel.add(deleteButton);
 		
 		mainPanel.add(sharePanel);
 		mainPanel.add(deletePanel);
@@ -126,10 +135,10 @@ public class ShowContactForm extends VerticalPanel {
 			@Override
 			public ImageResource getValue(PValue object) {
 				if (object.getShareStatus() == BoStatus.IS_SHARED) {
-					return JabicsResources.INSTANCE.greendot();
+					return JabicsResources.INSTANCE.isshared();
 				}
 				if (object.getShareStatus() == BoStatus.NOT_SHARED) {
-					return JabicsResources.INSTANCE.reddot();
+					return JabicsResources.INSTANCE.isnotshared();
 				}
 				return null; 
 				
@@ -154,13 +163,11 @@ public class ShowContactForm extends VerticalPanel {
 		values.setColumnWidth(prop, 50, Unit.PX);
 		values.addColumn(pval, "Ausprägung");
 		values.setColumnWidth(pval, 50, Unit.PX);
-		values.addColumn(shareStatus, "Share");
+		values.addColumn(shareStatus, "Status");
 		values.setColumnWidth(pval, 50, Unit.PX);
 		values.setStyleName("Tabelle");
 
 		try {
-			GWT.log("ShowCont panels hinzufügen");
-
 			this.add(values);
 			this.add(mainPanel);
 			this.add(editPanel);
@@ -168,9 +175,11 @@ public class ShowContactForm extends VerticalPanel {
 		} catch (Exception caught) {
 			Window.alert(caught.toString());
 		}
-
 	}
-
+	
+	/**
+	 * Wird beim ersten laden der ContactListForm ausgeführt.
+	 */
 	public void onLoad() {
 		userIsOwner();
 		// den Status des Boolschen Werts userIsOwner ermitteln
@@ -185,7 +194,6 @@ public class ShowContactForm extends VerticalPanel {
 		} else {
 			renderTable(currentContact.getValues());
 		}
-		Window.alert("ShowContact onload ende");
 	}
 
 	/**
@@ -229,15 +237,15 @@ public class ShowContactForm extends VerticalPanel {
 			}
 			// Den Kontakt mit den sortierten Werten updaten
 			currentContact.setValues(result);
-		} else {
-			Window.alert("values sind null");
 		}
 		valueProvider.setList(result);
 		valueProvider.flush();
 	}
-
+	
+	/**
+	 *  Setzt den aktuellen User als Besitzer des Kontaktes.
+	 */
 	public void userIsOwner() {
-		GWT.log("userIsOwner");
 		try {
 			if (currentContact.getOwner() != null) {
 				if (currentContact.getOwner().getId() == u.getId()) {
@@ -247,15 +255,19 @@ public class ShowContactForm extends VerticalPanel {
 				}
 			} else {
 				editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
-				GWT.log("userIsOwner holt den Owner");
 			}
 
 		} catch (Exception e) {
-			GWT.log("Besitzer in Kontakt nicht gesetzt");
 			editorService.getOwnerOfContact(currentContact, new GetOwnerOfContactCallback());
 		}
 	}
-
+	
+	/**
+	 * Setzt den aktuellen Kontakt.
+	 * 
+	 * @param c
+	 * 			<code>Contact</code>welcher gesetzt werden soll.
+	 */
 	public void setContact(Contact c) {
 		if (c != null) {
 			this.currentContact = c;
@@ -269,22 +281,42 @@ public class ShowContactForm extends VerticalPanel {
 			Window.alert("kontakt nicht bekannt");
 		}
 	}
+  
 
+	public void removeContact(){
+		e.removeContact(currentContact);
+		e.showMenuOnly();
+	}
+
+  /**
+	 * Setzt den User der ContactListForm
+	 * 
+	 * @param u 
+	 * 			<code>User</code> der gesetzt werden soll.
+	 */
 	public void setUser(JabicsUser u) {
 		if (u != null) {
 			this.u = u;
-		} else
-			Window.alert("user is null");
-
+		}
 	}
-
+	
+	/**
+	 * Setzt den Editor.
+	 * 
+	 * @param e 
+	 * 		<code>Editor</code> der gesetzt werden soll.
+	 */
 	public void setEditor(EditorAdmin e) {
 		if (e != null) {
 			this.e = e;
 		} else
 			Window.alert("editor null");
 	}
-
+	
+	/**
+	 * Callback welcher ausgelöst weg wenn der Owner des Kontakts bezogen wird.
+	 * 
+	 */
 	class GetOwnerOfContactCallback implements AsyncCallback<JabicsUser> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
@@ -292,14 +324,17 @@ public class ShowContactForm extends VerticalPanel {
 
 		public void onSuccess(JabicsUser result) {
 			if (result != null) {
-				GWT.log("Besitzer geholt!");
 				currentContact.setOwner(result);
 				userIsOwner();
 			} else
 				Window.alert("Besitzer konnte nicht ermittelt werden");
 		}
 	}
-
+	
+	/**
+	 * Callback welcher ausgelöst wird, wenn die <code>PValues</code> des Kontakts beozogen werden.
+	 *
+	 */
 	class GetPValuesCallback implements AsyncCallback<ArrayList<PValue>> {
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.toString());
@@ -307,41 +342,56 @@ public class ShowContactForm extends VerticalPanel {
 		}
 
 		public void onSuccess(ArrayList<PValue> result) {
-			Window.alert("ShowContact PValues geholt");
 			if (result != null) {
 				currentContact.setValues(result);
 				renderTable(result);
 			}
 		}
 	}
-
+	
+	/**
+	 * <code>CLickHandler</code> welcher für das Editieren eines Kontaktes verantwortlich ist.
+	 *
+	 */
 	class editClickHandler implements ClickHandler {
 		public void onClick(ClickEvent ev) {
 			e.editContact(currentContact);
 		}
 	}
-
+	
+	/**
+	 * <code>ClickHandler</code> welcher das Anzeigen des <code>ExisitingContactCollaborationForm</code> auslöst.
+	 *
+	 */
 	class shareExistingClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
-			GWT.log(currentContact.getName());
 			e.showExistingContactCollab(currentContact);
 		}
 	}
-
+	
+	/**
+	 * <code>ClickHandler</code> welcher das Anzeigen der <code>ContactForm</code> auslöst.
+	 */
 	class shareClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
 			e.showContactCollab(currentContact);
 		}
 	}
-
+	
+	/**
+	 * <code>ClickHanlder</code>Welcher für das Löschen eines Kontaktst verantwortlich ist.
+	 *
+	 */
 	class deleteClickHandler implements ClickHandler {
-		public void onClick(ClickEvent e) {
+		public void onClick(ClickEvent ec) {
 			editorService.deleteContact(currentContact, u, new AsyncCallback<Void>() {
 				public void onFailure(Throwable caught) {
 					Window.alert("Löschen fehlgeschlagen");
 				}
 
 				public void onSuccess(Void v) {
+					Window.alert("kontakt gelöscht");
+					removeContact();
 				}
 			});
 		}

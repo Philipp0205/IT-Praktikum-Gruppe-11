@@ -82,15 +82,6 @@ public class PValueMapper {
 			stmt.executeUpdate("DELETE FROM pValueCollaboration WHERE systemUserID = " + u.getId() + " AND pValueID = "
 					+ pv.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -113,15 +104,6 @@ public class PValueMapper {
 
 			// Füllen des Statements
 			stmt.executeUpdate("DELETE FROM pValue WHERE pValueID = " + pv.getId());
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 
 		} catch (SQLException e) {
 			System.err.print(e);
@@ -163,15 +145,6 @@ public class PValueMapper {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("name"));
 				al.add(u);
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe der mit JabicsUsern befüllten ArrayList
@@ -227,15 +200,6 @@ public class PValueMapper {
 				p.setLabel(rs.getString("name"));
 				p.setType(rs.getString("type"));
 				pv.setProperty(p);
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des PValue-Objekts
@@ -303,15 +267,6 @@ public class PValueMapper {
 					pv.setPointer(0);
 				}
 				al.add(pv);
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe der mit PValues gefüllten ArrayList
@@ -383,16 +338,7 @@ public class PValueMapper {
 					al.add(BoStatus.NOT_SHARED);
 				}
 			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
+			
 			// Rückgabe der ArrayList<BoStatus>
 			return al;
 		} catch (SQLException e) {
@@ -427,16 +373,7 @@ public class PValueMapper {
 			// Füllen und ausführen des Statements
 			stmt.executeUpdate("INSERT INTO pValueCollaboration (IsOwner, pValueID, systemUserID) VALUES " + "("
 					+ IsOwner + ", " + pv.getId() + ", " + u.getId() + ")");
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
-
+			
 			// Rückgabe des pValue-Objekts
 			return pv;
 		} catch (SQLException e) {
@@ -488,19 +425,6 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-				// werden diese geschlossen.
-				if (!stmt.isClosed()) {
-					stmt.close();
-				}
-				if (!stmt2.isClosed()) {
-					stmt2.close();
-				}
-				if (!con.isClosed()) {
-					con.close();
-				}
-
 				break;
 			}
 			case INT: {
@@ -524,19 +448,6 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-				// werden diese geschlossen.
-				if (!stmt.isClosed()) {
-					stmt.close();
-				}
-				if (!stmt2.isClosed()) {
-					stmt2.close();
-				}
-				if (!con.isClosed()) {
-					con.close();
-				}
-
 				break;
 			}
 			case DATE: {
@@ -566,19 +477,6 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-				// werden diese geschlossen.
-				if (!stmt.isClosed()) {
-					stmt.close();
-				}
-				if (!stmt2.isClosed()) {
-					stmt2.close();
-				}
-				if (!con.isClosed()) {
-					con.close();
-				}
-
 				break;
 			}
 			case FLOAT: {
@@ -601,19 +499,6 @@ public class PValueMapper {
 						pv.setDateUpdated(rs2.getTimestamp("dateUpdated"));
 					}
 				}
-
-				// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-				// werden diese geschlossen.
-				if (!stmt.isClosed()) {
-					stmt.close();
-				}
-				if (!stmt2.isClosed()) {
-					stmt2.close();
-				}
-				if (!con.isClosed()) {
-					con.close();
-				}
-
 				break;
 			}
 			}
@@ -667,15 +552,6 @@ public class PValueMapper {
 						+ pv.getId() + ";");
 				break;
 			}
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des PValue-Objekts
