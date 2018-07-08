@@ -117,6 +117,8 @@ public class ReportAdmin {
 	private CellTable<JabicsUser> userTable;
 	private JabicsUser suggestedUser;
 	private JabicsUser selectedUser;
+	
+	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 
 	/**
 	 * Die Anzeige ist in zwei große Bereiche aufgeteilt. Zum einen Elemente für die
@@ -504,7 +506,7 @@ public class ReportAdmin {
 					finalPVal.setStringValue((java.lang.String) event.getValue());
 					break;
 				case 3:
-					GWT.log("Datum wird durch DatePicker gesetzt");
+					finalPVal.setDateValue(dateTimeFormat.parse((java.lang.String) event.getValue()));
 					break;
 				case 4:
 					finalPVal.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));

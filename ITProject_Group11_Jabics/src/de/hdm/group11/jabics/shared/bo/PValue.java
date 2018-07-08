@@ -3,6 +3,7 @@ package de.hdm.group11.jabics.shared.bo;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
@@ -18,7 +19,6 @@ import com.google.gwt.view.client.ProvidesKey;
  * @author Anders
  * @author Stahl
  */
-
 public class PValue extends BusinessObject implements Comparable<PValue>, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -407,10 +407,10 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 			case 4:
 				return Float.toString(floatValue);
 			default:
-				return "Test(wird noch entfernt)";
+				return " ";
 			}
 		} catch (Exception e) {
-			return "nicht gesetzt";
+			return "";
 		}
 	}
 }

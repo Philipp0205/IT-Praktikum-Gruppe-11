@@ -85,7 +85,7 @@ public class SearchForm extends VerticalPanel {
 	Date tempDate;
 	HorizontalPanel mainpanel = new HorizontalPanel();
 
-	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
+	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 			 
 	
 	/**
@@ -220,7 +220,7 @@ public class SearchForm extends VerticalPanel {
 					break;
 				case "Datum":
 					if (valueBox.getValue() != "") {
-						finalPVal.setDateValue(datepicker.getValue());
+						finalPVal.setDateValue(dateTimeFormat.parse(valueBox.getText()));
 					} else {
 						finalPVal.setDateValue(null);
 					}
