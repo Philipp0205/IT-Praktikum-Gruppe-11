@@ -468,26 +468,28 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 		clMapper.deleteCollaboration(cl, u);
 
 		ArrayList<BoStatus> statusContacts = cMapper.findShareStatus(contactsInList);
-		if (statusContacts.size() == contactsInList.size()) {
-			int i = 0;
-			for (Contact c : contactsInList) {
-				// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
-				c.setShareStatus(statusContacts.get(i));
-				c.setOwner(uMapper.findUserByContact(c));
-				cl.addContact(c);
-				i++;
+		if (statusContacts != null && contactsInList != null) {
+			if (statusContacts.size() == contactsInList.size()) {
+				int i = 0;
+				for (Contact c : contactsInList) {
+					// ArrayList<BoStatus> pvStatus = pvMapper.findShareStatus(cons);
+					c.setShareStatus(statusContacts.get(i));
+					c.setOwner(uMapper.findUserByContact(c));
+					cl.addContact(c);
+					i++;
+				}
 			}
-		}
-
-		// Den Share Status der Liste neu setzen
-		ArrayList<ContactList> cls = new ArrayList<ContactList>();
-		cls.add(cl);
-		ArrayList<BoStatus> status = clMapper.findShareStatus(cls);
-		if (!statusContacts.isEmpty()) {
-			cl.setShareStatus(status.get(0));
+			
+			// Den Share Status der Liste neu setzen
+			ArrayList<ContactList> cls = new ArrayList<ContactList>();
+			cls.add(cl);
+			ArrayList<BoStatus> status = clMapper.findShareStatus(cls);
+			if (!statusContacts.isEmpty()) {
+				cl.setShareStatus(status.get(0));
+			}
+			
 		}
 		return cl;
-
 	}
 
 	/**
@@ -664,25 +666,28 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public void deleteUser(JabicsUser u) {
 		ArrayList<ContactList> allListsOfUser = getListsOf(u);
 		ArrayList<Contact> allContactsOfUser = getContactsOf(u);
+		System.out.println("Account löschen");
 
-		if (allListsOfUser != null) {
-
+		if (allContactsOfUser != null) {
+			System.out.println("Account löschen1.1");
 			// Die Kontrolle, ob übergebener Nutzer der Eigentümer ist, regeln die
 			// jeweiligen Methoden
 			// Erst alle Kontakte löschen.
-			if (allContactsOfUser.isEmpty()) {
+			if (!allContactsOfUser.isEmpty()) {
 				for (Contact c : allContactsOfUser) {
 					deleteContact(c, u);
 				}
 			}
 		}
-		if (allContactsOfUser != null) {
-			if (allListsOfUser.isEmpty()) {
+		System.out.println("Account löschen 2");
+		if (allListsOfUser != null) {
+			if (!allListsOfUser.isEmpty()) {
 				for (ContactList cl : allListsOfUser) {
 					deleteContactList(cl, u);
 				}
 			}
 		}
+		System.out.println("User löschen");
 		uMapper.deleteUser(u);
 		return;
 
@@ -937,13 +942,13 @@ public class EditorServiceImpl extends RemoteServiceServlet implements EditorSer
 	public JabicsUser getOwnerOfContact(Contact c) {
 		return uMapper.findUserByContact(c);
 	}
-	
+
 	/**
 	 * Auslesen des <code>JabicsUser</code> Objekts, welches der Besitzer eines
 	 * <code>ContactList</code> Objekts ist.
 	 * 
 	 * @param cl <code>ContactList</code> Objekt für welches der Besitzer ermittelt
-	 *          werden soll.
+	 *           werden soll.
 	 * @return Der besitzende <code>JabicsUser</code>
 	 */
 	public JabicsUser getOwnerOfContactList(ContactList cl) {
