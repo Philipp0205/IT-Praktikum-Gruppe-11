@@ -358,7 +358,7 @@ public class ContactListTreeTab implements TreeViewModel {
 	          }
 	          // contactListDataProviders.flush();
 	        } catch (Exception e) {
-	          Window.alert(e.toString());
+	          GWT.log(e.toString());
 	        }
 	      }
 	    }
@@ -420,40 +420,6 @@ public class ContactListTreeTab implements TreeViewModel {
 	public SingleSelectionModel<BusinessObject> getSelectionModel() {
 		return this.selectionModel;
 	}
-
-	/*
-	 * Funktioniert so noch nicht.
-	 */
-	// private class UpdateContactCallback implements AsyncCallback<ContactList> {
-	//
-	// Contact contact = null;
-	//
-	// UpdateContactCallback(Contact c) {
-	// contact = c;
-	// }
-	//
-	// @Override
-	// public void onFailure(Throwable caught) {
-	// // Nix.
-	//
-	// }
-	//
-	// @Override
-	// public void onSuccess(ContactList cl) {
-	// if (cl != null) {
-	// List<Contact> contacts = contactDataProviders.get(cl).getList();
-	// for (int i = 0; i < contacts.size(); i++) {
-	// if (contact.getId() == contacts.get(i).getId()) {
-	// contacts.set(i, contact);
-	// break;
-	// }
-	// }
-	//
-	// }
-	//
-	// }
-	//
-	// }
 
 	/**
 	 * Der Inhalt des CellTrees wird hier befüllgt. Dabei dienen Kontaktlisten als

@@ -348,8 +348,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 					for (JabicsUser u : users) {
 						finalCollaborators.add(u);
 					}
-				} else
-					existingCollaborators.clear();
+				}
 			}
 		});
 
@@ -431,14 +430,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		@Override
 		public void onSuccess(JabicsUser result) {
 			if (result != null) {
-				ArrayList<JabicsUser> existing = new ArrayList<JabicsUser>();
-				existing.add(result);
-				existingUserDataProvider.setList(existing);
+				existingCollaborators.add(result);
+				existingUserDataProvider.setList(existingCollaborators);
+				existingUserDataProvider.refresh();
 				existingUserDataProvider.flush();
 				for (JabicsUser uu : newCollaborators) {
 					if (uu.getId() == result.getId()) {
 						newCollaborators.remove(uu);
-						existingUserDataProvider.setList(newCollaborators);
 						newCollabDataProvider.flush();
 					}
 				}

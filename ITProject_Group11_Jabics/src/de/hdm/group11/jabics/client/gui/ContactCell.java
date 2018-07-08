@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.HTML;
 
 import de.hdm.group11.jabics.resource.JabicsResources;
 import de.hdm.group11.jabics.shared.bo.BoStatus;
@@ -37,7 +38,9 @@ public class ContactCell extends AbstractCell<Contact> {
 	@Override
 	public void render(Context context, Contact c, SafeHtmlBuilder sb) {
 
-		sb.appendEscaped(c.getName());		
+		sb.appendEscaped(c.getName());
+		
+		AbstractImagePrototype.create(JabicsResources.INSTANCE.isshared()).getHTML();
 
 		if (c != null) {
 			GWT.log("ContactCell: ShareStatus: " + c.getShareStatus());

@@ -460,7 +460,7 @@ public class EditContactForm extends VerticalPanel {
 					editorService.createPValue(result, pValueTextBox.getText(), contact, u, new CreatePValueCallback());
 					break;
 				case "Datum":
-					editorService.createPValue(result, tempDate, contact, u, new CreatePValueCallback());
+					editorService.createPValue(result, dateTimeFormat.parse(pValueTextBox.getText()), contact, u, new CreatePValueCallback());
 					break;
 				case "Kommazahl":
 					editorService.createPValue(result, Float.valueOf(pValueTextBox.getText()), contact, u,
@@ -812,7 +812,7 @@ public class EditContactForm extends VerticalPanel {
 						pv.setStringValue((java.lang.String) event.getValue());
 						break;
 					case 3:
-						GWT.log("Datum wird durch DatePicker gesetzt");
+						pv.setDateValue(dateTimeFormat.parse((java.lang.String) event.getValue()));
 						break;
 					case 4:
 						pv.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));

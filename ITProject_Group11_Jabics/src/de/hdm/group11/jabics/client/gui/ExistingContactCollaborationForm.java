@@ -38,7 +38,7 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	HashSet<JabicsUser> selectedUser = new HashSet<JabicsUser>();
 	JabicsUser singleSelectedUser = null;
 
-	Button exit, addButton, removeButton, shareContact, shareContactWAll;
+	Button exit, addButton, removeButton, shareContact;
 	HorizontalPanel sharePanel;
 
 	Label valueLabel;
@@ -97,9 +97,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		multiSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				finalPV = (HashSet<PValue>) multiSelectionModel.getSelectedSet();
-				for (PValue pv : finalPV) {
-					GWT.log("Auswahl:" + pv.getStringValue());
-				}
 			}
 		});
 
@@ -136,9 +133,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		userSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				selectedUser = (HashSet<JabicsUser>) userSelectionModel.getSelectedSet();
-				for (JabicsUser u : selectedUser) {
-					GWT.log("Auswahl:" + u.getUsername());
-				}
 				if (selectedUser.size() == 1) {
 					for (JabicsUser u : selectedUser) {
 						showCollabOfUser(u);
@@ -181,13 +175,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 
 		});
-		shareContactWAll = new Button("Für alle Nutzer ändern");
-		shareContactWAll.setStyleName("edit4all");
-		shareContactWAll.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent ev) {
-				updateContactWithAll();
-			}
-		});
 
 		exit = new Button("Abbrechen");
 		exit.addClickHandler(new ClickHandler() {
@@ -199,15 +186,12 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 
 		sharePanel = new HorizontalPanel();
 		sharePanel.add(shareContact);
-		sharePanel.add(shareContactWAll);
 	}
 
 	public void continueOnLoad() {
 
 		createSelectionBox();
 		createPValueBox(sharedContact.getValues());
-
-		GWT.log("collab4");
 
 		// grid.setSize("500px", "400px");
 
@@ -231,7 +215,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	}
 
 	public void setEditor(EditorAdmin e) {
-		GWT.log("Editor in Collab setzen");
 		this.e = e;
 	}
 
@@ -286,7 +269,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 			}
 
 			public void onSuccess(Contact result) {
-				Window.alert("contact updaten ist da!");
 				sharedContact = result;
 				updateContact(result);
 			}
@@ -314,14 +296,11 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	 * Applikationslogik severseitig.
 	 */
 	public void updateContactShareForUser(JabicsUser u) {
-		GWT.log(u.getEmail());
 		if (u != null) {
 			for (PValue pv : allValues) {
 				if (multiSelectionModel.isSelected(pv)) {
-					GWT.log("Hinzugefügt wird: " + pv.toString());
 					editorService.addCollaboration(pv, u, new AddPVCollaborationCallback());
 				} else {
-					GWT.log("Gelöscht wird: " + pv.toString());
 					editorService.deleteCollaboration(pv, u, new AddPVCollaborationCallback());
 				}
 			}
@@ -336,9 +315,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	public void updateContact(Contact result) {
 		exit.setText("Zurück");
 		exit.setEnabled(true);
-		if (e != null) {
-			Window.alert("editoradmin ist im existingCollab da");
-		}
 		e.updateContactInTree(result);
 	}
 
@@ -363,10 +339,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 	 * Parametern durch
 	 */
 	public void deleteCollabWithUser(HashSet<JabicsUser> u) {
-		GWT.log("Löschen für");
-		for (JabicsUser user : u) {
-			GWT.log(user.getEmail());
-		}
 		for (JabicsUser user : u) {
 			editorService.deleteCollaboration(sharedContact, user, new DeleteContactCollaborationCallback());
 		}
@@ -386,7 +358,6 @@ public class ExistingContactCollaborationForm extends HorizontalPanel {
 		} else {
 			this.sharedContact = null;
 		}
-		GWT.log("Kontakt gesetzt");
 	}
 
 	private void retrieveSharedUser() {

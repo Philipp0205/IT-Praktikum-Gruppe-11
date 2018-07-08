@@ -81,8 +81,9 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 		if (r.getCreator() != null && r.getHeadline() != null) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div id=\"report\">");
-			sb.append("<h3> Report für " + r.getCreator().getContent() + "</h3>");
-			sb.append("<h5> Erstellt am " + r.getCreationDateAsString() + "</h5>");
+			sb.append("<h3>" + r.getHeadline().getContent() + "</h3>");
+			sb.append("<h5> Report für " + r.getCreator().getContent()
+					 + ", erstellt am " + r.getCreationDateAsString() + "</h5>");
 			return sb.toString();
 		} else
 			return "<div id=\"report\" style=\"margin-bottom: 16px\"> <h3>Report</h3>";
@@ -168,8 +169,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * der Instanzenvariable "reportText", die über getReportText() abgerufen werden
 	 * kann.
 	 * 
-	 * @param r
-	 *            AllContactsOfUserReport der konvertiert werden soll
+	 * @param r AllContactsOfUserReport der konvertiert werden soll
 	 */
 	public void process(AllContactsOfUserReport r) {
 		StringBuffer sb = new StringBuffer();
@@ -190,8 +190,7 @@ public class HTMLReportWriter extends ReportWriter implements Serializable {
 	 * in der Instanzenvariable "reportText", die über getReportText() abgerufen
 	 * werden kann.
 	 * 
-	 * @param r
-	 *            FilteredContactsOfUserReport der konvertiert werden soll
+	 * @param r FilteredContactsOfUserReport der konvertiert werden soll
 	 */
 	public void process(FilteredContactsOfUserReport r) {
 		StringBuffer sb = new StringBuffer();
