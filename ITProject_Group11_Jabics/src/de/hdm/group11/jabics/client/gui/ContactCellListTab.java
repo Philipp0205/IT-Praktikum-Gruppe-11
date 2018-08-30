@@ -25,16 +25,17 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  * <code>StackPanel</code> angezeigt.
  * 
  * Struktur von @author Thies
+ * 
  * @author Kurrle
  */
 public class ContactCellListTab {
-	TreeViewMenu treeViewMenu;
-	EditorAdmin editor;
-	JabicsUser user;
+	private TreeViewMenu treeViewMenu;
+	private EditorAdmin editor;
+	private JabicsUser user;
 
 	private EditorServiceAsync eService = ClientsideSettings.getEditorService();
-	CellList<Contact> contactCell;
-	ListDataProvider<Contact> contactDataProvider;
+	private CellList<Contact> contactCell;
+	private ListDataProvider<Contact> contactDataProvider;
 	private ContactKeyProvider keyProvider = null;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
@@ -45,15 +46,15 @@ public class ContactCellListTab {
 	 * für die Klasse gebraicht werden. Der Konstruktor ist mehrfach überladen damit
 	 * auch ein TreeViewMenu mitgegebn werden kann.
 	 * 
-	 * @param u            
-	 * 			 der Nutzer für den die Anzeige ausgegeben werden soll.
+	 * @param u
+	 *            der Nutzer für den die Anzeige ausgegeben werden soll.
+	 * @param tvm
+	 *            Objekt der Klasse <code>TreeViewMenu</code> welche ein
+	 *            <code>TreeViewMenu</code> dem ContactCellListTab zuordnet
 	 * @param clRes2
-	 * 			Objekt der Klasse <code>CellListResources</code>, welche die Anzeige-Resourcen für die
-	 *   		<code>ContactCellListTab</code> bereitstellt.
-	 *   
-	 * @param treeViewMenu2 
-	 * 			Objekt der Klasse <code>TreeViewMenu<code> welche ein <code>TreeViewMenu<code> dem ContactCellListTab 
-	 * 			zuordnet					
+	 *            Objekt der Klasse <code>CellListResources</code>, welche die
+	 *            Anzeige-Resourcen für die <code>ContactCellListTab</code>
+	 *            bereitstellt.
 	 */
 	public ContactCellListTab(JabicsUser u, TreeViewMenu tvm,
 			de.hdm.group11.jabics.client.gui.TreeViewMenu.CellListResources clRes2) {
@@ -69,7 +70,7 @@ public class ContactCellListTab {
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 	}
-	
+
 	public ContactCellListTab(JabicsUser u, TreeViewMenu tvm) {
 		this.user = u;
 		this.treeViewMenu = tvm;
@@ -82,9 +83,9 @@ public class ContactCellListTab {
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
 	}
-	
+
 	/**
-	 *  Ein Interface welches die den css-
+	 * Ein Interface welches die den css-
 	 */
 	public interface CellListResources extends CellList.Resources {
 		@Override
@@ -121,32 +122,28 @@ public class ContactCellListTab {
 	}
 
 	/**
-	 * Wird beim erstellen des <contact>ContactTabs</contact> aufgerufen. Es werden alle Kontakte des
-	 * Nutzers aus de Datenbank geoholt um diese später anzeigen zu können.
+	 * Wird beim erstellen des <code>ContactTabs</code> aufgerufen. Es werden alle
+	 * Kontakte des Nutzers aus de Datenbank geoholt um diese später anzeigen zu
+	 * können.
 	 * 
 	 * Des Weiteren werden die DataProvider aktuallisiert damit die Anzeige
 	 * aktuallisiert wird.
 	 */
 	public void onLoad() {
 
-		GWT.log("3.1 createContactTab");
-
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		GWT.log("2.1 User: " + user.getId());
 		eService.getContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("3.1 CellList onFailure" + caught.toString());
 			}
 
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
 
 				if (contacts != null) {
-					GWT.log("3.1 CellList onSuccess");
 
 					for (Contact c : contacts) {
 						contactDataProvider.getList().add(c);
@@ -195,8 +192,8 @@ public class ContactCellListTab {
 		/**
 		 * Setzt den Editor.
 		 * 
-		 * @param editor 
-		 * 				der gesetzt werden soll.
+		 * @param c
+		 *            <code>Contact</code> der gesetzt werden soll.
 		 */
 		private void setSelectedContact(Contact c) {
 			if (c != null) {
@@ -208,31 +205,28 @@ public class ContactCellListTab {
 	/**
 	 * Setzt den Editor.
 	 * 
-	 * @param editor 
-	 * 				der gesetzt werden soll.
+	 * @param editor
+	 *            der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin editor) {
-		GWT.log("Editor setzen in contactCellListTab");
-		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;
 	}
 
 	/**
 	 * Setzt den User
 	 * 
-	 * @param u 
-	 * 			User der gesetzt werden soll.
+	 * @param u
+	 *            User der gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
-		GWT.log("User setzen in contactCellListTab");
 		this.user = u;
 	}
 
 	/**
 	 * Fügt einen Kontakt zu der CellList hinzu.
 	 * 
-	 * @param c 
-	 * 			der Kontakt der hinzugefügt werden soll.
+	 * @param c
+	 *            der Kontakt der hinzugefügt werden soll.
 	 */
 	public void addContact(Contact c) {
 		contactDataProvider.getList().add(c);
@@ -242,8 +236,8 @@ public class ContactCellListTab {
 	/**
 	 * Der Anzeige der gesuchten Kontakte wird ein Kontakt hinzugefügt.
 	 * 
-	 * @param c 
-	 * 			der hinzuzufügende Kontakt,
+	 * @param c
+	 *            der hinzuzufügende Kontakt,
 	 */
 	public void addsearchedContact(Contact c) {
 		contactDataProvider.getList().add(c);
@@ -253,8 +247,8 @@ public class ContactCellListTab {
 	/**
 	 * Kontakt wird aus der CellList entfernt.
 	 * 
-	 * @param c 
-	 * 			der zu entfernende Kontakt.
+	 * @param c
+	 *            der zu entfernende Kontakt.
 	 */
 	public void removeContact(Contact c) {
 		contactDataProvider.getList().remove(c);
@@ -264,8 +258,8 @@ public class ContactCellListTab {
 	/**
 	 * Kontakt wird in der CellList aktualisiert.
 	 * 
-	 * @param c 
-	 * 			der zu aktualisierende Kontakt.
+	 * @param c
+	 *            der zu aktualisierende Kontakt.
 	 */
 	public void updateContact(Contact c) {
 		if (c != null) {

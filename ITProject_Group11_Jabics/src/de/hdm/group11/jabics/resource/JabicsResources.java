@@ -2,6 +2,7 @@ package de.hdm.group11.jabics.resource;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
 /**
@@ -9,7 +10,7 @@ import com.google.gwt.resources.client.ImageResource;
  * 
  * @author Brase, Kurrle
  */
-public interface JabicsResources extends ClientBundle  {
+public interface JabicsResources extends ClientBundle {
 	JabicsResources INSTANCE = GWT.create(JabicsResources.class);
 	
 	 @Source("isshared.png")

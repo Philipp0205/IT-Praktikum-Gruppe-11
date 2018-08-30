@@ -66,7 +66,7 @@ public class Paragraph implements Serializable {
 	/**
 	 * Setzen der <code>filtercriteria</code>.
 	 * 
-	 * @param <code>filtercriteria</code>
+	 * @param filtercriteria
 	 */
 	public void setFiltercriteria(String[] filtercriteria) {
 		this.filtercriteria = filtercriteria;
@@ -75,7 +75,7 @@ public class Paragraph implements Serializable {
 	/**
 	 * Auslesen des <code>content</code>.
 	 * 
-	 * @param content
+	 * @return String
 	 */
 	public String getContent() {
 		return this.content;

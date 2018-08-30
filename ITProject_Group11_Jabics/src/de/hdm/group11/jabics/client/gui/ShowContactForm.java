@@ -40,35 +40,35 @@ import de.hdm.group11.jabics.shared.bo.PValue;
  */
 public class ShowContactForm extends VerticalPanel {
 
-	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	EditorAdmin e;
-	JabicsUser u;
-	Contact currentContact = new Contact();
-	Boolean userIsOwner = false;
+	private EditorAdmin e;
+	private JabicsUser u;
+	private Contact currentContact = new Contact();
+	private Boolean userIsOwner = false;
 
-	CellTable<PValue> values;
-	ListDataProvider<PValue> valueProvider;
+	private CellTable<PValue> values;
+	private ListDataProvider<PValue> valueProvider;
 
-	Column<PValue, String> prop;
-	Column<PValue, String> pval;
-	Column<PValue, ImageResource> shareStatus;
+	private Column<PValue, String> prop;
+	private Column<PValue, String> pval;
+	private Column<PValue, ImageResource> shareStatus;
 
-	HorizontalPanel editPanel = new HorizontalPanel();
-	HorizontalPanel sharePanel = new HorizontalPanel();
-	HorizontalPanel shareSubPanel1 = new HorizontalPanel();
-	HorizontalPanel shareSubPanel2 = new HorizontalPanel();
-	HorizontalPanel deletePanel = new HorizontalPanel();
-	HorizontalPanel mainPanel = new HorizontalPanel();
+	private HorizontalPanel editPanel = new HorizontalPanel();
+	private HorizontalPanel sharePanel = new HorizontalPanel();
+	private HorizontalPanel shareSubPanel1 = new HorizontalPanel();
+	private HorizontalPanel shareSubPanel2 = new HorizontalPanel();
+	private HorizontalPanel deletePanel = new HorizontalPanel();
+	private HorizontalPanel mainPanel = new HorizontalPanel();
 
-	Button editButton = new Button("✎");
-	Button editLabel = new Button("Kontakt bearbeiten");
-	Button shareContactButton = new Button("⋲");
-	Button shareLabel = new Button("Kontakt teilen");
-	Button shareExistingContactButton = new Button("✎");
-	Button shareEditLabel = new Button("Teilen bearbeiten");
-	Button deleteButton = new Button("🗑");
-	Button deleteLabel = new Button("Kontakt löschen");
+	private Button editButton = new Button("✎");
+	private Button editLabel = new Button("Kontakt bearbeiten");
+	private Button shareContactButton = new Button("⋲");
+	private Button shareLabel = new Button("Kontakt teilen");
+	private Button shareExistingContactButton = new Button("✎");
+	private Button shareEditLabel = new Button("Teilen bearbeiten");
+	private Button deleteButton = new Button("🗑");
+	private Button deleteLabel = new Button("Kontakt löschen");
 	
 	//cellTable Ressourcen	
 	public interface CellTableResources extends CellTable.Resources {
@@ -79,7 +79,7 @@ public class ShowContactForm extends VerticalPanel {
 	
 	/**
 	 * Konstruktor welcher eine Instanz von <code>ShowContactForm</code> erzeugt.
-	 * Die <code>Property<code>s und die <code>PValue<code>s werden in einer Tabelle ausgebegen.
+	 * Die <code>Property</code>s und die <code>PValue</code>s werden in einer Tabelle ausgebegen.
 	 */
 	public ShowContactForm() {
 
@@ -163,13 +163,11 @@ public class ShowContactForm extends VerticalPanel {
 		values.setColumnWidth(prop, 50, Unit.PX);
 		values.addColumn(pval, "Ausprägung");
 		values.setColumnWidth(pval, 50, Unit.PX);
-		values.addColumn(shareStatus, "Share");
+		values.addColumn(shareStatus, "Status");
 		values.setColumnWidth(pval, 50, Unit.PX);
 		values.setStyleName("Tabelle");
 
 		try {
-			GWT.log("ShowCont panels hinzufügen");
-
 			this.add(values);
 			this.add(mainPanel);
 			this.add(editPanel);
@@ -177,7 +175,6 @@ public class ShowContactForm extends VerticalPanel {
 		} catch (Exception caught) {
 			Window.alert(caught.toString());
 		}
-
 	}
 	
 	/**
@@ -240,8 +237,6 @@ public class ShowContactForm extends VerticalPanel {
 			}
 			// Den Kontakt mit den sortierten Werten updaten
 			currentContact.setValues(result);
-		} else {
-			Window.alert("values sind null");
 		}
 		valueProvider.setList(result);
 		valueProvider.flush();
@@ -302,16 +297,14 @@ public class ShowContactForm extends VerticalPanel {
 	public void setUser(JabicsUser u) {
 		if (u != null) {
 			this.u = u;
-		} else
-			Window.alert("user is null");
-
+		}
 	}
 	
 	/**
 	 * Setzt den Editor.
 	 * 
 	 * @param e 
-	 * 		<code>Editor<code> der gesetzt werden soll.
+	 * 		<code>Editor</code> der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
 		if (e != null) {
@@ -372,7 +365,6 @@ public class ShowContactForm extends VerticalPanel {
 	 */
 	class shareExistingClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
-			GWT.log(currentContact.getName());
 			e.showExistingContactCollab(currentContact);
 		}
 	}

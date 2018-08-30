@@ -22,39 +22,39 @@ import com.google.gwt.view.client.ListDataProvider;
 
 public class ContactCollaborationForm extends HorizontalPanel {
 
-	EditorAdmin e;
-	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	private EditorAdmin e;
+	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	Contact sharedContact;
+	private Contact sharedContact;
 
 	private ArrayList<JabicsUser> allUser;
-	ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
+	private ArrayList<JabicsUser> finalUser = new ArrayList<JabicsUser>();
 
-	JabicsUser selectedUser;
+	private JabicsUser selectedUser;
 
-	JabicsUser suggestedUser;
-	Button exit, addButton, removeButton, shareContact, shareContactWUser;
-	MultiWordSuggestOracle oracle;
-	SuggestBox suggestBox;
+	private JabicsUser suggestedUser;
+	private Button exit, addButton, removeButton, shareContact, shareContactWUser;
+	private MultiWordSuggestOracle oracle;
+	private SuggestBox suggestBox;
 
-	TextColumn<JabicsUser> username;
-	CellTable<JabicsUser> userTable;
-	ListDataProvider<JabicsUser> userDataProvider;
+	private TextColumn<JabicsUser> username;
+	private CellTable<JabicsUser> userTable;
+	private ListDataProvider<JabicsUser> userDataProvider;
 
-	SingleSelectionModel<JabicsUser> userSelectionModel;
-	MultiSelectionModel<PValue> multiSelectionModel;
-	HashSet<PValue> selectedPV = new HashSet<PValue>();
-	CellTable<PValue> valueTable;
+	private SingleSelectionModel<JabicsUser> userSelectionModel;
+	private MultiSelectionModel<PValue> multiSelectionModel;
+	private HashSet<PValue> selectedPV = new HashSet<PValue>();
+	private CellTable<PValue> valueTable;
 
-	ListDataProvider<PValue> valueProvider;
+	private ListDataProvider<PValue> valueProvider;
 
-	Column<PValue, Boolean> checkbox;
+	private Column<PValue, Boolean> checkbox;
 
-	Column<PValue, String> property;
+	private Column<PValue, String> property;
 
-	Column<PValue, String> propertyvalue;
+	private Column<PValue, String> propertyvalue;
 
-	Grid grid;
+	private Grid grid;
 
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
@@ -107,7 +107,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				selectedPV = (HashSet<PValue>) multiSelectionModel.getSelectedSet();
 				for (PValue pv : selectedPV) {
-					GWT.log("Auswahl:" + pv.getStringValue());
 				}
 			}
 		});
@@ -132,7 +131,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
 				for (JabicsUser u : allUser) {
-					GWT.log(suggestBox.getValue());
 					if (suggestBox.getValue().contains(u.getUsername())
 							&& suggestBox.getValue().contains(u.getEmail())) {
 						suggestedUser = u;
@@ -266,18 +264,14 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 * <code>JabicsUser</code> vorgeschlagen
 	 */
 	public void fillSuggestBox() {
-		GWT.log("SuggestBox");
 		// SuggestBox mit Optionen befüllen
 		for (JabicsUser u : allUser) {
 			try {
 				oracle.add(u.getUsername() + " " + u.getEmail());
-				GWT.log("Nutzer zu Sug hinzugefügt");
 			} catch (NullPointerException e) {
-				GWT.log("Setzen des nutzernamens oder mailadresse in sugstbox failed, Nutzer mit Id: " + u.getId());
 				try {
 					oracle.add(u.getUsername());
 				} catch (NullPointerException ex) {
-					GWT.log("Setzen des nutzernamens auch fehlgeschlagen, Nutzer mit Id: " + u.getId());
 				}
 			}
 		}
@@ -299,9 +293,7 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 * Dabei wird ein <code>GetAllNotCollaboratingUserCallback</code> ausgefühtr.
 	 */
 	private void retrieveUser() {
-		GWT.log("allUser");
 		editorService.getAllNotCollaboratingUser(sharedContact, new GetAllNotCollaboratingUserCallback());
-		GWT.log("allUserfetisch");
 	}
 
 	/**
@@ -330,7 +322,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	}
 
 	public void setEditor(EditorAdmin e) {
-		GWT.log("Editor in Collab setzen");
 		this.e = e;
 	}
 
@@ -363,7 +354,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 * @param u der freizugebende User
 	 */
 	public void shareContactWithUser(JabicsUser u) {
-		GWT.log(selectedUser.getEmail());
 
 		if (!selectedPV.isEmpty()) {
 			for (PValue pv : selectedPV) {
@@ -400,11 +390,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 	 */
 	private class AddPVCollaborationCallback implements AsyncCallback<Void> {
 		public void onFailure(Throwable arg0) {
-			GWT.log("PV konnte nicht geteilt werden");
 		}
 
 		public void onSuccess(Void v) {
-			GWT.log("PV erfolgreich geteilt!");
 		}
 	}
 
@@ -423,11 +411,9 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("alleNutzergesetzt ");
 				setAllUser(user);
 				continueOnLoad();
 			} else {
-				GWT.log("Keine anderen Nutzer gefunden");
 			}
 
 		}
@@ -444,7 +430,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("alleNutzergesetzt   ");
 				setAllUser(user);
 				continueOnLoad();
 			}
@@ -462,7 +447,6 @@ public class ContactCollaborationForm extends HorizontalPanel {
 			}
 
 			public void onSuccess(Contact result) {
-				GWT.log("Update ShareStatus: On Sucess");
 				setContact(result);
 				e.updateContactInTree(result);
 			}

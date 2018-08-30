@@ -33,7 +33,6 @@ public class ContactListCell extends AbstractCell<ContactList> {
 	public void render(Context context, ContactList cl, SafeHtmlBuilder sb) {
 		sb.appendEscaped(cl.getListName());
 		if (cl != null) {
-			GWT.log("ContactListCell: ShareStatus: " + cl.getShareStatus());
 
 			try {
 				switch (cl.getShareStatus()) {
@@ -48,7 +47,6 @@ public class ContactListCell extends AbstractCell<ContactList> {
 					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isnotshared()).getHTML());
 				}
 			} catch (Exception e) {
-				GWT.log("ShareStatus undefined for Contact" + cl.getListName());
 				sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isshared()).getHTML());
 			}
 		}

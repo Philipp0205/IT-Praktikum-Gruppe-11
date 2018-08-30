@@ -60,7 +60,7 @@ public class AllContactsOfUserReport extends CompositeReport implements Serializ
 	/**
 	 * Auslesen aller <code>ContactReports</code> in <code>subReports</code>.
 	 * 
-	 * @returns Liste aller <code>ContactReports</code> in <code>subReports</code>.
+	 * @return Liste aller <code>ContactReports</code> in <code>subReports</code>.
 	 */
 	public ArrayList<ContactReport> getSubReports() {
 		return this.subReports;

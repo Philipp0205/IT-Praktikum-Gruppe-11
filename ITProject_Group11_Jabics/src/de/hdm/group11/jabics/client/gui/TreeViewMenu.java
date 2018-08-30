@@ -30,18 +30,15 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
  *         Struktur und Styling von @author Thies
  */
 public class TreeViewMenu extends VerticalPanel {
-	EditorAdmin e;
-	JabicsUser user;
 
-	ContactListTreeTab contactListTab;
-	SharedContactCellListTab sharedContactListTab;
-	ContactCellListTab contactTab;
-	StackPanel stackPanel1;
-	StackPanel stackPanel2;
-	CellTree tree;
+
+	private ContactListTreeTab contactListTab;
+	private SharedContactCellListTab sharedContactListTab;
+	private ContactCellListTab contactTab;
+	private StackPanel stackPanel1;
+	private StackPanel stackPanel2;
 	
-	SafeHtmlBuilder builder;
-	SafeHtml safeHtml;
+	private SafeHtml safeHtml;
 
 	private CellTreeResources ctRes = GWT.create(CellTreeResources.class);
 	
@@ -51,8 +48,6 @@ public class TreeViewMenu extends VerticalPanel {
 	 */
 	public TreeViewMenu(JabicsUser u) {
 
-		String tip = new String("▶");
-		Label tip2 = new Label("tip");
 		
 		safeHtml = SafeHtmlUtils.fromString("X ");
 
@@ -62,7 +57,7 @@ public class TreeViewMenu extends VerticalPanel {
 		
 		stackPanel2.add(new Label(""), safeHtml);
 		stackPanel2.add(createContactCellListTab(u), " ▶ Alle Kontakte");
-		stackPanel2.add(createSharedContactListTreeTab(u), " ▶  Mir geteilte Kontakte");
+		stackPanel2.add(createSharedContactListTreeTab(u), " ▶  Mit mir geteilt");
 		stackPanel2.setStyleName("stackPanel2");
 		stackPanel1.setStyleName("stackPanel1");
 		
@@ -91,7 +86,6 @@ public class TreeViewMenu extends VerticalPanel {
 		contactListTab.addContactList(cl);
 
 		for (Contact c : cl.getContacts()) {
-			GWT.log("8.1 add Contact " + c.getName() + " to List " + cl.getListName());
 			contactListTab.addContactOfList(cl, c);
 		}
 	}
@@ -123,14 +117,13 @@ public class TreeViewMenu extends VerticalPanel {
 	 * 			<code>JabicsUser</code> welcher gesetzt werden soll.
 	 */
 	public void setUser(JabicsUser u) {
-		this.user = u;
 		contactListTab.setUser(u);
 		contactTab.setUser(u);
 		sharedContactListTab.setUser(u);
 	}
 	
 	/**
-	 * Fügt der dem Menü einen neuen <code>Contact<code> innerhalbt einer Kontaktliste hinzu.
+	 * Fügt der dem Menü einen neuen <code>Contact</code> innerhalbt einer Kontaktliste hinzu.
 	 * 
 	 * @param cl
 	 * 			<code>ContactList</code> welcher der Kontakt angehört.
@@ -142,7 +135,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 	
 	/**
-	 * Entfernt aus dem Menü einen <code>Contact<code> innerhalbt einer Kontaktliste.
+	 * Entfernt aus dem Menü einen <code>Contact</code> innerhalbt einer Kontaktliste.
 	 * 
 	 * @param cl
 	 * @param c
@@ -165,7 +158,7 @@ public class TreeViewMenu extends VerticalPanel {
 	 * Entfernt einen <code>Contact</code> aus dem Menü .
 	 * 
 	 * @param c
-	 * 			<code>Contact<code> welcher entfernt werden soll.
+	 * 			<code>Contact</code> welcher entfernt werden soll.
 	 */
 	public void removeContact(Contact c) {
 		contactListTab.removeContact(c);
@@ -198,7 +191,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 	
 	/**
-	 * Bezieht das <code>StackPanel<code> in welchem Alle Kontakte des Nutzers sowie alle geteilten 
+	 * Bezieht das <code>StackPanel</code> in welchem Alle Kontakte des Nutzers sowie alle geteilten 
 	 * Kontakt des Nutzes angezeigt werden. 
 	 * 
 	 * @return das angeforderte <code>StackPanel</code>
@@ -214,10 +207,6 @@ public class TreeViewMenu extends VerticalPanel {
 	 * 			<code>EditorAdmin</code> welcher gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin editor) {
-		GWT.log("Editor setzen in tree view");
-		GWT.log("Editor: " + editor.hashCode());
-		this.e = editor;
-
 		contactListTab.setEditor(editor);
 		contactTab.setEditor(editor);
 		sharedContactListTab.setEditor(editor);
@@ -260,8 +249,6 @@ public class TreeViewMenu extends VerticalPanel {
 		CellTree tree = new CellTree(contactListTab, "Root", ctRes);
 		tree.setAnimationEnabled(true);
 
-		GWT.log("TreeViewMenu: createListTab");
-
 		return tree;
 	}
 	
@@ -293,7 +280,7 @@ public class TreeViewMenu extends VerticalPanel {
 	}
 	
 	/**
-	 * Leert das Leert das <code>SelectionModel</code> im entsprechenenden Tab. SelectionModel</code> im entsprechenenden Tab. 
+	 * Leert das Leert das <code>SelectionModel</code> im entsprechenenden Tab. <code>SelectionModel</code> im entsprechenenden Tab. 
 	 */
 	public void clearSelectionModelSharedContactTab() {
 		sharedContactListTab.clearSelectionModel();
