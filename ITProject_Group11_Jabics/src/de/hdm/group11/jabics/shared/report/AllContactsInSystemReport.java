@@ -17,7 +17,7 @@ public class AllContactsInSystemReport extends CompositeReport implements Serial
 
 	/**
 	 * Eine Instanz von
-	 * <code>AllContactsInSystemReport<code> besteht aus mehreren <code>AllContactsOfUserReport</code>.
+	 * <code>AllContactsInSystemReport</code> besteht aus mehreren <code>AllContactsOfUserReport</code>.
 	 */
 	private ArrayList<AllContactsOfUserReport> subReports;
 
@@ -42,7 +42,7 @@ public class AllContactsInSystemReport extends CompositeReport implements Serial
 	 * Auslesen aller <code>AllContactsOfUserReport</code> in
 	 * <code>subReports</code>.
 	 * 
-	 * @returns Liste aller <code>AllContactsOfUserReport</code> in
+	 * @return Liste aller <code>AllContactsOfUserReport</code> in
 	 *          <code>subReports</code>.
 	 */
 	public ArrayList<AllContactsOfUserReport> getSubReports() {

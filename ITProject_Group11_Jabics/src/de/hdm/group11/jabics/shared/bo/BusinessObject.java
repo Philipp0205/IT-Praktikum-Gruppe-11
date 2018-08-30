@@ -25,17 +25,17 @@ public abstract class BusinessObject implements Serializable {
 	/**
 	 * Besitzer einer Instanz dieser Klasse.
 	 */
-	JabicsUser owner;
+	private JabicsUser owner;
 
 	/**
 	 * Letztes Update einer Instanz dieser Klasse.
 	 */
-	Timestamp dateUpdated;
+	private Timestamp dateUpdated;
 
 	/**
 	 * Erstellungsdatum einer Instanz dieser Klasse.
 	 */
-	Timestamp dateCreated;
+	private Timestamp dateCreated;
 
 	/**
 	 * Leerer Konstruktor.

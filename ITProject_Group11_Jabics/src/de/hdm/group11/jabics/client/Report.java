@@ -1,3 +1,4 @@
+
 package de.hdm.group11.jabics.client;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -19,8 +20,6 @@ import de.hdm.group11.jabics.shared.LoginServiceAsync;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
 /**
- * 
- * 
  * @author Kurrle
  * @author Anders
  */
@@ -29,22 +28,22 @@ public class Report implements EntryPoint {
 	/**
 	 * Aktueller <code>JabicsUser</code> einer Instanz dieser Klasse.
 	 */
-	JabicsUser currentUser;
+	private JabicsUser currentUser;
 
 	/**
 	 * <code>LoginInfo</code> einer Instanz dieser Klasse.
 	 */
-	LoginInfo loginfo;
+	private LoginInfo loginfo;
 
 	/**
 	 * <code>ReportAdmin</code> einer Instanz dieser Klasse.
 	 */
-	ReportAdmin report;
+	private ReportAdmin report;
 
 	/**
 	 * <code>LoginServiceAsync</code> einer Instanz dieser Klasse.
 	 */
-	LoginServiceAsync loginService = null;
+	private LoginServiceAsync loginService = null;
 
 	/**
 	 * <code>VerticalPanel</code> einer Instanz dieser Klasse.
@@ -52,7 +51,7 @@ public class Report implements EntryPoint {
 	private VerticalPanel loginPanel = new VerticalPanel();
 
 	/**
-	 * Die onModuleLoad.
+	 * Die onModuleLoad welche beom ersten aufrufen der Klasse aufgerufen wird.
 	 */
 	@Override
 	public void onModuleLoad() {
@@ -63,25 +62,12 @@ public class Report implements EntryPoint {
 	}
 
 	/**
-	 * Der Login
+	 * Der Login welcher nötig ist bevor der Reprt geladen wird. 
+	 * Ein Nutzer muss sich zuerst einloggen und wird anschließend zum Report weitgergeleitet.
 	 */
 	public void login() {
 		loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-	}
-
-	/**
-	 * Statischer <code>JabicsUser</code> für Testzwecke.
-	 */
-	public void useStaticUser() {
-		JabicsUser u = new JabicsUser(1);
-		u.setEmail("test@mail.com");
-		u.setUsername("ein nutzer");
-		u.setId(1);
-
-		report = new ReportAdmin();
-		report.setJabicsUser(u);
-		report.loadReport();
 	}
 
 	/**
@@ -121,7 +107,8 @@ public class Report implements EntryPoint {
 	}
 
 	/**
-	 * 
+	 *  Callback welcher beim ausführen eines Logins ausgelöst wird. 
+	 *  Bei einem erfolgreichen Callback wird die <code>LoginInfo</code> gesetzt und der Report wird geladen.
 	 */
 	private class loginServiceCallback implements AsyncCallback<LoginInfo> {
 

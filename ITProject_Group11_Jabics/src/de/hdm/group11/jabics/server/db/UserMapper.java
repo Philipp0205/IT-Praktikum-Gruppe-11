@@ -77,14 +77,6 @@ public class UserMapper {
 			// Befüllen und ausführen des SQL-Statements
 			stmt.executeUpdate("DELETE FROM systemUser WHERE systemUserID = " + u.getId());
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 		} catch (SQLException e) {
 			System.err.print(e);
 		}
@@ -117,15 +109,6 @@ public class UserMapper {
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 				al.add(u);
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe der Liste mit Nutzer Objekten
@@ -164,19 +147,10 @@ public class UserMapper {
 			JabicsUser u = new JabicsUser();
 
 			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
-			if (rs.next()) {
+			while (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des Nutzer Objekts
@@ -217,20 +191,12 @@ public class UserMapper {
 			JabicsUser u = new JabicsUser();
 
 			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
-			if (rs.next()) {
+			while (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 			// Rückgabe des Nutzer Objekts
 			return u;
 
@@ -271,14 +237,6 @@ public class UserMapper {
 			}else {
 				return null;
 			}
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 
 			// Rückgabe des Nutzer Objekts
 			return u;
@@ -315,15 +273,6 @@ public class UserMapper {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des Nutzer Objekts
@@ -369,14 +318,6 @@ public class UserMapper {
 				u.setUsername(rs.getString("name"));
 			}
 
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
-			}
 			// Rückgabe des Nutzer Objekts
 			return u;
 		} catch (SQLException e) {
@@ -413,15 +354,6 @@ public class UserMapper {
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
 				u.setId(rs.getInt(1));
-			}
-
-			// Prüfen ob offene Statements oder eine Datenbankverbindung bestehen, falls ja,
-			// werden diese geschlossen.
-			if (!stmt.isClosed()) {
-				stmt.close();
-			}
-			if (!con.isClosed()) {
-				con.close();
 			}
 
 			// Rückgabe des JabicsUsers mit ID

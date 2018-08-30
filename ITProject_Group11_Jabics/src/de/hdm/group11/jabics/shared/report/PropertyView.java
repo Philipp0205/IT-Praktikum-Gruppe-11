@@ -76,7 +76,7 @@ public class PropertyView implements Serializable {
 				this.pvalue = f.toString();
 				break;
 			default:
-				System.out.println("PropertyValue could not be found by PropertyView");
+				this.pvalue = "Kein Wert";
 			}
 		} catch (Exception e) {
 			this.pvalue = "Value";
@@ -95,7 +95,7 @@ public class PropertyView implements Serializable {
 	/**
 	 * Setzen des <code>pname</code>.
 	 * 
-	 * @param <code>pname</code>
+	 * @param pname
 	 */
 	public void setPname(String pname) {
 		this.pname = pname;
@@ -113,7 +113,7 @@ public class PropertyView implements Serializable {
 	/**
 	 * Setzen des <code>pvalue</code>.
 	 * 
-	 * @param <code>pvalue</code>
+	 * @param pvalue
 	 */
 	public void setPvalue(String pvalue) {
 		this.pvalue = pvalue;

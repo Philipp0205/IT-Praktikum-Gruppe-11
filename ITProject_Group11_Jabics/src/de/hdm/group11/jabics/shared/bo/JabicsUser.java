@@ -64,7 +64,7 @@ public class JabicsUser implements Serializable {
 	 * zu erzeugen.
 	 * 
 	 * @param email
-	 * @param user
+	 * @param username
 	 */
 	public JabicsUser(String email, String username) {
 		this(email);

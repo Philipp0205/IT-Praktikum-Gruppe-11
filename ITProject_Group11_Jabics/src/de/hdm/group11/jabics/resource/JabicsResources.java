@@ -2,14 +2,15 @@ package de.hdm.group11.jabics.resource;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
 /**
  * Interface für die Ressourcen wie pngs.
  * 
- * @author Brase
+ * @author Brase, Kurrle
  */
-public interface JabicsResources extends ClientBundle  {
+public interface JabicsResources extends ClientBundle {
 	JabicsResources INSTANCE = GWT.create(JabicsResources.class);
 	
 	 @Source("isshared.png")

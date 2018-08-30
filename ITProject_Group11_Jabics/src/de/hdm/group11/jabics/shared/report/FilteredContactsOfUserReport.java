@@ -15,7 +15,7 @@ public class FilteredContactsOfUserReport extends CompositeReport implements Ser
 	/**
 	 * Filterkriterien einer Instanz dieser Klasse.
 	 */
-	Paragraph filtercriteria; // String, float, int oder Contact
+	private Paragraph filtercriteria; // String, float, int oder Contact
 
 	/**
 	 * Default Konstruktor.
