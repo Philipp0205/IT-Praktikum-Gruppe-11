@@ -1,3 +1,4 @@
+
 package de.hdm.group11.jabics.client;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -27,22 +28,22 @@ public class Report implements EntryPoint {
 	/**
 	 * Aktueller <code>JabicsUser</code> einer Instanz dieser Klasse.
 	 */
-	JabicsUser currentUser;
+	private JabicsUser currentUser;
 
 	/**
 	 * <code>LoginInfo</code> einer Instanz dieser Klasse.
 	 */
-	LoginInfo loginfo;
+	private LoginInfo loginfo;
 
 	/**
 	 * <code>ReportAdmin</code> einer Instanz dieser Klasse.
 	 */
-	ReportAdmin report;
+	private ReportAdmin report;
 
 	/**
 	 * <code>LoginServiceAsync</code> einer Instanz dieser Klasse.
 	 */
-	LoginServiceAsync loginService = null;
+	private LoginServiceAsync loginService = null;
 
 	/**
 	 * <code>VerticalPanel</code> einer Instanz dieser Klasse.

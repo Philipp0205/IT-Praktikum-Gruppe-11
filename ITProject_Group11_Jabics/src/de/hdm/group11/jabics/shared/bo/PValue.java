@@ -1,6 +1,7 @@
 package de.hdm.group11.jabics.shared.bo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -141,7 +142,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	public PValue(Property p, JabicsUser u) {
 		this();
 		this.property = p;
-		this.owner = u;
+		this.setOwner(u);
 		try {
 			switch (p.getType()) {
 			case STRING:
@@ -403,7 +404,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 			case 2:
 				return stringValue;
 			case 3:
-				return dateValue.toString();
+				return this.dateValue.toString();
 			case 4:
 				return Float.toString(floatValue);
 			default:

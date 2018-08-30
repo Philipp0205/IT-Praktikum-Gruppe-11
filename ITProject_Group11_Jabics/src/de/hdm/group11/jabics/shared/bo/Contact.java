@@ -71,7 +71,7 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 	public Contact(ArrayList<PValue> values, JabicsUser u) {
 		this(values);
 		this.updateNickname();
-		this.owner = u;
+		this.setOwner(u);
 	}
 
 	/**
@@ -221,18 +221,13 @@ public class Contact extends BusinessObject implements Comparable<Contact>, Seri
 		for (PValue p : values) {
 			if (p.getProperty().getId() == 1) {
 				sBuffer.replace(0, sBuffer.length(), p.getStringValue());
-			} else {
-				System.out.println("Constructor in Contact: No name in Array.");
 			}
 		}
 		for (PValue p2 : values) {
 			if (p2.getProperty().getId() == 2) {
 				sBuffer.append(" " + p2.getStringValue());
-			} else {
-				System.out.println("No lastname in Array");
 			}
 		}
-		System.out.println("Neuer Nickname: " + sBuffer.toString());
 		this.name = sBuffer.toString();
 	}
 }

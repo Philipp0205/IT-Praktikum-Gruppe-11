@@ -30,7 +30,7 @@ public class ContactList extends BusinessObject implements Serializable {
 	/**
 	 * <code>Contact</code> Objekte welche in einer Instanz dieser Klasse liegen.
 	 */
-	ArrayList<Contact> contacts = new ArrayList<Contact>();
+	private ArrayList<Contact> contacts = new ArrayList<Contact>();
 
 	/**
 	 * Konstruktor, welcher den Konstruktor seiner Superklasse aufruft.
@@ -59,7 +59,7 @@ public class ContactList extends BusinessObject implements Serializable {
 	 */
 	public ContactList(ArrayList<Contact> al, JabicsUser u) {
 		this(al);
-		this.owner = u;
+		this.setOwner(u);
 	}
 
 	/**

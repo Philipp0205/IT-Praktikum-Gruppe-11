@@ -29,40 +29,40 @@ import de.hdm.group11.jabics.shared.bo.JabicsUser;
 import de.hdm.group11.jabics.shared.bo.PValue;
 
 public class ExistingContactCollaborationForm extends HorizontalPanel {
-	EditorAdmin e;
-	JabicsUser u;
-	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	private EditorAdmin e;
+	private JabicsUser u;
+	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	Contact sharedContact;
-	ArrayList<JabicsUser> sharedUser = new ArrayList<JabicsUser>();
-	HashSet<JabicsUser> selectedUser = new HashSet<JabicsUser>();
-	JabicsUser singleSelectedUser = null;
+	private Contact sharedContact;
+	private ArrayList<JabicsUser> sharedUser = new ArrayList<JabicsUser>();
+	private HashSet<JabicsUser> selectedUser = new HashSet<JabicsUser>();
+	private JabicsUser singleSelectedUser = null;
 
-	Button exit, addButton, removeButton, shareContact;
-	HorizontalPanel sharePanel;
+	private Button exit, addButton, removeButton, shareContact;
+	private HorizontalPanel sharePanel;
 
-	Label valueLabel;
+	private Label valueLabel;
 
-	CellTable<PValue> selValues;
-	ArrayList<PValue> selectedValues;
-	ArrayList<PValue> allValues;
-	MultiSelectionModel<PValue> multiSelectionModel;
+	private CellTable<PValue> selValues;
+	private ArrayList<PValue> selectedValues;
+	private ArrayList<PValue> allValues;
+	private MultiSelectionModel<PValue> multiSelectionModel;
 
-	TextColumn<JabicsUser> username;
+	private TextColumn<JabicsUser> username;
 
-	CellTable<JabicsUser> selUser;
-	ListDataProvider<JabicsUser> userProvider;
-	MultiSelectionModel<JabicsUser> userSelectionModel;
+	private CellTable<JabicsUser> selUser;
+	private ListDataProvider<JabicsUser> userProvider;
+	private MultiSelectionModel<JabicsUser> userSelectionModel;
 
-	HashSet<PValue> finalPV = new HashSet<PValue>();
+	private HashSet<PValue> finalPV = new HashSet<PValue>();
 
-	ListDataProvider<PValue> valueProvider;
+	private ListDataProvider<PValue> valueProvider;
 
-	Column<PValue, Boolean> checkbox;
-	Column<PValue, String> property;
-	Column<PValue, String> propertyvalue;
+	private Column<PValue, Boolean> checkbox;
+	private Column<PValue, String> property;
+	private Column<PValue, String> propertyvalue;
 
-	Grid grid;
+	private Grid grid;
 
 	// Ressourcen für CellTables
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);

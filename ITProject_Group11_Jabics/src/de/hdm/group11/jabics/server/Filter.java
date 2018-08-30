@@ -69,6 +69,7 @@ public class Filter {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		for (Contact c : contacts) {
+			System.out.println("Kontakte filtern");
 			boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
@@ -177,13 +178,10 @@ public class Filter {
 
 		for (Contact c : contacts) {
 			boolean bol = false;
-			System.out.println("Kontakt filtern: " + c.getName());
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue pv : pvalues) {
-				System.out.println("PValue filtern: " + p.getLabel() + "|" + pv.getProperty().getLabel());
 				// Die Logik der Methode
 				if (p.getLabel() != null && pv.getProperty().getLabel().equals(p.getLabel())) {
-					System.err.println("Gefunden");
 					bol = true;
 					for (Contact c2 : result) {
 						if (c.getId() == c2.getId())
