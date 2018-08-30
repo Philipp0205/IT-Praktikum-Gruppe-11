@@ -64,25 +64,10 @@ public class Editor implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
-
-		/*
-		 * Login
-		 */
-//		JabicsUser u = new JabicsUser(1);
-//		u.setEmail("test@mail.com");
-//		u.setUsername("ein nutzer");
-//		u.setId(1);
-//
-//		editor = new EditorAdmin(u);
-//		logon = new LoginInfo();
-//		logon.setCurrentUser(u);
-//		editor.setLoginInfo(logon);
-//		editor.setJabicsUser(logon.getCurrentUser());
-//		editor.loadEditor();
-
+    
 		loginService = ClientsideSettings.getLoginService();
 		loginService.login(GWT.getHostPageBaseURL(), new loginServiceCallback());
-
+    
 	}
 
 	/**
@@ -121,7 +106,7 @@ public class Editor implements EntryPoint {
 	/**
 	 * Auslesen der <code>LoginInfo</code>.
 	 * 
-	 * @returns <code>LoginInfo</code>
+	 * @return <code>LoginInfo</code>
 	 */
 	public LoginInfo getLoginInfo() {
 		return this.logon;
@@ -130,7 +115,7 @@ public class Editor implements EntryPoint {
 	/**
 	 * Auslesen des <code>Editor</code>.
 	 * 
-	 * @returns <code>Editor</code>
+	 * @return Das <code>Editor</code> Objekt.
 	 */
 	public Editor getEditor() {
 		return this;
@@ -169,7 +154,6 @@ public class Editor implements EntryPoint {
 				} else if (logon.getIsLoggedIn() && logon.isNewUser()) {
 					signUp = new SignUpForm(logon, getEditor());
 				} else {
-					Window.alert("User not logged in");
 					setLoginInfo(logon);
 					loadLogin(logon);
 				}

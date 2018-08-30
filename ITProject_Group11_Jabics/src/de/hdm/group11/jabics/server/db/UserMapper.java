@@ -147,7 +147,7 @@ public class UserMapper {
 			JabicsUser u = new JabicsUser();
 
 			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
-			if (rs.next()) {
+			while (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));
@@ -191,7 +191,7 @@ public class UserMapper {
 			JabicsUser u = new JabicsUser();
 
 			// Wenn ein Tupel existiert wird das Nutzer Objekt befüllt
-			if (rs.next()) {
+			while (rs.next()) {
 				u.setId(rs.getInt("systemUserID"));
 				u.setEmail(rs.getString("email"));
 				u.setUsername(rs.getString("name"));

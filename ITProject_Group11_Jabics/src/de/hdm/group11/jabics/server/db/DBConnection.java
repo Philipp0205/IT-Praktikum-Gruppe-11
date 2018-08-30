@@ -15,11 +15,11 @@ public class DBConnection {
 	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
 	 * einzige Instanz dieser Klasse.
 	 * 
-	 * @see ContactMapper.contactMapper()
-	 * @see PValueMapper.pValueMapper()
-	 * @see ContactListMapper.contactListMapper()
-	 * @see PropertyMapper().propertyMapper()
-	 * @see UserMapper().userMapper()
+	 * @see ContactMapper
+	 * @see PValueMapper
+	 * @see ContactListMapper
+	 * @see PropertyMapper
+	 * @see UserMapper
 	 */
 	private static Connection con = null;
 
@@ -52,20 +52,24 @@ public class DBConnection {
 	 */
 	public static Connection connection() {
 
-		try {
-			if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
-				Class.forName("com.mysql.jdbc.GoogleDriver");
-				url = googleUrl;
-			} else {
-				Class.forName("com.mysql.jdbc.Driver");
-				url = localUrl;
-			}
+		if (con == null) {
+			url = null;
 
-			con = DriverManager.getConnection(url, user, password);
-		} catch (Exception e) {
-			con = null;
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			try {
+				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+					Class.forName("com.mysql.jdbc.GoogleDriver");
+					url = googleUrl;
+				} else {
+					Class.forName("com.mysql.jdbc.Driver");
+					url = localUrl;
+				}
+
+				con = DriverManager.getConnection(url);
+			} catch (Exception e) {
+				con = null;
+				e.printStackTrace();
+				throw new RuntimeException(e.getMessage());
+			}
 		}
 		return con;
 	}

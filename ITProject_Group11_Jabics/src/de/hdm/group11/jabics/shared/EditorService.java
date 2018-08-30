@@ -78,14 +78,12 @@ public interface EditorService extends RemoteService {
 	public ArrayList<ContactList> getListsOf(JabicsUser u);
 
 	public JabicsUser getOwnerOfContact(Contact c);
+	
+	public JabicsUser getOwnerOfContactList(ContactList cl);
 
 	public ArrayList<Property> getPropertysOfJabicsUser(JabicsUser u) throws IllegalArgumentException;
 
 	public ArrayList<PValue> getPValueOf(Contact c, JabicsUser u);
-
-//	public ArrayList<Contact> searchInList(int i, ContactList cl);
-//
-//	public ArrayList<Contact> searchInList(float f, ContactList cl);
 
 	public ArrayList<Property> getStandardProperties() throws IllegalArgumentException;
 
@@ -99,7 +97,7 @@ public interface EditorService extends RemoteService {
 
 	public ArrayList<Contact> searchForContactByExpression(String s, JabicsUser u);
 
-	public ArrayList<Contact> searchInList(ContactList cl, PValue pv);
+	public ArrayList<Contact> searchInList(ContactList cl, PValue pv, JabicsUser u);
 
 	public ArrayList<Contact> searchInList(JabicsUser u, ContactList cl);
 

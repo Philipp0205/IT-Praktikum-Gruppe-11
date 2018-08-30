@@ -29,10 +29,6 @@ public abstract class Report implements Serializable {
 	 */
 	Paragraph creator;
 
-	// public Report() {
-	// // this.creationDate = new Date();
-	// }
-
 	/**
 	 * Default Konstruktor.
 	 */

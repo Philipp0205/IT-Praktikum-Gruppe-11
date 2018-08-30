@@ -1,4 +1,5 @@
 /** Add css rules here for your application. */
+
 #content {
 	width: 100%;
 	margin-left: 50px;
@@ -11,6 +12,31 @@
 #menuButton {
 	text-decoration: none;
 	color: black;
+}
+
+#report {
+	
+}
+
+.reportTable {
+	padding: 4px;
+	border: solid black 1px !important;
+}
+
+.contactReport1 {
+	padding: 4px;
+}
+
+.contactReport2 {
+	padding: 4px;
+}
+
+.reportCell {
+	padding: 4px;
+}
+
+#reportSpacer {
+	
 }
 
 .deleteAccount {
@@ -42,10 +68,6 @@
 	width: 100%;
 }
 
-/*.logo {
-	width: 100px;
-	max-width: 100%;
-	padding: 5px;*/
 #footline {
 	text-align: center;
 }
@@ -193,7 +215,7 @@ html>body .gwt-DecoratedStackPanel {
 	text-decoration: none;
 	cursor: pointer;
 	border: solid #000000 0px !important;
-	border-radius: 0px ;
+	border-radius: 0px;
 }
 
 .btn {
@@ -221,25 +243,7 @@ html>body .gwt-DecoratedStackPanel {
 	border-radius: 0px;
 }
 /*--------------------CCollabForm--------------------*/
-.userselectbtn{
-		color: #ffffff !important;
-	font-size: 16px !important;
-	background: #4D70A8 !important;
-	font-family: Arial;
-	padding: 6px 14px 6px 14px !important;
-	border: solid #000000 0px !important;
-	text-decoration: none;
-	margin-left:15px !important;
-	margin-top:3px;
-}
-
-.userselectbtn:hover{
-	background: #accbf0 !important;
-		cursor: pointer;
-	border: solid #000000 0px !important;
-}
-
-.sharebtn{
+.userselectbtn {
 	color: #ffffff !important;
 	font-size: 16px !important;
 	background: #4D70A8 !important;
@@ -247,17 +251,36 @@ html>body .gwt-DecoratedStackPanel {
 	padding: 6px 14px 6px 14px !important;
 	border: solid #000000 0px !important;
 	text-decoration: none;
-	margin-left:15px;
+	margin-left: 15px !important;
+	margin-top: 3px;
 }
 
-.sharebtn {
-
-	text-decoration: none;
+.userselectbtn:hover {
+	background: #accbf0 !important;
 	cursor: pointer;
 	border: solid #000000 0px !important;
 }
-.ccvaltable{
-	margin-top:15px;
+
+.sharebtn {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	text-decoration: none;
+	margin-left: 15px;
+}
+
+.sharebtn:hover {
+	text-decoration: none;
+	background: #accbf0 !important;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+}
+
+.ccvaltable {
+	margin-top: 15px;
 }
 /*--------------------CListCollabForm--------------------*/
 .listpanel {
@@ -287,6 +310,7 @@ html>body .gwt-DecoratedStackPanel {
 	background-image: -o-linear-gradient(top, #14b5ff, #0076c4);
 	background-image: linear-gradient(to bottom, #14b5ff, #0076c4);
 	text-decoration: none;
+	background: #accbf0 !important;
 	cursor: pointer;
 	border: solid #000000 0px !important;
 	border-radius: 0px;
@@ -365,7 +389,14 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 	text-decoration: none;
-	margin-top: 17px;
+	margin-top: 18px;
+}
+
+.paddbutton:hover {
+	background: #accbf0 !important;
+	cursor: pointer;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
 }
 /*--------------------ContactListForm--------------------*/
 .clremlabel {
@@ -378,7 +409,6 @@ html>body .gwt-DecoratedStackPanel {
 	color: #19376E;
 	margin-left: 20px;
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 }
 
@@ -390,7 +420,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
 	margin-top: 7px;
-	margin-left: 10px;
+	margin-left: -5px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -406,7 +436,6 @@ html>body .gwt-DecoratedStackPanel {
 	margin-top: 29px;
 	color: #19376E;
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	/*color: #53f4af !important;*/
 }
@@ -419,7 +448,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 29px !important;
 	background: #ECF2FF !important;
 	margin-top: 19px;
-	margin-left: 10px;
+	margin-left: -5px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -428,7 +457,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .clsearchlabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -447,7 +475,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 18px !important;
 	background: #ECF2FF !important;
 	margin-top: 22px;
-	margin-left: 6px;
+	margin-left: 2px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -490,7 +518,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .cldeleteLabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -507,8 +534,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 33px !important;
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
-	margin-top: 7px;
-	margin-left: 10px;
+	margin-top: 9px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -517,7 +543,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .clsaveLabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -536,8 +561,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 33px !important;
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
-	margin-top: 7px;
-	margin-left: 10px;
+	margin-top: 9px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -546,7 +570,6 @@ html>body .gwt-DecoratedStackPanel {
 
 .clshareLabel {
 	border: solid #000000 0px !important;
-	
 	background: #ECF2FF !important;
 	cursor: pointer;
 	font-family: Arial;
@@ -565,11 +588,10 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 39px !important;
 	background: #ECF2FF !important;
 	padding: 5px 2px 2px 2px !important;
-	margin-top: 4px;
-	margin-left: 10px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
+	margin-top: 3px;
 	font-weight: bold;
 }
 
@@ -591,6 +613,7 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	border-radius: 0px;
 }
+
 .createUButton2 {
 	font-family: Arial;
 	color: #19376E;
@@ -601,11 +624,11 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 10px !important;
 	border: solid #19376E 1px !important;
 	border-padding: 4px;
-	border-radius:0px;
+	border-radius: 0px;
 	text-decoration: none;
 	cursor: pointer;
 	font-weight: bold;
-	margin-left:38px;
+	margin-left: 38px;
 }
 
 .createUButton1 {
@@ -618,14 +641,12 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 116px !important;
 	border: solid #19376E 1px !important;
 	border-padding: 4px;
-	border-radius:0px;
+	border-radius: 0px;
 	text-decoration: none;
 	cursor: pointer;
 	font-weight: bold;
-	margin-left:38px;
+	margin-left: 38px;
 }
-
-
 
 .createUButton:hover {
 	text-decoration: none;
@@ -659,10 +680,9 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 16px;
 }
 
-.lnPanel{
-	margin-left:30px !important;
+.lnPanel {
+	margin-left: 30px !important;
 }
-
 
 /*-------------------SearchForm-------------------*/
 .eigenschaftlabel {
@@ -675,6 +695,7 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 25px;
 	white-space: nowrap;
 }
+
 .successfulresultl {
 	font-family: Arial;
 	font-size: 16px !important;
@@ -685,6 +706,7 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 25px;
 	white-space: nowrap;
 }
+
 .reslabel {
 	font-family: Arial;
 	font-size: 16px !important;
@@ -799,8 +821,13 @@ html>body .gwt-DecoratedStackPanel {
 	font-family: Arial;
 	padding: 6px 14px 6px 14px !important;
 	border: solid #000000 0px !important;
-	border-radius: 3px;
+	border-radius: 0px;
 	text-decoration: none;
+}
+
+.removeexisting:hover {
+	cursor: pointer;
+	background: #9FB8E0 !important;
 }
 /*-------------------ContactShowForm-------------------*/
 /*.get.textCell{
@@ -845,6 +872,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 20px !important;
 	background: #ECF2FF !important;
 	margin-top: 7px;
+	margin-left: -3px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -855,13 +883,11 @@ html>body .gwt-DecoratedStackPanel {
 	border: solid #000000 0px !important;
 	background: #ECF2FF !important;
 	white-space: nowrap;
-	
 	cursor: pointer;
 	font-family: Arial;
 	font-size: 16px !important;
 	test-align: center;
 	margin-top: 12px;
-	margin-left: 162px;
 	color: #19376E;
 	white-space: nowrap;
 }
@@ -873,6 +899,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ECF2FF !important;
 	border: solid #000000 0px !important;
 	text-decoration: none;
+	margin-left: -6px;
 	cursor: pointer;
 	font-weight: bold;
 	margin-top: -2px;
@@ -899,6 +926,7 @@ html>body .gwt-DecoratedStackPanel {
 	background: #ECF2FF !important;
 	margin-top: 7px;
 	margin-right: 20px;
+	margin-left: -3px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -925,6 +953,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-size: 20px !important;
 	background: #ECF2FF !important;
 	margin-top: 8px;
+	margin-left: -3px;
 	border: solid #000000 0px !important;
 	text-decoration: none;
 	cursor: pointer;
@@ -1103,6 +1132,84 @@ html>body .gwt-DecoratedStackPanel {
 	margin-left: 20px;
 }
 
+.addUserReport {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 25px;
+	margin-left: 10px;
+}
+
+.addUserReport:hover {
+	background: #accbf0 !important;
+    text-decoration: none;
+    cursor: pointer;
+    border: solid #000000 0px !important;
+    border-radius: 0px;
+}
+
+
+.removeUserReport {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 16px 6px 16px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.removeUserReport:hover {
+	background: #accbf0 !important;
+    text-decoration: none;
+    cursor: pointer;
+    border: solid #000000 0px !important;
+    border-radius: 0px;
+}
+
+.sharedReportButton {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 50px;
+	margin-left: 10px;
+	margin-right: 40px;
+}
+
+.sharedReportButton:hover {
+	background: #accbf0 !important;
+    text-decoration: none;
+    cursor: pointer;
+    border: solid #000000 0px !important;
+    border-radius: 0px;
+}
+
+.RemBtn {
+	color: #ffffff !important;
+	font-size: 16px !important;
+	background: #4D70A8 !important;
+	font-family: Arial;
+	padding: 6px 14px 6px 14px !important;
+	border: solid #000000 0px !important;
+	border-radius: 0px;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+
 .RepBtn:hover {
 	background: #accbf0 !important;
 	background-image: -webkit-linear-gradient(top, #14b5ff, #0076c4);
@@ -1130,7 +1237,7 @@ html>body .gwt-DecoratedStackPanel {
 	padding-bottom: 15px;
 	border: 1px solid #cdcdcd;
 	border-color: #9FB8E0;
-	margin-left: 20px;
+	margin-left: 30px;
 	margin-top: 10px;
 }
 
@@ -1156,7 +1263,7 @@ html>body .gwt-DecoratedStackPanel {
 	float: right;
 	background: #6D8EC2;
 	margin-left: 500px;
-	margin-top: -43px;
+	margin-top: -49px;
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -1178,7 +1285,7 @@ html>body .gwt-DecoratedStackPanel {
 	float: right;
 	background: #6D8EC2;
 	margin-left: 600px;
-	margin-top: -43px;
+	margin-top: -49px;
 	color: #000;
 	display: block;
 	visibility: visible;
@@ -1201,17 +1308,16 @@ html>body .gwt-DecoratedStackPanel {
 }
 
 .navbrand {
+	margin-top: 6px;
 	max-width: 20%;
 	max-height: 40px;
 }
 
 .navbarlogo {
 	width: 10px;
-	margin-left: 70px;
+	margin-left: 130px;
 	align-content: center;
-	margin-top: 1000px;
 	color: #000;
-	background-color: #8cd2f0;
 	visibility: visible;
 }
 
@@ -1226,7 +1332,7 @@ html>body .gwt-DecoratedStackPanel {
 	color: #fff;
 	font-size: 14px;
 	padding: 18px 20px 18px 20px;
-	margin-top: -43px;
+	margin-top: -49px;
 	margin-left: 360px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
@@ -1248,7 +1354,7 @@ html>body .gwt-DecoratedStackPanel {
 	font-weight: 700;
 	font-size: 18px !important;
 	color: #fff;
-	margin-top: -43px;
+	margin-top: -49px;
 	margin-left: -15px;
 	margin-right: 20px;
 	border: solid #000000 0px !important;
@@ -1273,5 +1379,4 @@ table, th, td {
 
 .legendPanel {
 	padding-top: 8px;
-
 }

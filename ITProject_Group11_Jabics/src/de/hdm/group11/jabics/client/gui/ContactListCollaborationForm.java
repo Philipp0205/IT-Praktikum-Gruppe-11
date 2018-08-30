@@ -30,12 +30,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	private HorizontalPanel buttonPanel = new HorizontalPanel();
 
 	private ContactList sharedContactList;
+	private JabicsUser u;
 
 	private Button exit, addButton, removeButton, shareList, deShareList;
 
 	private Boolean otherCallbackArrived = false;
 
-	MultiWordSuggestOracle oracle;
+	private MultiWordSuggestOracle oracle;
 	private SuggestBox suggestBox;
 	private JabicsUser suggestedUser;
 	private JabicsUser singleSelectedUser;
@@ -61,6 +62,13 @@ public class ContactListCollaborationForm extends VerticalPanel {
 
 	private CellTableResources ctRes = GWT.create(CellTableResources.class);
 
+	/**
+	 * Konstruktor welcher einer Instanz der Klasse
+	 * <code>ContactListCollaborationForm</code> erzeugt, welcher alle Objekte
+	 * inistialisiert welcher die Form braucht. Darunter Fallen Objekte der Klassen
+	 * <code>Button</code> <code>HorizontalPanel</code>. Des weiteren werden
+	 * verschiedene <code>ClickHandler</code> der Buttons gesetzt.
+	 */
 	public ContactListCollaborationForm() {
 
 		allUser = new ArrayList<JabicsUser>();
@@ -70,33 +78,22 @@ public class ContactListCollaborationForm extends VerticalPanel {
 
 		oracle = new MultiWordSuggestOracle();
 		suggestBox = new SuggestBox(oracle);
-		
+
 		newCollabTable = new CellTable<JabicsUser>(200, ctRes);
 		existingCollabTable = new CellTable<JabicsUser>(200, ctRes);
 
 		newCollabDataProvider = new ListDataProvider<JabicsUser>();
 		existingUserDataProvider = new ListDataProvider<JabicsUser>();
-		
+
 		newUserSelectionModel = new SingleSelectionModel<JabicsUser>();
 		existingUserSelectionModel = new MultiSelectionModel<JabicsUser>();
-		
-		newCollabTable.setSelectionModel(newUserSelectionModel);
-		newCollabDataProvider.setList(newCollaborators);
-		newCollabDataProvider.addDataDisplay(newCollabTable);
-		
-		existingCollabTable.setSelectionModel(existingUserSelectionModel);
-		existingUserDataProvider.setList(existingCollaborators);
-		existingUserDataProvider.addDataDisplay(existingCollabTable);
 
 		listPanel.setStyleName("listpanel");
-		GWT.log("#####################ContactListCollab onLoad");
 
 		shareList = new Button("Ausgewählten Nutzern freigeben");
 		shareList.setStyleName("clcbtn");
 		shareList.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen"
-						+ " ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
 				shareContactList();
 			}
 		});
@@ -104,8 +101,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		deShareList.setStyleName("clcbtn");
 		deShareList.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent ev) {
-				Window.alert("Achtung! Damit überschreibst du alle Freigaben mit allen "
-						+ "ausgewählten Nutzern mit den aktuell ausgewählten Eigenschaften");
 				deshareContactList();
 			}
 		});
@@ -123,13 +118,12 @@ public class ContactListCollaborationForm extends VerticalPanel {
 				if (suggestedUser != null) {
 					newCollaborators.add(suggestedUser);
 				}
-				newCollabDataProvider.setList(newCollaborators);
+				// newCollabDataProvider.setList(newCollaborators);
 				suggestBox.setText("");
 				newCollabDataProvider.refresh();
 				newCollabDataProvider.flush();
 			}
 		});
-		GWT.log("SuggestBox4");
 		removeButton = new Button("Nutzer entfernen");
 		removeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent e) {
@@ -144,6 +138,31 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		buttonPanel.add(shareList);
 		buttonPanel.add(deShareList);
 
+	}
+
+	/**
+	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklariert
+	 * welchen für die Funktionalität der Klasse gebraucht werden.
+	 */
+	public void onLoad() {
+		retrieveUser();
+
+		this.add(suggestionPanel);
+		this.add(listPanel);
+		this.add(buttonPanel);
+		this.add(exit);
+
+	}
+
+	/**
+	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren
+	 * aufgerufen wurde.
+	 */
+	public void continueOnLoad() {
+
+		createTables();
+		createSuggestBox();
+
 		listPanel.add(newCollabTable);
 		listPanel.add(existingCollabTable);
 
@@ -154,41 +173,19 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		suggestBox.setStyleName("TextBox");
 		addButton.setStyleName("clcbtn");
 		removeButton.setStyleName("clcbtn");
-
-		createTables();
 	}
 
-	/**
-	 * Wird beim kaden der Form aufgeruden. Es werden alle Objekte deklarier welchen
-	 * für die Funktionalität der Klasse gebraucht werden.
-	 */
-	public void onLoad() {
-		retrieveUser();
-		
-		this.add(suggestionPanel);
-		this.add(listPanel);
-		this.add(buttonPanel);
-		this.add(exit);
-		
-	}
+	public void getContacts() {
+		editorService.getContactsOfList(sharedContactList, u, new AsyncCallback<ArrayList<Contact>>() {
+			public void onFailure(Throwable caught) {
 
-	/**
-	 * Die onLoad weiterführen, nachdem alle Nutzer und alle Kollaboratoren
-	 * aufgerufen wurde.
-	 */
-	public void continueOnLoad() {
+			}
 
-		createSuggestBox();
-
-	}
-
-	/**
-	 * Setzt einen neuen ausgewählten Nutzer
-	 * 
-	 * @param c User der ausgewählt werden soll.
-	 */
-	public void addSelectedUser(JabicsUser c) {
-		this.existingCollaborators.add(c);
+			public void onSuccess(ArrayList<Contact> contacts) {
+				setContacts(contacts);
+				updateShareStatus();
+			}
+		});
 	}
 
 	/**
@@ -202,7 +199,7 @@ public class ContactListCollaborationForm extends VerticalPanel {
 				editorService.addCollaboration(sharedContactList, u, new AddContactListCollaborationCallback());
 			}
 		} else {
-			Window.alert("Keine Nutzer ausgewählt");
+			Window.alert("Keine Nutzer hinzugefügt");
 		}
 	}
 
@@ -215,7 +212,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		if (!finalCollaborators.isEmpty()) {
 
 			for (JabicsUser u : finalCollaborators) {
-				GWT.log("deshareContactWithAll" + u.getUsername());
 				editorService.deleteCollaboration(sharedContactList, u, new DeleteContactListCollaborationCallback());
 			}
 		} else {
@@ -227,7 +223,8 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * Setzt die Kontaktliste, mit der dann später weitere Aktionen durchgeführt
 	 * werden können wie z.B. teilen.
 	 * 
-	 * @param cl Kontaktliste, die ausgewählt werden soll.
+	 * @param cl
+	 *            Kontaktliste, die ausgewählt werden soll.
 	 */
 	public void setContactList(ContactList cl) {
 		if (cl != null) {
@@ -238,12 +235,39 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	}
 
 	/**
+	 * Setzt die Kontakte der Liste, mit der dann später weitere Aktionen
+	 * durchgeführt werden können wie z.B. teilen.
+	 * 
+	 * @param c
+	 *            Liste von <code>Contact</code>, die in der Liste liegen.
+	 */
+	public void setContacts(ArrayList<Contact> c) {
+		if (c != null) {
+			this.sharedContactList.setContacts(c);
+			for (Contact cl : sharedContactList.getContacts()) {
+			}
+		} else {
+			Window.alert("Kontakte hinzufügen null");
+		}
+	}
+
+	/**
+	 * Setzt den User der ContactListCollaborationForm
+	 * 
+	 * @param u
+	 *            User, der gesetzt werden soll.
+	 */
+	public void setUser(JabicsUser u) {
+		this.u = u;
+	}
+
+	/**
 	 * Setzt den Editor der ContactListCollaborationForm
 	 * 
-	 * @param e Editor, der gesetzt werden soll.
+	 * @param e
+	 *            Editor, der gesetzt werden soll.
 	 */
 	public void setEditor(EditorAdmin e) {
-		GWT.log("EditorAdmin in ContactlistCollab setzen");
 		this.e = e;
 	}
 
@@ -253,35 +277,43 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	 * continueOnLoad() aufgerufen.
 	 */
 	private void retrieveUser() {
-		GWT.log("allUser");
 		editorService.getAllNotCollaboratingUser(sharedContactList, new GetAllNotCollaboratingUserCallback());
 		editorService.getCollaborators(sharedContactList, new GetAllCollaboratorsCallback());
-		GWT.log("allUserfetisch");
 	}
 
 	/**
 	 * Setzt eine Variable, welche alle Nutzer enthält.
 	 * 
-	 * @param user User, die übergeben werde sollen. In diesem Fall sind das alle
-	 *             User.
+	 * @param user
+	 *            User, die übergeben werde sollen. In diesem Fall sind das alle
+	 *            User.
 	 */
 	private void setAllUser(ArrayList<JabicsUser> user) {
-		GWT.log("alleNutzersetzen");
 		this.allUser = user;
-		for (JabicsUser u : this.allUser) {
-			GWT.log(u.getEmail());
-		}
 	}
 
 	/**
 	 * Sezt die alle Kollaboratoren.
 	 * 
-	 * @param user User, die gesetzt werden sollen.
+	 * @param user
+	 *            User, die gesetzt werden sollen.
 	 */
 	public void setAllCollaborators(ArrayList<JabicsUser> user) {
-		GWT.log("setAllCollaborators");
 		this.existingCollaborators = user;
+		existingUserDataProvider.setList(existingCollaborators);
+		// existingUserDataProvider.addDataDisplay(existingCollabTable);
+
 		this.existingUserDataProvider.flush();
+	}
+
+	public void updateShareStatus() {
+		for (Contact c : sharedContactList.getContacts()) {
+			c.setShareStatus(BoStatus.IS_SHARED);
+			e.updateContactInTree(c);
+		}
+
+		sharedContactList.setShareStatus(BoStatus.IS_SHARED);
+		e.updateContactListInTree(sharedContactList);
 	}
 
 	/**
@@ -307,10 +339,17 @@ public class ContactListCollaborationForm extends VerticalPanel {
 					for (JabicsUser u : users) {
 						finalCollaborators.add(u);
 					}
-				} else
-					existingCollaborators.clear();
+				}
 			}
 		});
+
+		newCollabTable.setSelectionModel(newUserSelectionModel);
+		newCollabDataProvider.setList(newCollaborators);
+		newCollabDataProvider.addDataDisplay(newCollabTable);
+
+		existingCollabTable.setSelectionModel(existingUserSelectionModel);
+		existingUserDataProvider.setList(existingCollaborators);
+		existingUserDataProvider.addDataDisplay(existingCollabTable);
 
 		existingCollabName = new TextColumn<JabicsUser>() {
 			public String getValue(JabicsUser u) {
@@ -332,7 +371,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 	public void createSuggestBox() {
 
 		for (JabicsUser u : allUser) {
-			GWT.log("SuggestBoxalluser");
 			try {
 				oracle.add(u.getUsername() + " " + u.getEmail());
 			} catch (NullPointerException e) {
@@ -382,9 +420,9 @@ public class ContactListCollaborationForm extends VerticalPanel {
 		@Override
 		public void onSuccess(JabicsUser result) {
 			if (result != null) {
-				Window.alert("Kontaktliste erfolgreich geteilt!");
 				existingCollaborators.add(result);
-				//existingUserDataProvider.refresh();
+				existingUserDataProvider.setList(existingCollaborators);
+				existingUserDataProvider.refresh();
 				existingUserDataProvider.flush();
 				for (JabicsUser uu : newCollaborators) {
 					if (uu.getId() == result.getId()) {
@@ -392,12 +430,9 @@ public class ContactListCollaborationForm extends VerticalPanel {
 						newCollabDataProvider.flush();
 					}
 				}
-				sharedContactList.setShareStatus(BoStatus.IS_SHARED);
-				e.updateContactListInTree(sharedContactList);
-				for (Contact c : sharedContactList.getContacts()) {
-					c.setShareStatus(BoStatus.IS_SHARED);
-					e.updateContactInTree(c);
-				}
+				// Kontakte holen, um sie im Tree view upzudaten
+				getContacts();
+
 			}
 		}
 	}
@@ -421,6 +456,10 @@ public class ContactListCollaborationForm extends VerticalPanel {
 					existingCollaborators.remove(u);
 				}
 				existingUserDataProvider.flush();
+				for (Contact c : result.getContacts()) {
+					e.updateContactInTree(c);
+				}
+
 				e.updateContactListInTree(result);
 			}
 		}
@@ -440,7 +479,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("GetAllNotCollaboratingUserCallback onSuccess");
 				setAllUser(user);
 			}
 			if (!otherCallbackArrived) {
@@ -464,7 +502,6 @@ public class ContactListCollaborationForm extends VerticalPanel {
 
 		public void onSuccess(ArrayList<JabicsUser> user) {
 			if (user != null) {
-				GWT.log("GetAllCollaboratingUserCallback onSuccess");
 				setAllCollaborators(user);
 			}
 			if (!otherCallbackArrived) {

@@ -47,11 +47,11 @@ public class SignUpForm extends VerticalPanel {
 	/**
 	 * Erstellen einer neuen SignUpForm.
 	 * 
-	 * @param LoginInfo
-	 *            in dem der Nutzer und die Information über den Stand des Logins
+	 * @param logon
+	 *            <code>LoginInfo</code> Objekt in dem der Nutzer und die Information über den Stand des Logins
 	 *            liegt
-	 * @param Editor
-	 *            auf den zurückgegriffen wird, wenn der Login abgeschlossen ist.
+	 * @param e
+	 *            <code>Editor</code> auf den zurückgegriffen wird, wenn der Login abgeschlossen ist.
 	 */
 	public SignUpForm(LoginInfo logon, Editor e) {
 		this.loginfo = logon;
@@ -96,8 +96,6 @@ public class SignUpForm extends VerticalPanel {
 		if (loginService == null) {
 			loginService = ClientsideSettings.getLoginService();
 		}
-		GWT.log("HI");
-
 	}
 
 	/**
@@ -168,7 +166,6 @@ public class SignUpForm extends VerticalPanel {
 		public void onSuccess(LoginInfo logon) {
 			if (logon != null) {
 				if (logon.getIsLoggedIn() && (logon.isNewUser() == false)) {
-					Window.alert("Login success");
 					EditorAdmin editorAdmin = new EditorAdmin(logon.getCurrentUser());
 					editorAdmin.setLoginInfo(logon);
 					editorAdmin.setJabicsUser(logon.getCurrentUser());

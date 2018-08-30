@@ -280,6 +280,44 @@ public class ContactListMapper {
 	}
 
 	/**
+	 * Diese Methode gibt eine ArrayList aus <code>ContactList</code> Objekten
+	 * zurück, welche einen bestimmten Kontakt beinhalten.
+	 * 
+	 * @param c
+	 *            <code>Contact</code> Kontakt Objekt nach welchem gesucht werden soll.
+	 * @return Das <code>ContactList</code> Objekt mit den gesuchten Listen.
+	 */
+	public ArrayList<ContactList> findContactListByContact(Contact c) {
+		// Erzeugen der Datenbankverbindung
+		Connection con = DBConnection.connection();
+
+		try {
+			// Erzeugen eines ungefüllten SQL-Statements
+			Statement stmt = con.createStatement();
+
+			ArrayList<ContactList> result = new ArrayList<ContactList>();
+			// Erzeugen eines Kontaktlisten-Objektes
+
+			// Auswählen eines Contaktlistenobjekts mit einer bestimmten ID.
+			// Befüllen und ausführen des SQL-Statements
+			ResultSet rs = stmt.executeQuery("SELECT * FROM contactContactLists WHERE contactID = " + c.getId());
+
+			// Befüllen des Kontaktlisten Objekts
+			while (rs.next()) {
+				ContactList cl = new ContactList();
+				cl.setId(rs.getInt("contactListID"));
+				result.add(cl);
+			}
+
+			// Rückgabe der Kontaktliste
+			return result;
+		} catch (SQLException e) {
+			System.err.print(e);
+			return null;
+		}
+	}
+
+	/**
 	 * Auslesen aller <code>BoStatus</code> aus einer Liste von
 	 * <code>ContactList</code> Objekten.
 	 * 

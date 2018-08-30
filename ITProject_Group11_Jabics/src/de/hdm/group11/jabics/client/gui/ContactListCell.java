@@ -33,29 +33,23 @@ public class ContactListCell extends AbstractCell<ContactList> {
 	public void render(Context context, ContactList cl, SafeHtmlBuilder sb) {
 		sb.appendEscaped(cl.getListName());
 		if (cl != null) {
-			GWT.log("ContactListCell: ShareStatus: " + cl.getShareStatus());
 
 			try {
 				switch (cl.getShareStatus()) {
 
 				case IS_SHARED:
-					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendotlist()).getHTML());
+					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isshared()).getHTML());
 					break;
 				case NOT_SHARED:
-					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddotlist()).getHTML());
+					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isnotshared()).getHTML());
 					break;
 				default:
-					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.reddotlist()).getHTML());
+					sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isnotshared()).getHTML());
 				}
 			} catch (Exception e) {
-				GWT.log("ShareStatus undefined for Contact" + cl.getListName());
-				sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.greendotlist()).getHTML());
+				sb.appendHtmlConstant(AbstractImagePrototype.create(JabicsResources.INSTANCE.isshared()).getHTML());
 			}
 		}
-
-		//sb.appendHtmlConstant("<div>");
-		
-		//sb.appendHtmlConstant("</div>");
 
 	}
 

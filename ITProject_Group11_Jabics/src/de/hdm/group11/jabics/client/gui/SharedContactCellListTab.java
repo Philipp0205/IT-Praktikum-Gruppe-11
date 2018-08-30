@@ -23,24 +23,46 @@ import de.hdm.group11.jabics.shared.bo.BusinessObject;
 import de.hdm.group11.jabics.shared.bo.Contact;
 import de.hdm.group11.jabics.shared.bo.JabicsUser;
 
+/**
+ * Repräsentiert eine CellList, in der alle Kontakte des Nutzers angezeigt
+ * werden. Im Programm wird die <code>CellList</code> innerhlab eines
+ * <code>StackPanel</code> angezeigt.
+ * 
+ * Struktur von @author Thies
+ * @author Kurrle
+ */
 public class SharedContactCellListTab extends Widget {
 
-	EditorAdmin editor;
-	JabicsUser user;
+	private EditorAdmin editor;
+	private JabicsUser user;
 
-	TreeViewMenu treeViewMenu;
+	private TreeViewMenu treeViewMenu;
 
 	private EditorServiceAsync eService;
-	CellList<Contact> contactCell;
-	ListDataProvider<Contact> contactDataProvider;
+	private CellList<Contact> contactCell;
+	private ListDataProvider<Contact> contactDataProvider;
 	private ContactKeyProvider keyProvider = null;
 
 	private SingleSelectionModel<Contact> selectionModel = null;
 
 	// private final ArrayList<Contact> allcontacts =
 	// cMapper.findAllContacts(loginfo.getCurrentUser());
-	ListDataProvider<Contact> contactsProvider;
-
+	private ListDataProvider<Contact> contactsProvider;
+	
+	/**
+	 * Erzeugt Instanzen von selectionModel, den Cells und Data Providernn. Welche
+	 * für die Klasse gebraicht werden. Der Konstruktor ist mehrfach überladen damit
+	 * auch ein TreeViewMenu mitgegebn werden kann.
+	 * 
+	 * @param u            
+	 * 			 der Nutzer für den die Anzeige ausgegeben werden soll.
+	 * @param tvm 
+	 * 			Objekt der Klasse <code>TreeViewMenu</code> welche ein <code>TreeViewMenu</code> dem <code>ContactCellListTab</code> 
+	 * 			zuordnet.
+	 * @param clRes
+	 * 			Objekt der Klasse <code>CellListResources</code>, welche die Anzeige-Resourcen für die
+	 *   		<code>ContactCellListTab</code> bereitstellt.				
+	 */
 	public SharedContactCellListTab(JabicsUser u, TreeViewMenu tvm, CellListResources clRes) {
 		this.user = u;
 		this.treeViewMenu = tvm;
@@ -49,9 +71,6 @@ public class SharedContactCellListTab extends Widget {
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		GWT.log("ContactsConstructor");
-
-		GWT.log("4.1 createContactTab");
 		eService = ClientsideSettings.getEditorService();
 
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
@@ -68,9 +87,7 @@ public class SharedContactCellListTab extends Widget {
 		// "A simple selection model, that allows only one item to be selected a time."
 		selectionModel = new SingleSelectionModel<Contact>(keyProvider);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEventHandler());
-		GWT.log("ContactsConstructor");
-
-		GWT.log("4.1 createContactTab");
+		
 		eService = ClientsideSettings.getEditorService();
 
 		contactCell = new CellList<Contact>(new ContactCell(), keyProvider);
@@ -79,29 +96,36 @@ public class SharedContactCellListTab extends Widget {
 		contactsProvider = new ListDataProvider<Contact>();
 
 	}
-
+	
+	/**
+	 * Bezieht die das die aktuelle <code>CellList</code>.
+	 * 
+	 * @return das Objekt von Typ <code>CellList</code>
+	 */
 	public CellList<Contact> getCellList() {
 		return this.contactCell;
 	}
-
+	
+	/**
+	 * Wird beim erstellen des <code>SharedContactTabs</code> aufgerufen. Es werden alle Kontakte des
+	 * Nutzers aus de Datenbank geoholt um diese später anzeigen zu können.
+	 * 
+	 * Des Weiteren werden die DataProvider aktuallisiert damit die Anzeige
+	 * aktuallisiert wird.
+	 */
 	public void onLoad() {
 		/*
 		 * Der ListDataProvider wird mit den Kontakten befüllt.
 		 */
-		GWT.log("2.1 User: " + user.getId());
-
 		eService.getAllSharedContactsOf(user, new AsyncCallback<ArrayList<Contact>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.log("4.1 CellList onFailure" + caught.toString());
 			}
 
 			@Override
 			public void onSuccess(ArrayList<Contact> contacts) {
 				if (contacts != null) {
-					GWT.log("4.1 CellList onSuccess");
-
 					for (Contact c : contacts) {
 						contactDataProvider.getList().add(c);
 						contactDataProvider.refresh();
@@ -113,13 +137,17 @@ public class SharedContactCellListTab extends Widget {
 
 		contactDataProvider.addDataDisplay(contactCell);
 		contactCell.setSelectionModel(selectionModel);
-		GWT.log("Contacts1");
 		contactDataProvider.flush();
 		contactCell.redraw();
-		GWT.log("Contacts2");
 
 	}
-
+	
+	/**
+	 * Wenn ein Kontakt geändert wird bleibt der Key, welcher in folgender privater
+	 * Klasse festgelegt wird gleich, weshalb die Selektion des Kontaktes auch dann
+	 * erhalten bleibt.
+	 * 
+	 */
 	private class ContactKeyProvider implements ProvidesKey<Contact> {
 		/*
 		 * Der Key provider für einen Kontakt sorgt dafür, dass die Auswahl in der
@@ -131,7 +159,13 @@ public class SharedContactCellListTab extends Widget {
 			return (c == null) ? null : c.getId();
 		}
 	}
-
+	
+	/**
+	 * Implementiert das Verhalten der Selektion verschiedener Kontakte. Wenn ein
+	 * anderer Kontakt selektiert wird, wird das selectionModel aktualisiert. Des
+	 * Weiteren werden die Selektionen in den anderen Tabs entfern, damit Bugs
+	 * vermieden werden.
+	 */
 	private class SelectionChangeEventHandler implements SelectionChangeEvent.Handler {
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
@@ -144,43 +178,74 @@ public class SharedContactCellListTab extends Widget {
 				treeViewMenu.clearSelectionModelContactTab();
 			}
 		}
-
+		
+		/**
+		 * Setzt den Editor.
+		 * 
+		 * @param c 
+		 * 				der <code>Contact</code> welcher gesetzt werden soll.
+		 */
 		private void setSelectedContact(Contact c) {
-			GWT.log("4.1 Kontakt anzeigen" + c.getName());
 			editor.showContact(c);
 		}
 
 	}
-
+	
+	/**
+	 * Setzt den Editor.
+	 * 
+	 * @param editor 
+	 * 				der gesetzt werden soll.
+	 */
 	public void setEditor(EditorAdmin editor) {
-		GWT.log("Editor setzen in contactCellListTab");
-		GWT.log("Editor: " + editor.hashCode());
 		this.editor = editor;
 	}
-
+	
+	/**
+	 * Setzt den User
+	 * 
+	 * @param u 
+	 * 			User der gesetzt werden soll.
+	 */
 	public void setUser(JabicsUser u) {
-		GWT.log("User setzen in contactCellListTab");
 		this.user = u;
 	}
-
+	
+	/**
+	 * Fügt einen Kontakt zu der CellList hinzu.
+	 * 
+	 * @param c 
+	 * 			der Kontakt der hinzugefügt werden soll.
+	 */
 	public void addContact(Contact c) {
 		contactDataProvider.getList().add(c);
 		contactDataProvider.flush();
 		selectionModel.setSelected(c, true);
 	}
-
+	
+	/**
+	 * Kontakt wird aus der CellList entfernt.
+	 * 
+	 * @param c 
+	 * 			der zu entfernende Kontakt.
+	 */
 	public void removeContact(Contact c) {
 		contactDataProvider.getList().remove(c);
 		contactDataProvider.flush();
 	}
-
+	
+	/**
+	 * Kontakt wird in der CellList aktualisiert.
+	 * 
+	 * @param c 
+	 * 			der zu aktualisierende Kontakt.
+	 */
 	public void updateContact(Contact c) {
 		if (c != null) {
 			for (Contact c2 : contactDataProvider.getList()) {
 				// Wenn in allen Kontakten der Liste Kontakt c ist...
 				if (c2.getId() == c.getId()) {
 					int i = contactDataProvider.getList().indexOf(c2);
-					Window.alert("konatk zum updaten gefunden! index: " + i);
 					contactDataProvider.getList().set(i, c);
 				}
 			}
@@ -189,20 +254,27 @@ public class SharedContactCellListTab extends Widget {
 		}
 		return;
 	}
-
+	
+	/**
+	 * Alle aktuellen Selektionen werden entfernt.
+	 */
 	public void clearSelectionModel() {
 		if (selectionModel != null) {
-			Window.alert("clearing selection model");
 			this.selectionModel.clear();
 		} else
 			return;
 
 	}
-
+	
+	/**
+	 * Gibt das <code>SingleSelectionModel</code> zurück.
+	 * 
+	 * @return das selectionModel.
+	 */
 	public SingleSelectionModel<Contact> getSelectionModel() {
 		return this.selectionModel;
 	}
-
+	
 	public class AsyncDataProvider extends AbstractCell<Contact> {
 
 		@Override

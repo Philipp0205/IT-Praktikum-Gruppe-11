@@ -1,8 +1,10 @@
 package de.hdm.group11.jabics.shared.bo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.view.client.ProvidesKey;
 
 /**
@@ -18,7 +20,6 @@ import com.google.gwt.view.client.ProvidesKey;
  * @author Anders
  * @author Stahl
  */
-
 public class PValue extends BusinessObject implements Comparable<PValue>, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -91,7 +92,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
-	 * @param date
+	 * @param dateValue
 	 * @param u
 	 */
 	public PValue(Property p, Date dateValue, JabicsUser u) {
@@ -106,7 +107,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
-	 * @param f
+	 * @param floatValue
 	 * @param u
 	 */
 	public PValue(Property p, float floatValue, JabicsUser u) {
@@ -141,7 +142,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	public PValue(Property p, JabicsUser u) {
 		this();
 		this.property = p;
-		this.owner = u;
+		this.setOwner(u);
 		try {
 			switch (p.getType()) {
 			case STRING:
@@ -170,7 +171,7 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 	 * und Besitzer zu erzeugen.
 	 * 
 	 * @param p
-	 * @param s
+	 * @param stringValue
 	 * @param u
 	 */
 	public PValue(Property p, String stringValue, JabicsUser u) {
@@ -379,6 +380,14 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 		this.contains = true;
 		this.pointer = 2;
 	}
+	
+	/**
+	 * Setzen, ob im PValue ein Wert vorhanden ist.
+	 * @param bol
+	 */
+	public void setContainsValue(boolean bol) {
+		this.contains = bol;
+	}
 
 	/**
 	 * Textuelle Repräsentation des <code>PValue</code> Obejekts durch den Wert der
@@ -395,14 +404,14 @@ public class PValue extends BusinessObject implements Comparable<PValue>, Serial
 			case 2:
 				return stringValue;
 			case 3:
-				return dateValue.toString();
+				return this.dateValue.toString();
 			case 4:
 				return Float.toString(floatValue);
 			default:
-				return "Test(wird noch entfernt)";
+				return " ";
 			}
 		} catch (Exception e) {
-			return "nicht gesetzt";
+			return "";
 		}
 	}
 }

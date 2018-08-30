@@ -49,42 +49,43 @@ import de.hdm.group11.jabics.shared.bo.Type;
  */
 public class SearchForm extends VerticalPanel {
 
-	EditorServiceAsync editorService = ClientsideSettings.getEditorService();
+	private EditorServiceAsync editorService = ClientsideSettings.getEditorService();
 
-	StackPanel sp;
-	ContactCellListTab ct;
-	CellList<Contact> list;
-	TextBox valueBox;
-	Button sb;
-	Button back;
-	Label listInfoLabel;
-	ContactList cl;
-	EditorAdmin e;
+	private StackPanel sp;
+	private ContactCellListTab ct;
+	private CellList<Contact> list;
+	private TextBox valueBox;
+	private Button sb;
+	private Button back;
+	private Label listInfoLabel;
+	private ContactList cl;
+	private EditorAdmin e;
+	private JabicsUser currentUser;
 
-	DatePicker datepicker;
+	private DatePicker datepicker;
 
-	Label ausgabeLabel;
-	Label pvalueLabel;
-	Label propertyLabel;
-	Label datatypeLabel;
-	ListBox datatypemenu;
-	Label noresultLabel;
+	private Label ausgabeLabel;
+	private Label pvalueLabel;
+	private Label propertyLabel;
+	private Label datatypeLabel;
+	private ListBox datatypemenu;
+	private Label noResultLabel;
 
-	MultiWordSuggestOracle propertyToSuggest;
-	SuggestBox propertySuggest;
-	PValue finalPVal;
-	Property finalProperty;
-	VerticalPanel verPanel1;
-	VerticalPanel verPanel2;
-	VerticalPanel verPanel3;
-	VerticalPanel verPanel4;
-	VerticalPanel verPanel5;
-	JabicsUser currentUser;
-	ArrayList<Property> PropertyArrayList;
-	Date tempDate;
-	HorizontalPanel mainpanel = new HorizontalPanel();
+	private MultiWordSuggestOracle propertyToSuggest;
+	private SuggestBox propertySuggest;
+	private PValue finalPVal;
+	private Property finalProperty;
+	private VerticalPanel verPanel1;
+	private VerticalPanel verPanel2;
+	private VerticalPanel verPanel3;
+	private VerticalPanel verPanel4;
+	private VerticalPanel verPanel5;
 
-	DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd") ;
+	private ArrayList<Property> PropertyArrayList;
+	private Date tempDate;
+	private HorizontalPanel mainpanel = new HorizontalPanel();
+
+	private DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("yyyy-MM-dd");
 			 
 	
 	/**
@@ -96,7 +97,7 @@ public class SearchForm extends VerticalPanel {
 	public void onLoad() {
 		listInfoLabel = new Label();
 		ausgabeLabel = new Label();
-		noresultLabel = new Label("Keine Ergebnisse.");
+		noResultLabel = new Label("Keine Ergebnisse.");
 		verPanel1 = new VerticalPanel();
 		verPanel2 = new VerticalPanel();
 		verPanel3 = new VerticalPanel();
@@ -122,7 +123,7 @@ public class SearchForm extends VerticalPanel {
 		listInfoLabel.setText("Durchsuche Liste  '" + cl.getListName() + "'.");
 		listInfoLabel.setStyleName("contactListHeadline");
 		
-		noresultLabel.setStyleName("reslabel");
+		noResultLabel.setStyleName("reslabel");
 		ausgabeLabel.setStyleName("successfulresultl");
 		
 		verPanel1.add(propertyLabel);
@@ -153,11 +154,11 @@ public class SearchForm extends VerticalPanel {
 		this.add(mainpanel);
 		this.add(sp);
 		this.add(ausgabeLabel);
-		this.add(noresultLabel);
+		this.add(noResultLabel);
 		this.add(back);
 
 		ausgabeLabel.setVisible(false);
-		noresultLabel.setVisible(false);
+		noResultLabel.setVisible(false);
 
 		ct.setEditor(e);
 
@@ -202,9 +203,8 @@ public class SearchForm extends VerticalPanel {
 						finalPVal.setStringValue(null);
 					}
 					finalPVal.setProperty(finalProperty);
-					GWT.log(finalProperty.getLabel());
 					// Aufruf des der Listensuche in der EditorServiceImpl+
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 					break;
 				case "Ganzzahl":
 					if (valueBox.getValue() != "") {
@@ -214,18 +214,18 @@ public class SearchForm extends VerticalPanel {
 					}
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 
 					break;
 				case "Datum":
 					if (valueBox.getValue() != "") {
-						finalPVal.setDateValue(datepicker.getValue());
+						finalPVal.setDateValue(dateTimeFormat.parse(valueBox.getText()));
 					} else {
 						finalPVal.setDateValue(null);
 					}
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 
 					break;
 				case "Dezimalzahl":
@@ -236,7 +236,7 @@ public class SearchForm extends VerticalPanel {
 					}
 					finalPVal.setProperty(finalProperty);
 					// Aufruf des der Listensuche in der EditorServiceImpl
-					editorService.searchInList(cl, finalPVal, new SearchInListCallback());
+					editorService.searchInList(cl, finalPVal, currentUser, new SearchInListCallback());
 					break;
 				default:
 					break;
@@ -328,7 +328,6 @@ public class SearchForm extends VerticalPanel {
 					// pval.setDateValue(event.getValue());
 					valueBox.setText(dateTimeFormat.format(event.getValue()));
 					tempDate = event.getValue();
-					GWT.log(tempDate.toString());
 					finalPVal.setDateValue(tempDate);
 				}
 			}
@@ -351,7 +350,7 @@ public class SearchForm extends VerticalPanel {
 
 	
 	public void showNoResults() {
-		noresultLabel.setVisible(true);
+		noResultLabel.setVisible(true);
 	}
 	/**
 	 * Eine Methode zum Setzen der zu durchsuchenden Kontaktliste.
@@ -389,6 +388,7 @@ public class SearchForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Contact> result) {
+			noResultLabel.setVisible(false);
 			if (result != null) {
 				if(result.isEmpty()) {
 					showNoResults();
@@ -424,14 +424,12 @@ public class SearchForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Property> result) {
-			GWT.log("result!");
 			propertyToSuggest = new MultiWordSuggestOracle();
 			
 
 			ArrayList<Property> userproperties = result;
 			for (Property p : userproperties) {
 				propertyToSuggest.add(p.getLabel());
-				GWT.log(p.getLabel());
 			}
 
 			propertySuggest = new SuggestBox(propertyToSuggest);
@@ -445,7 +443,6 @@ public class SearchForm extends VerticalPanel {
 			propertySuggest.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 				public void onSelection(SelectionEvent<SuggestOracle.Suggestion> sel) {
 					finalProperty.setLabel(propertySuggest.getText());
-					GWT.log(">>>>>>>>>>>>>" + finalProperty.getLabel());
 					finalPVal.setProperty(finalProperty);
 					// finalPVal.getProperty().setType(Type.STRING);
 				}

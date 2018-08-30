@@ -79,14 +79,12 @@ public interface EditorServiceAsync {
 	void getListsOf(JabicsUser u, AsyncCallback<ArrayList<ContactList>> callback);
 
 	void getOwnerOfContact(Contact c, AsyncCallback<JabicsUser> callback);
+	
+	void getOwnerOfContactList(ContactList cl, AsyncCallback<JabicsUser> callback);
 
 	void getPropertysOfJabicsUser(JabicsUser u, AsyncCallback<ArrayList<Property>> callback);
 
 	void getPValueOf(Contact c, JabicsUser u, AsyncCallback<ArrayList<PValue>> callback);
-
-//	void searchInList(int i, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
-//
-//	void searchInList(float f, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 
 	void getStandardProperties(AsyncCallback<ArrayList<Property>> callback) throws IllegalArgumentException;
 
@@ -100,7 +98,7 @@ public interface EditorServiceAsync {
 
 	void searchForContactByExpression(String s, JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 
-	void searchInList(ContactList cl, PValue pv, AsyncCallback<ArrayList<Contact>> callback);
+	void searchInList(ContactList cl, PValue pv, JabicsUser u, AsyncCallback<ArrayList<Contact>> callback);
 
 	void searchInList(JabicsUser u, ContactList cl, AsyncCallback<ArrayList<Contact>> callback);
 
