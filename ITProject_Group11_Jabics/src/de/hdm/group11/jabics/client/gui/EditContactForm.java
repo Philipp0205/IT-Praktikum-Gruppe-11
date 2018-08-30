@@ -785,7 +785,7 @@ public class EditContactForm extends VerticalPanel {
 						pv.setStringValue((java.lang.String) event.getValue());
 						break;
 					case 3:
-						pv.setDateValue(dateTimeFormat.parse((java.lang.String) event.getValue()));
+						pv.setDateValue(dateTimeFormat.parse(pValueTextBox.getText()));
 						break;
 					case 4:
 						pv.setFloatValue(Float.parseFloat((java.lang.String) event.getValue()));

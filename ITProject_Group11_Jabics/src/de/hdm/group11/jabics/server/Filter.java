@@ -69,6 +69,7 @@ public class Filter {
 		ArrayList<Contact> result = new ArrayList<Contact>();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		for (Contact c : contacts) {
+			System.out.println("Kontakte filtern");
 			boolean bol = false;
 			ArrayList<PValue> pvalues = c.getValues();
 			for (PValue p : pvalues) {
